@@ -64,14 +64,55 @@ export default function MilkyWayARPreview({ lat, lon, dateStr, isSubscribed, sho
   const compassHeadingRef = useRef(0);
   const animationIdRef = useRef(null);
 
-  // Calculate Milky Way position
+  // Calculate Milky Way position with advanced ephemeris
   const getMWPosition = () => {
     const d = new Date(selectedDate + 'T' + selectedTime + ':00Z');
     const jd = julianDate(d);
     const lst = lstDegrees(jd, location.lon);
     const { alt, az } = raDecToAltAz(GC_RA, GC_DEC, lst, location.lat);
+    
+    // Moon position (simplified lunar model)
+    const T = (jd - 2451545) / 36525;
+    const Lp = 218.3164477 + 481267.88123421 * T;
+    const D = 297.8501921 + 445267.1142695 * T;
+    const moonLon = ((Lp + (6.28875 * Math.sin((D * Math.PI) / 180)) + 1.27402 * Math.sin((D * Math.PI) / 180)) % 360 + 360) % 360;
+    const moonLat = 5.12878 * Math.sin(((Lp - 183.6346) * Math.PI) / 180);
+    
+    const { alt: alt_moon, az: az_moon } = raDecToAltAz(moonLon, moonLat, lst, location.lat);
+    
+    // Moon illumination
     const moon = getMoonPhase(d);
-    return { alt: Math.round(alt), az: Math.round(az), moonIllum: moon.illumination };
+    
+    // Moon distance from core (angular)
+    const dAz = ((az_moon - az + 360) % 360 - 180) * (Math.PI / 180);
+    const coreAltRad = (alt * Math.PI) / 180;
+    const moonAltRad = (alt_moon * Math.PI) / 180;
+    const moonDist = Math.acos(
+      Math.sin(coreAltRad) * Math.sin(moonAltRad) + 
+      Math.cos(coreAltRad) * Math.cos(moonAltRad) * Math.cos(dAz)
+    ) * (180 / Math.PI);
+    
+    // Visibility score
+    let visibility = 0;
+    if (alt < 0) visibility = 0;
+    else if (alt < 10) visibility = 20;
+    else if (alt < 20) visibility = 40;
+    else if (alt < 30) visibility = 60;
+    else if (alt < 40) visibility = 75;
+    else visibility = 85;
+    
+    const moonInterference = Math.max(0, 100 - moonDist * 2) * (moon.illumination / 100);
+    visibility = Math.max(0, visibility - moonInterference * 0.5);
+    
+    return { 
+      alt: Math.round(alt), 
+      az: Math.round(az), 
+      alt_moon: Math.round(alt_moon),
+      az_moon: Math.round(az_moon),
+      moonIllum: moon.illumination,
+      moonDist: Math.round(moonDist * 10) / 10,
+      visibility: Math.round(visibility)
+    };
   };
 
   const handleDateChange = (newDate) => {
