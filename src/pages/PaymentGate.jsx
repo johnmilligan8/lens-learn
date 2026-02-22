@@ -4,7 +4,7 @@ import { createPageUrl } from '@/utils';
 import { base44 } from '@/api/base44Client';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Check, Sparkles, Telescope, Zap, Rocket, Star } from 'lucide-react';
+import { Check, Sparkles, Telescope, Zap, Rocket, Star, ArrowRight } from 'lucide-react';
 
 const monthlyFeatures = [
   'All 6 expedition modules unlocked',
@@ -69,17 +69,17 @@ export default function PaymentGate() {
       <div className="flex-1 flex items-center justify-center p-6">
         <div className="w-full max-w-5xl">
           <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 bg-purple-900/30 border border-purple-500/30 rounded-full px-4 py-2 mb-6">
-              <Rocket className="w-4 h-4 text-purple-400" />
-              <span className="text-purple-300 text-sm font-medium">Join explorers mastering the night sky</span>
-            </div>
-            <h1 className="text-4xl md:text-5xl font-black text-white mb-4 leading-tight">
-              Begin Your <span className="gradient-text">Expedition</span>
-            </h1>
-            <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-              Unlock the complete galaxy photography curriculum, AI planning tools, cosmic event alerts, and a community of fellow explorers.
-            </p>
-          </div>
+                <div className="inline-flex items-center gap-2 bg-purple-900/30 border border-purple-500/30 rounded-full px-4 py-2 mb-6">
+                  <Rocket className="w-4 h-4 text-purple-400" />
+                  <span className="text-purple-300 text-sm font-medium">Join 10,000+ explorers</span>
+                </div>
+                <h1 className="text-5xl md:text-6xl font-black text-white mb-4 leading-tight">
+                  Unlock the <span className="gradient-text">Full Galaxy</span>
+                </h1>
+                <p className="text-slate-400 text-lg max-w-3xl mx-auto">
+                  Complete curriculum • Advanced AI planning tools • Real-time sky pointer • Personal instructor feedback • Private community • Lifetime updates
+                </p>
+              </div>
 
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {/* Monthly */}
@@ -102,11 +102,11 @@ export default function PaymentGate() {
                   ))}
                 </ul>
                 <Button
-                  className="w-full bg-purple-600 hover:bg-purple-700 h-12 text-base"
+                  className="w-full bg-purple-600 hover:bg-purple-700 h-12 text-base font-bold"
                   onClick={() => handleSubscribe('monthly')}
                   disabled={!!loading}
                 >
-                  {loading === 'monthly' ? 'Launching...' : '🚀 Start Exploring'}
+                  {loading === 'monthly' ? 'Processing...' : 'Get Started'} <ArrowRight className="w-4 h-4" />
                 </Button>
               </div>
             </Card>
@@ -134,19 +134,21 @@ export default function PaymentGate() {
                   ))}
                 </ul>
                 <Button
-                  className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 h-12 text-base"
+                  className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 h-12 text-base font-bold"
                   onClick={() => handleSubscribe('lifetime')}
                   disabled={!!loading}
                 >
-                  {loading === 'lifetime' ? 'Launching...' : '⭐ Become a Pioneer'}
+                  {loading === 'lifetime' ? 'Processing...' : 'Get Lifetime Access'} <ArrowRight className="w-4 h-4" />
                 </Button>
               </div>
             </Card>
           </div>
 
-          <p className="text-center text-slate-600 text-sm mt-8">
-            Secure payment powered by Stripe · Cancel Explorer plan anytime · 7-day money-back guarantee
-          </p>
+          <div className="text-center mt-12 space-y-3">
+            <p className="text-slate-600 text-sm">🔒 Secure payment with Stripe</p>
+            <p className="text-slate-600 text-sm">📱 Works on all devices</p>
+            <p className="text-slate-600 text-sm">✓ 7-day money-back guarantee · No questions asked</p>
+          </div>
         </div>
       </div>
     </div>
