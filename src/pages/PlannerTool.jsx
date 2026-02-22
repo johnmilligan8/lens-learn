@@ -9,6 +9,7 @@ import ExposureCalculator from '../components/planner/ExposureCalculator';
 import ForegroundCompositionGuide from '../components/planner/ForegroundCompositionGuide';
 import HistoricalSuccessData from '../components/planner/HistoricalSuccessData';
 import AdvancedForecast from '../components/planner/AdvancedForecast';
+import VisibleSkyNow from '../components/sky/VisibleSkyNow';
 import PostProcessingGuide from '../components/planner/PostProcessingGuide';
 import GearChecklist from '../components/planner/GearChecklist';
 import ClientEmailGenerator from '../components/planner/ClientEmailGenerator';
@@ -850,6 +851,16 @@ export default function PlannerTool() {
                   gear={gear}
                   lat={results.coords?.lat}
                   lon={results.coords?.lon}
+                />
+              )}
+
+              {/* What's Visible Now */}
+              {results && (
+                <VisibleSkyNow
+                  lat={results.coords?.lat}
+                  lon={results.coords?.lon}
+                  locationName={results.coords?.name || location}
+                  overrideDate={new Date(date + 'T22:00:00Z')}
                 />
               )}
 
