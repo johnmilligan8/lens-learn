@@ -58,9 +58,10 @@ export default function Layout({ children, currentPageName }) {
 
   useEffect(() => {
     if (!loading && user) {
-      const openPages = ['PaymentGate', 'Profile'];
-      if (!isSubscribed && !openPages.includes(currentPageName)) {
-        navigate(createPageUrl('PaymentGate'));
+      // Free pages accessible to all authenticated users
+      const freePages = ['PaymentGate', 'Profile', 'Dashboard', 'EventsCalendar', 'CommunityGallery', 'FreeCourse'];
+      if (!isSubscribed && !freePages.includes(currentPageName)) {
+        navigate(createPageUrl('Dashboard'));
       }
     }
   }, [loading, user, isSubscribed, currentPageName]);
