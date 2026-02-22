@@ -51,10 +51,11 @@ const SAMPLE_EVENTS = [
 ];
 
 export default function EventsCalendar() {
-  const [events, setEvents] = useState([]);
-  const [expanded, setExpanded] = useState(null);
-  const [filter, setFilter] = useState('all');
-  const [loading, setLoading] = useState(true);
+   const [events, setEvents] = useState([]);
+   const [expanded, setExpanded] = useState(null);
+   const [filter, setFilter] = useState('all');
+   const [dateRange, setDateRange] = useState({ start: '', end: '' });
+   const [loading, setLoading] = useState(true);
 
   const loadData = useCallback(async () => {
     const res = await base44.entities.AstronomyEvent.list('date', 100);
