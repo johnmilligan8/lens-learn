@@ -349,6 +349,8 @@ export default function PlannerTool() {
   const [weather, setWeather] = useState(null);
   const [weatherLoading, setWeatherLoading] = useState(false);
   const [weatherError, setWeatherError] = useState(null);
+  const [ephemerisTarget, setEphemerisTarget] = useState(null);
+  const ephemerisRef = React.useRef(null);
 
   useEffect(() => {
     const check = async () => {
