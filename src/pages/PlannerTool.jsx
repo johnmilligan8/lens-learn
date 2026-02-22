@@ -552,6 +552,80 @@ export default function PlannerTool() {
     fetchWeather(c.lat, c.lon, date);
   };
 
+  const fetchWeather = async (lat, lon, targetDate) => {
+    setWeatherLoading(true);
+    setWeatherError(null);
+    // Open-Meteo: free, no API key, supports historical + forecast
+    // For dates within 7 days: forecast; older dates: historical archive
+    const today = new Date();
+    const target = new Date(targetDate);
+    const diffDays = Math.round((target - today) / (1000 * 60 * 60 * 24));
+    const isForecast = diffDays >= -1 && diffDays <= 14;
+    const isHistorical = diffDays < -1;
+
+    // Build Open-Meteo URL
+    const params = new URLSearchParams({
+      latitude: lat,
+      longitude: lon,
+      daily: 'cloud_cover_mean,precipitation_sum,wind_speed_10m_max,temperature_2m_max,temperature_2m_min',
+      hourly: 'cloud_cover,precipitation,wind_speed_10m,temperature_2m',
+      timezone: 'UTC',
+      start_date: targetDate,
+      end_date: new Date(target.getTime() + 2 * 86400000).toISOString().split('T')[0],
+    });
+
+    const baseUrl = isHistorical
+      ? `https://archive-api.open-meteo.com/v1/archive?${params}`
+      : `https://api.open-meteo.com/v1/forecast?${params}`;
+
+    const res = await fetch(baseUrl);
+    if (!res.ok) { setWeatherError('Weather service unavailable. Try again.'); setWeatherLoading(false); return; }
+    const data = await res.json();
+
+    // Parse daily for 3-day forecast
+    const daily = data.daily;
+    const forecast = daily?.time?.slice(0, 3).map((d, i) => ({
+      date: d,
+      cloud: daily.cloud_cover_mean?.[i] ?? 0,
+      precip_mm: Math.round((daily.precipitation_sum?.[i] ?? 0) * 10) / 10,
+      wind_kph: Math.round((daily.wind_speed_10m_max?.[i] ?? 0) * 10) / 10,
+      temp_max: Math.round(daily.temperature_2m_max?.[i] ?? 0),
+      temp_min: Math.round(daily.temperature_2m_min?.[i] ?? 0),
+    })) ?? [];
+
+    // Parse hourly for the target night (18:00–06:00 UTC)
+    const hourly = data.hourly;
+    const nightHours = hourly?.time?.reduce((acc, t, i) => {
+      const h = new Date(t + 'Z').getUTCHours();
+      if (h >= 20 || h <= 5) acc.push({
+        time: t,
+        cloud: hourly.cloud_cover?.[i] ?? 0,
+        precip: hourly.precipitation?.[i] ?? 0,
+        wind: Math.round((hourly.wind_speed_10m?.[i] ?? 0) * 10) / 10,
+        temp: Math.round(hourly.temperature_2m?.[i] ?? 0),
+      });
+      return acc;
+    }, []) ?? [];
+
+    // Build "current" from first day average
+    const f0 = forecast[0] ?? {};
+    setWeather({
+      current: {
+        cloud: f0.cloud ?? 0,
+        precip_mm: f0.precip_mm ?? 0,
+        wind_kph: f0.wind_kph ?? 0,
+        temp_c: f0.temp_max ?? 0,
+        feelslike_c: f0.temp_min ?? 0,
+        wind_dir: '',
+      },
+      forecast,
+      nightHours,
+      isHistorical,
+      isForecast,
+    });
+    setWeatherLoading(false);
+  };
+
   const getAITips = async () => {
     setAiLoading(true);
     const res = await base44.integrations.Core.InvokeLLM({
