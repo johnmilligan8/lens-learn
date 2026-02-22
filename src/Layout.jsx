@@ -34,8 +34,8 @@ export default function Layout({ children, currentPageName }) {
   const [user, setUser] = useState(null);
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [mobileOpen, setMobileOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const init = async () => {
