@@ -8,6 +8,7 @@ import HistoricalWeatherAnalysis from '../components/planner/HistoricalWeatherAn
 import GearChecklist from '../components/planner/GearChecklist';
 import ClientEmailGenerator from '../components/planner/ClientEmailGenerator';
 import ExpeditionManager from '../components/planner/ExpeditionManager';
+import MilkyWayARPreview from '../components/planner/MilkyWayARPreview';
 import LocationPicker from '../components/onboarding/LocationPicker';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -634,6 +635,19 @@ export default function PlannerTool() {
          <div className="lg:col-span-2 space-y-5">
           {/* Expedition Manager */}
           <ExpeditionManager userEmail={user?.email} currentState={currentState} onLoadExpedition={handleLoadExpedition} />
+
+          {/* AR Scout */}
+          {results && (
+            <Card className="bg-slate-900/60 border-slate-800 p-0 overflow-hidden">
+              <MilkyWayARPreview
+                lat={results.coords?.lat}
+                lon={results.coords?.lon}
+                dateStr={date}
+                isSubscribed={isSubscribed}
+                shooterMode={shooterMode}
+              />
+            </Card>
+          )}
 
           {/* Expedition Kit Checklist */}
           <GearChecklist userEmail={user?.email} shooterMode={shooterMode} isPaid={isSubscribed} />
