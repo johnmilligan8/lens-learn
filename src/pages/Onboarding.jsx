@@ -11,6 +11,8 @@ export default function Onboarding() {
   const [step, setStep] = useState(0);
   const [mode, setMode] = useState('photographer');
   const [homeLocation, setHomeLocation] = useState('');
+  const [homeLat, setHomeLat] = useState(null);
+  const [homeLon, setHomeLon] = useState(null);
   const [saving, setSaving] = useState(false);
   const navigate = useNavigate();
 
