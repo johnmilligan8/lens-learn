@@ -1032,10 +1032,9 @@ export default function PlannerTool() {
                 {/* Sky Map */}
                 <Card className="bg-slate-900/60 border-slate-800 p-5">
                   <h3 className="text-white font-semibold mb-3 flex items-center gap-2 text-sm">
-                    <Star className="w-4 h-4 text-purple-400" /> Sky Map (Polar View)
+                    <Star className="w-4 h-4 text-purple-400" /> Interactive Sky Map
                   </h3>
                   <SkyCanvas gcData={results.gcData} lat={results.coords?.lat} lon={results.coords?.lon} dateStr={date} />
-                  <p className="text-xs text-slate-500 text-center mt-2">Milky Way core arc path for {date}</p>
                 </Card>
 
                 {/* Moon */}
