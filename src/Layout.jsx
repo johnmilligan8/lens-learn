@@ -131,8 +131,9 @@ export default function Layout({ children, currentPageName }) {
         <div className="p-4 border-t border-slate-800/60">
           {!isSubscribed && (
             <Link to={createPageUrl('PaymentGate')}>
-              <div className="mb-3 p-3 rounded-xl bg-gradient-to-r from-purple-900/40 to-blue-900/40 border border-purple-500/30">
-                <p className="text-xs text-purple-300 font-medium">⚡ Upgrade to unlock all content</p>
+              <div className="mb-3 p-3 rounded-xl bg-gradient-to-r from-purple-900/50 to-indigo-900/50 border border-purple-500/40 hover:border-purple-400/60 transition-colors">
+                <p className="text-xs text-purple-200 font-semibold">🚀 Begin Your Expedition</p>
+                <p className="text-xs text-purple-400/70 mt-0.5">Unlock the full galaxy</p>
               </div>
             </Link>
           )}
@@ -154,8 +155,10 @@ export default function Layout({ children, currentPageName }) {
       {/* Mobile Top Bar */}
       <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-800/60 h-16 flex items-center px-4 justify-between">
         <Link to={createPageUrl('Dashboard')} className="flex items-center gap-2">
-          <Camera className="w-7 h-7 text-purple-400" />
-          <span className="font-bold gradient-text text-lg">Uncharted.net</span>
+          <div className="bg-gradient-to-br from-purple-600 to-blue-700 rounded-lg w-7 h-7 flex items-center justify-center">
+            <Telescope className="w-4 h-4 text-white" />
+          </div>
+          <span className="font-black gradient-text text-lg tracking-tight">UnchartedGalaxy</span>
         </Link>
         <Button variant="ghost" size="icon" className="text-slate-300" onClick={() => setMobileOpen(!mobileOpen)}>
           {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
