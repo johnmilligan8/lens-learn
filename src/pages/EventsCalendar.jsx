@@ -55,12 +55,13 @@ export default function EventsCalendar() {
   const [filter, setFilter] = useState('all');
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    base44.entities.AstronomyEvent.list('date', 100).then(res => {
-      setEvents(res.length > 0 ? res : SAMPLE_EVENTS);
-      setLoading(false);
-    });
+  const loadData = useCallback(async () => {
+    const res = await base44.entities.AstronomyEvent.list('date', 100);
+    setEvents(res.length > 0 ? res : SAMPLE_EVENTS);
+    setLoading(false);
   }, []);
+
+  useEffect(() => { loadData(); }, []);
 
   const filters = ['all', 'meteor_shower', 'eclipse', 'supermoon', 'aurora', 'comet'];
   const filtered = filter === 'all' ? events : events.filter(e => e.type === filter);
@@ -132,6 +133,7 @@ export default function EventsCalendar() {
   };
 
   return (
+    <PullToRefresh onRefresh={loadData}>
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="mb-8">
         <h1 className="text-4xl font-bold text-white mb-2 flex items-center gap-3">
@@ -184,5 +186,6 @@ export default function EventsCalendar() {
         </Card>
       )}
     </div>
+    </PullToRefresh>
   );
 }
