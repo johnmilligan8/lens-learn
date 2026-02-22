@@ -42,20 +42,29 @@ export default function Dashboard() {
   const [progress, setProgress] = useState([]);
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [profile, setProfile] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const load = async () => {
       const me = await base44.auth.me();
       setUser(me);
-      const [mods, prog, subs] = await Promise.all([
+      const [mods, prog, subs, profiles] = await Promise.all([
         base44.entities.Module.list('order', 50),
         base44.entities.LessonProgress.filter({ user_email: me.email }, '-created_date', 200),
         me.role === 'admin' ? Promise.resolve([{ status: 'active' }]) : base44.entities.Subscription.filter({ user_email: me.email, status: 'active' }, '-created_date', 1),
+        base44.entities.UserProfile.filter({ user_email: me.email }, '-created_date', 1),
       ]);
       setIsSubscribed(subs.length > 0);
       setModules(mods.length > 0 ? mods : FALLBACK_MODULES);
       setProgress(prog);
+      const prof = profiles[0] ?? null;
+      setProfile(prof);
       setLoading(false);
+      // Redirect to onboarding if not completed
+      if (!prof || !prof.onboarding_complete) {
+        navigate(createPageUrl('Onboarding'));
+      }
     };
     load();
   }, []);
