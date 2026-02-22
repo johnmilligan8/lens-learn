@@ -22,6 +22,7 @@ import {
 
 const navItems = [
   { icon: Home, label: 'Mission Control', page: 'Dashboard' },
+  { icon: Rocket, label: 'Tonight?', page: 'TonightHub' },
   { icon: Star, label: 'Free Starter Course', page: 'FreeCourse', freeTag: true },
   { icon: MapPin, label: 'Sky Planner', page: 'PlannerTool', paidOnly: true },
   { icon: Calendar, label: 'Cosmic Events', page: 'EventsCalendar' },
