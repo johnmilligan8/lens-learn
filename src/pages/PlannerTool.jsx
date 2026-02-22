@@ -516,6 +516,12 @@ export default function PlannerTool() {
     poor:      { color: 'from-red-900/30 to-red-950/20 border-red-500/40', badge: 'bg-red-700', text: 'Poor', icon: '❌' },
   };
 
+  const handleRefresh = useCallback(async () => {
+    if (results?.coords) {
+      await calculate();
+    }
+  }, [results]);
+
   // ── Paywall ──────────────────────────────────────────────────────────────
   if (isSubscribed === null) {
     return (
