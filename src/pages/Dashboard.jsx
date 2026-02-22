@@ -8,8 +8,9 @@ import { Badge } from '@/components/ui/badge';
 import {
   Telescope, Settings, Eye, MapPin, Palette, Sparkles,
   ChevronRight, Trophy, Clock, TrendingUp, BookOpen,
-  Star, Rocket, Camera, Zap
+  Star, Rocket, Camera, Zap, Lock
 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const MODULE_ICONS = { Telescope, Settings, Eye, MapPin, Palette, Sparkles };
 const COLOR_MAP = {
