@@ -1,10 +1,13 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ChevronDown, Compass, Sun, Mountain, Eye } from 'lucide-react';
+import { ChevronDown, Compass, Sun, Mountain, Eye, Loader2, Zap } from 'lucide-react';
+import { base44 } from '@/api/base44Client';
 
-export default function ForegroundCompositionGuide({ location, date, gear }) {
+export default function ForegroundCompositionGuide({ location, date, gear, lat, lon }) {
   const [expanded, setExpanded] = useState(false);
+  const [aiAnalysis, setAiAnalysis] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   // Calculate golden hour times (simplified)
   const getGoldenHours = (dateStr) => {
@@ -21,8 +24,57 @@ export default function ForegroundCompositionGuide({ location, date, gear }) {
 
   const goldenHours = getGoldenHours(date);
 
-  // Get compass direction based on location name (mock implementation)
+  // Get AI-powered location-specific analysis
+  useEffect(() => {
+    if (!location || !lat || !lon) return;
+    getLocationAnalysis();
+  }, [location, lat, lon]);
+
+  const getLocationAnalysis = async () => {
+    setLoading(true);
+    try {
+      const res = await base44.integrations.Core.InvokeLLM({
+        prompt: `You are a landscape/astrophotography expert. Analyze this location for Milky Way foreground composition:
+
+Location: ${location}
+Coordinates: ${lat.toFixed(2)}°N, ${lon.toFixed(2)}°W
+
+Provide ONLY a JSON response with:
+1. "best_direction": string like "South" or "Southwest" (cardinal direction toward Galactic Core based on latitude)
+2. "terrain_type": string like "mountain", "desert", "forest", "urban", "lake"
+3. "foreground_elements": array of 3-5 likely foreground features (trees, rocks, structures, etc.)
+4. "lighting_technique": string describing best way to light the foreground (e.g., "gentle headlamp painting", "long exposure LED", "reflector fill")
+5. "focal_length_recommendation": number in mm (e.g., 16, 24, 35)
+6. "shooting_position_tip": string with specific angle/height advice (e.g., "shoot from low angle to emphasize foreground depth")
+7. "hazards": array of things to avoid (cliffs, water, obstacles)
+
+Be specific to this exact location. JSON only.`,
+        response_json_schema: {
+          type: 'object',
+          properties: {
+            best_direction: { type: 'string' },
+            terrain_type: { type: 'string' },
+            foreground_elements: { type: 'array', items: { type: 'string' } },
+            lighting_technique: { type: 'string' },
+            focal_length_recommendation: { type: 'number' },
+            shooting_position_tip: { type: 'string' },
+            hazards: { type: 'array', items: { type: 'string' } },
+          }
+        },
+        add_context_from_internet: true,
+      });
+      setAiAnalysis(res);
+    } catch (err) {
+      console.error('Location analysis error:', err);
+    }
+    setLoading(false);
+  };
+
+  // Get compass direction based on AI or fallback
   const getDirectionAdvice = (loc) => {
+    if (aiAnalysis) {
+      return { direction: aiAnalysis.best_direction, reason: 'toward Galactic Core (AI-optimized for your location)' };
+    }
     if (!loc) return { direction: 'South', reason: 'toward Galactic Core' };
     const locLower = loc.toLowerCase();
     if (locLower.includes('mountain') || locLower.includes('hill')) {
@@ -68,12 +120,12 @@ export default function ForegroundCompositionGuide({ location, date, gear }) {
       icon: Eye,
       title: 'Depth & Separation',
       tips: [
-        `• Use a wider focal length (${gear?.primary_lens ? Math.round(gear.primary_lens.focal_length) + 'mm' : '14–24mm'}) for dramatic foreground`,
-        '• Position a tree, rock, or structure in the foreground (1–3 meters away)',
-        '• Light the foreground with a headlamp or long exposure to separate it from sky',
+        `• Use ${aiAnalysis?.focal_length_recommendation ? `${aiAnalysis.focal_length_recommendation}mm` : gear?.primary_lens ? Math.round(gear.primary_lens.focal_length) + 'mm' : '14–24mm'} lens for dramatic foreground`,
+        `• ${aiAnalysis?.foreground_elements?.[0] ? `Focus on: ${aiAnalysis.foreground_elements.slice(0, 2).join(', ')}` : 'Position a tree, rock, or structure in the foreground (1–3 meters away)'}`,
+        `• ${aiAnalysis?.lighting_technique ? `Lighting: ${aiAnalysis.lighting_technique}` : 'Light the foreground with a headlamp or long exposure to separate it from sky'}`,
       ],
     },
-  ], [goldenHours, directionAdvice, gear]);
+  ], [goldenHours, directionAdvice, gear, aiAnalysis]);
 
   return (
     <Card className="bg-gradient-to-br from-slate-900/60 to-slate-800/30 border-slate-800 p-5">
@@ -95,9 +147,52 @@ export default function ForegroundCompositionGuide({ location, date, gear }) {
       {!expanded ? (
         <p className="text-slate-400 text-sm">
           Best angle: <span className="text-amber-300 font-semibold">{directionAdvice.direction}</span> · Golden hour: <span className="text-amber-300 font-semibold">{goldenHours.sunset}</span>
+          {aiAnalysis && <span className="text-amber-300 ml-2">✨ AI-optimized</span>}
         </p>
       ) : (
         <div className="space-y-4 mt-4 pt-4 border-t border-slate-700">
+          {/* AI Analysis Panel */}
+          {loading ? (
+            <div className="flex items-center gap-2 text-slate-400 text-sm">
+              <Loader2 className="w-4 h-4 animate-spin" />
+              Analyzing location...
+            </div>
+          ) : aiAnalysis ? (
+            <div className="bg-purple-900/20 border border-purple-500/40 rounded-lg p-4 space-y-3">
+              <div className="flex items-center gap-2">
+                <Zap className="w-4 h-4 text-purple-400" />
+                <h4 className="text-white font-semibold text-sm">AI Location Analysis</h4>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <div>
+                  <p className="text-slate-400 font-semibold">Terrain</p>
+                  <p className="text-white capitalize">{aiAnalysis.terrain_type}</p>
+                </div>
+                <div>
+                  <p className="text-slate-400 font-semibold">Focal Length</p>
+                  <p className="text-white">{aiAnalysis.focal_length_recommendation}mm</p>
+                </div>
+              </div>
+
+              <div>
+                <p className="text-slate-400 font-semibold text-xs mb-1">Position Tip</p>
+                <p className="text-white text-xs leading-relaxed">{aiAnalysis.shooting_position_tip}</p>
+              </div>
+
+              {aiAnalysis.hazards?.length > 0 && (
+                <div>
+                  <p className="text-red-300 font-semibold text-xs mb-1">⚠️ Watch For</p>
+                  <ul className="space-y-0.5">
+                    {aiAnalysis.hazards.map((h, i) => (
+                      <li key={i} className="text-slate-400 text-xs">• {h}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          ) : null}
+
           {compositionTips.map((section, idx) => {
             const Icon = section.icon;
             return (
