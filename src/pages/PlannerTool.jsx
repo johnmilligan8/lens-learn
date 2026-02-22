@@ -476,6 +476,9 @@ export default function PlannerTool() {
   const [results, setResults] = useState(null);
   const [aiTips, setAiTips] = useState('');
   const [aiLoading, setAiLoading] = useState(false);
+  const [weather, setWeather] = useState(null);
+  const [weatherLoading, setWeatherLoading] = useState(false);
+  const [weatherError, setWeatherError] = useState(null);
 
   useEffect(() => {
     const check = async () => {
