@@ -57,6 +57,7 @@ import ModuleView from './pages/ModuleView';
 import PaymentGate from './pages/PaymentGate';
 import PlannerTool from './pages/PlannerTool';
 import Profile from './pages/Profile';
+import Onboarding from './pages/Onboarding';
 import __Layout from './Layout.jsx';
 
 
@@ -71,6 +72,7 @@ export const PAGES = {
     "PaymentGate": PaymentGate,
     "PlannerTool": PlannerTool,
     "Profile": Profile,
+    "Onboarding": Onboarding,
 }
 
 export const pagesConfig = {
