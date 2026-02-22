@@ -84,16 +84,47 @@ export default function ExposureCalculator({ gear, results, date }) {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  // Alternative exposure scenarios
+  const scenarios = [
+    {
+      name: 'Single Shot',
+      iso: recommendedISO,
+      shutter: recommendedShutter,
+      frames: 1,
+      totalTime: recommendedShutter,
+      snr: '1x',
+      description: 'Quick composition test',
+    },
+    {
+      name: 'High SNR Stack',
+      iso: Math.max(800, Math.round(recommendedISO * 0.7)),
+      shutter: recommendedShutter,
+      frames: 20,
+      totalTime: recommendedShutter * 20,
+      snr: '4.5x',
+      description: 'Reduced noise, cleaner MW (~7 min shoot)',
+    },
+    {
+      name: 'Fast Stack',
+      iso: recommendedISO,
+      shutter: recommendedShutter,
+      frames: 10,
+      totalTime: recommendedShutter * 10,
+      snr: '3.2x',
+      description: 'Balance speed & noise (~3.5 min shoot)',
+    },
+  ];
+
   // Advice based on conditions
   let advice = '✅ Use these settings as your starting point.';
   if (recommendedISO >= maxISO * 0.9) {
-    advice = '⚠️ ISO is near camera max. Consider stacking multiple shorter exposures or moving to darker skies.';
+    advice = '⚠️ ISO is near camera max. Stack multiple frames to reduce noise instead.';
   }
   if (moonIllum > 70) {
     advice = '🌕 High moon illumination. Shoot away from moon or wait for moonset.';
   }
   if (bortle > 6) {
-    advice = '🏙️ Urban area. Push ISO higher or use wider lens if possible.';
+    advice = '🏙️ Urban area. Stack to reduce noise or use wider lens if possible.';
   }
 
   return (
@@ -152,11 +183,60 @@ export default function ExposureCalculator({ gear, results, date }) {
             </div>
           </div>
 
+          {/* Exposure Scenarios */}
+          <div className="mt-4 pt-4 border-t border-slate-700">
+            <p className="text-slate-400 text-xs uppercase tracking-widest mb-2">Exposure Scenarios</p>
+            <div className="space-y-2">
+              {scenarios.map((scenario, i) => (
+                <div key={i} className="bg-slate-800/50 rounded p-3">
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-white font-semibold text-sm">{scenario.name}</p>
+                    <span className="text-xs bg-purple-600 text-white px-2 py-1 rounded">SNR: {scenario.snr}</span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2 text-xs mb-2">
+                    <div>
+                      <p className="text-slate-500">ISO</p>
+                      <p className="text-white font-mono">{scenario.iso}</p>
+                    </div>
+                    <div>
+                      <p className="text-slate-500">Frames</p>
+                      <p className="text-white font-mono">{scenario.frames}x {scenario.shutter}"</p>
+                    </div>
+                    <div>
+                      <p className="text-slate-500">Total Time</p>
+                      <p className="text-white font-mono">{(scenario.totalTime / 60).toFixed(1)} min</p>
+                    </div>
+                  </div>
+                  <p className="text-slate-500 text-xs">{scenario.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Alternative lenses */}
+          {gear.lenses && gear.lenses.length > 1 && (
+            <div className="mt-4 pt-4 border-t border-slate-700">
+              <p className="text-slate-400 text-xs uppercase tracking-widest mb-2">Alternative Lenses</p>
+              <div className="space-y-1">
+                {gear.lenses.slice(0, 3).map((lens, i) => {
+                  const altMaxShutter = 500 / (lens.focal_length * cropFactor);
+                  const altRecShutter = Math.round(altMaxShutter * 0.7 * 10) / 10;
+                  return (
+                    <div key={i} className="bg-slate-800/50 rounded p-2 text-xs">
+                      <p className="text-white font-semibold">{lens.name}</p>
+                      <p className="text-slate-400">f/{lens.f_stop_widest} | {altRecShutter}" shutter</p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
           <div className="bg-blue-900/20 border border-blue-500/30 rounded-lg p-3 mt-3">
             <p className="text-blue-300 text-xs font-semibold mb-1">💡 Pro Tips</p>
             <ul className="text-slate-400 text-xs space-y-1">
-              <li>• Start with these settings, then bracket ±0.5 stops</li>
-              <li>• If ISO is maxed, try stacking 2–3 shorter exposures</li>
+              <li>• Stacking reduces noise ~50% per doubling of frames</li>
+              <li>• High SNR stack = slower but cleaner; fast stack = quick iteration</li>
               <li>• Use RAW for maximum post-processing flexibility</li>
               <li>• Focus manually on a bright star using live view</li>
             </ul>
