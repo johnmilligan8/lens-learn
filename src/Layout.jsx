@@ -18,7 +18,8 @@ import {
   Sparkles,
   ChevronRight,
   ChevronLeft,
-  Rocket
+  Rocket,
+  Smartphone
 } from 'lucide-react';
 
 const navItems = [
