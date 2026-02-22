@@ -54,10 +54,10 @@ import FreeCourse from './pages/FreeCourse';
 import InstructorDashboard from './pages/InstructorDashboard';
 import LessonView from './pages/LessonView';
 import ModuleView from './pages/ModuleView';
+import Onboarding from './pages/Onboarding';
 import PaymentGate from './pages/PaymentGate';
 import PlannerTool from './pages/PlannerTool';
 import Profile from './pages/Profile';
-import Onboarding from './pages/Onboarding';
 import TonightHub from './pages/TonightHub';
 import __Layout from './Layout.jsx';
 
@@ -70,10 +70,10 @@ export const PAGES = {
     "InstructorDashboard": InstructorDashboard,
     "LessonView": LessonView,
     "ModuleView": ModuleView,
+    "Onboarding": Onboarding,
     "PaymentGate": PaymentGate,
     "PlannerTool": PlannerTool,
     "Profile": Profile,
-    "Onboarding": Onboarding,
     "TonightHub": TonightHub,
 }
 
