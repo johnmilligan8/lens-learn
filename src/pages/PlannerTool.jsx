@@ -561,12 +561,6 @@ export default function PlannerTool() {
     );
   }
 
-  const handleRefresh = useCallback(async () => {
-    if (results?.coords) {
-      await calculate();
-    }
-  }, [results]);
-
   // ── Main UI ──────────────────────────────────────────────────────────────
   return (
     <PullToRefresh onRefresh={handleRefresh}>
