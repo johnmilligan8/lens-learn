@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Camera, Trophy, Star, CheckCircle2, Edit2, Check, X, Trash2, AlertTriangle, MapPin } from 'lucide-react';
 import LocationPicker from '../components/onboarding/LocationPicker';
+import AuroraAlertManager from '../components/aurora/AuroraAlertManager';
 import { format } from 'date-fns';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 
@@ -27,6 +28,7 @@ export default function Profile() {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState('');
   const [deleting, setDeleting] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -39,7 +41,9 @@ export default function Profile() {
         base44.entities.GalleryPost.filter({ user_email: me.email }, '-created_date', 12),
         base44.entities.UserProfile.filter({ user_email: me.email }, '-created_date', 1),
       ]);
+      const hasSub = subs.length > 0 || me.role === 'admin';
       setSub(subs[0] || null);
+      setIsSubscribed(hasSub);
       setProgress(prog);
       setPhotos(myPhotos);
       const profile = profiles[0] || null;
@@ -68,6 +72,23 @@ export default function Profile() {
       setUserProfile(created);
     }
     setEditingLocation(false);
+  };
+
+  const handleAuroraAlertUpdate = async (updates) => {
+    const newAlerts = updates.locations;
+    const newEnabled = updates.alertsEnabled !== undefined ? updates.alertsEnabled : userProfile?.alert_prefs?.aurora_alerts_enabled;
+    const data = {
+      user_email: user.email,
+      alert_locations: newAlerts,
+      alert_prefs: { ...userProfile?.alert_prefs, aurora_alerts_enabled: newEnabled },
+    };
+    if (userProfile) {
+      await base44.entities.UserProfile.update(userProfile.id, data);
+      setUserProfile({ ...userProfile, ...data });
+    } else {
+      const created = await base44.entities.UserProfile.create({ ...data, onboarding_complete: true });
+      setUserProfile(created);
+    }
   };
 
   const handleDeleteAccount = async () => {
@@ -231,9 +252,18 @@ export default function Profile() {
             )}
           </div>
         )}
-      </Card>
+        </Card>
 
-      {/* Danger Zone */}
+        {/* Aurora Alerts (Plus only) */}
+        {isSubscribed && (
+          <AuroraAlertManager
+            alertLocations={userProfile?.alert_locations || []}
+            alertsEnabled={userProfile?.alert_prefs?.aurora_alerts_enabled !== false}
+            onUpdate={handleAuroraAlertUpdate}
+          />
+        )}
+
+        {/* Danger Zone */}
       <Card className="bg-red-950/20 border border-red-900/40 p-6 mb-6">
         <h3 className="text-red-400 font-semibold mb-1 flex items-center gap-2">
           <AlertTriangle className="w-4 h-4" /> Danger Zone
