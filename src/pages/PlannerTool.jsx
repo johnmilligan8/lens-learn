@@ -808,7 +808,7 @@ export default function PlannerTool() {
           )}
         </div>
       </div>
-    </div>
+      </div>
     </PullToRefresh>
   );
 }
