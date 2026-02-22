@@ -838,6 +838,15 @@ export default function PlannerTool() {
                 </Card>
               </div>
 
+              {/* Weather */}
+              <WeatherCard
+                weather={weather}
+                weatherLoading={weatherLoading}
+                weatherError={weatherError}
+                onFetch={() => fetchWeather(results.coords?.lat, results.coords?.lon, date)}
+                hasResults={!!results}
+              />
+
               {/* Hourly Altitude Chart */}
               <Card className="bg-slate-900/60 border-slate-800 p-5">
                 <h3 className="text-white font-semibold mb-4 flex items-center gap-2 text-sm">
