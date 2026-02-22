@@ -3,7 +3,7 @@ import React from 'react';
 const UserNotRegisteredError = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen cosmic-bg">
-      <div className="max-w-md w-full p-8 bg-slate-900/80 rounded-lg shadow-lg border border-slate-700">
+      <div className="max-w-md w-full p-8 bg-slate-800/40 rounded-lg shadow-lg border border-slate-700/50">
         <div className="text-center">
           <div className="inline-flex items-center justify-center w-16 h-16 mb-6 rounded-full bg-orange-900/40">
             <svg className="w-8 h-8 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -11,10 +11,10 @@ const UserNotRegisteredError = () => {
             </svg>
           </div>
           <h1 className="text-3xl font-bold text-slate-200 mb-4">Access Restricted</h1>
-          <p className="text-slate-400 mb-8">
+          <p className="text-slate-300 mb-8">
             You are not registered to use this application. Please contact the app administrator to request access.
           </p>
-          <div className="p-4 bg-slate-800 rounded-md text-sm text-slate-400">
+          <div className="p-4 bg-slate-800/50 rounded-md text-sm text-slate-300">
             <p>If you believe this is an error, you can:</p>
             <ul className="list-disc list-inside mt-2 space-y-1">
               <li>Verify you are logged in with the correct account</li>
