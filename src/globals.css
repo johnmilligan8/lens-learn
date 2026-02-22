@@ -47,6 +47,13 @@
   -webkit-user-select: none;
 }
 
+/* iOS: disable tap highlight on all interactive elements */
+a, button, [role="button"] {
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
 .cosmic-bg {
   background-color: var(--cosmic-bg);
   background-image:
