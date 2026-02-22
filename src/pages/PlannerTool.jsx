@@ -555,8 +555,15 @@ export default function PlannerTool() {
     );
   }
 
+  const handleRefresh = useCallback(async () => {
+    if (results?.coords) {
+      await calculate();
+    }
+  }, [results]);
+
   // ── Main UI ──────────────────────────────────────────────────────────────
   return (
+    <PullToRefresh onRefresh={handleRefresh}>
     <div className="max-w-6xl mx-auto px-4 py-8">
       {/* Header */}
       <div className="mb-8">
