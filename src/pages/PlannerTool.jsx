@@ -560,10 +560,6 @@ export default function PlannerTool() {
   }
 
   // ── Main UI ──────────────────────────────────────────────────────────────
-  const handleRefresh = useCallback(async () => {
-    if (results?.coords) await calculate();
-  }, [results]);
-
   return (
     <PullToRefresh onRefresh={handleRefresh}>
       <div className="max-w-6xl mx-auto px-4 py-8">
