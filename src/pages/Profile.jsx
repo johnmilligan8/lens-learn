@@ -6,7 +6,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Camera, Trophy, Star, CheckCircle2, Edit2, Check, X, Trash2, AlertTriangle } from 'lucide-react';
+import { Camera, Trophy, Star, CheckCircle2, Edit2, Check, X, Trash2, AlertTriangle, MapPin } from 'lucide-react';
+import LocationPicker from '../components/onboarding/LocationPicker';
 import { format } from 'date-fns';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 
