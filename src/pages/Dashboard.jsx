@@ -165,49 +165,11 @@ export default function Dashboard() {
         </div>
       )}
 
-      {/* Milky Way Courses Section */}
-      <div className="mb-10">
-        <h2 className="text-2xl font-bold text-white mb-5 flex items-center gap-2">
-          <Rocket className="w-6 h-6 text-purple-400" /> Milky Way Courses
-        </h2>
-        <div className={`p-6 rounded-2xl border ${isSubscribed ? 'bg-slate-900/40 border-slate-800/50' : 'bg-gradient-to-r from-purple-900/30 to-purple-800/20 border-purple-500/30'}`}>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {modules.map((mod) => {
-              const modColor = mod.color || 'purple';
-              const pct = getModuleProgress(mod.id);
-              const iconKeys = Object.keys(MODULE_ICONS);
-              const IconComp = MODULE_ICONS[iconKeys[modules.indexOf(mod) % iconKeys.length]];
-              return (
-                <Link key={mod.id} to={isSubscribed ? createPageUrl('ModuleView') + `?id=${mod.id}` : createPageUrl('PaymentGate')}>
-                  <Card className={`bg-gradient-to-br ${COLOR_MAP[modColor]} border p-6 card-glow hover:scale-[1.02] transition-all duration-200 relative overflow-hidden h-full ${!isSubscribed ? 'opacity-70' : ''}`}>
-                    {mod.is_free_preview && (
-                      <Badge className="absolute top-3 right-3 bg-emerald-600 text-white text-xs">FREE</Badge>
-                    )}
-                    <div className="flex items-start justify-between mb-4">
-                      <IconComp className={`w-10 h-10 ${ICON_COLOR[modColor]}`} />
-                      {isSubscribed ? <ChevronRight className="w-4 h-4 text-slate-500" /> : <Lock className="w-4 h-4 text-slate-500" />}
-                    </div>
-                    <h3 className="text-lg font-bold text-white mb-2">{mod.title}</h3>
-                    <p className="text-slate-400 text-sm mb-4 line-clamp-2">{mod.description}</p>
-                    <div className="flex items-center gap-3 text-xs text-slate-500 mb-3">
-                      {mod.total_lessons && <span>{mod.total_lessons} lessons</span>}
-                      {mod.total_duration && <><span>•</span><span>{mod.total_duration}</span></>}
-                    </div>
-                    <Progress value={pct} className="h-1.5 mb-1" />
-                    <p className="text-xs text-slate-500">{pct}% complete</p>
-                  </Card>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-
       {/* Quick Actions */}
-      <h2 className="text-2xl font-bold text-white mb-5 flex items-center gap-2 mt-10">
+      <h2 className="text-2xl font-bold text-white mb-5 flex items-center gap-2">
         <Zap className="w-6 h-6 text-yellow-400" /> Mission Briefings
       </h2>
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
         <Link to={createPageUrl('TonightHub')}>
           <Card className="bg-gradient-to-br from-emerald-900/30 to-teal-900/10 border border-emerald-500/40 p-6 card-glow hover:border-emerald-400/70 transition-all group h-full">
             <div className="bg-emerald-600/20 p-4 rounded-xl w-fit mb-4"><Rocket className="w-7 h-7 text-emerald-400" /></div>
