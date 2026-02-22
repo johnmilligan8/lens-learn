@@ -17,7 +17,17 @@ export default function StarPointer() {
   const [searchQuery, setSearchQuery] = useState('');
   const [observations, setObservations] = useState([]);
 
-  // Galactic Core (Milky Way center)
+  // Major sky features visible to all
+  const MILKY_WAY = { 
+    name: 'Milky Way', ra: 266, dec: 0, mag: 99, type: 'galaxy', 
+    color: '#FFE680', special: 'Galactic band - stretches across sky, best in dark skies' 
+  };
+  
+  const ANDROMEDA = { 
+    name: 'M31 (Andromeda Galaxy)', ra: 10.7, dec: 41.3, mag: 3.4, type: 'galaxy', 
+    color: '#BBBBFF', special: 'Nearest galaxy to Milky Way - 2.5 million light-years' 
+  };
+
   const GALACTIC_CORE = { 
     name: 'Galactic Core', ra: 266.42, dec: -28.94, mag: 99, type: 'nebula', 
     color: '#FFD700', special: 'Milky Way Center - Best in summer (Sagittarius)' 
@@ -25,6 +35,11 @@ export default function StarPointer() {
 
   // Bright stars and objects visible to naked eye
   const ALL_OBJECTS = [
+    // Major sky features (all users)
+    MILKY_WAY,
+    ANDROMEDA,
+    GALACTIC_CORE,
+    
     // Brightest stars
     { name: 'Sirius', ra: 101.3, dec: -16.7, mag: -1.46, type: 'star', color: '#FFCCAA' },
     { name: 'Canopus', ra: 95.99, dec: -52.7, mag: -0.72, type: 'star', color: '#FFEEAA' },
@@ -53,7 +68,6 @@ export default function StarPointer() {
     { name: 'Mercury', ra: 0, dec: 0, mag: 1.0, type: 'planet', color: '#CCCCAA' },
     
     // Deep sky objects - bright ones visible to naked eye
-    { name: 'M31 (Andromeda)', ra: 10.7, dec: 41.3, mag: 3.4, type: 'galaxy', color: '#BBBBFF' },
     { name: 'M42 (Orion Nebula)', ra: 83.8, dec: -5.4, mag: 4.0, type: 'nebula', color: '#00FF99' },
     { name: 'M45 (Pleiades)', ra: 56.9, dec: 24.1, mag: 1.6, type: 'cluster', color: '#FFFFFF' },
     { name: 'M44 (Beehive)', ra: 130.1, dec: 19.7, mag: 3.7, type: 'cluster', color: '#FFFFFF' },
@@ -140,11 +154,14 @@ export default function StarPointer() {
 
   // Convert RA/Dec to Alt/Az based on device orientation
   const getVisibleObjects = () => {
-    // Combine all objects with Galactic Core
-    const objects = [GALACTIC_CORE, ...ALL_OBJECTS];
-    // Free: 8 key objects + Galactic Core; Paid: all objects
-    const count = isSubscribed ? objects.length : 9;
-    return objects.slice(0, count);
+    // Free: Milky Way, Andromeda, Core + 6 key stars (9 total)
+    // Paid: all objects
+    if (isSubscribed) {
+      return ALL_OBJECTS;
+    } else {
+      // Free users: major features + brightest stars
+      return [MILKY_WAY, ANDROMEDA, GALACTIC_CORE, ...ALL_OBJECTS.slice(3, 9)];
+    }
   };
 
   const getVisibleConstellations = () => {
