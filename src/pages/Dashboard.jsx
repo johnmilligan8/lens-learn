@@ -208,7 +208,15 @@ export default function Dashboard() {
       <h2 className="text-2xl font-bold text-white mb-5 flex items-center gap-2 mt-10">
         <Zap className="w-6 h-6 text-yellow-400" /> Mission Briefings
       </h2>
-      <div className="grid md:grid-cols-3 gap-5">
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+        <Link to={createPageUrl('TonightHub')}>
+          <Card className="bg-gradient-to-br from-emerald-900/30 to-teal-900/10 border border-emerald-500/40 p-6 card-glow hover:border-emerald-400/70 transition-all group h-full">
+            <div className="bg-emerald-600/20 p-4 rounded-xl w-fit mb-4"><Rocket className="w-7 h-7 text-emerald-400" /></div>
+            <h3 className="text-lg font-bold text-white mb-1 group-hover:text-emerald-300 transition-colors">Tonight?</h3>
+            <p className="text-slate-400 text-sm">Top ranked sky events for tonight with viability scores and a one-tap shoot plan.</p>
+            <p className="text-emerald-400 text-sm mt-3 flex items-center gap-1 font-medium">Decide now <ChevronRight className="w-4 h-4" /></p>
+          </Card>
+        </Link>
         <Link to={createPageUrl('PlannerTool')}>
           <Card className="bg-slate-900/60 border-slate-800 p-6 card-glow hover:border-purple-500/40 transition-all group h-full">
             <div className="bg-purple-600/20 p-4 rounded-xl w-fit mb-4"><MapPin className="w-7 h-7 text-purple-400" /></div>
