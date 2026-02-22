@@ -1,32 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --cosmic-bg: #03020d;
-  --cosmic-purple-glow: rgba(109, 40, 217, 0.22);
-  --cosmic-blue-glow: rgba(37, 99, 235, 0.16);
-  --cosmic-mid-glow: rgba(76, 29, 149, 0.08);
-  --cosmic-violet-glow: rgba(139, 92, 246, 0.1);
+  /* Uncharted.net brand colors */
+  --uc-red: #cc0000;
+  --uc-red-hover: #e60000;
+  --uc-dark: #111111;
+  --uc-card: #1a1a1a;
+  --uc-border: rgba(255,255,255,0.08);
+  --uc-text: #f0f0f0;
+  --uc-muted: #a0a0a0;
+
+  /* Cosmic palette (kept for space aesthetics) */
+  --cosmic-bg: #0a0a0f;
+  --cosmic-purple-glow: rgba(180, 20, 20, 0.12);
+  --cosmic-blue-glow: rgba(100, 20, 20, 0.10);
+  --cosmic-mid-glow: rgba(60, 10, 10, 0.08);
+  --cosmic-violet-glow: rgba(204, 0, 0, 0.06);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --cosmic-bg: #03020d;
-    --cosmic-purple-glow: rgba(109, 40, 217, 0.22);
-    --cosmic-blue-glow: rgba(37, 99, 235, 0.16);
-    --cosmic-mid-glow: rgba(76, 29, 149, 0.08);
-    --cosmic-violet-glow: rgba(139, 92, 246, 0.1);
+    --cosmic-bg: #0a0a0f;
+    --cosmic-purple-glow: rgba(180, 20, 20, 0.12);
+    --cosmic-blue-glow: rgba(100, 20, 20, 0.10);
+    --cosmic-mid-glow: rgba(60, 10, 10, 0.08);
+    --cosmic-violet-glow: rgba(204, 0, 0, 0.06);
   }
 }
 
 @media (prefers-color-scheme: light) {
   :root {
-    --cosmic-bg: #0d0a1e;
-    --cosmic-purple-glow: rgba(109, 40, 217, 0.3);
-    --cosmic-blue-glow: rgba(37, 99, 235, 0.22);
-    --cosmic-mid-glow: rgba(76, 29, 149, 0.12);
-    --cosmic-violet-glow: rgba(139, 92, 246, 0.15);
+    --cosmic-bg: #0d0d12;
+    --cosmic-purple-glow: rgba(180, 20, 20, 0.16);
+    --cosmic-blue-glow: rgba(100, 20, 20, 0.12);
+    --cosmic-mid-glow: rgba(60, 10, 10, 0.10);
+    --cosmic-violet-glow: rgba(204, 0, 0, 0.08);
   }
 }
 
@@ -36,9 +48,15 @@
   }
   body {
     background-color: var(--cosmic-bg);
-    color: #e2e8f0;
+    color: var(--uc-text);
+    font-family: 'Montserrat', sans-serif;
     min-height: 100vh;
     overscroll-behavior: none;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.01em;
   }
 }
 
