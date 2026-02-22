@@ -14,46 +14,91 @@
 }
 
 .cosmic-bg {
-  background-color: #020817;
+  background-color: #03020d;
   background-image:
-    radial-gradient(ellipse at 15% 20%, rgba(139, 92, 246, 0.18) 0%, transparent 50%),
-    radial-gradient(ellipse at 85% 80%, rgba(59, 130, 246, 0.12) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 110%, rgba(109, 40, 217, 0.1) 0%, transparent 50%);
+    radial-gradient(ellipse at 10% 15%, rgba(109, 40, 217, 0.22) 0%, transparent 45%),
+    radial-gradient(ellipse at 90% 85%, rgba(37, 99, 235, 0.16) 0%, transparent 45%),
+    radial-gradient(ellipse at 55% 50%, rgba(76, 29, 149, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 75% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 35%);
   background-attachment: fixed;
 }
 
+/* Subtle star field */
+.cosmic-bg::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 10% 25%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 30% 60%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 50% 10%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 70% 80%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 85% 40%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 20% 90%, rgba(255,255,255,0.2) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 65% 55%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 42% 42%, rgba(255,255,255,0.3) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+  animation: twinkle 6s ease-in-out infinite alternate;
+}
+
+@keyframes twinkle {
+  from { opacity: 0.5; }
+  to { opacity: 1; }
+}
+
 .gradient-text {
-  background: linear-gradient(135deg, #a78bfa 0%, #60a5fa 100%);
+  background: linear-gradient(135deg, #c084fc 0%, #818cf8 50%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-gold {
+  background: linear-gradient(135deg, #fbbf24 0%, #f97316 50%, #e879f9 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .card-glow:hover {
-  box-shadow: 0 0 30px rgba(139, 92, 246, 0.15);
+  box-shadow: 0 0 40px rgba(139, 92, 246, 0.2), 0 0 80px rgba(59, 130, 246, 0.08);
   transition: box-shadow 0.3s ease;
 }
 
+.card-glow-gold:hover {
+  box-shadow: 0 0 40px rgba(251, 191, 36, 0.15);
+}
+
 @keyframes pulse-glow {
-  0%, 100% { opacity: 0.6; }
+  0%, 100% { opacity: 0.5; }
   50% { opacity: 1; }
 }
 
 .star-pulse {
-  animation: pulse-glow 3s ease-in-out infinite;
+  animation: pulse-glow 2.5s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+.float-anim {
+  animation: float 5s ease-in-out infinite;
+}
+
+/* Nebula glow blobs */
+.nebula-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
 }
 
 /* Scrollbar styling */
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: #0f172a;
-}
-::-webkit-scrollbar-thumb {
-  background: #334155;
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #7c3aed;
-}
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #03020d; }
+::-webkit-scrollbar-thumb { background: #4c1d95; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #7c3aed; }

@@ -4,7 +4,7 @@ import { createPageUrl } from '@/utils';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import {
-  Camera,
+  Telescope,
   Home,
   MapPin,
   Calendar,
@@ -16,15 +16,16 @@ import {
   X,
   Star,
   Sparkles,
-  ChevronRight
+  ChevronRight,
+  Rocket
 } from 'lucide-react';
 
 const navItems = [
-  { icon: Home, label: 'Dashboard', page: 'Dashboard' },
-  { icon: MapPin, label: 'Planner', page: 'PlannerTool' },
-  { icon: Calendar, label: 'Events', page: 'EventsCalendar' },
-  { icon: Users, label: 'Gallery', page: 'CommunityGallery' },
-  { icon: User, label: 'Profile', page: 'Profile' },
+  { icon: Home, label: 'Mission Control', page: 'Dashboard' },
+  { icon: MapPin, label: 'Sky Planner', page: 'PlannerTool' },
+  { icon: Calendar, label: 'Cosmic Events', page: 'EventsCalendar' },
+  { icon: Users, label: 'Explorer Gallery', page: 'CommunityGallery' },
+  { icon: User, label: 'My Profile', page: 'Profile' },
 ];
 
 export default function Layout({ children, currentPageName }) {
