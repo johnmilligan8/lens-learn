@@ -177,7 +177,7 @@ export default function Dashboard() {
                 )}
                 <div className="flex items-start justify-between mb-4">
                   <IconComp className={`w-10 h-10 ${ICON_COLOR[modColor]}`} />
-                  <ChevronRight className="w-4 h-4 text-slate-500" />
+                  {isSubscribed ? <ChevronRight className="w-4 h-4 text-slate-500" /> : <Lock className="w-4 h-4 text-slate-500" />}
                 </div>
                 <h3 className="text-lg font-bold text-white mb-2">{mod.title}</h3>
                 <p className="text-slate-400 text-sm mb-4 line-clamp-2">{mod.description}</p>
