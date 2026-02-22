@@ -843,7 +843,15 @@ export default function PlannerTool() {
               <ExposureCalculator gear={gear} results={results} date={date} />
 
               {/* Foreground Composition Guide */}
-              <ForegroundCompositionGuide location={location} date={date} gear={gear} />
+              {results && (
+                <ForegroundCompositionGuide 
+                  location={location} 
+                  date={date} 
+                  gear={gear}
+                  lat={results.coords?.lat}
+                  lon={results.coords?.lon}
+                />
+              )}
 
               {/* Historical Success Data */}
               <HistoricalSuccessData location={location} userEmail={user?.email} />
