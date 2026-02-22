@@ -74,6 +74,24 @@ export default function Layout({ children, currentPageName }) {
     'EventsCalendar', 'FreeCourse', 'InstructorDashboard', 'PaymentGate', 'Onboarding'];
   const isChildScreen = !rootPages.includes(currentPageName);
 
+  // Track last visited path per tab
+  const tabHistory = React.useRef({});
+  const tabRoots = ['Dashboard', 'TonightHub', 'PlannerTool', 'CommunityGallery', 'Profile'];
+
+  // On every location change, update the tab history for the current root tab
+  useEffect(() => {
+    const matchedTab = tabRoots.find(tab => {
+      const tabUrl = createPageUrl(tab);
+      return location.pathname === tabUrl || location.pathname.startsWith(tabUrl + '?') || location.pathname.startsWith(tabUrl + '/');
+    });
+    // If current page is a child, associate it with the closest tab root
+    if (!matchedTab) {
+      // find which tab "owns" this child via currentPageName heuristic — skip
+    } else {
+      tabHistory.current[matchedTab] = location.pathname + location.search;
+    }
+  }, [location]);
+
   const allNavItems = user?.role === 'admin'
     ? [...navItems, { icon: Settings, label: 'Instructor Hub', page: 'InstructorDashboard' }]
     : navItems;
