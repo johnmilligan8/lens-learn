@@ -171,11 +171,11 @@ export default function Layout({ children, currentPageName }) {
         <div className="p-4 border-t border-slate-800/60">
           {!isSubscribed && (
             <Link to={createPageUrl('PaymentGate')}>
-              <div className="mb-3 p-3 rounded-xl bg-gradient-to-r from-purple-900/50 to-indigo-900/50 border border-purple-500/40 hover:border-purple-400/60 transition-colors">
-                <p className="text-xs text-purple-200 font-semibold">🚀 Begin Your Expedition</p>
-                <p className="text-xs text-purple-400/70 mt-0.5">Unlock the full galaxy</p>
-              </div>
-            </Link>
+                <div className="mb-3 p-3 rounded-xl bg-gradient-to-r from-red-900/40 to-red-800/20 border border-red-600/40 hover:border-red-500/60 transition-colors">
+                  <p className="text-xs text-red-200 font-semibold">🚀 Begin Your Expedition</p>
+                  <p className="text-xs text-red-400/70 mt-0.5">Unlock the full galaxy</p>
+                </div>
+              </Link>
           )}
           <div className="flex items-center gap-3 px-2 py-2">
             <div className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
