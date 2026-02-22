@@ -6,12 +6,12 @@ import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import {
-  Camera, Settings, Eye, MapPin, Palette, Sparkles,
+  Telescope, Settings, Eye, MapPin, Palette, Sparkles,
   ChevronRight, Trophy, Clock, TrendingUp, BookOpen,
-  Star, Telescope
+  Star, Rocket, Camera, Zap
 } from 'lucide-react';
 
-const MODULE_ICONS = { Camera, Settings, Eye, MapPin, Palette, Sparkles };
+const MODULE_ICONS = { Telescope, Settings, Eye, MapPin, Palette, Sparkles };
 const COLOR_MAP = {
   purple: 'from-purple-600/20 to-purple-900/10 border-purple-500/30 hover:border-purple-400/60',
   blue:   'from-blue-600/20 to-blue-900/10 border-blue-500/30 hover:border-blue-400/60',
