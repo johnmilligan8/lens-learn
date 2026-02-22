@@ -22,7 +22,8 @@ import {
 
 const navItems = [
   { icon: Home, label: 'Mission Control', page: 'Dashboard' },
-  { icon: MapPin, label: 'Sky Planner', page: 'PlannerTool' },
+  { icon: Star, label: 'Free Starter Course', page: 'FreeCourse', freeTag: true },
+  { icon: MapPin, label: 'Sky Planner', page: 'PlannerTool', paidOnly: true },
   { icon: Calendar, label: 'Cosmic Events', page: 'EventsCalendar' },
   { icon: Users, label: 'Explorer Gallery', page: 'CommunityGallery' },
   { icon: User, label: 'My Profile', page: 'Profile' },
