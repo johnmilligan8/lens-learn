@@ -683,7 +683,16 @@ export default function PlannerTool() {
                   <h3 className="text-white font-semibold mb-3 flex items-center gap-2 text-sm">
                     <Star className="w-4 h-4 text-purple-400" /> Interactive Sky Map
                   </h3>
-                  <SkyCanvas gcData={results.gcData} lat={results.coords?.lat} lon={results.coords?.lon} dateStr={date} />
+                  <SkyCanvas
+                    gcData={results.gcData}
+                    lat={results.coords?.lat}
+                    lon={results.coords?.lon}
+                    dateStr={date}
+                    onSetEphemerisTarget={(name) => {
+                      setEphemerisTarget(name);
+                      setTimeout(() => ephemerisRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+                    }}
+                  />
                 </Card>
 
                 {/* Moon */}
