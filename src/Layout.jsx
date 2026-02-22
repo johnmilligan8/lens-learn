@@ -249,7 +249,7 @@ export default function Layout({ children, currentPageName }) {
               <item.icon className="w-5 h-5 flex-shrink-0" />
               <span className="text-[10px] font-medium leading-none">{item.label}</span>
               {locked && <Sparkles className="w-2 h-2 text-yellow-500 absolute top-1 right-3" />}
-              {active && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 rounded-full bg-purple-400" />}
+              {active && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 rounded-full bg-red-500" />}
             </Link>
           );
         })}
