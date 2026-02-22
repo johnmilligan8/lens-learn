@@ -10,6 +10,7 @@ import {
   ChevronRight, Trophy, Clock, TrendingUp, BookOpen,
   Star, Rocket, Camera, Zap, Lock
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 
 const MODULE_ICONS = { Telescope, Settings, Eye, MapPin, Palette, Sparkles };
