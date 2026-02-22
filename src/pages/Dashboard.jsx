@@ -92,11 +92,6 @@ export default function Dashboard() {
       <div className="max-w-7xl mx-auto px-4 py-8 relative">
       {/* Hero Header */}
       <div className="relative mb-12 overflow-hidden rounded-2xl border border-purple-500/20 bg-gradient-to-br from-[#0d0520] via-[#060318] to-[#020212] p-8 md:p-12">
-        {/* Nebula blobs */}
-        <div className="nebula-blob w-96 h-96 bg-purple-700/25 -top-20 -left-20" />
-        <div className="nebula-blob w-64 h-64 bg-blue-700/20 top-10 right-0" />
-        <div className="nebula-blob w-48 h-48 bg-indigo-600/20 bottom-0 left-1/3" />
-
         <div className="relative z-10">
           <div className="inline-flex items-center gap-2 bg-purple-900/40 border border-purple-500/30 rounded-full px-3 py-1 mb-5">
             <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
