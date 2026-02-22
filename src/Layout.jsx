@@ -232,7 +232,7 @@ export default function Layout({ children, currentPageName }) {
       </nav>
 
       {/* Main Content */}
-      <main className="flex-1 md:overflow-auto overflow-hidden">
+      <main className="flex-1 md:overflow-auto overflow-y-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
         <div className="md:hidden" style={{ height: 'calc(3.5rem + env(safe-area-inset-top))' }} />
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
