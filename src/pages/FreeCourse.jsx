@@ -17,7 +17,7 @@ const FREE_LESSONS = [
     title: 'Welcome to the Galaxy',
     type: 'video',
     duration: '8 min',
-    description: 'What astrophotography is, why Utah's dark skies are world-class, and your first steps.',
+    description: "What astrophotography is, why Utah's dark skies are world-class, and your first steps.",
     video_url: 'https://www.youtube.com/embed/7gD9OFJCYCc',
     completed: false,
   },
