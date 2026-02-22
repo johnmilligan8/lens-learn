@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Search, Filter, Star, Radio, Zap, Eye, Compass, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import catalog from '@/lib/celestialCatalog.json';
+import { catalog } from '@/functions/celestialCatalog';
 
 const typeIcons = {
   'binary': <Zap className="w-4 h-4" />,
