@@ -2,6 +2,9 @@ import React, { useState, useEffect, useCallback } from 'react';
 import PullToRefresh from '../components/ui/PullToRefresh';
 import SkyCanvas from '../components/planner/SkyCanvas';
 import EphemerisLookup from '../components/planner/EphemerisLookup';
+import GearSetup from '../components/planner/GearSetup';
+import BestShotSuggestions from '../components/planner/BestShotSuggestions';
+import HistoricalWeatherAnalysis from '../components/planner/HistoricalWeatherAnalysis';
 import LocationPicker from '../components/onboarding/LocationPicker';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -340,6 +343,7 @@ function HourlyChart({ gcData }) {
 
 export default function PlannerTool() {
   const [isSubscribed, setIsSubscribed] = useState(null);
+  const [user, setUser] = useState(null);
   const [location, setLocation] = useState('');
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [coords, setCoords] = useState(null);
@@ -352,6 +356,8 @@ export default function PlannerTool() {
   const [weatherLoading, setWeatherLoading] = useState(false);
   const [weatherError, setWeatherError] = useState(null);
   const [ephemerisTarget, setEphemerisTarget] = useState(null);
+  const [gear, setGear] = useState(null);
+  const [gearLoading, setGearLoading] = useState(false);
   const ephemerisRef = React.useRef(null);
 
   useEffect(() => {
@@ -359,9 +365,16 @@ export default function PlannerTool() {
       const isAuth = await base44.auth.isAuthenticated();
       if (!isAuth) { setIsSubscribed(false); return; }
       const me = await base44.auth.me();
-      if (me.role === 'admin') { setIsSubscribed(true); return; }
-      const subs = await base44.entities.Subscription.filter({ user_email: me.email, status: 'active' }, '-created_date', 1);
-      setIsSubscribed(subs.length > 0);
+      setUser(me);
+      if (me.role === 'admin') { setIsSubscribed(true); } else {
+        const subs = await base44.entities.Subscription.filter({ user_email: me.email, status: 'active' }, '-created_date', 1);
+        setIsSubscribed(subs.length > 0);
+      }
+      // Load user's gear profile
+      const gearProfiles = await base44.entities.GearProfile.filter({ user_email: me.email }, '-created_date', 1);
+      if (gearProfiles.length > 0) {
+        setGear(gearProfiles[0]);
+      }
     };
     check();
   }, []);
@@ -510,6 +523,21 @@ export default function PlannerTool() {
     setAiLoading(false);
   };
 
+  const handleGearUpdate = async (gearData) => {
+    setGearLoading(true);
+    if (gear && gear.id) {
+      await base44.entities.GearProfile.update(gear.id, { ...gearData });
+      setGear({ ...gear, ...gearData });
+    } else {
+      const newGear = await base44.entities.GearProfile.create({
+        user_email: user.email,
+        ...gearData
+      });
+      setGear(newGear);
+    }
+    setGearLoading(false);
+  };
+
   const visConfig = {
     excellent: { color: 'from-emerald-900/40 to-emerald-950/20 border-emerald-500/40', badge: 'bg-emerald-600', text: 'Excellent', icon: '🌟' },
     good:      { color: 'from-blue-900/40 to-blue-950/20 border-blue-500/40', badge: 'bg-blue-600', text: 'Good', icon: '✅' },
@@ -575,7 +603,10 @@ export default function PlannerTool() {
 
       <div className="grid lg:grid-cols-5 gap-6">
         {/* ── Left: Inputs ── */}
-        <div className="lg:col-span-2 space-y-5">
+         <div className="lg:col-span-2 space-y-5">
+          {/* Gear Setup */}
+          <GearSetup userEmail={user?.email} onGearUpdate={handleGearUpdate} loading={gearLoading} />
+
           <Card className="bg-slate-900/60 border-slate-800 p-6">
             <h2 className="text-lg font-bold text-white mb-5 flex items-center gap-2">
               <Navigation className="w-4 h-4 text-purple-400" /> Shoot Details
@@ -726,6 +757,9 @@ export default function PlannerTool() {
                 </Card>
               </div>
 
+              {/* Best Shot Suggestions */}
+              <BestShotSuggestions gear={gear} results={results} weather={weather} date={date} />
+
               {/* Weather */}
               <WeatherCard
                 weather={weather}
@@ -734,6 +768,9 @@ export default function PlannerTool() {
                 onFetch={() => fetchWeather(results.coords?.lat, results.coords?.lon, date)}
                 hasResults={!!results}
               />
+
+              {/* Historical Weather Analysis */}
+              <HistoricalWeatherAnalysis location={location} results={results} />
 
               {/* Hourly Altitude Chart */}
               <Card className="bg-slate-900/60 border-slate-800 p-5">
