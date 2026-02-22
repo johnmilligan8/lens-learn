@@ -181,8 +181,16 @@ export default function Layout({ children, currentPageName }) {
       </div>
 
       {/* Mobile Bottom Tab Bar */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-slate-900/95 backdrop-blur-md border-t border-slate-800/60 flex items-stretch select-none"
-        style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+      <nav
+        className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-slate-900/95 backdrop-blur-md border-t border-slate-800/60 flex items-start select-none"
+        style={{
+          paddingBottom: 'env(safe-area-inset-bottom)',
+          paddingLeft: 'env(safe-area-inset-left)',
+          paddingRight: 'env(safe-area-inset-right)',
+          WebkitUserSelect: 'none',
+          userSelect: 'none',
+        }}
+      >
         {[
           { icon: Home, label: 'Home', page: 'Dashboard' },
           { icon: Rocket, label: 'Tonight', page: 'TonightHub' },
@@ -196,11 +204,14 @@ export default function Layout({ children, currentPageName }) {
             <Link
               key={item.page}
               to={locked ? createPageUrl('PaymentGate') : createPageUrl(item.page)}
-              className={`flex-1 flex flex-col items-center justify-center py-2 gap-0.5 transition-colors ${active ? 'text-purple-400' : 'text-slate-500'}`}
+              draggable={false}
+              className={`flex-1 flex flex-col items-center justify-center pt-2 pb-1 gap-1 transition-colors relative ${active ? 'text-purple-400' : 'text-slate-500'}`}
+              style={{ WebkitTapHighlightColor: 'transparent', minHeight: 52 }}
             >
-              <item.icon className="w-5 h-5" />
+              <item.icon className="w-5 h-5 flex-shrink-0" />
               <span className="text-[10px] font-medium leading-none">{item.label}</span>
-              {locked && <Sparkles className="w-2 h-2 text-yellow-500 absolute" />}
+              {locked && <Sparkles className="w-2 h-2 text-yellow-500 absolute top-1 right-3" />}
+              {active && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 rounded-full bg-purple-400" />}
             </Link>
           );
         })}
