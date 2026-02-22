@@ -583,16 +583,15 @@ export default function PlannerTool() {
             <div className="space-y-4">
               <div>
                 <Label className="text-slate-300 mb-2 block text-sm">Location</Label>
-                <div className="flex gap-2">
-                  <Input
-                    placeholder="e.g. Moab, Utah"
-                    value={location}
-                    onChange={e => { setLocation(e.target.value); setCoords(null); }}
-                    className="bg-slate-800 border-slate-700 text-white flex-1"
-                    onKeyDown={e => e.key === 'Enter' && calculate()}
-                  />
-                </div>
-                {coords && <p className="text-xs text-emerald-400 mt-1">📍 {coords.lat.toFixed(3)}°, {coords.lon.toFixed(3)}°</p>}
+                <LocationPicker
+                  value={{ location, lat: coords?.lat, lon: coords?.lon }}
+                  onChange={({ location: loc, lat, lon }) => {
+                    setLocation(loc || '');
+                    if (lat && lon) setCoords({ lat, lon, name: loc });
+                    else setCoords(null);
+                  }}
+                />
+                {coords && <p className="text-xs text-emerald-400 mt-1">📍 {coords.lat.toFixed(4)}°, {coords.lon.toFixed(4)}°</p>}
               </div>
               <div>
                 <Label className="text-slate-300 mb-2 block text-sm">Date</Label>
