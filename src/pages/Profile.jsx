@@ -188,6 +188,51 @@ export default function Profile() {
         </div>
       </div>
 
+      {/* Home Location */}
+      <Card className="bg-slate-900/60 border-slate-800 p-6 mb-6">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-white font-semibold flex items-center gap-2">
+            <MapPin className="w-5 h-5 text-red-400" /> Home Base Location
+          </h3>
+          {!editingLocation && (
+            <Button variant="outline" size="sm" className="border-slate-700 text-slate-400" onClick={() => setEditingLocation(true)}>
+              <Edit2 className="w-3 h-3 mr-1" /> Edit
+            </Button>
+          )}
+        </div>
+        {editingLocation ? (
+          <div className="space-y-3">
+            <LocationPicker
+              value={locationName}
+              lat={locationLat}
+              lon={locationLon}
+              onChange={({ name, lat, lon }) => { setLocationName(name); setLocationLat(lat ?? null); setLocationLon(lon ?? null); }}
+            />
+            <div className="flex gap-2 pt-1">
+              <Button size="sm" className="bg-red-600 hover:bg-red-700 text-white" onClick={saveLocation}>
+                <Check className="w-3 h-3 mr-1" /> Save Location
+              </Button>
+              <Button size="sm" variant="outline" className="border-slate-700 text-slate-400" onClick={() => setEditingLocation(false)}>
+                <X className="w-3 h-3 mr-1" /> Cancel
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <div>
+            {locationName ? (
+              <div>
+                <p className="text-white font-medium">{locationName}</p>
+                {locationLat && locationLon && (
+                  <p className="text-xs text-slate-500 font-mono mt-0.5">{locationLat.toFixed(5)}, {locationLon.toFixed(5)}</p>
+                )}
+              </div>
+            ) : (
+              <p className="text-slate-500 text-sm">No home base set. Click Edit to add one.</p>
+            )}
+          </div>
+        )}
+      </Card>
+
       {/* Danger Zone */}
       <Card className="bg-red-950/20 border border-red-900/40 p-6 mb-6">
         <h3 className="text-red-400 font-semibold mb-1 flex items-center gap-2">
