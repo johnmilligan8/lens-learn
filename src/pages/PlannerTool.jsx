@@ -13,6 +13,7 @@ import VisibleSkyNow from '../components/sky/VisibleSkyNow';
 import PostShootLogger from '../components/shoot/PostShootLogger';
 import ShootAnalytics from '../components/shoot/ShootAnalytics';
 import AuroraVisibilityCorrelation from '../components/aurora/AuroraVisibilityCorrelation';
+import StackingTechniquesGuide from '../components/planner/StackingTechniquesGuide';
 import PostProcessingGuide from '../components/planner/PostProcessingGuide';
 import GearChecklist from '../components/planner/GearChecklist';
 import ClientEmailGenerator from '../components/planner/ClientEmailGenerator';
@@ -866,6 +867,9 @@ export default function PlannerTool() {
                   overrideDate={new Date(date + 'T22:00:00Z')}
                 />
               )}
+
+              {/* Advanced Stacking Techniques */}
+              <StackingTechniquesGuide />
 
               {/* Aurora Visibility Forecast (correlated with location) */}
               {results && (
