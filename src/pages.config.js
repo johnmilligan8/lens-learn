@@ -47,30 +47,30 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
-import Dashboard from './pages/Dashboard';
-import PaymentGate from './pages/PaymentGate';
-import ModuleView from './pages/ModuleView';
-import LessonView from './pages/LessonView';
-import PlannerTool from './pages/PlannerTool';
-import EventsCalendar from './pages/EventsCalendar';
 import CommunityGallery from './pages/CommunityGallery';
-import Profile from './pages/Profile';
-import InstructorDashboard from './pages/InstructorDashboard';
+import Dashboard from './pages/Dashboard';
+import EventsCalendar from './pages/EventsCalendar';
 import FreeCourse from './pages/FreeCourse';
+import InstructorDashboard from './pages/InstructorDashboard';
+import LessonView from './pages/LessonView';
+import ModuleView from './pages/ModuleView';
+import PaymentGate from './pages/PaymentGate';
+import PlannerTool from './pages/PlannerTool';
+import Profile from './pages/Profile';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
-    "Dashboard": Dashboard,
-    "PaymentGate": PaymentGate,
-    "ModuleView": ModuleView,
-    "LessonView": LessonView,
-    "PlannerTool": PlannerTool,
-    "EventsCalendar": EventsCalendar,
     "CommunityGallery": CommunityGallery,
-    "Profile": Profile,
-    "InstructorDashboard": InstructorDashboard,
+    "Dashboard": Dashboard,
+    "EventsCalendar": EventsCalendar,
     "FreeCourse": FreeCourse,
+    "InstructorDashboard": InstructorDashboard,
+    "LessonView": LessonView,
+    "ModuleView": ModuleView,
+    "PaymentGate": PaymentGate,
+    "PlannerTool": PlannerTool,
+    "Profile": Profile,
 }
 
 export const pagesConfig = {
