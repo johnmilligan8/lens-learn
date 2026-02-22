@@ -8,6 +8,7 @@ import HistoricalWeatherAnalysis from '../components/planner/HistoricalWeatherAn
 import ExposureCalculator from '../components/planner/ExposureCalculator';
 import ForegroundCompositionGuide from '../components/planner/ForegroundCompositionGuide';
 import HistoricalSuccessData from '../components/planner/HistoricalSuccessData';
+import AdvancedForecast from '../components/planner/AdvancedForecast';
 import GearChecklist from '../components/planner/GearChecklist';
 import ClientEmailGenerator from '../components/planner/ClientEmailGenerator';
 import ExpeditionManager from '../components/planner/ExpeditionManager';
@@ -581,6 +582,11 @@ export default function PlannerTool() {
     if (expeditionState.results) setResults(expeditionState.results);
   };
 
+  const handleSelectDateFromForecast = (selectedDate) => {
+    setDate(selectedDate);
+    setTimeout(() => calculate(), 100);
+  };
+
   // ── Paywall ──────────────────────────────────────────────────────────────
   if (isSubscribed === null) {
     return (
@@ -667,6 +673,16 @@ export default function PlannerTool() {
             <ClientEmailGenerator onSave={(clientInfo) => {
               // Save client info to active kit if needed
             }} />
+          )}
+
+          {/* 14-Day Forecast */}
+          {coords && (
+            <AdvancedForecast
+              lat={coords.lat}
+              lon={coords.lon}
+              location={coords.name || location}
+              onSelectDate={handleSelectDateFromForecast}
+            />
           )}
 
           {/* Gear Setup */}
