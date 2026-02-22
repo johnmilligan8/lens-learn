@@ -66,11 +66,11 @@ export default function CommunityGallery() {
     const newLikedBy = liked
       ? (post.liked_by || []).filter(e => e !== user.email)
       : [...(post.liked_by || []), user.email];
-    const updated = await base44.entities.GalleryPost.update(post.id, {
-      likes: newLikedBy.length,
-      liked_by: newLikedBy,
-    });
-    setPosts(posts.map(p => p.id === post.id ? { ...p, ...updated } : p));
+    // Optimistic update
+    const optimistic = { ...post, likes: newLikedBy.length, liked_by: newLikedBy };
+    setPosts(prev => prev.map(p => p.id === post.id ? optimistic : p));
+    if (selectedPost?.id === post.id) setSelectedPost(optimistic);
+    base44.entities.GalleryPost.update(post.id, { likes: newLikedBy.length, liked_by: newLikedBy });
   };
 
   if (loading) return (

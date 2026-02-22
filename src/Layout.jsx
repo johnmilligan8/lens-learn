@@ -12,7 +12,6 @@ import {
   User,
   Settings,
   LogOut,
-  Menu,
   X,
   Star,
   Sparkles,
