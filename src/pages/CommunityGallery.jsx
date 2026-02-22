@@ -80,6 +80,7 @@ export default function CommunityGallery() {
   );
 
   return (
+    <PullToRefresh onRefresh={loadData}>
     <div className="max-w-7xl mx-auto px-4 py-8">
       {/* Header */}
       <div className="flex items-start justify-between gap-4 mb-8">
