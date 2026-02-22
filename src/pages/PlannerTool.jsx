@@ -6,6 +6,7 @@ import GearSetup from '../components/planner/GearSetup';
 import BestShotSuggestions from '../components/planner/BestShotSuggestions';
 import HistoricalWeatherAnalysis from '../components/planner/HistoricalWeatherAnalysis';
 import GearChecklist from '../components/planner/GearChecklist';
+import ClientEmailGenerator from '../components/planner/ClientEmailGenerator';
 import LocationPicker from '../components/onboarding/LocationPicker';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -613,7 +614,14 @@ export default function PlannerTool() {
         {/* ── Left: Inputs ── */}
          <div className="lg:col-span-2 space-y-5">
           {/* Expedition Kit Checklist */}
-          <GearChecklist userEmail={user?.email} shooterMode={shooterMode} />
+          <GearChecklist userEmail={user?.email} shooterMode={shooterMode} isPaid={isSubscribed} />
+
+          {/* Client Email Generator (Photographer mode + Paid) */}
+          {shooterMode === 'photographer' && isSubscribed && (
+            <ClientEmailGenerator onSave={(clientInfo) => {
+              // Save client info to active kit if needed
+            }} />
+          )}
 
           {/* Gear Setup */}
           <GearSetup userEmail={user?.email} onGearUpdate={handleGearUpdate} loading={gearLoading} />
