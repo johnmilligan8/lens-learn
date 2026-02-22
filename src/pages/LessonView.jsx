@@ -116,7 +116,7 @@ export default function LessonView() {
       {/* Content */}
       {lesson?.content && (
         <Card className="bg-slate-900/60 border-slate-800 p-8 mb-8">
-          <div className="prose prose-invert prose-purple max-w-none text-slate-300 [&_h2]:text-white [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:mt-8 [&_h2]:mb-4 [&_h3]:text-purple-300 [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:mt-6 [&_h3]:mb-3 [&_li]:mb-1 [&_strong]:text-white [&_p]:mb-4 [&_ul]:ml-6 [&_ul]:list-disc">
+          <div className="selectable-content prose prose-invert prose-purple max-w-none text-slate-300 [&_h2]:text-white [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:mt-8 [&_h2]:mb-4 [&_h3]:text-purple-300 [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:mt-6 [&_h3]:mb-3 [&_li]:mb-1 [&_strong]:text-white [&_p]:mb-4 [&_ul]:ml-6 [&_ul]:list-disc">
             <ReactMarkdown>{lesson.content}</ReactMarkdown>
           </div>
         </Card>
