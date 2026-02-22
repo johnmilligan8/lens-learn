@@ -66,7 +66,7 @@ export default function Layout({ children, currentPageName }) {
   }, [loading, user, isSubscribed, currentPageName]);
 
   const allNavItems = user?.role === 'admin'
-    ? [...navItems, { icon: Settings, label: 'Instructor', page: 'InstructorDashboard' }]
+    ? [...navItems, { icon: Settings, label: 'Instructor Hub', page: 'InstructorDashboard' }]
     : navItems;
 
   const handleLogout = () => {
@@ -77,8 +77,8 @@ export default function Layout({ children, currentPageName }) {
     return (
       <div className="min-h-screen cosmic-bg flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <Camera className="w-12 h-12 text-purple-400 star-pulse" />
-          <p className="text-slate-400 text-lg">Loading Uncharted.net...</p>
+          <Telescope className="w-12 h-12 text-purple-400 star-pulse" />
+          <p className="text-slate-400 text-lg tracking-widest uppercase text-sm">Initializing Galaxy...</p>
         </div>
       </div>
     );
@@ -107,15 +107,17 @@ export default function Layout({ children, currentPageName }) {
       {/* Sidebar — desktop */}
       <aside className="hidden md:flex flex-col w-64 bg-slate-900/60 backdrop-blur-md border-r border-slate-800/60 sticky top-0 h-screen">
         {/* Logo */}
-        <div className="p-6 border-b border-slate-800/60">
-          <Link to={createPageUrl('Dashboard')} className="flex items-center gap-2">
-            <div className="relative">
-              <Camera className="w-8 h-8 text-purple-400" />
-              <Sparkles className="w-4 h-4 text-blue-400 absolute -top-1 -right-1" />
+        <div className="p-6 border-b border-slate-800/40">
+          <Link to={createPageUrl('Dashboard')} className="flex items-center gap-3">
+            <div className="relative w-10 h-10 flex-shrink-0">
+              <div className="absolute inset-0 bg-purple-600/30 rounded-xl blur-md" />
+              <div className="relative bg-gradient-to-br from-purple-600 to-blue-700 rounded-xl w-10 h-10 flex items-center justify-center">
+                <Telescope className="w-5 h-5 text-white" />
+              </div>
             </div>
             <div>
-              <p className="font-bold text-white text-lg leading-none gradient-text">Uncharted</p>
-              <p className="text-slate-500 text-xs">.net</p>
+              <p className="font-black text-white text-base leading-none tracking-tight">UnchartedGalaxy</p>
+              <p className="text-purple-400/70 text-xs tracking-widest">by uncharted.net</p>
             </div>
           </Link>
         </div>
