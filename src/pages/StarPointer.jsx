@@ -17,9 +17,15 @@ export default function StarPointer() {
   const [searchQuery, setSearchQuery] = useState('');
   const [observations, setObservations] = useState([]);
 
+  // Galactic Core (Milky Way center)
+  const GALACTIC_CORE = { 
+    name: 'Galactic Core', ra: 266.42, dec: -28.94, mag: 99, type: 'nebula', 
+    color: '#FFD700', special: 'Milky Way Center - Best in summer (Sagittarius)' 
+  };
+
   // Bright stars and objects visible to naked eye
-  const CELESTIAL_OBJECTS = [
-    // Sun (never show)
+  const ALL_OBJECTS = [
+    // Brightest stars
     { name: 'Sirius', ra: 101.3, dec: -16.7, mag: -1.46, type: 'star', color: '#FFCCAA' },
     { name: 'Canopus', ra: 95.99, dec: -52.7, mag: -0.72, type: 'star', color: '#FFEEAA' },
     { name: 'Arcturus', ra: 213.9, dec: 19.2, mag: -0.05, type: 'star', color: '#FFAA77' },
@@ -29,29 +35,61 @@ export default function StarPointer() {
     { name: 'Betelgeuse', ra: 88.8, dec: 7.4, mag: 0.5, type: 'star', color: '#FF5500' },
     { name: 'Aldebaran', ra: 68.98, dec: 16.5, mag: 0.87, type: 'star', color: '#FFAA77' },
     { name: 'Polaris', ra: 37.95, dec: 89.3, mag: 2.0, type: 'star', color: '#FFFFFF', special: 'North Star' },
+    { name: 'Deneb', ra: 310.4, dec: 45.3, mag: 1.25, type: 'star', color: '#FFFFFF' },
+    { name: 'Altair', ra: 297.7, dec: 8.9, mag: 0.77, type: 'star', color: '#FFFFFF' },
+    { name: 'Antares', ra: 247.4, dec: -26.4, mag: 0.96, type: 'star', color: '#FF5500' },
+    { name: 'Spica', ra: 201.3, dec: -11.2, mag: 0.98, type: 'star', color: '#AADDFF' },
+    { name: 'Fomalhaut', ra: 344.4, dec: -29.6, mag: 1.17, type: 'star', color: '#FFFFFF' },
+    { name: 'Castor', ra: 114.6, dec: 31.9, mag: 1.57, type: 'star', color: '#FFFFFF' },
+    { name: 'Pollux', ra: 117.0, dec: 28.0, mag: 1.14, type: 'star', color: '#FFEEAA' },
+    { name: 'Mizar', ra: 200.98, dec: 54.92, mag: 2.23, type: 'star', color: '#FFFFFF' },
+    { name: 'Alkaid', ra: 206.6, dec: 49.3, mag: 1.85, type: 'star', color: '#AADDFF' },
     
     // Planets (vary by date but approximate)
     { name: 'Venus', ra: 0, dec: 0, mag: -4.0, type: 'planet', color: '#FFFFBB' },
     { name: 'Jupiter', ra: 0, dec: 0, mag: -2.0, type: 'planet', color: '#FFD580' },
     { name: 'Saturn', ra: 0, dec: 0, mag: 0.7, type: 'planet', color: '#FFCCAA' },
     { name: 'Mars', ra: 0, dec: 0, mag: 1.0, type: 'planet', color: '#FF6633' },
+    { name: 'Mercury', ra: 0, dec: 0, mag: 1.0, type: 'planet', color: '#CCCCAA' },
     
-    // Bright deep sky objects
+    // Deep sky objects - bright ones visible to naked eye
     { name: 'M31 (Andromeda)', ra: 10.7, dec: 41.3, mag: 3.4, type: 'galaxy', color: '#BBBBFF' },
     { name: 'M42 (Orion Nebula)', ra: 83.8, dec: -5.4, mag: 4.0, type: 'nebula', color: '#00FF99' },
     { name: 'M45 (Pleiades)', ra: 56.9, dec: 24.1, mag: 1.6, type: 'cluster', color: '#FFFFFF' },
+    { name: 'M44 (Beehive)', ra: 130.1, dec: 19.7, mag: 3.7, type: 'cluster', color: '#FFFFFF' },
+    
+    // Additional deep sky for paid users
     { name: 'M57 (Ring Nebula)', ra: 283.4, dec: 33.0, mag: 9.7, type: 'nebula', color: '#00FF99' },
+    { name: 'M13 (Hercules)', ra: 250.4, dec: 36.5, mag: 5.8, type: 'cluster', color: '#DDDDFF' },
+    { name: 'M51 (Whirlpool)', ra: 202.0, dec: 47.2, mag: 8.4, type: 'galaxy', color: '#BBBBFF' },
+    { name: 'M27 (Dumbbell)', ra: 299.9, dec: 22.7, mag: 7.5, type: 'nebula', color: '#00FF99' },
+    { name: 'M35 (Gemini)', ra: 101.9, dec: 24.3, mag: 5.1, type: 'cluster', color: '#FFFFFF' },
+    { name: 'M11 (Wild Duck)', ra: 283.8, dec: -6.3, mag: 6.3, type: 'cluster', color: '#FFFFFF' },
+    { name: 'M5', ra: 229.6, dec: 2.1, mag: 5.6, type: 'cluster', color: '#DDDDFF' },
+    { name: 'M3', ra: 205.5, dec: 28.4, mag: 6.2, type: 'cluster', color: '#DDDDFF' },
+    { name: 'M15', ra: 322.5, dec: 12.2, mag: 6.2, type: 'cluster', color: '#DDDDFF' },
   ];
 
-  const CONSTELLATIONS = [
+  // Key constellations visible to all users + North Star
+  const KEY_CONSTELLATIONS = [
     { name: 'Orion', ra: 85, dec: -5, guide: 'Winter hunter with bright belt' },
     { name: 'Ursa Major', ra: 150, dec: 60, guide: 'Big Dipper/Great Bear' },
-    { name: 'Ursa Minor', ra: 37, dec: 80, guide: 'Little Bear with Polaris' },
-    { name: 'Cassiopeia', ra: 10, dec: 70, guide: 'W-shaped constellation' },
+    { name: 'Ursa Minor', ra: 37, dec: 80, guide: 'Little Bear - find Polaris here' },
+    { name: 'Cassiopeia', ra: 10, dec: 70, guide: 'W-shaped - near North Star' },
+    { name: 'Sagittarius', ra: 270, dec: -25, guide: 'Galactic center direction' },
+  ];
+
+  // All constellations for paid users
+  const ALL_CONSTELLATIONS = [
+    ...KEY_CONSTELLATIONS,
     { name: 'Cygnus', ra: 305, dec: 45, guide: 'Northern Cross - Milky Way' },
     { name: 'Lyra', ra: 285, dec: 40, guide: 'Contains Vega, Milky Way' },
-    { name: 'Sagittarius', ra: 270, dec: -25, guide: 'Galactic center direction' },
     { name: 'Scorpius', ra: 245, dec: -30, guide: 'Contains red star Antares' },
+    { name: 'Aquila', ra: 298, dec: 1, guide: 'Summer triangle, contains Altair' },
+    { name: 'Draco', ra: 262, dec: 70, guide: 'Dragon - circles North Star' },
+    { name: 'Pegasus', ra: 350, dec: 30, guide: 'Great Square - autumn' },
+    { name: 'Leo', ra: 155, dec: 15, guide: 'Spring constellation, bright' },
+    { name: 'Virgo', ra: 186, dec: 5, guide: 'Largest zodiac constellation' },
   ];
 
   useEffect(() => {
@@ -102,9 +140,15 @@ export default function StarPointer() {
 
   // Convert RA/Dec to Alt/Az based on device orientation
   const getVisibleObjects = () => {
-    const { alpha, beta } = orientation;
-    // Simplified: objects within ~60° of center are visible
-    return CELESTIAL_OBJECTS.filter(() => Math.random() < 0.4).slice(0, isSubscribed ? 20 : 8);
+    // Combine all objects with Galactic Core
+    const objects = [GALACTIC_CORE, ...ALL_OBJECTS];
+    // Free: 8 key objects + Galactic Core; Paid: all objects
+    const count = isSubscribed ? objects.length : 9;
+    return objects.slice(0, count);
+  };
+
+  const getVisibleConstellations = () => {
+    return isSubscribed ? ALL_CONSTELLATIONS : KEY_CONSTELLATIONS;
   };
 
   const handleSaveObservation = async (obj) => {
@@ -261,9 +305,11 @@ export default function StarPointer() {
 
           {/* Featured Constellations */}
           <Card className="bg-slate-900/60 border-slate-800 p-4">
-            <h3 className="font-bold text-white mb-3 text-sm">Bright Constellations</h3>
+            <h3 className="font-bold text-white mb-3 text-sm flex items-center gap-2">
+              🌟 {isSubscribed ? 'All Constellations' : 'Key Constellations'}
+            </h3>
             <div className="space-y-2">
-              {CONSTELLATIONS.map(c => (
+              {getVisibleConstellations().map(c => (
                 <div key={c.name} className="text-xs">
                   <p className="text-purple-300 font-medium">{c.name}</p>
                   <p className="text-slate-500">{c.guide}</p>
