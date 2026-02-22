@@ -117,9 +117,51 @@ export default function Dashboard() {
         </div>
       </div>
 
+      {/* Free tier upsell banner */}
+      {!isSubscribed && (
+        <div className="mb-8 p-5 rounded-2xl border border-yellow-500/30 bg-gradient-to-r from-yellow-900/20 via-orange-900/10 to-purple-900/20 flex flex-col md:flex-row items-start md:items-center gap-4">
+          <div className="flex-1">
+            <p className="text-yellow-300 font-black text-lg leading-snug">🚀 Ready to master the stars?</p>
+            <p className="text-slate-400 text-sm mt-1">Upgrade for full courses, pro planning tools, instructor feedback & custom alerts — just <strong className="text-white">$19/month</strong>.</p>
+          </div>
+          <Link to={createPageUrl('PaymentGate')}>
+            <Button className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-bold whitespace-nowrap">
+              Begin Your Expedition →
+            </Button>
+          </Link>
+        </div>
+      )}
+
+      {/* Free Course Card for non-subscribers */}
+      {!isSubscribed && (
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-white mb-5 flex items-center gap-2">
+            <Star className="w-6 h-6 text-emerald-400" /> Start Here — Free
+          </h2>
+          <Link to={createPageUrl('FreeCourse')}>
+            <Card className="bg-gradient-to-br from-emerald-900/30 to-teal-900/10 border border-emerald-500/40 hover:border-emerald-400/70 p-6 card-glow transition-all group">
+              <div className="flex items-start gap-5">
+                <div className="bg-emerald-600/20 p-4 rounded-xl flex-shrink-0">
+                  <Telescope className="w-8 h-8 text-emerald-400" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Badge className="bg-emerald-600 text-white text-xs">FREE</Badge>
+                    <span className="text-slate-400 text-xs">5 lessons · No card required</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-1 group-hover:text-emerald-300 transition-colors">Your First Night Sky Adventure</h3>
+                  <p className="text-slate-400 text-sm mb-3">Gear basics, magic camera settings, simple composition, and your first shoot checklist — everything to capture the Milky Way tonight.</p>
+                  <p className="text-emerald-400 text-sm font-medium flex items-center gap-1">Start free course <ChevronRight className="w-4 h-4" /></p>
+                </div>
+              </div>
+            </Card>
+          </Link>
+        </div>
+      )}
+
       {/* Course Modules heading */}
       <h2 className="text-2xl font-bold text-white mb-5 flex items-center gap-2">
-        <Rocket className="w-6 h-6 text-purple-400" /> Your Expeditions
+        <Rocket className="w-6 h-6 text-purple-400" /> {isSubscribed ? 'Your Expeditions' : 'Full Course — Unlock to Access'}
       </h2>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
         {modules.map((mod) => {
