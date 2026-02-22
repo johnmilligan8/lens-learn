@@ -5,10 +5,10 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { format, parseISO, isPast, isThisMonth, isAfter, isBefore } from 'date-fns';
+import { format, parseISO, isPast, isThisMonth, isWithinInterval, startOfMonth, endOfMonth } from 'date-fns';
 import {
   Calendar, Star, Sparkles, Moon, Zap, Eye,
-  AlertCircle, ChevronDown, ChevronUp
+  AlertCircle, ChevronDown, ChevronUp, Filter, X
 } from 'lucide-react';
 
 const EVENT_ICONS = {
@@ -51,11 +51,12 @@ const SAMPLE_EVENTS = [
 ];
 
 export default function EventsCalendar() {
-   const [events, setEvents] = useState([]);
-   const [expanded, setExpanded] = useState(null);
-   const [filter, setFilter] = useState('all');
-   const [dateRange, setDateRange] = useState({ start: '', end: '' });
-   const [loading, setLoading] = useState(true);
+  const [events, setEvents] = useState([]);
+  const [expanded, setExpanded] = useState(null);
+  const [typeFilter, setTypeFilter] = useState('all');
+  const [dateRangeStart, setDateRangeStart] = useState('');
+  const [dateRangeEnd, setDateRangeEnd] = useState('');
+  const [loading, setLoading] = useState(true);
 
   const loadData = useCallback(async () => {
     const res = await base44.entities.AstronomyEvent.list('date', 100);
@@ -65,21 +66,29 @@ export default function EventsCalendar() {
 
   useEffect(() => { loadData(); }, []);
 
-  const filters = ['all', 'meteor_shower', 'eclipse', 'supermoon', 'aurora', 'comet'];
-
-  // Apply type and date range filters
-  let filtered = filter === 'all' ? events : events.filter(e => e.type === filter);
-  if (dateRange.start || dateRange.end) {
-    filtered = filtered.filter(e => {
+  const types = ['all', 'meteor_shower', 'eclipse', 'supermoon', 'aurora', 'comet', 'conjunction'];
+  
+  // Apply filters
+  const filtered = events.filter(e => {
+    if (typeFilter !== 'all' && e.type !== typeFilter) return false;
+    if (dateRangeStart || dateRangeEnd) {
       const eventDate = new Date(e.date);
-      if (dateRange.start && isBefore(eventDate, new Date(dateRange.start))) return false;
-      if (dateRange.end && isAfter(eventDate, new Date(dateRange.end + 'T23:59:59'))) return false;
-      return true;
-    });
-  }
+      if (dateRangeStart && eventDate < new Date(dateRangeStart)) return false;
+      if (dateRangeEnd && eventDate > new Date(dateRangeEnd)) return false;
+    }
+    return true;
+  });
 
   const upcoming = filtered.filter(e => !isPast(new Date(e.date + 'T23:59:59'))).sort((a, b) => new Date(a.date) - new Date(b.date));
   const past = filtered.filter(e => isPast(new Date(e.date + 'T23:59:59'))).sort((a, b) => new Date(b.date) - new Date(a.date));
+  
+  const hasActiveFilters = typeFilter !== 'all' || dateRangeStart || dateRangeEnd;
+  
+  const clearFilters = () => {
+    setTypeFilter('all');
+    setDateRangeStart('');
+    setDateRangeEnd('');
+  };
 
   if (loading) return (
     <div className="flex items-center justify-center min-h-screen">
