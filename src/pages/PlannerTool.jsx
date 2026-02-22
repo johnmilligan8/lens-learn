@@ -136,6 +136,163 @@ const BORTLE_COLORS = {
   red: 'bg-red-500/20 border-red-500/50 text-red-300',
 };
 
+// ─── Weather Helpers ─────────────────────────────────────────────────────────
+
+function cloudCoverRating(pct) {
+  if (pct <= 10) return { label: 'Clear', color: 'text-emerald-400', bg: 'bg-emerald-500' };
+  if (pct <= 30) return { label: 'Mostly Clear', color: 'text-blue-400', bg: 'bg-blue-500' };
+  if (pct <= 60) return { label: 'Partly Cloudy', color: 'text-yellow-400', bg: 'bg-yellow-500' };
+  if (pct <= 80) return { label: 'Mostly Cloudy', color: 'text-orange-400', bg: 'bg-orange-500' };
+  return { label: 'Overcast', color: 'text-red-400', bg: 'bg-red-500' };
+}
+
+function astroWeatherScore(cloud, precip, wind) {
+  // 0–10 score for astrophotography suitability
+  let score = 10;
+  score -= Math.round(cloud / 15);
+  if (precip > 0.1) score -= 4;
+  if (precip > 0.5) score -= 3;
+  if (wind > 30) score -= 2;
+  else if (wind > 20) score -= 1;
+  return Math.max(0, score);
+}
+
+// ─── WeatherCard Component ───────────────────────────────────────────────────
+
+function WeatherCard({ weather, weatherLoading, weatherError, onFetch, hasResults }) {
+  if (!hasResults) return null;
+
+  if (weatherLoading) return (
+    <Card className="bg-slate-900/60 border-slate-800 p-5">
+      <div className="flex items-center gap-3">
+        <Loader2 className="w-5 h-5 text-blue-400 animate-spin" />
+        <span className="text-slate-400 text-sm">Fetching weather forecast...</span>
+      </div>
+    </Card>
+  );
+
+  if (weatherError) return (
+    <Card className="bg-slate-900/60 border-slate-800 p-5">
+      <div className="flex items-start justify-between">
+        <div>
+          <h3 className="text-white font-semibold text-sm flex items-center gap-2 mb-1">
+            <Cloud className="w-4 h-4 text-blue-400" /> Weather Forecast
+          </h3>
+          <p className="text-slate-500 text-xs">{weatherError}</p>
+        </div>
+        <Button size="sm" variant="outline" onClick={onFetch} className="border-blue-500/40 text-blue-300 hover:bg-blue-900/20 text-xs">
+          Retry
+        </Button>
+      </div>
+    </Card>
+  );
+
+  if (!weather) return (
+    <Card className="bg-slate-900/60 border-slate-800 p-5">
+      <div className="flex items-center justify-between">
+        <h3 className="text-white font-semibold text-sm flex items-center gap-2">
+          <Cloud className="w-4 h-4 text-blue-400" /> Weather Forecast
+        </h3>
+        <Button size="sm" variant="outline" onClick={onFetch} className="border-blue-500/40 text-blue-300 hover:bg-blue-900/20 text-xs">
+          Load Weather
+        </Button>
+      </div>
+      <p className="text-slate-500 text-xs mt-2">Cloud cover, precipitation & wind for your shoot date.</p>
+    </Card>
+  );
+
+  const score = astroWeatherScore(weather.current.cloud, weather.current.precip_mm, weather.current.wind_kph);
+  const scoreColor = score >= 8 ? 'text-emerald-400' : score >= 5 ? 'text-yellow-400' : 'text-red-400';
+  const scoreBg = score >= 8 ? 'bg-emerald-900/30 border-emerald-500/30' : score >= 5 ? 'bg-yellow-900/30 border-yellow-500/30' : 'bg-red-900/30 border-red-500/30';
+  const cloud = cloudCoverRating(weather.current.cloud);
+
+  return (
+    <Card className="bg-slate-900/60 border-slate-800 p-5">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-white font-semibold text-sm flex items-center gap-2">
+          <Cloud className="w-4 h-4 text-blue-400" /> Weather Conditions
+        </h3>
+        <div className={`px-3 py-1 rounded-full border text-xs font-bold ${scoreBg} ${scoreColor}`}>
+          Astro Score: {score}/10
+        </div>
+      </div>
+
+      {/* Current / target day summary */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+        <div className="bg-slate-800/60 rounded-xl p-3 text-center">
+          <Cloud className="w-5 h-5 mx-auto mb-1 text-slate-400" />
+          <p className="text-slate-400 text-xs">Cloud Cover</p>
+          <p className={`font-bold text-sm ${cloud.color}`}>{weather.current.cloud}%</p>
+          <p className={`text-xs ${cloud.color}`}>{cloud.label}</p>
+        </div>
+        <div className="bg-slate-800/60 rounded-xl p-3 text-center">
+          <Droplets className="w-5 h-5 mx-auto mb-1 text-blue-400" />
+          <p className="text-slate-400 text-xs">Precipitation</p>
+          <p className="text-white font-bold text-sm">{weather.current.precip_mm} mm</p>
+          <p className="text-slate-500 text-xs">{weather.current.precip_mm < 0.1 ? 'None' : weather.current.precip_mm < 1 ? 'Trace' : 'Rain likely'}</p>
+        </div>
+        <div className="bg-slate-800/60 rounded-xl p-3 text-center">
+          <Wind className="w-5 h-5 mx-auto mb-1 text-cyan-400" />
+          <p className="text-slate-400 text-xs">Wind Speed</p>
+          <p className="text-white font-bold text-sm">{weather.current.wind_kph} km/h</p>
+          <p className="text-slate-500 text-xs">{weather.current.wind_dir}</p>
+        </div>
+        <div className="bg-slate-800/60 rounded-xl p-3 text-center">
+          <Thermometer className="w-5 h-5 mx-auto mb-1 text-orange-400" />
+          <p className="text-slate-400 text-xs">Temperature</p>
+          <p className="text-white font-bold text-sm">{weather.current.temp_c}°C</p>
+          <p className="text-slate-500 text-xs">Feels {weather.current.feelslike_c}°C</p>
+        </div>
+      </div>
+
+      {/* Cloud cover bar */}
+      <div className="mb-4">
+        <div className="flex justify-between text-xs text-slate-400 mb-1">
+          <span>Cloud cover</span><span>{weather.current.cloud}%</span>
+        </div>
+        <div className="w-full bg-slate-800 rounded-full h-2">
+          <div className={`h-2 rounded-full transition-all ${cloud.bg}`} style={{ width: `${weather.current.cloud}%` }} />
+        </div>
+      </div>
+
+      {/* 3-day forecast */}
+      {weather.forecast && weather.forecast.length > 0 && (
+        <div>
+          <p className="text-slate-400 text-xs uppercase tracking-widest mb-3">3-Day Forecast</p>
+          <div className="grid grid-cols-3 gap-2">
+            {weather.forecast.map((day, i) => {
+              const dc = cloudCoverRating(day.avgcloud ?? day.cloud ?? 50);
+              return (
+                <div key={i} className={`rounded-lg p-2.5 border text-center ${i === 0 ? 'border-blue-500/40 bg-blue-900/20' : 'border-slate-700/50 bg-slate-800/40'}`}>
+                  <p className="text-slate-400 text-xs mb-1">{i === 0 ? 'Today' : i === 1 ? 'Tomorrow' : day.date}</p>
+                  <p className="text-lg mb-0.5">{day.cloud <= 20 ? '☀️' : day.cloud <= 60 ? '⛅' : day.precip_mm > 0.5 ? '🌧️' : '☁️'}</p>
+                  <p className={`text-xs font-semibold ${dc.color}`}>{day.cloud ?? day.avgcloud}%</p>
+                  <p className="text-slate-500 text-xs">{day.precip_mm > 0 ? `${day.precip_mm}mm` : 'No rain'}</p>
+                  <p className="text-slate-400 text-xs">{day.wind_kph} km/h</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Astro advice */}
+      <div className={`mt-4 rounded-lg p-3 border ${scoreBg}`}>
+        <p className={`text-xs font-semibold ${scoreColor} mb-0.5`}>
+          {score >= 8 ? '✅ Great night for astrophotography!' : score >= 5 ? '⚠️ Partially suitable — check cloud breaks' : '❌ Poor conditions — clouds or precipitation expected'}
+        </p>
+        <p className="text-slate-400 text-xs">
+          {weather.current.cloud <= 30 ? 'Low cloud cover — excellent sky transparency.' : weather.current.cloud <= 60 ? 'Patchy clouds — shooting windows may be limited.' : 'Heavy cloud cover — consider rescheduling.'}
+          {weather.current.precip_mm > 0.1 ? ' Precipitation detected — moisture can also affect lens clarity.' : ''}
+          {weather.current.wind_kph > 25 ? ` Wind at ${weather.current.wind_kph} km/h may cause vibration — use mirror lock-up.` : ''}
+        </p>
+      </div>
+
+      <p className="text-slate-600 text-xs mt-3">Data via Open-Meteo (free, no key required)</p>
+    </Card>
+  );
+}
+
 // ─── Sky Canvas ──────────────────────────────────────────────────────────────
 
 function SkyCanvas({ gcData, lat, lon, dateStr }) {
