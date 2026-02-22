@@ -116,8 +116,10 @@ export default function Layout({ children, currentPageName }) {
               </div>
             </div>
             <div>
-              <p className="font-black text-white text-base leading-none tracking-tight">UnchartedGalaxy</p>
-              <p className="text-purple-400/70 text-xs tracking-widest">by uncharted.net</p>
+              <p className="font-black text-white text-base leading-none tracking-tight">
+                UNCHARTED<sup className="text-[10px] font-normal align-super">®</sup>
+              </p>
+              <p className="text-purple-400/70 text-xs tracking-widest">www.uncharted.net</p>
             </div>
           </Link>
         </div>
