@@ -158,143 +158,46 @@ export default function MilkyWayARPreview({ lat, lon, dateStr, isSubscribed, sho
     const ctx = canvas.getContext('2d');
     const w = canvas.width = video.videoWidth;
     const h = canvas.height = video.videoHeight;
-    const centerX = w / 2;
-    const centerY = h / 2;
-    const horizon = h * 0.7; // Approximate horizon line
 
-    // Clear with semi-transparent overlay
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+    // Clear canvas
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
     ctx.fillRect(0, 0, w, h);
 
-    const { alt, az, moonIllum } = getMWPosition();
+    const { alt, az, alt_moon, az_moon, moonIllum, moonDist, visibility } = getMWPosition();
     const heading = (compassHeadingRef.current + manualAzOffset) % 360;
 
-    // Calculate deviation with manual calibration offset
-    const azDev = ((az - heading + 360) % 360);
-    const visualAz = azDev > 180 ? azDev - 360 : azDev;
-
-    // Enhanced visibility check
-    let visibility = 'Poor';
+    // Determine visibility color
     let visColor = '#ff4444';
-    let visIcon = '❌';
-    if (alt < -2) {
-      visibility = 'Below Horizon';
-      visColor = '#666666';
-      visIcon = '↓';
-    } else if (alt > 30) {
-      visibility = moonIllum > 60 ? 'Marginal' : 'Excellent';
-      visColor = moonIllum > 60 ? '#ffaa44' : '#44ff44';
-      visIcon = moonIllum > 60 ? '⚠️' : '✅';
-    } else if (alt > 15) {
-      visibility = moonIllum > 60 ? 'Marginal' : 'Good';
-      visColor = moonIllum > 60 ? '#ffaa44' : '#44ff44';
-      visIcon = moonIllum > 60 ? '⚠️' : '👍';
-    } else if (alt > 0) {
-      visibility = moonIllum > 70 ? 'Poor' : 'Marginal';
-      visColor = moonIllum > 70 ? '#ff4444' : '#ffaa44';
-      visIcon = '⚠️';
-    }
+    if (visibility > 60) visColor = '#44ff44';
+    else if (visibility > 30) visColor = '#ffaa44';
 
-    // Draw horizon line
-    ctx.strokeStyle = 'rgba(150, 150, 150, 0.2)';
-    ctx.lineWidth = 1;
-    ctx.setLineDash([5, 5]);
-    ctx.beginPath();
-    ctx.moveTo(0, horizon);
-    ctx.lineTo(w, horizon);
-    ctx.stroke();
-    ctx.setLineDash([]);
+    const visRating = `${visibility}%`;
 
-    // Draw center crosshair
-    ctx.strokeStyle = 'rgba(200, 200, 200, 0.4)';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(centerX - 20, centerY);
-    ctx.lineTo(centerX + 20, centerY);
-    ctx.moveTo(centerX, centerY - 20);
-    ctx.lineTo(centerX, centerY + 20);
-    ctx.stroke();
+    // Landscape detection (horizon line)
+    const { horizonY, drawLandscapeOverlay, isObstructed } = useLandscapeDetector(videoRef, canvasRef);
 
-    // Draw Milky Way arc (dotted)
-    if (alt > -5) {
-      const pxPerDegree = w / 90; // ~90° horizontal FoV
-      const xPos = centerX + (visualAz * pxPerDegree);
-      const arcRadius = 50;
-      
-      // Dotted arc (Milky Way arch)
-      ctx.strokeStyle = visColor;
-      ctx.lineWidth = 3;
-      ctx.globalAlpha = 0.85;
-      ctx.setLineDash([8, 6]);
-      ctx.beginPath();
-      ctx.arc(xPos, horizon - (alt * pxPerDegree * 0.5), arcRadius, Math.PI * 0.2, Math.PI * 0.8);
-      ctx.stroke();
-      ctx.setLineDash([]);
-
-      // Galactic core dot & label
-      ctx.fillStyle = visColor;
-      ctx.globalAlpha = 1;
-      ctx.beginPath();
-      ctx.arc(xPos, horizon - (alt * pxPerDegree * 0.5), 10, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Core label
-      ctx.fillStyle = visColor;
-      ctx.font = 'bold 18px Montserrat';
-      ctx.textAlign = 'left';
-      ctx.fillText('Sgr A*', xPos + 20, horizon - (alt * pxPerDegree * 0.5) - 5);
-
-      // Horizon crossing points (simplified)
-      ctx.font = '10px Montserrat';
-      ctx.fillStyle = 'rgba(200, 200, 200, 0.6)';
-      ctx.textAlign = 'center';
-      ctx.fillText('↑ Core rises here', xPos - 60, horizon + 20);
-    }
-
-    // Top-left: Info panel
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.65)';
-    ctx.fillRect(10, 10, 220, 140);
-    ctx.textAlign = 'left';
-
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 13px Montserrat';
-    ctx.fillText(`📍 Heading: ${Math.round(heading)}°`, 20, 32);
-
-    ctx.fillStyle = '#aaaaaa';
-    ctx.font = '11px Montserrat';
-    ctx.fillText(`Core Alt: ${alt}° | Az: ${Math.round(az)}°`, 20, 50);
-    ctx.fillText(`Visibility: ${visibility} ${visIcon}`, 20, 68);
-    ctx.fillText(`Moon: ${moonIllum}% illuminated`, 20, 86);
-    ctx.fillText(`Date: ${selectedDate} ${selectedTime} UTC`, 20, 104);
-    ctx.fillText(`Manual offset: ${manualAzOffset}°`, 20, 122);
-
-    // Bottom: Instructions & Mode tip
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-    ctx.fillRect(0, h - 90, w, 90);
-    ctx.textAlign = 'center';
-    
-    ctx.fillStyle = '#cccccc';
-    ctx.font = '12px Montserrat';
-    ctx.fillText('Drag left/right to calibrate · Point at known landmark to align', w / 2, h - 65);
-
-    if (shooterMode === 'photographer') {
-      ctx.fillStyle = '#ffd700';
-      ctx.font = 'bold 11px Montserrat';
-      ctx.fillText('📷 Composition tip: Place core in lower third with foreground element', w / 2, h - 45);
-    } else if (shooterMode === 'smartphone') {
-      ctx.fillStyle = '#87ceeb';
-      ctx.font = 'bold 11px Montserrat';
-      ctx.fillText('📱 Use Night Mode on your phone for sharp preview in darkness', w / 2, h - 45);
-    } else {
-      ctx.fillStyle = '#9966ff';
-      ctx.font = 'bold 11px Montserrat';
-      ctx.fillText('👁 Milky Way visible at core position – allow 20 min dark-adapt', w / 2, h - 45);
-    }
-
-    if (moonIllum > 60) {
-      ctx.fillStyle = '#ffaa44';
-      ctx.fillText(`⚠️ Moon at ${moonIllum}% – may wash out fainter Milky Way details`, w / 2, h - 20);
-    }
+    // Use enhanced AR overlay renderer
+    PrecisionAROverlay({
+      ctx,
+      w,
+      h,
+      coreAlt: alt,
+      coreAz: az,
+      heading,
+      manualOffset: manualAzOffset,
+      visColor,
+      visRating,
+      moonAlt: alt_moon,
+      moonAz: az_moon,
+      moonIllum,
+      moonDist,
+      shooterMode,
+      selectedDate,
+      selectedTime,
+      horizonY,
+      drawLandscapeOverlay,
+      isObstructed
+    });
 
     animationIdRef.current = requestAnimationFrame(drawOverlay);
   };
