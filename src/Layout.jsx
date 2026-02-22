@@ -243,7 +243,7 @@ export default function Layout({ children, currentPageName }) {
               to={locked ? createPageUrl('PaymentGate') : (tabHistory.current[item.page] || createPageUrl(item.page))}
               draggable={false}
               onClick={active ? (e) => { e.preventDefault(); navigate(tabHistory.current[item.page] || createPageUrl(item.page)); } : undefined}
-                  className={`flex-1 flex flex-col items-center justify-center pt-2 pb-1 gap-1 transition-colors relative ${active ? 'text-purple-400' : 'text-slate-500'}`}
+                  className={`flex-1 flex flex-col items-center justify-center pt-2 pb-1 gap-1 transition-colors relative ${active ? 'text-red-400' : 'text-slate-500'}`}
                   style={{ WebkitTapHighlightColor: 'transparent', minHeight: 52 }}
                 >
               <item.icon className="w-5 h-5 flex-shrink-0" />
