@@ -48,12 +48,12 @@
 }
 
 .cosmic-bg {
-  background-color: #03020d;
+  background-color: var(--cosmic-bg);
   background-image:
-    radial-gradient(ellipse at 10% 15%, rgba(109, 40, 217, 0.22) 0%, transparent 45%),
-    radial-gradient(ellipse at 90% 85%, rgba(37, 99, 235, 0.16) 0%, transparent 45%),
-    radial-gradient(ellipse at 55% 50%, rgba(76, 29, 149, 0.08) 0%, transparent 60%),
-    radial-gradient(ellipse at 75% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 35%);
+    radial-gradient(ellipse at 10% 15%, var(--cosmic-purple-glow) 0%, transparent 45%),
+    radial-gradient(ellipse at 90% 85%, var(--cosmic-blue-glow) 0%, transparent 45%),
+    radial-gradient(ellipse at 55% 50%, var(--cosmic-mid-glow) 0%, transparent 60%),
+    radial-gradient(ellipse at 75% 20%, var(--cosmic-violet-glow) 0%, transparent 35%);
   background-attachment: fixed;
 }
 
