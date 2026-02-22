@@ -9,6 +9,7 @@ import ExposureCalculator from '../components/planner/ExposureCalculator';
 import ForegroundCompositionGuide from '../components/planner/ForegroundCompositionGuide';
 import HistoricalSuccessData from '../components/planner/HistoricalSuccessData';
 import AdvancedForecast from '../components/planner/AdvancedForecast';
+import PostProcessingGuide from '../components/planner/PostProcessingGuide';
 import GearChecklist from '../components/planner/GearChecklist';
 import ClientEmailGenerator from '../components/planner/ClientEmailGenerator';
 import ExpeditionManager from '../components/planner/ExpeditionManager';
@@ -849,6 +850,9 @@ export default function PlannerTool() {
 
               {/* Best Shot Suggestions */}
               <BestShotSuggestions gear={gear} results={results} weather={weather} date={date} />
+
+              {/* Post-Processing Guide */}
+              <PostProcessingGuide gear={gear} shooterMode={shooterMode} />
 
               {/* Weather */}
               <WeatherCard
