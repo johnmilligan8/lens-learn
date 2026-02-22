@@ -86,7 +86,7 @@ export default function Profile() {
 
   if (loading) return (
     <div className="flex items-center justify-center min-h-screen">
-      <Camera className="w-10 h-10 text-purple-400 star-pulse" />
+      <Camera className="w-10 h-10 text-red-400 star-pulse" />
     </div>
   );
 
