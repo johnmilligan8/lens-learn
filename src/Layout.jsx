@@ -215,12 +215,13 @@ export default function Layout({ children, currentPageName }) {
           const active = currentPageName === item.page;
           return (
             <Link
-              key={item.page}
-              to={locked ? createPageUrl('PaymentGate') : createPageUrl(item.page)}
-              draggable={false}
-              className={`flex-1 flex flex-col items-center justify-center pt-2 pb-1 gap-1 transition-colors relative ${active ? 'text-purple-400' : 'text-slate-500'}`}
-              style={{ WebkitTapHighlightColor: 'transparent', minHeight: 52 }}
-            >
+                  key={item.page}
+                  to={locked ? createPageUrl('PaymentGate') : createPageUrl(item.page)}
+                  draggable={false}
+                  onClick={active ? (e) => { e.preventDefault(); navigate(createPageUrl(item.page)); } : undefined}
+                  className={`flex-1 flex flex-col items-center justify-center pt-2 pb-1 gap-1 transition-colors relative ${active ? 'text-purple-400' : 'text-slate-500'}`}
+                  style={{ WebkitTapHighlightColor: 'transparent', minHeight: 52 }}
+                >
               <item.icon className="w-5 h-5 flex-shrink-0" />
               <span className="text-[10px] font-medium leading-none">{item.label}</span>
               {locked && <Sparkles className="w-2 h-2 text-yellow-500 absolute top-1 right-3" />}
