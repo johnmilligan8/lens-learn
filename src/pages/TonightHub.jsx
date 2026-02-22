@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import EventRankCard from '../components/tonight/EventRankCard';
 import GuidedPlanModal from '../components/tonight/GuidedPlanModal';
+import AuroraTeaserCard from '../components/events/AuroraTeaserCard';
 import { Loader2, Lock, MapPin, ChevronRight, Telescope, Zap } from 'lucide-react';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -152,22 +153,25 @@ export default function TonightHub() {
   const [coords, setCoords] = useState(null);
   const [geoLoading, setGeoLoading] = useState(false);
   const [commitEvent, setCommitEvent] = useState(null);
+  const [auroraForecast, setAuroraForecast] = useState(null);
   const today = new Date().toISOString().split('T')[0];
 
   useEffect(() => {
     const init = async () => {
       const me = await base44.auth.me();
       setUser(me);
-      const [subs, profiles, events] = await Promise.all([
+      const [subs, profiles, events, auroras] = await Promise.all([
         me.role === 'admin' ? Promise.resolve([{ status: 'active' }]) : base44.entities.Subscription.filter({ user_email: me.email, status: 'active' }, '-created_date', 1),
         base44.entities.UserProfile.filter({ user_email: me.email }, '-created_date', 1),
         base44.entities.AstronomyEvent.filter({}, 'date', 50),
+        base44.entities.AuroraForecast.filter({ date: today }, '-created_date', 1).catch(() => []),
       ]);
       setIsSubscribed(subs.length > 0);
       const prof = profiles[0] ?? null;
       setProfile(prof);
       if (prof?.home_location) setLocation(prof.home_location);
       setAstroEvents(events);
+      if (auroras.length > 0) setAuroraForecast(auroras[0]);
       setLoading(false);
     };
     init();
@@ -273,6 +277,18 @@ export default function TonightHub() {
               Full calendar <ChevronRight className="w-3 h-3" />
             </Link>
           </div>
+
+          {/* Aurora Teaser */}
+          {auroraForecast && auroraForecast.kp_index > 2 && (
+            <Link to={createPageUrl('EventsCalendar')}>
+              <AuroraTeaserCard
+                kpIndex={auroraForecast.kp_min || auroraForecast.kp_index}
+                cloudCover={auroraForecast.cloud_cover_percent || 50}
+                visibilityRating={auroraForecast.visibility_rating}
+                onClick={() => {}}
+              />
+            </Link>
+          )}
 
           {events.map((event, i) => (
             <EventRankCard
