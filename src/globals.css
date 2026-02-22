@@ -2,15 +2,49 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --cosmic-bg: #03020d;
+  --cosmic-purple-glow: rgba(109, 40, 217, 0.22);
+  --cosmic-blue-glow: rgba(37, 99, 235, 0.16);
+  --cosmic-mid-glow: rgba(76, 29, 149, 0.08);
+  --cosmic-violet-glow: rgba(139, 92, 246, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --cosmic-bg: #03020d;
+    --cosmic-purple-glow: rgba(109, 40, 217, 0.22);
+    --cosmic-blue-glow: rgba(37, 99, 235, 0.16);
+    --cosmic-mid-glow: rgba(76, 29, 149, 0.08);
+    --cosmic-violet-glow: rgba(139, 92, 246, 0.1);
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --cosmic-bg: #0d0a1e;
+    --cosmic-purple-glow: rgba(109, 40, 217, 0.3);
+    --cosmic-blue-glow: rgba(37, 99, 235, 0.22);
+    --cosmic-mid-glow: rgba(76, 29, 149, 0.12);
+    --cosmic-violet-glow: rgba(139, 92, 246, 0.15);
+  }
+}
+
 @layer base {
   * {
     @apply border-border;
   }
   body {
-    background-color: #020817;
+    background-color: var(--cosmic-bg);
     color: #e2e8f0;
     min-height: 100vh;
+    overscroll-behavior: none;
   }
+}
+
+.select-none {
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .cosmic-bg {
