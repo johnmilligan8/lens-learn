@@ -89,10 +89,10 @@ label, input, select, textarea {
 .cosmic-bg {
   background-color: var(--cosmic-bg);
   background-image:
-    radial-gradient(ellipse at 10% 15%, var(--cosmic-purple-glow) 0%, transparent 45%),
-    radial-gradient(ellipse at 90% 85%, var(--cosmic-blue-glow) 0%, transparent 45%),
-    radial-gradient(ellipse at 55% 50%, var(--cosmic-mid-glow) 0%, transparent 60%),
-    radial-gradient(ellipse at 75% 20%, var(--cosmic-violet-glow) 0%, transparent 35%);
+    radial-gradient(ellipse at 10% 15%, rgba(180,10,10,0.10) 0%, transparent 50%),
+    radial-gradient(ellipse at 90% 85%, rgba(80,10,10,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 55% 50%, rgba(40,5,5,0.06) 0%, transparent 65%),
+    radial-gradient(ellipse at 75% 20%, rgba(204,0,0,0.05) 0%, transparent 40%);
   background-attachment: fixed;
 }
 
