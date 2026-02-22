@@ -38,6 +38,7 @@ export default function Dashboard() {
   const [user, setUser] = useState(null);
   const [modules, setModules] = useState([]);
   const [progress, setProgress] = useState([]);
+  const [isSubscribed, setIsSubscribed] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
