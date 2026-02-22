@@ -10,7 +10,8 @@ import { createPageUrl } from '@/utils';
 import {
   MapPin, Moon, Eye, Clock, Star, Loader2,
   Navigation, Lock, ChevronRight, Telescope, Sun,
-  AlertTriangle, CheckCircle, TrendingUp
+  AlertTriangle, CheckCircle, TrendingUp, Cloud, Wind,
+  Droplets, Thermometer, CloudRain, CloudSnow, CloudOff
 } from 'lucide-react';
 
 // ─── Astronomy Math ─────────────────────────────────────────────────────────
