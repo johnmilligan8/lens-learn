@@ -166,33 +166,44 @@ export default function Layout({ children, currentPageName }) {
       </aside>
 
       {/* Mobile Top Bar */}
-      <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-800/60 h-16 flex items-center px-4 justify-between">
+      <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-800/60 flex items-center px-4 justify-between select-none"
+        style={{ height: 'calc(3.5rem + env(safe-area-inset-top))', paddingTop: 'env(safe-area-inset-top)' }}>
         <Link to={createPageUrl('Dashboard')} className="flex items-center gap-2">
           <div className="bg-gradient-to-br from-purple-600 to-blue-700 rounded-lg w-7 h-7 flex items-center justify-center">
             <Telescope className="w-4 h-4 text-white" />
           </div>
           <span className="font-black gradient-text text-lg tracking-tight">UnchartedGalaxy</span>
         </Link>
-        <Button variant="ghost" size="icon" className="text-slate-300" onClick={() => setMobileOpen(!mobileOpen)}>
-          {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        <Button variant="ghost" size="icon" className="text-slate-300" onClick={handleLogout}>
+          <LogOut className="w-5 h-5" />
         </Button>
       </div>
 
-      {/* Mobile Menu Overlay */}
-      {mobileOpen && (
-        <div className="md:hidden fixed inset-0 z-40 bg-slate-950/95 backdrop-blur-md pt-16">
-          <nav className="p-4 space-y-1">
-            {allNavItems.map(item => <NavLink key={item.page} item={item} />)}
-            <button
-              onClick={() => { handleLogout(); setMobileOpen(false); }}
-              className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-red-400 hover:bg-slate-800/60 w-full transition-colors"
+      {/* Mobile Bottom Tab Bar */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-slate-900/95 backdrop-blur-md border-t border-slate-800/60 flex items-stretch select-none"
+        style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+        {[
+          { icon: Home, label: 'Home', page: 'Dashboard' },
+          { icon: Rocket, label: 'Tonight', page: 'TonightHub' },
+          { icon: MapPin, label: 'Planner', page: 'PlannerTool', paidOnly: true },
+          { icon: Users, label: 'Gallery', page: 'CommunityGallery' },
+          { icon: User, label: 'Profile', page: 'Profile' },
+        ].map(item => {
+          const locked = item.paidOnly && !isSubscribed;
+          const active = currentPageName === item.page;
+          return (
+            <Link
+              key={item.page}
+              to={locked ? createPageUrl('PaymentGate') : createPageUrl(item.page)}
+              className={`flex-1 flex flex-col items-center justify-center py-2 gap-0.5 transition-colors ${active ? 'text-purple-400' : 'text-slate-500'}`}
             >
-              <LogOut className="w-5 h-5" />
-              <span>Logout</span>
-            </button>
-          </nav>
-        </div>
-      )}
+              <item.icon className="w-5 h-5" />
+              <span className="text-[10px] font-medium leading-none">{item.label}</span>
+              {locked && <Sparkles className="w-2 h-2 text-yellow-500 absolute" />}
+            </Link>
+          );
+        })}
+      </nav>
 
       {/* Main Content */}
       <main className="flex-1 md:overflow-auto">
