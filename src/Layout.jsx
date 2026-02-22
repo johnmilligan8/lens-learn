@@ -61,7 +61,7 @@ export default function Layout({ children, currentPageName }) {
   useEffect(() => {
     if (!loading && user) {
       // Free pages accessible to all authenticated users
-      const freePages = ['PaymentGate', 'Profile', 'Dashboard', 'EventsCalendar', 'CommunityGallery', 'FreeCourse'];
+      const freePages = ['PaymentGate', 'Profile', 'Dashboard', 'EventsCalendar', 'CommunityGallery', 'FreeCourse', 'Onboarding', 'TonightHub'];
       if (!isSubscribed && !freePages.includes(currentPageName)) {
         navigate(createPageUrl('Dashboard'));
       }
