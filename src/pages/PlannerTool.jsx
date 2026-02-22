@@ -294,16 +294,7 @@ function WeatherCard({ weather, weatherLoading, weatherError, onFetch, hasResult
   );
 }
 
-// ─── Sky Canvas (Interactive) ────────────────────────────────────────────────
-
-// All stars in the sky map for a given time: GC + bright fixed reference stars
-const REFERENCE_OBJECTS = [
-  { name: 'Sgr A* (GC)', ra: 266.4, dec: -29.0, color: '#fbbf24', size: 7, isPrimary: true },
-  { name: 'Scorpius (Antares)', ra: 247.4, dec: -26.4, color: '#f87171', size: 5 },
-  { name: 'Sagittarius (Kaus A)', ra: 276.0, dec: -25.4, color: '#c4b5fd', size: 4 },
-  { name: 'Scorpius (tail)', ra: 263.4, dec: -37.1, color: '#fca5a5', size: 3 },
-  { name: 'Ophiuchus (Rasalhague)', ra: 263.7, dec: 12.6, color: '#bfdbfe', size: 4 },
-];
+// ─── Sky Canvas is in components/planner/SkyCanvas.jsx ───────────────────────
 
 function computeObjectPos(ra, dec, lat, lon, dateStr, hourOffset) {
   const base = new Date(dateStr + 'T00:00:00Z');
