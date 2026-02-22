@@ -119,10 +119,10 @@ export default function Layout({ children, currentPageName }) {
         to={locked ? createPageUrl('PaymentGate') : createPageUrl(item.page)}
         onClick={() => setMobileOpen(false)}
         className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${
-          currentPageName === item.page
-            ? 'bg-purple-600/20 text-purple-300 border border-purple-500/30'
-            : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-        }`}
+            currentPageName === item.page
+              ? 'bg-red-600/20 text-red-400 border border-red-600/30'
+              : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
+          }`}
       >
         <item.icon className="w-5 h-5 flex-shrink-0" />
         <span className="font-medium">{item.label}</span>
