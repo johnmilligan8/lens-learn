@@ -724,6 +724,15 @@ export default function PlannerTool() {
                 <HourlyChart gcData={results.gcData} />
               </Card>
 
+              {/* Ephemeris Lookup */}
+              <Card className="bg-slate-900/60 border-slate-800 p-5">
+                <h3 className="text-white font-semibold mb-4 flex items-center gap-2 text-sm">
+                  <Star className="w-4 h-4 text-purple-400" /> Ephemeris Lookup
+                </h3>
+                <p className="text-slate-500 text-xs mb-4">Look up the altitude & azimuth of any celestial object for a specific date and time.</p>
+                <EphemerisLookup lat={results.coords?.lat} lon={results.coords?.lon} dateStr={date} />
+              </Card>
+
               {/* Bortle Scale */}
               <Card className={`border p-5 ${BORTLE_COLORS[results.bortleInfo.color]}`}>
                 <div className="flex items-start justify-between">
