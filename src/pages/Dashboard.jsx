@@ -170,8 +170,8 @@ export default function Dashboard() {
           const iconKeys = Object.keys(MODULE_ICONS);
           const IconComp = MODULE_ICONS[iconKeys[modules.indexOf(mod) % iconKeys.length]];
           return (
-            <Link key={mod.id} to={createPageUrl('ModuleView') + `?id=${mod.id}`}>
-              <Card className={`bg-gradient-to-br ${COLOR_MAP[modColor]} border p-6 card-glow hover:scale-[1.02] transition-all duration-200 relative overflow-hidden h-full`}>
+            <Link key={mod.id} to={isSubscribed ? createPageUrl('ModuleView') + `?id=${mod.id}` : createPageUrl('PaymentGate')}>
+              <Card className={`bg-gradient-to-br ${COLOR_MAP[modColor]} border p-6 card-glow hover:scale-[1.02] transition-all duration-200 relative overflow-hidden h-full ${!isSubscribed ? 'opacity-70' : ''}`}>
                 {mod.is_free_preview && (
                   <Badge className="absolute top-3 right-3 bg-emerald-600 text-white text-xs">FREE</Badge>
                 )}
