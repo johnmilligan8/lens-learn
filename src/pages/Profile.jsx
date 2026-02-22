@@ -33,14 +33,20 @@ export default function Profile() {
       const me = await base44.auth.me();
       setUser(me);
       setName(me.full_name || '');
-      const [subs, prog, myPhotos] = await Promise.all([
+      const [subs, prog, myPhotos, profiles] = await Promise.all([
         base44.entities.Subscription.filter({ user_email: me.email }, '-created_date', 1),
         base44.entities.LessonProgress.filter({ user_email: me.email, completed: true }, '-created_date', 200),
         base44.entities.GalleryPost.filter({ user_email: me.email }, '-created_date', 12),
+        base44.entities.UserProfile.filter({ user_email: me.email }, '-created_date', 1),
       ]);
       setSub(subs[0] || null);
       setProgress(prog);
       setPhotos(myPhotos);
+      const profile = profiles[0] || null;
+      setUserProfile(profile);
+      setLocationName(profile?.home_location || '');
+      setLocationLat(profile?.home_lat ?? null);
+      setLocationLon(profile?.home_lon ?? null);
       setLoading(false);
     };
     load();
