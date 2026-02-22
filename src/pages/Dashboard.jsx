@@ -88,6 +88,7 @@ export default function Dashboard() {
   }
 
   return (
+    <PullToRefresh onRefresh={loadData}>
     <div className="max-w-7xl mx-auto px-4 py-8 relative">
       {/* Hero Header */}
       <div className="relative mb-12 overflow-hidden rounded-2xl border border-purple-500/20 bg-gradient-to-br from-[#0d0520] via-[#060318] to-[#020212] p-8 md:p-12">
