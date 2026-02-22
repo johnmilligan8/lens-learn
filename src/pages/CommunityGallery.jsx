@@ -258,5 +258,6 @@ export default function CommunityGallery() {
         </Dialog>
       )}
     </div>
+    </PullToRefresh>
   );
 }
