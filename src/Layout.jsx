@@ -25,6 +25,7 @@ import {
 const navItems = [
   { icon: Home, label: 'Mission Control', page: 'Dashboard' },
   { icon: Rocket, label: 'Tonight?', page: 'TonightHub' },
+  { icon: Smartphone, label: 'Star Pointer', page: 'StarPointer' },
   { icon: Star, label: 'Free Starter Course', page: 'FreeCourse', freeTag: true },
   { icon: MapPin, label: 'Sky Planner', page: 'PlannerTool', paidOnly: true },
   { icon: Calendar, label: 'Cosmic Events', page: 'EventsCalendar' },
@@ -64,7 +65,7 @@ export default function Layout({ children, currentPageName }) {
   useEffect(() => {
     if (!loading && user) {
       // Free pages accessible to all authenticated users
-      const freePages = ['PaymentGate', 'Profile', 'Dashboard', 'EventsCalendar', 'CommunityGallery', 'FreeCourse', 'Onboarding', 'TonightHub'];
+      const freePages = ['PaymentGate', 'Profile', 'Dashboard', 'EventsCalendar', 'CommunityGallery', 'FreeCourse', 'Onboarding', 'TonightHub', 'StarPointer'];
       if (!isSubscribed && !freePages.includes(currentPageName)) {
         navigate(createPageUrl('Dashboard'));
       }
@@ -72,7 +73,7 @@ export default function Layout({ children, currentPageName }) {
   }, [loading, user, isSubscribed, currentPageName]);
 
   // Pages that are "root" tabs — all others are child screens
-  const rootPages = ['Dashboard', 'TonightHub', 'PlannerTool', 'CommunityGallery', 'Profile',
+  const rootPages = ['Dashboard', 'TonightHub', 'StarPointer', 'PlannerTool', 'CommunityGallery', 'Profile',
     'EventsCalendar', 'FreeCourse', 'InstructorDashboard', 'PaymentGate', 'Onboarding'];
   const isChildScreen = !rootPages.includes(currentPageName);
 
@@ -232,9 +233,9 @@ export default function Layout({ children, currentPageName }) {
         {[
           { icon: Home, label: 'Home', page: 'Dashboard' },
           { icon: Rocket, label: 'Tonight', page: 'TonightHub' },
+          { icon: Smartphone, label: 'Sky', page: 'StarPointer' },
           { icon: MapPin, label: 'Planner', page: 'PlannerTool', paidOnly: true },
           { icon: Users, label: 'Gallery', page: 'CommunityGallery' },
-          { icon: User, label: 'Profile', page: 'Profile' },
         ].map(item => {
           const locked = item.paidOnly && !isSubscribed;
           const active = currentPageName === item.page;
