@@ -562,6 +562,7 @@ export default function PlannerTool() {
   }
 
   // ── Main UI ──────────────────────────────────────────────────────────────
+  // (handleRefresh is declared above the paywall checks)
   return (
     <PullToRefresh onRefresh={handleRefresh}>
       <div className="max-w-6xl mx-auto px-4 py-8">
