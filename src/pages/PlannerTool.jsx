@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import SkyCanvas from '../components/planner/SkyCanvas';
+import EphemerisLookup from '../components/planner/EphemerisLookup';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
