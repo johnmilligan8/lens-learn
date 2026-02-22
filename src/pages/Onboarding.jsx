@@ -20,7 +20,7 @@ export default function Onboarding() {
     setSaving(true);
     const me = await base44.auth.me();
     const existing = await base44.entities.UserProfile.filter({ user_email: me.email }, '-created_date', 1);
-    const data = { user_email: me.email, shooter_mode: mode, home_location: homeLocation, onboarding_complete: true };
+    const data = { user_email: me.email, shooter_mode: mode, home_location: homeLocation, home_lat: homeLat, home_lon: homeLon, onboarding_complete: true };
     if (existing.length > 0) {
       await base44.entities.UserProfile.update(existing[0].id, data);
     } else {
