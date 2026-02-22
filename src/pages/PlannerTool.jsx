@@ -10,6 +10,8 @@ import ForegroundCompositionGuide from '../components/planner/ForegroundComposit
 import HistoricalSuccessData from '../components/planner/HistoricalSuccessData';
 import AdvancedForecast from '../components/planner/AdvancedForecast';
 import VisibleSkyNow from '../components/sky/VisibleSkyNow';
+import PostShootLogger from '../components/shoot/PostShootLogger';
+import ShootAnalytics from '../components/shoot/ShootAnalytics';
 import PostProcessingGuide from '../components/planner/PostProcessingGuide';
 import GearChecklist from '../components/planner/GearChecklist';
 import ClientEmailGenerator from '../components/planner/ClientEmailGenerator';
@@ -862,6 +864,14 @@ export default function PlannerTool() {
                   locationName={results.coords?.name || location}
                   overrideDate={new Date(date + 'T22:00:00Z')}
                 />
+              )}
+
+              {/* Post-Shoot Analysis & Analytics */}
+              {user && (
+                <>
+                  <ShootAnalytics userEmail={user.email} />
+                  <PostShootLogger userEmail={user.email} onSessionLogged={() => {}} />
+                </>
               )}
 
               {/* Historical Success Data */}
