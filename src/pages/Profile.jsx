@@ -58,6 +58,18 @@ export default function Profile() {
     setEditing(false);
   };
 
+  const saveLocation = async () => {
+    const data = { user_email: user.email, home_location: locationName, home_lat: locationLat, home_lon: locationLon };
+    if (userProfile) {
+      await base44.entities.UserProfile.update(userProfile.id, data);
+      setUserProfile({ ...userProfile, ...data });
+    } else {
+      const created = await base44.entities.UserProfile.create({ ...data, onboarding_complete: true });
+      setUserProfile(created);
+    }
+    setEditingLocation(false);
+  };
+
   const handleDeleteAccount = async () => {
     setDeleting(true);
     // Delete all user data
