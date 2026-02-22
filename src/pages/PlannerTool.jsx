@@ -5,6 +5,7 @@ import EphemerisLookup from '../components/planner/EphemerisLookup';
 import GearSetup from '../components/planner/GearSetup';
 import BestShotSuggestions from '../components/planner/BestShotSuggestions';
 import HistoricalWeatherAnalysis from '../components/planner/HistoricalWeatherAnalysis';
+import GearChecklist from '../components/planner/GearChecklist';
 import LocationPicker from '../components/onboarding/LocationPicker';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -358,6 +359,7 @@ export default function PlannerTool() {
   const [ephemerisTarget, setEphemerisTarget] = useState(null);
   const [gear, setGear] = useState(null);
   const [gearLoading, setGearLoading] = useState(false);
+  const [shooterMode, setShooterMode] = useState('photographer');
   const ephemerisRef = React.useRef(null);
 
   useEffect(() => {
@@ -370,10 +372,16 @@ export default function PlannerTool() {
         const subs = await base44.entities.Subscription.filter({ user_email: me.email, status: 'active' }, '-created_date', 1);
         setIsSubscribed(subs.length > 0);
       }
-      // Load user's gear profile
-      const gearProfiles = await base44.entities.GearProfile.filter({ user_email: me.email }, '-created_date', 1);
+      // Load user's gear profile and shooter mode
+      const [gearProfiles, profiles] = await Promise.all([
+        base44.entities.GearProfile.filter({ user_email: me.email }, '-created_date', 1),
+        base44.entities.UserProfile.filter({ user_email: me.email }, '-created_date', 1)
+      ]);
       if (gearProfiles.length > 0) {
         setGear(gearProfiles[0]);
+      }
+      if (profiles.length > 0 && profiles[0].shooter_mode) {
+        setShooterMode(profiles[0].shooter_mode);
       }
     };
     check();
@@ -604,6 +612,9 @@ export default function PlannerTool() {
       <div className="grid lg:grid-cols-5 gap-6">
         {/* ── Left: Inputs ── */}
          <div className="lg:col-span-2 space-y-5">
+          {/* Expedition Kit Checklist */}
+          <GearChecklist userEmail={user?.email} shooterMode={shooterMode} />
+
           {/* Gear Setup */}
           <GearSetup userEmail={user?.email} onGearUpdate={handleGearUpdate} loading={gearLoading} />
 
