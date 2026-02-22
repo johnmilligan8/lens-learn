@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import PullToRefresh from '../components/ui/PullToRefresh';
+import SkyPlannerPreview from '../components/dashboard/SkyPlannerPreview';
 import { createPageUrl } from '@/utils';
 import { base44 } from '@/api/base44Client';
 import { Card } from '@/components/ui/card';
@@ -205,6 +206,13 @@ export default function Dashboard() {
           </Card>
         </Link>
       </div>
+
+      {/* Sky Planner Preview for Free Users */}
+      {!isSubscribed && (
+        <div className="mb-12">
+          <SkyPlannerPreview />
+        </div>
+      )}
 
       {/* Milky Way Courses Section */}
       <div className="mb-10">
