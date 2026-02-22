@@ -45,10 +45,12 @@ export default function Dashboard() {
     const load = async () => {
       const me = await base44.auth.me();
       setUser(me);
-      const [mods, prog] = await Promise.all([
+      const [mods, prog, subs] = await Promise.all([
         base44.entities.Module.list('order', 50),
         base44.entities.LessonProgress.filter({ user_email: me.email }, '-created_date', 200),
+        me.role === 'admin' ? Promise.resolve([{ status: 'active' }]) : base44.entities.Subscription.filter({ user_email: me.email, status: 'active' }, '-created_date', 1),
       ]);
+      setIsSubscribed(subs.length > 0);
       setModules(mods.length > 0 ? mods : FALLBACK_MODULES);
       setProgress(prog);
       setLoading(false);
