@@ -142,7 +142,7 @@ export default function Layout({ children, currentPageName }) {
   return (
     <div className="min-h-screen cosmic-bg flex">
       {/* Sidebar — desktop */}
-      <aside className="hidden md:flex flex-col w-64 bg-slate-900/60 backdrop-blur-md border-r border-slate-800/60 sticky top-0 h-screen">
+      <aside className="hidden md:flex flex-col w-64 bg-[#111111]/95 backdrop-blur-md border-r border-white/5 sticky top-0 h-screen">
         {/* Logo */}
         <div className="p-6 border-b border-slate-800/40">
           <Link to={createPageUrl('Dashboard')} className="flex items-center gap-3">
