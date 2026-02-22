@@ -18,6 +18,11 @@ export default function Profile() {
   const [photos, setPhotos] = useState([]);
   const [editing, setEditing] = useState(false);
   const [name, setName] = useState('');
+  const [editingLocation, setEditingLocation] = useState(false);
+  const [locationName, setLocationName] = useState('');
+  const [locationLat, setLocationLat] = useState(null);
+  const [locationLon, setLocationLon] = useState(null);
+  const [userProfile, setUserProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState('');
