@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { format, parseISO, isPast, isThisMonth, isWithinInterval, startOfMonth, endOfMonth } from 'date-fns';
+import AuroraView from '../components/aurora/AuroraView';
 import {
   Calendar, Star, Sparkles, Moon, Zap, Eye,
   AlertCircle, ChevronDown, ChevronUp, Filter, X
@@ -57,10 +58,19 @@ export default function EventsCalendar() {
   const [dateRangeStart, setDateRangeStart] = useState('');
   const [dateRangeEnd, setDateRangeEnd] = useState('');
   const [loading, setLoading] = useState(true);
+  const [tab, setTab] = useState('events');
+  const [user, setUser] = useState(null);
+  const [isSubscribed, setIsSubscribed] = useState(false);
 
   const loadData = useCallback(async () => {
-    const res = await base44.entities.AstronomyEvent.list('date', 100);
-    setEvents(res.length > 0 ? res : SAMPLE_EVENTS);
+    const me = await base44.auth.me();
+    setUser(me);
+    const [astrEvents, subs] = await Promise.all([
+      base44.entities.AstronomyEvent.list('date', 100),
+      me.role === 'admin' ? Promise.resolve([{ status: 'active' }]) : base44.entities.Subscription.filter({ user_email: me.email, status: 'active' }, '-created_date', 1),
+    ]);
+    setEvents(astrEvents.length > 0 ? astrEvents : SAMPLE_EVENTS);
+    setIsSubscribed(subs.length > 0);
     setLoading(false);
   }, []);
 
@@ -159,24 +169,40 @@ export default function EventsCalendar() {
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="mb-8">
         <h1 className="text-4xl font-bold text-white mb-2 flex items-center gap-3">
-          <Calendar className="w-9 h-9 text-blue-400" /> Astronomy Events
+          <Calendar className="w-9 h-9 text-blue-400" /> Cosmic Events
         </h1>
         <p className="text-slate-400 text-lg">Meteor showers, eclipses, auroras, and more — never miss a shoot.</p>
       </div>
 
-      {/* Filters */}
-      <div className="flex flex-wrap gap-2 mb-8">
-        {filters.map(f => (
-          <Button
-            key={f}
-            variant={filter === f ? 'default' : 'outline'}
-            size="sm"
-            className={filter === f ? 'bg-purple-600 hover:bg-purple-700' : 'border-slate-700 text-slate-400 hover:border-purple-500/50'}
-            onClick={() => setFilter(f)}
-          >
-            {f === 'all' ? 'All Events' : f.replace('_', ' ').replace(/\b\w/g, c => c.toUpperCase())}
-          </Button>
-        ))}
+      {/* Aurora View */}
+      {tab === 'aurora' && <AuroraView isSubscribed={isSubscribed} userLocation={user?.email ? 'Utah' : 'Your Location'} />}
+
+      {/* Events View */}
+      {tab === 'events' && (
+      <div>
+
+      {/* Tabs */}
+      <div className="flex gap-2 mb-8 border-b border-slate-800 pb-0">
+        <button
+          onClick={() => setTab('events')}
+          className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors ${
+            tab === 'events'
+              ? 'border-purple-600 text-white'
+              : 'border-transparent text-slate-400 hover:text-slate-300'
+          }`}
+        >
+          Astronomy Events
+        </button>
+        <button
+          onClick={() => setTab('aurora')}
+          className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors flex items-center gap-2 ${
+            tab === 'aurora'
+              ? 'border-purple-600 text-white'
+              : 'border-transparent text-slate-400 hover:text-slate-300'
+          }`}
+        >
+          <Zap className="w-4 h-4" /> Aurora / Northern Lights
+        </button>
       </div>
 
       {/* Upcoming */}
@@ -206,6 +232,8 @@ export default function EventsCalendar() {
           <Calendar className="w-16 h-16 text-slate-700 mx-auto mb-4" />
           <p className="text-slate-500">No events found for this filter.</p>
         </Card>
+      )}
+      </div>
       )}
     </div>
     </PullToRefresh>
