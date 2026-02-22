@@ -80,7 +80,7 @@ export default function Onboarding() {
         {/* Progress dots */}
         <div className="flex justify-center gap-2 mb-8">
           {steps.map((_, i) => (
-            <div key={i} className={`h-1.5 rounded-full transition-all ${i === step ? 'w-8 bg-purple-400' : i < step ? 'w-4 bg-purple-600' : 'w-4 bg-slate-700'}`} />
+            <div key={i} className={`h-1.5 rounded-full transition-all ${i === step ? 'w-8 bg-red-500' : i < step ? 'w-4 bg-red-700' : 'w-4 bg-slate-700'}`} />
           ))}
         </div>
 
