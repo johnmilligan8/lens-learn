@@ -58,6 +58,7 @@ import PaymentGate from './pages/PaymentGate';
 import PlannerTool from './pages/PlannerTool';
 import Profile from './pages/Profile';
 import Onboarding from './pages/Onboarding';
+import TonightHub from './pages/TonightHub';
 import __Layout from './Layout.jsx';
 
 
@@ -73,6 +74,7 @@ export const PAGES = {
     "PlannerTool": PlannerTool,
     "Profile": Profile,
     "Onboarding": Onboarding,
+    "TonightHub": TonightHub,
 }
 
 export const pagesConfig = {

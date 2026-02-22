@@ -1,0 +1,336 @@
+import React, { useState, useEffect, useMemo } from 'react';
+import { Link } from 'react-router-dom';
+import { createPageUrl } from '@/utils';
+import { base44 } from '@/api/base44Client';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import EventRankCard from '../components/tonight/EventRankCard';
+import GuidedPlanModal from '../components/tonight/GuidedPlanModal';
+import { Loader2, Lock, MapPin, ChevronRight, Telescope, Zap } from 'lucide-react';
+
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+
+function toRad(d) { return d * Math.PI / 180; }
+function toDeg(r) { return r * 180 / Math.PI; }
+
+function julianDate(date) { return date.getTime() / 86400000 + 2440587.5; }
+
+function lstDeg(jd, lon) {
+  const T = (jd - 2451545.0) / 36525;
+  let g = 280.46061837 + 360.98564736629 * (jd - 2451545) + T * T * 0.000387933;
+  g = ((g % 360) + 360) % 360;
+  return ((g + lon) % 360 + 360) % 360;
+}
+
+function raDecToAlt(ra, dec, lat, lon, date) {
+  const jd = julianDate(date);
+  const lst = lstDeg(jd, lon);
+  const ha = toRad(((lst - ra) % 360 + 360) % 360);
+  const sinAlt = Math.sin(toRad(dec)) * Math.sin(toRad(lat)) + Math.cos(toRad(dec)) * Math.cos(toRad(lat)) * Math.cos(ha);
+  return toDeg(Math.asin(Math.max(-1, Math.min(1, sinAlt))));
+}
+
+function getMoonPhase() {
+  const knownNew = new Date('2000-01-06T00:00:00Z');
+  const cycle = 29.53058867;
+  const diff = (Date.now() - knownNew.getTime()) / 86400000;
+  const phase = ((diff % cycle) + cycle) % cycle;
+  const illum = Math.round((1 - Math.cos((phase / cycle) * 2 * Math.PI)) / 2 * 100);
+  return { phase, illum };
+}
+
+function getGCPeak(lat, lon, today) {
+  let peakAlt = -90, peakHour = null;
+  for (let h = 18; h < 30; h++) {
+    const d = new Date(today + 'T00:00:00Z');
+    d.setTime(d.getTime() + h * 3600000);
+    const alt = raDecToAlt(266.4, -29.0, lat, lon, d);
+    if (alt > peakAlt) { peakAlt = alt; peakHour = h % 24; }
+  }
+  return { peakAlt, peakHour };
+}
+
+function computeEvents(lat, lon, today, astronomy_events) {
+  const { illum: moonIllum, phase: moonPhase } = getMoonPhase();
+  const { peakAlt, peakHour } = getGCPeak(lat, lon, today);
+  const month = new Date(today).getMonth(); // 0-indexed
+  const inSeason = month >= 2 && month <= 9; // Mar–Oct
+
+  const events = [];
+
+  // 1. Milky Way / Galactic Core
+  if (peakAlt > 15 && inSeason) {
+    const h = peakHour ?? 0;
+    const window = `~${(h % 12 || 12)}:00 ${h >= 12 ? 'PM' : 'AM'}–${((h + 2) % 12 || 12)}:00 ${(h + 2) >= 12 ? 'PM' : 'AM'} UTC`;
+    const viab = peakAlt > 35 && moonIllum < 25 ? 'excellent' : peakAlt > 20 && moonIllum < 50 ? 'good' : moonIllum > 70 ? 'poor' : 'marginal';
+    events.push({
+      id: 'milkyway', emoji: '🌌', title: 'Milky Way / Galactic Core',
+      summary: peakAlt > 30 ? `Core peaks at ${Math.round(peakAlt)}° altitude — excellent elevation for a clear view.` : `Core reaches ${Math.round(peakAlt)}° — visible but low; find an unobstructed southern horizon.`,
+      window,
+      viability: viab,
+      drivers: [
+        { positive: peakAlt > 25, text: `Core peaks at ${Math.round(peakAlt)}° altitude` },
+        { positive: moonIllum < 30, text: `Moon is ${moonIllum}% illuminated (${moonIllum < 30 ? 'minimal interference' : 'adds sky glow'})` },
+        { positive: inSeason, text: 'Currently in Milky Way season (Mar–Oct)' },
+      ],
+      expectation: viab === 'excellent' ? 'Expect a vivid band with visible dust lanes on a clear night.' : viab === 'good' ? 'A clear shot of the core is likely. Avoid moon-rise window.' : 'Marginal — plan to catch the window before moon rises.',
+      event_type: 'milky_way',
+    });
+  } else if (!inSeason) {
+    events.push({
+      id: 'milkyway_off', emoji: '🌌', title: 'Milky Way',
+      summary: 'Off-season: the Galactic Core is not well-positioned for night shooting in winter months.',
+      window: 'Best season: March – October',
+      viability: 'poor',
+      drivers: [{ positive: false, text: 'Off-season — core rises and sets with the sun' }],
+      event_type: 'milky_way',
+    });
+  }
+
+  // 2. Check astronomy DB events matching tonight
+  if (astronomy_events) {
+    astronomy_events.forEach(ev => {
+      if (!ev.date) return;
+      const evDate = ev.date.split('T')[0];
+      const isTonight = evDate === today || (ev.end_date && ev.date <= today && ev.end_date >= today);
+      if (!isTonight) return;
+
+      const typeMap = {
+        meteor_shower: { emoji: '☄️', viability: 'good' },
+        eclipse: { emoji: '🌑', viability: 'excellent' },
+        aurora: { emoji: '🌌', viability: 'good' },
+        supermoon: { emoji: '🌕', viability: 'good' },
+        comet: { emoji: '🌠', viability: 'marginal' },
+        conjunction: { emoji: '🪐', viability: 'good' },
+        other: { emoji: '🔭', viability: 'marginal' },
+      };
+      const tm = typeMap[ev.type] ?? typeMap.other;
+
+      events.push({
+        id: ev.id,
+        emoji: tm.emoji,
+        title: ev.title,
+        summary: ev.description || ev.visibility_info || 'A scheduled sky event — check details.',
+        window: ev.peak_time || ev.visibility_info || null,
+        viability: tm.viability,
+        drivers: ev.tips ? [{ positive: true, text: ev.tips }] : [],
+        expectation: ev.visibility_info || '',
+        event_type: ev.type,
+        raw: ev,
+      });
+    });
+  }
+
+  // 3. Moon if notable
+  if (moonPhase >= 14 && moonPhase <= 17) {
+    events.push({
+      id: 'full_moon', emoji: '🌕', title: 'Full Moon Tonight',
+      summary: `Moon is ${moonIllum}% illuminated — bright sky but beautiful for moon photography and long-exposure silhouettes.`,
+      window: 'All night',
+      viability: moonIllum > 80 ? 'good' : 'marginal',
+      drivers: [
+        { positive: true, text: 'Great for moon-lit landscape shots' },
+        { positive: false, text: 'Washes out faint sky objects like the Milky Way' },
+      ],
+      expectation: 'Shoot toward the moon for dramatic, naturally lit foregrounds.',
+      event_type: 'moon',
+    });
+  }
+
+  return events.slice(0, 3);
+}
+
+// ─── Main ─────────────────────────────────────────────────────────────────────
+
+export default function TonightHub() {
+  const [user, setUser] = useState(null);
+  const [profile, setProfile] = useState(null);
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [astroEvents, setAstroEvents] = useState([]);
+  const [location, setLocation] = useState('');
+  const [coords, setCoords] = useState(null);
+  const [geoLoading, setGeoLoading] = useState(false);
+  const [commitEvent, setCommitEvent] = useState(null);
+  const today = new Date().toISOString().split('T')[0];
+
+  useEffect(() => {
+    const init = async () => {
+      const me = await base44.auth.me();
+      setUser(me);
+      const [subs, profiles, events] = await Promise.all([
+        me.role === 'admin' ? Promise.resolve([{ status: 'active' }]) : base44.entities.Subscription.filter({ user_email: me.email, status: 'active' }, '-created_date', 1),
+        base44.entities.UserProfile.filter({ user_email: me.email }, '-created_date', 1),
+        base44.entities.AstronomyEvent.filter({}, 'date', 50),
+      ]);
+      setIsSubscribed(subs.length > 0);
+      const prof = profiles[0] ?? null;
+      setProfile(prof);
+      if (prof?.home_location) setLocation(prof.home_location);
+      setAstroEvents(events);
+      setLoading(false);
+    };
+    init();
+  }, []);
+
+  const geocode = async (loc) => {
+    setGeoLoading(true);
+    const res = await base44.integrations.Core.InvokeLLM({
+      prompt: `Give me the latitude and longitude of: "${loc}". Return ONLY a JSON object with "lat" (number) and "lon" (number).`,
+      response_json_schema: { type: 'object', properties: { lat: { type: 'number' }, lon: { type: 'number' } } }
+    });
+    setCoords({ lat: res.lat, lon: res.lon });
+    setGeoLoading(false);
+    return res;
+  };
+
+  const handleSetLocation = async () => { if (location.trim()) await geocode(location); };
+
+  useEffect(() => {
+    if (profile?.home_location && !coords) geocode(profile.home_location);
+  }, [profile]);
+
+  const events = useMemo(() => {
+    if (!coords) return [];
+    return computeEvents(coords.lat, coords.lon, today, astroEvents);
+  }, [coords, today, astroEvents]);
+
+  const mode = profile?.shooter_mode || 'photographer';
+  const modeLabel = { photographer: 'DSLR/Mirrorless', smartphone: 'Smartphone', experience: 'Sky Experience' }[mode];
+
+  const handleSavePlan = async (plan, answers) => {
+    const me = user;
+    await base44.entities.ShootSession.create({
+      user_email: me.email,
+      date: today,
+      location: location,
+      shooter_mode: mode,
+      event_type: commitEvent?.event_type,
+      guided_plan: { plan, answers, event: commitEvent?.title },
+      status: 'planned',
+    });
+  };
+
+  if (loading) return (
+    <div className="flex items-center justify-center min-h-[60vh]">
+      <Telescope className="w-10 h-10 text-purple-400 star-pulse" />
+    </div>
+  );
+
+  return (
+    <div className="max-w-2xl mx-auto px-4 py-8">
+      {/* Header */}
+      <div className="mb-6">
+        <div className="flex items-center gap-3 mb-1">
+          <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
+          <span className="text-emerald-400 text-xs font-semibold uppercase tracking-widest">Tonight's Conditions</span>
+        </div>
+        <h1 className="text-3xl font-black text-white">
+          Should You Go? <span className="gradient-text">Decide Now.</span>
+        </h1>
+        <p className="text-slate-400 text-sm mt-1">
+          Mode: <span className="text-white font-medium">{modeLabel}</span>
+          <Link to={createPageUrl('Profile')} className="text-purple-400 hover:text-purple-300 ml-2 text-xs">(change)</Link>
+        </p>
+      </div>
+
+      {/* Location input */}
+      <Card className="bg-slate-900/60 border-slate-800 p-4 mb-5">
+        <div className="flex gap-2">
+          <div className="relative flex-1">
+            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+            <input
+              type="text"
+              placeholder="Enter your location…"
+              value={location}
+              onChange={e => setLocation(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && handleSetLocation()}
+              className="w-full bg-slate-800 border border-slate-700 rounded-lg pl-9 pr-3 py-2 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-purple-500"
+            />
+          </div>
+          <Button onClick={handleSetLocation} disabled={geoLoading || !location.trim()} className="bg-purple-600 hover:bg-purple-700 text-sm px-4">
+            {geoLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Check'}
+          </Button>
+        </div>
+        {coords && <p className="text-xs text-emerald-400 mt-1.5">📍 {coords.lat.toFixed(2)}°, {coords.lon.toFixed(2)}°</p>}
+      </Card>
+
+      {/* Events */}
+      {!coords ? (
+        <div className="text-center py-16">
+          <MapPin className="w-12 h-12 text-slate-700 mx-auto mb-4" />
+          <p className="text-slate-500">Enter your location above to see tonight's ranked events.</p>
+        </div>
+      ) : events.length === 0 ? (
+        <Card className="bg-slate-900/60 border-slate-800 p-8 text-center">
+          <p className="text-slate-500">No notable sky events computed for tonight. Try changing the date or check the Events Calendar.</p>
+        </Card>
+      ) : (
+        <div className="space-y-4">
+          <div className="flex items-center justify-between mb-1">
+            <h2 className="text-white font-bold">Top Events Tonight</h2>
+            <Link to={createPageUrl('EventsCalendar')} className="text-xs text-slate-500 hover:text-purple-300 flex items-center gap-1">
+              Full calendar <ChevronRight className="w-3 h-3" />
+            </Link>
+          </div>
+
+          {events.map((event, i) => (
+            <EventRankCard
+              key={event.id}
+              event={event}
+              rank={i + 1}
+              isSubscribed={isSubscribed}
+              mode={mode}
+              onCommit={(ev) => {
+                if (!isSubscribed) return;
+                setCommitEvent(ev);
+              }}
+            />
+          ))}
+
+          {!isSubscribed && (
+            <Card className="border border-purple-500/30 bg-gradient-to-r from-purple-900/20 to-indigo-900/20 p-5 mt-4">
+              <div className="flex items-start gap-3">
+                <Lock className="w-5 h-5 text-purple-400 flex-shrink-0 mt-0.5" />
+                <div className="flex-1">
+                  <p className="text-white font-bold text-sm">Unlock the Full Decision Engine</p>
+                  <p className="text-slate-400 text-xs mt-1 mb-3">Viability scores, condition drivers, Guided Shoot Plans, Field Mode, and progressive alerts — all in the paid plan.</p>
+                  <Link to={createPageUrl('PaymentGate')}>
+                    <Button size="sm" className="bg-purple-600 hover:bg-purple-700 text-xs font-bold">
+                      Unlock for $9.99/mo →
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </Card>
+          )}
+        </div>
+      )}
+
+      {/* Mode-specific tip */}
+      {coords && mode === 'smartphone' && (
+        <Card className="bg-blue-900/20 border border-blue-500/30 p-4 mt-4">
+          <p className="text-blue-300 text-xs font-semibold mb-1">📱 Smartphone Tip for Tonight</p>
+          <p className="text-slate-400 text-xs leading-relaxed">Set your phone on a stable surface and use Night Mode. Avoid holding the phone — even breathing causes blur. Use a timer or volume button as shutter.</p>
+        </Card>
+      )}
+
+      {coords && mode === 'experience' && (
+        <Card className="bg-indigo-900/20 border border-indigo-500/30 p-4 mt-4">
+          <p className="text-indigo-300 text-xs font-semibold mb-1">👁 Sky Experience Tip</p>
+          <p className="text-slate-400 text-xs leading-relaxed">Allow 20–30 minutes for your eyes to dark-adapt. Avoid all white lights. Look slightly beside your target for faint objects — your peripheral vision sees dimmer light.</p>
+        </Card>
+      )}
+
+      {/* Guided Plan Modal */}
+      {commitEvent && (
+        <GuidedPlanModal
+          event={commitEvent}
+          mode={mode}
+          onClose={() => setCommitEvent(null)}
+          onSave={handleSavePlan}
+        />
+      )}
+    </div>
+  );
+}
