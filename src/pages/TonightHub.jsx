@@ -8,7 +8,7 @@ import EventRankCard from '../components/tonight/EventRankCard';
 import GuidedPlanModal from '../components/tonight/GuidedPlanModal';
 import AuroraTeaserCard from '../components/events/AuroraTeaserCard';
 import MilkyWayARCard from '../components/tonight/MilkyWayARCard';
-import { Loader2, Lock, MapPin, ChevronRight, Telescope, Zap } from 'lucide-react';
+import { Loader2, Lock, MapPin, ChevronRight, Telescope, Zap, Star } from 'lucide-react';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -276,11 +276,16 @@ export default function TonightHub() {
         </Card>
       ) : (
         <div className="space-y-4">
-           <div className="flex items-center justify-between mb-1">
+           <div className="flex items-center justify-between mb-4">
              <h2 className="text-white font-bold">Top Events Tonight</h2>
-             <Link to={createPageUrl('EventsCalendar')} className="text-xs text-slate-500 hover:text-purple-300 flex items-center gap-1">
-               Full calendar <ChevronRight className="w-3 h-3" />
-             </Link>
+             <div className="flex gap-2">
+               <Link to={createPageUrl('SkyBrowser')} className="text-xs text-slate-500 hover:text-purple-300 flex items-center gap-1 border border-slate-700 rounded px-2.5 py-1 hover:border-purple-500/30 transition-colors">
+                 <Star className="w-3 h-3" /> Sky Browser
+               </Link>
+               <Link to={createPageUrl('EventsCalendar')} className="text-xs text-slate-500 hover:text-purple-300 flex items-center gap-1">
+                 Full calendar <ChevronRight className="w-3 h-3" />
+               </Link>
+             </div>
            </div>
 
            {/* AR Scout */}
