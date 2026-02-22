@@ -164,6 +164,48 @@ export default function Profile() {
         </div>
       </div>
 
+      {/* Danger Zone */}
+      <Card className="bg-red-950/20 border border-red-900/40 p-6 mb-6">
+        <h3 className="text-red-400 font-semibold mb-1 flex items-center gap-2">
+          <AlertTriangle className="w-4 h-4" /> Danger Zone
+        </h3>
+        <p className="text-slate-500 text-sm mb-4">Permanently delete your account and all associated data. This cannot be undone.</p>
+        <Button variant="outline" size="sm" className="border-red-700 text-red-400 hover:bg-red-900/30" onClick={() => setShowDeleteDialog(true)}>
+          <Trash2 className="w-3 h-3 mr-1.5" /> Delete Account
+        </Button>
+      </Card>
+
+      <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <DialogContent className="bg-slate-900 border-slate-700 max-w-sm">
+          <DialogHeader>
+            <DialogTitle className="text-white flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5 text-red-400" /> Delete Account
+            </DialogTitle>
+          </DialogHeader>
+          <div className="py-2">
+            <p className="text-slate-400 text-sm mb-4">This will permanently delete all your progress, photos, and profile data. Type <span className="text-white font-mono">DELETE</span> to confirm.</p>
+            <Input
+              value={deleteConfirm}
+              onChange={e => setDeleteConfirm(e.target.value)}
+              placeholder="Type DELETE to confirm"
+              className="bg-slate-800 border-slate-700 text-white"
+            />
+          </div>
+          <DialogFooter className="gap-2">
+            <Button variant="outline" className="border-slate-700 text-slate-400" onClick={() => { setShowDeleteDialog(false); setDeleteConfirm(''); }}>
+              Cancel
+            </Button>
+            <Button
+              disabled={deleteConfirm !== 'DELETE' || deleting}
+              className="bg-red-600 hover:bg-red-700 text-white"
+              onClick={handleDeleteAccount}
+            >
+              {deleting ? 'Deleting...' : 'Delete Account'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       {/* My Photos */}
       {photos.length > 0 && (
         <Card className="bg-slate-900/60 border-slate-800 p-6">
