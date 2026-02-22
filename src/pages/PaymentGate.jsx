@@ -87,8 +87,8 @@ export default function PaymentGate() {
               <div className="absolute top-0 right-0 w-40 h-40 bg-purple-600/10 blur-3xl pointer-events-none" />
               <div className="relative">
                 <Zap className="w-10 h-10 text-purple-400 mb-4" />
-                <h3 className="text-2xl font-bold text-white mb-1">Monthly</h3>
-                <p className="text-slate-400 text-sm mb-6">Perfect to get started</p>
+                <h3 className="text-2xl font-bold text-white mb-1">Explorer</h3>
+                <p className="text-slate-400 text-sm mb-6">Launch your journey today</p>
                 <div className="flex items-baseline gap-2 mb-8">
                   <span className="text-5xl font-bold text-white">$19</span>
                   <span className="text-slate-400">/month</span>
@@ -106,7 +106,7 @@ export default function PaymentGate() {
                   onClick={() => handleSubscribe('monthly')}
                   disabled={!!loading}
                 >
-                  {loading === 'monthly' ? 'Processing...' : 'Start Monthly Plan'}
+                  {loading === 'monthly' ? 'Launching...' : '🚀 Start Exploring'}
                 </Button>
               </div>
             </Card>
@@ -118,9 +118,9 @@ export default function PaymentGate() {
               </div>
               <div className="absolute top-0 right-0 w-40 h-40 bg-blue-600/10 blur-3xl pointer-events-none" />
               <div className="relative">
-                <Sparkles className="w-10 h-10 text-blue-400 mb-4" />
-                <h3 className="text-2xl font-bold text-white mb-1">Lifetime</h3>
-                <p className="text-slate-400 text-sm mb-6">One payment, forever yours</p>
+                <Star className="w-10 h-10 text-yellow-400 mb-4" />
+                <h3 className="text-2xl font-bold text-white mb-1">Pioneer</h3>
+                <p className="text-slate-400 text-sm mb-6">One payment — explore forever</p>
                 <div className="flex items-baseline gap-2 mb-8">
                   <span className="text-5xl font-bold text-white">$99</span>
                   <span className="text-slate-400">one-time</span>
@@ -138,14 +138,14 @@ export default function PaymentGate() {
                   onClick={() => handleSubscribe('lifetime')}
                   disabled={!!loading}
                 >
-                  {loading === 'lifetime' ? 'Processing...' : 'Get Lifetime Access'}
+                  {loading === 'lifetime' ? 'Launching...' : '⭐ Become a Pioneer'}
                 </Button>
               </div>
             </Card>
           </div>
 
           <p className="text-center text-slate-600 text-sm mt-8">
-            Secure payment powered by Stripe · Cancel monthly plan anytime · 7-day money-back guarantee
+            Secure payment powered by Stripe · Cancel Explorer plan anytime · 7-day money-back guarantee
           </p>
         </div>
       </div>
