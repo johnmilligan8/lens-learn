@@ -202,11 +202,15 @@ export default function Layout({ children, currentPageName }) {
           </Button>
         ) : (
           <Link to={createPageUrl('Dashboard')} className="flex items-center gap-2">
-            <div className="bg-gradient-to-br from-purple-600 to-blue-700 rounded-lg w-7 h-7 flex items-center justify-center">
-              <Telescope className="w-4 h-4 text-white" />
-            </div>
-            <span className="font-black gradient-text text-lg tracking-tight">UnchartedGalaxy</span>
-          </Link>
+              <img
+                src="https://uncharted.net/wp-content/uploads/2022/09/Uncharted-Logo-Horizontal-White-e1664469570536.png"
+                alt="UNCHARTED"
+                className="h-7 w-auto object-contain"
+                style={{ maxWidth: 130 }}
+                onError={e => { e.target.style.display='none'; e.target.nextSibling.style.display='flex'; }}
+              />
+              <span style={{display:'none'}} className="font-black text-white text-lg tracking-tight">UNCHARTED</span>
+            </Link>
         )}
         <Button variant="ghost" size="icon" className="text-slate-300" onClick={handleLogout}>
           <LogOut className="w-5 h-5" />
