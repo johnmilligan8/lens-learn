@@ -58,21 +58,16 @@ export default function Onboarding() {
       title: "Your home base",
       subtitle: "Used to pre-fill your local conditions. You can always change it later.",
       content: (
-        <div className="space-y-3">
-          <Input
-            placeholder="e.g. Salt Lake City, Utah"
-            value={homeLocation}
-            onChange={e => setHomeLocation(e.target.value)}
-            className="bg-slate-800 border-slate-700 text-white text-base h-12"
-          />
-          <p className="text-xs text-slate-500">Optional — skip if you prefer to enter location each time.</p>
-          <div className="mt-4 p-3 rounded-xl bg-slate-800/60 border border-slate-700">
-            <p className="text-xs text-slate-400 font-semibold mb-2">🏔 Utah Dark Sky Spots</p>
-            {['Bonneville Salt Flats', 'Goblin Valley State Park', 'Capitol Reef National Park', 'Bryce Canyon NP', 'Antelope Island'].map(s => (
-              <button key={s} onClick={() => setHomeLocation(s)} className="block text-left text-xs text-purple-300 hover:text-purple-100 py-0.5">{s}</button>
-            ))}
-          </div>
-        </div>
+        <LocationPicker
+          value={homeLocation}
+          lat={homeLat}
+          lon={homeLon}
+          onChange={({ name, lat, lon }) => {
+            setHomeLocation(name);
+            setHomeLat(lat ?? null);
+            setHomeLon(lon ?? null);
+          }}
+        />
       )
     }
   ];
