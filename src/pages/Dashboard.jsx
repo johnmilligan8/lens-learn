@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import PullToRefresh from '../components/ui/PullToRefresh';
 import SkyPlannerPreview from '../components/dashboard/SkyPlannerPreview';
+import PostProcessingGuide from '../components/postprocessing/PostProcessingGuide';
 import ActionCard from '../components/ui/ActionCard';
 import PageHeader from '../components/ui/PageHeader';
 import QuickStats from '../components/ui/QuickStats';
@@ -192,6 +193,11 @@ export default function Dashboard() {
             color="blue"
           />
         </div>
+      </div>
+
+      {/* Post-Processing Guide */}
+      <div className="mb-12">
+        <PostProcessingGuide />
       </div>
 
       {/* Sky Planner Preview for Free Users */}
