@@ -1,0 +1,166 @@
+import React, { useState, useEffect } from 'react';
+import { base44 } from '@/api/base44Client';
+import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
+import { Camera, Trophy, Star, CheckCircle2, Edit2, Check, X } from 'lucide-react';
+import { format } from 'date-fns';
+
+export default function Profile() {
+  const [user, setUser] = useState(null);
+  const [sub, setSub] = useState(null);
+  const [progress, setProgress] = useState([]);
+  const [photos, setPhotos] = useState([]);
+  const [editing, setEditing] = useState(false);
+  const [name, setName] = useState('');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const load = async () => {
+      const me = await base44.auth.me();
+      setUser(me);
+      setName(me.full_name || '');
+      const [subs, prog, myPhotos] = await Promise.all([
+        base44.entities.Subscription.filter({ user_email: me.email }, '-created_date', 1),
+        base44.entities.LessonProgress.filter({ user_email: me.email, completed: true }, '-created_date', 200),
+        base44.entities.GalleryPost.filter({ user_email: me.email }, '-created_date', 12),
+      ]);
+      setSub(subs[0] || null);
+      setProgress(prog);
+      setPhotos(myPhotos);
+      setLoading(false);
+    };
+    load();
+  }, []);
+
+  const saveProfile = async () => {
+    await base44.auth.updateMe({ full_name: name });
+    setUser({ ...user, full_name: name });
+    setEditing(false);
+  };
+
+  if (loading) return (
+    <div className="flex items-center justify-center min-h-screen">
+      <Camera className="w-10 h-10 text-purple-400 star-pulse" />
+    </div>
+  );
+
+  const completedModules = Math.floor(progress.length / 8); // rough estimate
+  const badges = [
+    { label: 'Night Photographer', unlocked: progress.length >= 1, icon: '🌙' },
+    { label: 'Gear Master', unlocked: progress.length >= 8, icon: '📷' },
+    { label: 'Settings Pro', unlocked: progress.length >= 16, icon: '⚙️' },
+    { label: 'Composer', unlocked: progress.length >= 24, icon: '🎨' },
+    { label: 'Dark Sky Hunter', unlocked: progress.length >= 32, icon: '🗺️' },
+    { label: 'Post-Processing Wizard', unlocked: progress.length >= 40, icon: '✨' },
+  ];
+
+  return (
+    <div className="max-w-4xl mx-auto px-4 py-8">
+      <h1 className="text-4xl font-bold text-white mb-8">My Profile</h1>
+
+      <div className="grid md:grid-cols-3 gap-6 mb-8">
+        {/* Profile Card */}
+        <div className="md:col-span-1">
+          <Card className="bg-slate-900/60 border-slate-800 p-6 text-center">
+            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-3xl font-bold text-white mx-auto mb-4">
+              {user?.full_name?.[0] || user?.email?.[0] || 'U'}
+            </div>
+
+            {editing ? (
+              <div className="space-y-3">
+                <Input
+                  value={name}
+                  onChange={e => setName(e.target.value)}
+                  className="bg-slate-800 border-slate-700 text-white text-center"
+                />
+                <div className="flex gap-2">
+                  <Button size="sm" className="flex-1 bg-purple-600 hover:bg-purple-700" onClick={saveProfile}>
+                    <Check className="w-3 h-3 mr-1" /> Save
+                  </Button>
+                  <Button size="sm" variant="outline" className="flex-1 border-slate-700" onClick={() => setEditing(false)}>
+                    <X className="w-3 h-3 mr-1" /> Cancel
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <>
+                <h2 className="text-xl font-bold text-white mb-1">{user?.full_name || 'Anonymous'}</h2>
+                <p className="text-slate-400 text-sm mb-4">{user?.email}</p>
+                <Button variant="outline" size="sm" className="border-slate-700 text-slate-400" onClick={() => setEditing(true)}>
+                  <Edit2 className="w-3 h-3 mr-1" /> Edit Name
+                </Button>
+              </>
+            )}
+
+            {sub && (
+              <div className={`mt-5 p-3 rounded-lg ${sub.tier === 'lifetime' ? 'bg-gradient-to-r from-purple-900/40 to-blue-900/40 border border-purple-500/30' : 'bg-slate-800/60 border border-slate-700'}`}>
+                <p className="text-xs text-slate-400 mb-0.5">Plan</p>
+                <p className="text-white font-semibold capitalize">{sub.tier}</p>
+                {sub.tier !== 'lifetime' && sub.end_date && (
+                  <p className="text-slate-500 text-xs mt-0.5">Renews {format(new Date(sub.end_date), 'MMM d, yyyy')}</p>
+                )}
+              </div>
+            )}
+          </Card>
+        </div>
+
+        {/* Stats */}
+        <div className="md:col-span-2 space-y-5">
+          <Card className="bg-slate-900/60 border-slate-800 p-6">
+            <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
+              <Trophy className="w-5 h-5 text-yellow-400" /> Progress Overview
+            </h3>
+            <div className="grid grid-cols-3 gap-4 mb-4">
+              {[
+                { label: 'Lessons Done', value: progress.length },
+                { label: 'Modules', value: completedModules },
+                { label: 'Photos Shared', value: photos.length },
+              ].map(s => (
+                <div key={s.label} className="text-center bg-slate-800/60 rounded-lg p-4">
+                  <p className="text-3xl font-bold text-white">{s.value}</p>
+                  <p className="text-slate-400 text-xs mt-1">{s.label}</p>
+                </div>
+              ))}
+            </div>
+          </Card>
+
+          {/* Badges */}
+          <Card className="bg-slate-900/60 border-slate-800 p-6">
+            <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
+              <Star className="w-5 h-5 text-purple-400" /> Achievements
+            </h3>
+            <div className="grid grid-cols-3 gap-3">
+              {badges.map(badge => (
+                <div key={badge.label} className={`text-center p-4 rounded-xl border transition-all ${badge.unlocked ? 'bg-purple-900/20 border-purple-500/30' : 'bg-slate-800/30 border-slate-700/30 opacity-40'}`}>
+                  <p className="text-2xl mb-1">{badge.icon}</p>
+                  <p className="text-xs font-medium text-white leading-tight">{badge.label}</p>
+                  {badge.unlocked && <CheckCircle2 className="w-3 h-3 text-purple-400 mx-auto mt-1" />}
+                </div>
+              ))}
+            </div>
+          </Card>
+        </div>
+      </div>
+
+      {/* My Photos */}
+      {photos.length > 0 && (
+        <Card className="bg-slate-900/60 border-slate-800 p-6">
+          <h3 className="text-white font-semibold mb-5 flex items-center gap-2">
+            <Camera className="w-5 h-5 text-blue-400" /> My Gallery Photos
+          </h3>
+          <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
+            {photos.map(p => (
+              <div key={p.id} className="aspect-square rounded-lg overflow-hidden">
+                <img src={p.photo_url} alt="" className="w-full h-full object-cover hover:scale-110 transition-transform duration-200" />
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
+    </div>
+  );
+}
