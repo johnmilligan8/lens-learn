@@ -285,27 +285,27 @@ export default function StarPointer() {
           {selectedObject && (
             <Card className="bg-slate-900/80 border-slate-700 p-4">
               <div className="flex items-start justify-between mb-3">
-                <h3 className="font-bold text-white text-lg">{selectedObject.name}</h3>
-                <button onClick={() => setSelectedObject(null)} className="text-slate-400 hover:text-slate-200">
-                  <X className="w-4 h-4" />
-                </button>
+              <h3 className="font-bold text-white text-lg">{selectedObject.name}</h3>
+              <button onClick={() => setSelectedObject(null)} className="text-slate-500 hover:text-white transition-colors">
+              <X className="w-4 h-4" />
+              </button>
               </div>
 
               <div className="space-y-2 text-sm mb-4">
-                <div className="flex justify-between">
-                  <span className="text-slate-400">Type</span>
-                  <span className="text-white capitalize">{selectedObject.type}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-400">Magnitude</span>
-                  <span className="text-white font-mono">{selectedObject.mag.toFixed(2)}</span>
-                </div>
-                {selectedObject.special && (
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Note</span>
-                    <span className="text-amber-400 text-xs">{selectedObject.special}</span>
-                  </div>
-                )}
+              <div className="flex justify-between">
+              <span className="text-slate-500 font-medium">Type</span>
+              <span className="text-white capitalize">{selectedObject.type}</span>
+              </div>
+              <div className="flex justify-between">
+              <span className="text-slate-500 font-medium">Magnitude</span>
+              <span className="text-white font-mono">{selectedObject.mag.toFixed(2)}</span>
+              </div>
+              {selectedObject.special && (
+              <div className="flex justify-between items-start">
+                <span className="text-slate-500 font-medium">Note</span>
+                <span className="text-amber-300 text-xs text-right">{selectedObject.special}</span>
+              </div>
+              )}
               </div>
 
               {isSubscribed && (
@@ -328,8 +328,8 @@ export default function StarPointer() {
             <div className="space-y-2">
               {getVisibleConstellations().map(c => (
                 <div key={c.name} className="text-xs">
-                  <p className="text-purple-300 font-medium">{c.name}</p>
-                  <p className="text-slate-500">{c.guide}</p>
+                  <p className="text-purple-200 font-semibold">{c.name}</p>
+                  <p className="text-slate-400 text-xs">{c.guide}</p>
                 </div>
               ))}
             </div>
