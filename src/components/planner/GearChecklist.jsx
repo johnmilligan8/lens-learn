@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { base44 } from '@/api/base44Client';
 import {
   ChevronDown, ChevronUp, Plus, Save, Loader2, Trash2,
-  CheckCircle2, Circle, Search, AlertCircle, Package
+  CheckCircle2, Circle, Search, AlertCircle, Package, FileText,
+  Upload, FileCheck
 } from 'lucide-react';
 
 const GEAR_PRESETS = {
@@ -154,7 +156,7 @@ const GEAR_PRESETS = {
   ]
 };
 
-export default function GearChecklist({ userEmail, shooterMode, onKitLoaded }) {
+export default function GearChecklist({ userEmail, shooterMode, onKitLoaded, isPaid }) {
   const [kits, setKits] = useState([]);
   const [activeKit, setActiveKit] = useState(null);
   const [showForm, setShowForm] = useState(false);
@@ -164,6 +166,8 @@ export default function GearChecklist({ userEmail, shooterMode, onKitLoaded }) {
   const [loading, setLoading] = useState(false);
   const [newItemCategory, setNewItemCategory] = useState(null);
   const [newItemText, setNewItemText] = useState('');
+  const [showGeneralNotes, setShowGeneralNotes] = useState(false);
+  const [showModelRelease, setShowModelRelease] = useState(false);
 
   useEffect(() => {
     loadKits();
@@ -205,14 +209,17 @@ export default function GearChecklist({ userEmail, shooterMode, onKitLoaded }) {
     onKitLoaded?.(newKit);
   };
 
-  const updateKit = async (updatedKit) => {
-    setLoading(true);
-    await base44.entities.GearKit.update(activeKit.id, {
-      categories: updatedKit.categories
-    });
-    setActiveKit(updatedKit);
-    onKitLoaded?.(updatedKit);
-    setLoading(false);
+  const updateKit = async (updatedKit, additionalData = {}) => {
+   setLoading(true);
+   const updateData = {
+     categories: updatedKit.categories,
+     ...additionalData
+   };
+   await base44.entities.GearKit.update(activeKit.id, updateData);
+   const newKit = { ...updatedKit, ...additionalData };
+   setActiveKit(newKit);
+   onKitLoaded?.(newKit);
+   setLoading(false);
   };
 
   const toggleItem = (catIdx, itemIdx) => {
@@ -257,6 +264,24 @@ export default function GearChecklist({ userEmail, shooterMode, onKitLoaded }) {
       ...prev,
       [catIdx]: !prev[catIdx]
     }));
+  };
+
+  const saveGeneralNotes = (notes) => {
+    if (!activeKit) return;
+    updateKit(activeKit, {
+      general_notes: notes,
+      general_notes_timestamp: new Date().toISOString()
+    });
+    setShowGeneralNotes(false);
+  };
+
+  const saveModelRelease = (enabled, notes) => {
+    if (!activeKit) return;
+    updateKit(activeKit, {
+      model_release_enabled: enabled,
+      model_release_notes: notes
+    });
+    setShowModelRelease(false);
   };
 
   if (!activeKit && !showForm) {
@@ -467,6 +492,133 @@ export default function GearChecklist({ userEmail, shooterMode, onKitLoaded }) {
           {packedCount === totalCount && totalCount > 0 && (
             <div className="mt-4 p-3 rounded-lg bg-emerald-900/20 border border-emerald-500/30">
               <p className="text-xs text-emerald-300 font-semibold">✅ Ready for the night sky. Adventure awaits!</p>
+            </div>
+          )}
+
+          {/* General Notes Section */}
+          <div className="mt-4 pt-4 border-t border-slate-700">
+            {!showGeneralNotes ? (
+              <button
+                onClick={() => setShowGeneralNotes(true)}
+                className="w-full text-left p-2.5 rounded-lg bg-slate-800/60 hover:bg-slate-800 transition-colors"
+              >
+                <span className="text-slate-300 font-medium text-sm flex items-center gap-2">
+                  <FileText className="w-4 h-4 text-purple-400" /> Overall Prep Notes
+                </span>
+                {activeKit?.general_notes && (
+                  <p className="text-xs text-slate-500 mt-1 line-clamp-1">{activeKit.general_notes}</p>
+                )}
+              </button>
+            ) : (
+              <div className="space-y-2">
+                <label className="text-slate-300 text-xs uppercase mb-1 block font-semibold">Prep Notes</label>
+                <Textarea
+                  placeholder="e.g., Test batteries night before, Bring warm layers for Antelope Island"
+                  defaultValue={activeKit?.general_notes || ''}
+                  className="bg-slate-800 border-slate-700 text-white text-sm min-h-20 p-2"
+                />
+                <div className="flex gap-2">
+                  <Button
+                    onClick={(e) => {
+                      const textarea = e.target.parentElement.parentElement.querySelector('textarea');
+                      saveGeneralNotes(textarea.value);
+                    }}
+                    size="sm"
+                    className="bg-purple-600 hover:bg-purple-700 h-8 text-xs flex-1"
+                  >
+                    <Save className="w-3 h-3 mr-1" /> Save Notes
+                  </Button>
+                  <Button
+                    onClick={() => setShowGeneralNotes(false)}
+                    size="sm"
+                    variant="outline"
+                    className="border-slate-600 text-slate-300 h-8 text-xs"
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Model Release Section (Photographer mode + Paid only) */}
+          {shooterMode === 'photographer' && isPaid && (
+            <div className="mt-4 pt-4 border-t border-slate-700">
+              {!showModelRelease ? (
+                <button
+                  onClick={() => setShowModelRelease(true)}
+                  className="w-full text-left p-2.5 rounded-lg bg-slate-800/60 hover:bg-slate-800 transition-colors"
+                >
+                  <span className="text-slate-300 font-medium text-sm flex items-center gap-2">
+                    <FileCheck className="w-4 h-4 text-red-400" /> Model Release
+                  </span>
+                  {activeKit?.model_release_enabled ? (
+                    <p className="text-xs text-emerald-400 mt-1">✓ People/models included</p>
+                  ) : (
+                    <p className="text-xs text-slate-500 mt-1">Not set up yet</p>
+                  )}
+                </button>
+              ) : (
+                <div className="space-y-3 bg-slate-800/40 rounded-lg p-3">
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      checked={activeKit?.model_release_enabled || false}
+                      onChange={e => {
+                        const notesEl = document.querySelector('[data-release-notes]');
+                        saveModelRelease(e.target.checked, notesEl?.value || '');
+                      }}
+                      className="w-4 h-4 rounded"
+                    />
+                    <label className="text-slate-300 text-sm">Will include people/models in foreground?</label>
+                  </div>
+
+                  {(activeKit?.model_release_enabled) && (
+                    <>
+                      <div>
+                        <label className="text-slate-300 text-xs uppercase mb-1 block font-semibold">Model Names / Release Status</label>
+                        <Input
+                          data-release-notes
+                          placeholder="e.g., John Doe (signed), Jane Smith (pending)"
+                          defaultValue={activeKit?.model_release_notes || ''}
+                          className="bg-slate-800 border-slate-700 text-white text-xs h-8"
+                        />
+                      </div>
+
+                      <div className="bg-blue-900/30 border border-blue-500/30 rounded-lg p-2">
+                        <p className="text-xs text-blue-300 mb-2 font-semibold">📋 Model Release Template:</p>
+                        <p className="text-xs text-blue-200 leading-relaxed">
+                          "I grant permission for photographs including my likeness to be used for instructional and promotional purposes by [Your Name]. I understand no monetary compensation is guaranteed."
+                        </p>
+                      </div>
+
+                      <p className="text-xs text-slate-500">Get signed release before shoot – use template or upload your own PDF.</p>
+                    </>
+                  )}
+
+                  <div className="flex gap-2">
+                    <Button
+                      onClick={() => {
+                        const notesEl = document.querySelector('[data-release-notes]');
+                        const checkEl = document.querySelector('[type="checkbox"]');
+                        saveModelRelease(checkEl.checked, notesEl?.value || '');
+                      }}
+                      size="sm"
+                      className="bg-red-600 hover:bg-red-700 h-8 text-xs flex-1"
+                    >
+                      <Save className="w-3 h-3 mr-1" /> Save
+                    </Button>
+                    <Button
+                      onClick={() => setShowModelRelease(false)}
+                      size="sm"
+                      variant="outline"
+                      className="border-slate-600 text-slate-300 h-8 text-xs"
+                    >
+                      Done
+                    </Button>
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </>
