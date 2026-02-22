@@ -622,12 +622,19 @@ export default function PlannerTool() {
     <PullToRefresh onRefresh={handleRefresh}>
       <div className="max-w-6xl mx-auto px-4 py-8">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-4xl font-black text-white mb-2 flex items-center gap-3">
-          <MapPin className="w-9 h-9 text-purple-400" />
-          <span>Sky <span className="gradient-text">Planner</span></span>
-        </h1>
-        <p className="text-slate-400 text-lg">Plan the perfect Milky Way shoot with precision astronomy data.</p>
+      <div className="mb-8 flex items-center justify-between">
+        <div>
+          <h1 className="text-4xl font-black text-white mb-2 flex items-center gap-3">
+            <MapPin className="w-9 h-9 text-purple-400" />
+            <span>Sky <span className="gradient-text">Planner</span></span>
+          </h1>
+          <p className="text-slate-400 text-lg">Plan the perfect Milky Way shoot with precision astronomy data.</p>
+        </div>
+        <Link to={createPageUrl('SkyBrowser')} className="inline-flex">
+          <Button variant="outline" className="border-purple-500/40 text-purple-300 hover:bg-purple-900/20 text-sm gap-2">
+            <Star className="w-4 h-4" /> Sky Browser
+          </Button>
+        </Link>
       </div>
 
       <div className="grid lg:grid-cols-5 gap-6">
