@@ -6,9 +6,11 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import ReactMarkdown from 'react-markdown';
+import SupplementaryContent from '../components/lesson/SupplementaryContent';
+import { generateLessonContent } from '../functions/generateLessonContent';
 import {
   ChevronLeft, ChevronRight, CheckCircle2, PlayCircle,
-  FileText, Download, Camera
+  FileText, Download, Camera, Loader
 } from 'lucide-react';
 
 export default function LessonView() {
@@ -22,6 +24,8 @@ export default function LessonView() {
   const [completed, setCompleted] = useState(false);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [supplement, setSupplement] = useState(null);
+  const [genLoading, setGenLoading] = useState(false);
 
   useEffect(() => {
     if (!lessonId) { navigate(createPageUrl('Dashboard')); return; }
@@ -52,6 +56,12 @@ export default function LessonView() {
       setAllLessons(modLessons);
       setCompleted(prog.length > 0 && prog[0].completed);
       setLoading(false);
+
+      // Load or generate supplementary content
+      const supplements = await base44.entities.LessonSupplement.filter({ lesson_id: lessonId }, '-created_date', 1).catch(() => []);
+      if (supplements.length > 0) {
+        setSupplement(supplements[0]);
+      }
     };
     load();
   }, [lessonId, moduleId]);
@@ -120,6 +130,32 @@ export default function LessonView() {
             <ReactMarkdown>{lesson.content}</ReactMarkdown>
           </div>
         </Card>
+      )}
+
+      {/* Supplementary Content */}
+      {lesson && (
+        <div className="mb-8">
+          {!supplement && !genLoading && (
+            <Button
+              onClick={async () => {
+                setGenLoading(true);
+                const result = await generateLessonContent(lesson.id, lesson.title, lesson.content || '');
+                setSupplement(result);
+                setGenLoading(false);
+              }}
+              className="bg-blue-600 hover:bg-blue-700 w-full md:w-auto"
+            >
+              📚 Generate Study Materials
+            </Button>
+          )}
+          {genLoading && (
+            <div className="flex items-center justify-center py-8 gap-2 text-slate-400">
+              <Loader className="w-5 h-5 animate-spin" />
+              <span>Generating summary, quiz, and resources...</span>
+            </div>
+          )}
+          {supplement && <SupplementaryContent supplement={supplement} />}
+        </div>
       )}
 
       {/* Mark Complete & Nav */}
