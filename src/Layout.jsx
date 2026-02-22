@@ -133,7 +133,7 @@ export default function Layout({ children, currentPageName }) {
           <Sparkles className="w-3.5 h-3.5 ml-auto text-yellow-500 flex-shrink-0" />
         )}
         {currentPageName === item.page && !item.freeTag && !locked && (
-          <ChevronRight className="w-4 h-4 ml-auto text-purple-400" />
+          <ChevronRight className="w-4 h-4 ml-auto text-red-400" />
         )}
       </Link>
     );
