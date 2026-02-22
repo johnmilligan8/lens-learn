@@ -17,6 +17,7 @@ import {
   Star,
   Sparkles,
   ChevronRight,
+  ChevronLeft,
   Rocket
 } from 'lucide-react';
 

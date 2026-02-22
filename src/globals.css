@@ -54,6 +54,20 @@ a, button, [role="button"] {
   -webkit-user-select: none;
 }
 
+/* Non-content UI: disable selection globally */
+nav, header, footer, aside, [data-ui="true"],
+label, input, select, textarea {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Allow text selection in lesson/content areas */
+.selectable-content,
+.selectable-content * {
+  user-select: text !important;
+  -webkit-user-select: text !important;
+}
+
 .cosmic-bg {
   background-color: var(--cosmic-bg);
   background-image:
