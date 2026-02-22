@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import SkyCanvas from '../components/planner/SkyCanvas';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
