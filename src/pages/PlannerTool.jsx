@@ -584,10 +584,12 @@ export default function PlannerTool() {
               <div>
                 <Label className="text-slate-300 mb-2 block text-sm">Location</Label>
                 <LocationPicker
-                  value={{ location, lat: coords?.lat, lon: coords?.lon }}
-                  onChange={({ location: loc, lat, lon }) => {
-                    setLocation(loc || '');
-                    if (lat && lon) setCoords({ lat, lon, name: loc });
+                  value={location}
+                  lat={coords?.lat}
+                  lon={coords?.lon}
+                  onChange={({ name, lat, lon }) => {
+                    setLocation(name || '');
+                    if (lat && lon) setCoords({ lat, lon, name });
                     else setCoords(null);
                   }}
                 />
