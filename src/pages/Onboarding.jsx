@@ -99,11 +99,11 @@ export default function Onboarding() {
               </Button>
             )}
             {step < steps.length - 1 ? (
-              <Button onClick={() => setStep(s => s + 1)} className="flex-1 bg-purple-600 hover:bg-purple-700 font-bold">
+              <Button onClick={() => setStep(s => s + 1)} className="flex-1 bg-red-600 hover:bg-red-700 font-bold">
                 Continue <ChevronRight className="w-4 h-4 ml-1" />
               </Button>
             ) : (
-              <Button onClick={finish} disabled={saving} className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 font-bold">
+              <Button onClick={finish} disabled={saving} className="flex-1 bg-red-600 hover:bg-red-700 font-bold">
                 {saving ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Saving...</> : <>Launch My Expedition 🚀</>}
               </Button>
             )}
