@@ -178,7 +178,7 @@ export default function Layout({ children, currentPageName }) {
               </Link>
           )}
           <div className="flex items-center gap-3 px-2 py-2">
-            <div className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
+            <div className="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
               {user?.full_name?.[0] || user?.email?.[0] || 'U'}
             </div>
             <div className="flex-1 min-w-0">
