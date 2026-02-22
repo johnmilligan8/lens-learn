@@ -69,6 +69,11 @@ export default function Layout({ children, currentPageName }) {
     }
   }, [loading, user, isSubscribed, currentPageName]);
 
+  // Pages that are "root" tabs — all others are child screens
+  const rootPages = ['Dashboard', 'TonightHub', 'PlannerTool', 'CommunityGallery', 'Profile',
+    'EventsCalendar', 'FreeCourse', 'InstructorDashboard', 'PaymentGate', 'Onboarding'];
+  const isChildScreen = !rootPages.includes(currentPageName);
+
   const allNavItems = user?.role === 'admin'
     ? [...navItems, { icon: Settings, label: 'Instructor Hub', page: 'InstructorDashboard' }]
     : navItems;
