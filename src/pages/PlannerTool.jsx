@@ -5,6 +5,7 @@ import EphemerisLookup from '../components/planner/EphemerisLookup';
 import GearSetup from '../components/planner/GearSetup';
 import BestShotSuggestions from '../components/planner/BestShotSuggestions';
 import HistoricalWeatherAnalysis from '../components/planner/HistoricalWeatherAnalysis';
+import ExposureCalculator from '../components/planner/ExposureCalculator';
 import GearChecklist from '../components/planner/GearChecklist';
 import ClientEmailGenerator from '../components/planner/ClientEmailGenerator';
 import ExpeditionManager from '../components/planner/ExpeditionManager';
@@ -818,6 +819,9 @@ export default function PlannerTool() {
                   </div>
                 </Card>
               </div>
+
+              {/* Exposure Calculator */}
+              <ExposureCalculator gear={gear} results={results} date={date} />
 
               {/* Best Shot Suggestions */}
               <BestShotSuggestions gear={gear} results={results} weather={weather} date={date} />
