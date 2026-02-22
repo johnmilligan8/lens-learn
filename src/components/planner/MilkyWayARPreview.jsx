@@ -48,11 +48,14 @@ export default function MilkyWayARPreview({ lat, lon, dateStr, isSubscribed, sho
   const [showARView, setShowARView] = useState(false);
   const [showSetup, setShowSetup] = useState(false);
   const [location, setLocation] = useState({ lat, lon, name: '' });
-  const [selectedDate, setSelectedDate] = useState(dateStr || new Date().toISOString().split('T')[0]);
+  const today = new Date().toISOString().split('T')[0];
+  const [selectedDate, setSelectedDate] = useState(dateStr || today);
+  const [dateWarning, setDateWarning] = useState('');
   const [selectedTime, setSelectedTime] = useState('22:00');
   const [loading, setLoading] = useState(false);
   const [cameraAvailable, setCameraAvailable] = useState(true);
   const [permissionError, setPermissionError] = useState('');
+  const [manualAzOffset, setManualAzOffset] = useState(0);
 
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
@@ -71,9 +74,25 @@ export default function MilkyWayARPreview({ lat, lon, dateStr, isSubscribed, sho
     return { alt: Math.round(alt), az: Math.round(az), moonIllum: moon.illumination };
   };
 
+  const handleDateChange = (newDate) => {
+    const selected = new Date(newDate);
+    const todayDate = new Date(today);
+    if (selected < todayDate) {
+      setDateWarning('⚠️ Planning is forward-only. Select today or a future date.');
+      return;
+    }
+    setDateWarning('');
+    setSelectedDate(newDate);
+  };
+
   const startAR = async () => {
     if (!isSubscribed) {
       alert('AR Scout requires a Plus subscription.');
+      return;
+    }
+
+    if (new Date(selectedDate) < new Date(today)) {
+      alert('Cannot plan for past dates. Select today or future.');
       return;
     }
 
@@ -141,90 +160,140 @@ export default function MilkyWayARPreview({ lat, lon, dateStr, isSubscribed, sho
     const h = canvas.height = video.videoHeight;
     const centerX = w / 2;
     const centerY = h / 2;
+    const horizon = h * 0.7; // Approximate horizon line
 
     // Clear with semi-transparent overlay
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
     ctx.fillRect(0, 0, w, h);
 
     const { alt, az, moonIllum } = getMWPosition();
-    const heading = compassHeadingRef.current;
+    const heading = (compassHeadingRef.current + manualAzOffset) % 360;
 
-    // Calculate deviation: camera pointing at heading, MW at az
+    // Calculate deviation with manual calibration offset
     const azDev = ((az - heading + 360) % 360);
     const visualAz = azDev > 180 ? azDev - 360 : azDev;
 
-    // Visibility check
+    // Enhanced visibility check
     let visibility = 'Poor';
     let visColor = '#ff4444';
-    if (alt > 20) {
+    let visIcon = '❌';
+    if (alt < -2) {
+      visibility = 'Below Horizon';
+      visColor = '#666666';
+      visIcon = '↓';
+    } else if (alt > 30) {
+      visibility = moonIllum > 60 ? 'Marginal' : 'Excellent';
+      visColor = moonIllum > 60 ? '#ffaa44' : '#44ff44';
+      visIcon = moonIllum > 60 ? '⚠️' : '✅';
+    } else if (alt > 15) {
       visibility = moonIllum > 60 ? 'Marginal' : 'Good';
       visColor = moonIllum > 60 ? '#ffaa44' : '#44ff44';
+      visIcon = moonIllum > 60 ? '⚠️' : '👍';
+    } else if (alt > 0) {
+      visibility = moonIllum > 70 ? 'Poor' : 'Marginal';
+      visColor = moonIllum > 70 ? '#ff4444' : '#ffaa44';
+      visIcon = '⚠️';
     }
 
-    // Draw crosshair
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+    // Draw horizon line
+    ctx.strokeStyle = 'rgba(150, 150, 150, 0.2)';
     ctx.lineWidth = 1;
+    ctx.setLineDash([5, 5]);
     ctx.beginPath();
-    ctx.moveTo(centerX - 30, centerY);
-    ctx.lineTo(centerX + 30, centerY);
-    ctx.moveTo(centerX, centerY - 30);
-    ctx.lineTo(centerX, centerY + 30);
+    ctx.moveTo(0, horizon);
+    ctx.lineTo(w, horizon);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Draw center crosshair
+    ctx.strokeStyle = 'rgba(200, 200, 200, 0.4)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(centerX - 20, centerY);
+    ctx.lineTo(centerX + 20, centerY);
+    ctx.moveTo(centerX, centerY - 20);
+    ctx.lineTo(centerX, centerY + 20);
     ctx.stroke();
 
-    // Draw Milky Way arc (if visible)
+    // Draw Milky Way arc (dotted)
     if (alt > -5) {
-      const pxPerDegree = w / 100; // Rough FoV
+      const pxPerDegree = w / 90; // ~90° horizontal FoV
       const xPos = centerX + (visualAz * pxPerDegree);
-      const yPos = centerY - ((alt * 0.8) * pxPerDegree);
-
-      // Arc path (simplified)
+      const arcRadius = 50;
+      
+      // Dotted arc (Milky Way arch)
       ctx.strokeStyle = visColor;
       ctx.lineWidth = 3;
-      ctx.globalAlpha = 0.8;
+      ctx.globalAlpha = 0.85;
+      ctx.setLineDash([8, 6]);
       ctx.beginPath();
-      ctx.arc(xPos, yPos, 40, 0, Math.PI * 2);
+      ctx.arc(xPos, horizon - (alt * pxPerDegree * 0.5), arcRadius, Math.PI * 0.2, Math.PI * 0.8);
       ctx.stroke();
+      ctx.setLineDash([]);
 
-      // Galactic core dot
+      // Galactic core dot & label
       ctx.fillStyle = visColor;
-      ctx.beginPath();
-      ctx.arc(xPos, yPos, 8, 0, Math.PI * 2);
-      ctx.fill();
       ctx.globalAlpha = 1;
+      ctx.beginPath();
+      ctx.arc(xPos, horizon - (alt * pxPerDegree * 0.5), 10, 0, Math.PI * 2);
+      ctx.fill();
 
-      // Label
+      // Core label
       ctx.fillStyle = visColor;
-      ctx.font = 'bold 16px Montserrat';
-      ctx.fillText('Sgr A*', xPos + 15, yPos - 15);
+      ctx.font = 'bold 18px Montserrat';
+      ctx.textAlign = 'left';
+      ctx.fillText('Sgr A*', xPos + 20, horizon - (alt * pxPerDegree * 0.5) - 5);
+
+      // Horizon crossing points (simplified)
+      ctx.font = '10px Montserrat';
+      ctx.fillStyle = 'rgba(200, 200, 200, 0.6)';
+      ctx.textAlign = 'center';
+      ctx.fillText('↑ Core rises here', xPos - 60, horizon + 20);
     }
 
-    // Top-left: Compass & Alt/Az
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-    ctx.fillRect(10, 10, 200, 120);
+    // Top-left: Info panel
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.65)';
+    ctx.fillRect(10, 10, 220, 140);
+    ctx.textAlign = 'left';
 
     ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 14px Montserrat';
-    ctx.fillText(`Heading: ${Math.round(heading)}°`, 20, 35);
-    ctx.fillText(`Core Alt: ${alt}°`, 20, 60);
-    ctx.fillText(`Core Az: ${Math.round(az)}°`, 20, 85);
-    ctx.fillText(`Visibility: ${visibility}`, 20, 110);
+    ctx.font = 'bold 13px Montserrat';
+    ctx.fillText(`📍 Heading: ${Math.round(heading)}°`, 20, 32);
 
-    // Bottom: Calibration hint + mode tip
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
-    ctx.fillRect(10, h - 70, w - 20, 60);
+    ctx.fillStyle = '#aaaaaa';
+    ctx.font = '11px Montserrat';
+    ctx.fillText(`Core Alt: ${alt}° | Az: ${Math.round(az)}°`, 20, 50);
+    ctx.fillText(`Visibility: ${visibility} ${visIcon}`, 20, 68);
+    ctx.fillText(`Moon: ${moonIllum}% illuminated`, 20, 86);
+    ctx.fillText(`Date: ${selectedDate} ${selectedTime} UTC`, 20, 104);
+    ctx.fillText(`Manual offset: ${manualAzOffset}°`, 20, 122);
+
+    // Bottom: Instructions & Mode tip
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+    ctx.fillRect(0, h - 90, w, 90);
+    ctx.textAlign = 'center';
+    
     ctx.fillStyle = '#cccccc';
     ctx.font = '12px Montserrat';
-    ctx.fillText('Point phone at a known landmark to align', 20, h - 50);
+    ctx.fillText('Drag left/right to calibrate · Point at known landmark to align', w / 2, h - 65);
 
     if (shooterMode === 'photographer') {
-      ctx.fillText('Composer tip: position core in lower third for foreground', 20, h - 30);
+      ctx.fillStyle = '#ffd700';
+      ctx.font = 'bold 11px Montserrat';
+      ctx.fillText('📷 Composition tip: Place core in lower third with foreground element', w / 2, h - 45);
     } else if (shooterMode === 'smartphone') {
-      ctx.fillText('Use Night Mode for best results', 20, h - 30);
+      ctx.fillStyle = '#87ceeb';
+      ctx.font = 'bold 11px Montserrat';
+      ctx.fillText('📱 Use Night Mode on your phone for sharp preview in darkness', w / 2, h - 45);
+    } else {
+      ctx.fillStyle = '#9966ff';
+      ctx.font = 'bold 11px Montserrat';
+      ctx.fillText('👁 Milky Way visible at core position – allow 20 min dark-adapt', w / 2, h - 45);
     }
 
     if (moonIllum > 60) {
       ctx.fillStyle = '#ffaa44';
-      ctx.fillText(`⚠️ Moon ${moonIllum}% bright – may wash sky`, 20, h - 10);
+      ctx.fillText(`⚠️ Moon at ${moonIllum}% – may wash out fainter Milky Way details`, w / 2, h - 20);
     }
 
     animationIdRef.current = requestAnimationFrame(drawOverlay);
@@ -238,6 +307,25 @@ export default function MilkyWayARPreview({ lat, lon, dateStr, isSubscribed, sho
     window.removeEventListener('deviceorientation', handleDeviceOrientation);
     if (animationIdRef.current) cancelAnimationFrame(animationIdRef.current);
     setShowARView(false);
+  };
+
+  const handleCanvasMouseDown = (e) => {
+    const startX = e.clientX;
+    const startOffset = manualAzOffset;
+
+    const handleMouseMove = (moveE) => {
+      const delta = moveE.clientX - startX;
+      const newOffset = startOffset + (delta / 10); // 10px per degree
+      setManualAzOffset(newOffset);
+    };
+
+    const handleMouseUp = () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
   };
 
   if (!showARView && !showSetup) {
@@ -297,9 +385,11 @@ export default function MilkyWayARPreview({ lat, lon, dateStr, isSubscribed, sho
               <Input
                 type="date"
                 value={selectedDate}
-                onChange={e => setSelectedDate(e.target.value)}
+                min={today}
+                onChange={e => handleDateChange(e.target.value)}
                 className="bg-slate-800 border-slate-700 text-white text-xs h-8"
               />
+              {dateWarning && <p className="text-yellow-400 text-xs mt-1">{dateWarning}</p>}
             </div>
             <div>
               <Label className="text-slate-300 text-xs uppercase block mb-1">Time (UTC)</Label>
@@ -347,7 +437,8 @@ export default function MilkyWayARPreview({ lat, lon, dateStr, isSubscribed, sho
       />
       <canvas
         ref={canvasRef}
-        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
+        onMouseDown={handleCanvasMouseDown}
+        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', cursor: 'grab' }}
       />
 
       {/* Controls */}
