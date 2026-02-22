@@ -7,6 +7,7 @@ import BestShotSuggestions from '../components/planner/BestShotSuggestions';
 import HistoricalWeatherAnalysis from '../components/planner/HistoricalWeatherAnalysis';
 import ExposureCalculator from '../components/planner/ExposureCalculator';
 import ForegroundCompositionGuide from '../components/planner/ForegroundCompositionGuide';
+import HistoricalSuccessData from '../components/planner/HistoricalSuccessData';
 import GearChecklist from '../components/planner/GearChecklist';
 import ClientEmailGenerator from '../components/planner/ClientEmailGenerator';
 import ExpeditionManager from '../components/planner/ExpeditionManager';
@@ -826,6 +827,9 @@ export default function PlannerTool() {
 
               {/* Foreground Composition Guide */}
               <ForegroundCompositionGuide location={location} date={date} gear={gear} />
+
+              {/* Historical Success Data */}
+              <HistoricalSuccessData location={location} userEmail={user?.email} />
 
               {/* Best Shot Suggestions */}
               <BestShotSuggestions gear={gear} results={results} weather={weather} date={date} />
