@@ -4,24 +4,24 @@ import { createPageUrl } from '@/utils';
 import { base44 } from '@/api/base44Client';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Check, Sparkles, Camera, Zap } from 'lucide-react';
+import { Check, Sparkles, Telescope, Zap, Rocket, Star } from 'lucide-react';
 
 const monthlyFeatures = [
-  'Full access to all 6 course modules',
-  'Video lessons & written guides',
-  'Milky Way planning tool',
-  'Instructor feedback on photos',
-  'Community gallery access',
-  'Astronomy events calendar',
+  'All 6 expedition modules unlocked',
+  'Video lessons, guides & field checklists',
+  'AI-powered Milky Way sky planner',
+  'Instructor feedback on your photos',
+  'Explorer community gallery',
+  'Cosmic events calendar & alerts',
 ];
 
 const lifetimeFeatures = [
-  'Everything in Monthly Plan',
-  'Lifetime access — pay once, own forever',
-  'All future content updates included',
-  'Priority instructor support',
-  'Exclusive advanced modules',
-  'Early access to new features',
+  'Everything in Explorer Plan',
+  'Lifetime access — explore forever',
+  'All future content & new expeditions',
+  'Priority instructor mentorship',
+  'Exclusive advanced galaxy techniques',
+  'First access to new features & tools',
 ];
 
 export default function PaymentGate() {
@@ -54,10 +54,15 @@ export default function PaymentGate() {
   return (
     <div className="min-h-screen cosmic-bg flex flex-col">
       {/* Header */}
-      <div className="p-6 border-b border-slate-800/60 bg-slate-900/60 backdrop-blur-md">
-        <div className="flex items-center gap-2 max-w-6xl mx-auto">
-          <Camera className="w-8 h-8 text-purple-400" />
-          <span className="text-xl font-bold gradient-text">Uncharted.net</span>
+      <div className="p-6 border-b border-slate-800/40 bg-[#03020d]/80 backdrop-blur-md">
+        <div className="flex items-center gap-3 max-w-6xl mx-auto">
+          <div className="bg-gradient-to-br from-purple-600 to-blue-700 rounded-xl w-9 h-9 flex items-center justify-center">
+            <Telescope className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <span className="text-lg font-black text-white tracking-tight">UnchartedGalaxy</span>
+            <span className="text-purple-400/60 text-xs ml-2">by uncharted.net</span>
+          </div>
         </div>
       </div>
 
@@ -65,14 +70,14 @@ export default function PaymentGate() {
         <div className="w-full max-w-5xl">
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 bg-purple-900/30 border border-purple-500/30 rounded-full px-4 py-2 mb-6">
-              <Sparkles className="w-4 h-4 text-purple-400" />
-              <span className="text-purple-300 text-sm font-medium">Join thousands of night photographers</span>
+              <Rocket className="w-4 h-4 text-purple-400" />
+              <span className="text-purple-300 text-sm font-medium">Join explorers mastering the night sky</span>
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              Choose Your <span className="gradient-text">Learning Plan</span>
+            <h1 className="text-4xl md:text-5xl font-black text-white mb-4 leading-tight">
+              Begin Your <span className="gradient-text">Expedition</span>
             </h1>
             <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-              Unlock the complete Milky Way photography curriculum, tools, and community
+              Unlock the complete galaxy photography curriculum, AI planning tools, cosmic event alerts, and a community of fellow explorers.
             </p>
           </div>
 
