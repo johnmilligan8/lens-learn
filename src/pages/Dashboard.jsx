@@ -2,6 +2,9 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import PullToRefresh from '../components/ui/PullToRefresh';
 import SkyPlannerPreview from '../components/dashboard/SkyPlannerPreview';
+import ActionCard from '../components/ui/ActionCard';
+import PageHeader from '../components/ui/PageHeader';
+import QuickStats from '../components/ui/QuickStats';
 import { createPageUrl } from '@/utils';
 import { base44 } from '@/api/base44Client';
 import { Card } from '@/components/ui/card';
@@ -92,37 +95,20 @@ export default function Dashboard() {
     <PullToRefresh onRefresh={loadData}>
       <div className="max-w-7xl mx-auto px-4 py-8 relative">
       {/* Hero Header */}
-      <div className="relative mb-12 overflow-hidden rounded-2xl border border-purple-500/20 bg-gradient-to-br from-[#0d0520] via-[#060318] to-[#020212] p-8 md:p-12">
-        <div className="relative z-10">
-          <div className="inline-flex items-center gap-2 bg-purple-900/40 border border-purple-500/30 rounded-full px-3 py-1 mb-5">
-            <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-purple-200 text-xs font-semibold tracking-widest uppercase">Mission Active</span>
-          </div>
-          <h1 className="text-4xl md:text-6xl font-black text-white mb-4 leading-tight">
-            Chart the <span className="gradient-text">Unknown</span>,<br />
-            Master the <span className="gradient-text-gold">Galaxy.</span>
-          </h1>
-          <p className="text-slate-400 text-lg md:text-xl max-w-2xl mb-8">
-            Every great astrophotographer started exactly where you are. Your expedition continues, {user?.full_name?.split(' ')[0] || 'Explorer'}.
-          </p>
-          <div className="flex flex-wrap gap-6">
-            <div className="text-center">
-              <p className="text-3xl font-black text-white">{overallPct}%</p>
-              <p className="text-slate-500 text-xs uppercase tracking-widest mt-1">Course Complete</p>
-            </div>
-            <div className="w-px bg-slate-700" />
-            <div className="text-center">
-              <p className="text-3xl font-black text-white">{completedCount}</p>
-              <p className="text-slate-500 text-xs uppercase tracking-widest mt-1">Lessons Done</p>
-            </div>
-            <div className="w-px bg-slate-700" />
-            <div className="text-center">
-              <p className="text-3xl font-black text-white">{modules.length}</p>
-              <p className="text-slate-500 text-xs uppercase tracking-widest mt-1">Expeditions</p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <PageHeader
+        icon={Rocket}
+        badge="Mission Active"
+        title={<>Chart the <span className="gradient-text">Unknown</span>,<br />Master the <span className="gradient-text-gold">Galaxy</span></>}
+        subtitle={`Every great astrophotographer started exactly where you are. Your expedition continues, ${user?.full_name?.split(' ')[0] || 'Explorer'}.`}
+      />
+
+      {/* Quick Stats */}
+      <QuickStats stats={[
+        { label: 'Course Progress', value: `${overallPct}%` },
+        { label: 'Lessons Done', value: completedCount },
+        { label: 'Total Expeditions', value: modules.length },
+        { label: 'Streak', value: '7d', change: { positive: true, text: 'Keep it up!' } },
+      ]} />
 
       {/* Free tier upsell banner */}
       {!isSubscribed && (
@@ -166,45 +152,46 @@ export default function Dashboard() {
         </div>
       )}
 
-      {/* Quick Actions */}
-      <h2 className="text-2xl font-bold text-white mb-5 flex items-center gap-2">
-        <Zap className="w-6 h-6 text-yellow-400" /> Mission Briefings
-      </h2>
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
-        <Link to={createPageUrl('TonightHub')}>
-          <Card className="bg-gradient-to-br from-emerald-900/30 to-teal-900/10 border border-emerald-500/40 p-6 card-glow hover:border-emerald-400/70 transition-all group h-full">
-            <div className="bg-emerald-600/20 p-4 rounded-xl w-fit mb-4"><Rocket className="w-7 h-7 text-emerald-400" /></div>
-            <h3 className="text-lg font-bold text-white mb-1 group-hover:text-emerald-300 transition-colors">Tonight?</h3>
-            <p className="text-slate-400 text-sm">Top ranked sky events for tonight with viability scores and a one-tap shoot plan.</p>
-            <p className="text-emerald-400 text-sm mt-3 flex items-center gap-1 font-medium">Decide now <ChevronRight className="w-4 h-4" /></p>
-          </Card>
-        </Link>
-        <Link to={createPageUrl('PlannerTool')}>
-          <Card className="bg-slate-900/60 border-slate-800 p-6 card-glow hover:border-purple-500/40 transition-all group h-full">
-            <div className="bg-purple-600/20 p-4 rounded-xl w-fit mb-4"><MapPin className="w-7 h-7 text-purple-400" /></div>
-            <h3 className="text-lg font-bold text-white mb-1 group-hover:text-purple-300 transition-colors">Sky Planner</h3>
-            <p className="text-slate-400 text-sm">Predict Milky Way visibility, moon interference & optimal shoot windows for any location.</p>
-            <p className="text-purple-400 text-sm mt-3 flex items-center gap-1 font-medium">Plan a shoot <ChevronRight className="w-4 h-4" /></p>
-          </Card>
-        </Link>
-
-        <Link to={createPageUrl('EventsCalendar')}>
-          <Card className="bg-slate-900/60 border-slate-800 p-6 card-glow hover:border-yellow-500/40 transition-all group h-full">
-            <div className="bg-yellow-600/20 p-4 rounded-xl w-fit mb-4"><Star className="w-7 h-7 text-yellow-400" /></div>
-            <h3 className="text-lg font-bold text-white mb-1 group-hover:text-yellow-300 transition-colors">Cosmic Events</h3>
-            <p className="text-slate-400 text-sm">Meteor showers, eclipses, aurora alerts & more. Never miss a once-in-a-lifetime sky event.</p>
-            <p className="text-yellow-400 text-sm mt-3 flex items-center gap-1 font-medium">See events <ChevronRight className="w-4 h-4" /></p>
-          </Card>
-        </Link>
-
-        <Link to={createPageUrl('CommunityGallery')}>
-          <Card className="bg-slate-900/60 border-slate-800 p-6 card-glow hover:border-blue-500/40 transition-all group h-full">
-            <div className="bg-blue-600/20 p-4 rounded-xl w-fit mb-4"><Sparkles className="w-7 h-7 text-blue-400" /></div>
-            <h3 className="text-lg font-bold text-white mb-1 group-hover:text-blue-300 transition-colors">Explorer Gallery</h3>
-            <p className="text-slate-400 text-sm">Share your shots with fellow explorers. Get real feedback from instructors and the community.</p>
-            <p className="text-blue-400 text-sm mt-3 flex items-center gap-1 font-medium">Explore <ChevronRight className="w-4 h-4" /></p>
-          </Card>
-        </Link>
+      {/* Mission Briefings */}
+      <div className="mb-12">
+        <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+          <Zap className="w-6 h-6 text-yellow-400" /> What Do You Want To Do?
+        </h2>
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+          <ActionCard
+            icon={Rocket}
+            title="Tonight?"
+            description="Top ranked sky events for tonight with viability scores."
+            label="Decide now"
+            href={createPageUrl('TonightHub')}
+            color="emerald"
+          />
+          <ActionCard
+            icon={MapPin}
+            title="Sky Planner"
+            description="Predict visibility, moon interference & optimal shoot windows."
+            label="Plan a shoot"
+            href={createPageUrl('PlannerTool')}
+            color="purple"
+            disabled={!isSubscribed}
+          />
+          <ActionCard
+            icon={Star}
+            title="Cosmic Events"
+            description="Meteor showers, eclipses, aurora alerts & more events."
+            label="See events"
+            href={createPageUrl('EventsCalendar')}
+            color="yellow"
+          />
+          <ActionCard
+            icon={Sparkles}
+            title="Explorer Gallery"
+            description="Share your shots with fellow explorers & get feedback."
+            label="Explore"
+            href={createPageUrl('CommunityGallery')}
+            color="blue"
+          />
+        </div>
       </div>
 
       {/* Sky Planner Preview for Free Users */}
