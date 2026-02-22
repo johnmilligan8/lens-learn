@@ -121,26 +121,42 @@ label, input, select, textarea {
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #c084fc 0%, #818cf8 50%, #38bdf8 100%);
+  background: linear-gradient(135deg, #ff4444 0%, #cc0000 50%, #ff6666 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .gradient-text-gold {
-  background: linear-gradient(135deg, #fbbf24 0%, #f97316 50%, #e879f9 100%);
+  background: linear-gradient(135deg, #ff4444 0%, #cc0000 60%, #ff8800 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .card-glow:hover {
-  box-shadow: 0 0 40px rgba(139, 92, 246, 0.2), 0 0 80px rgba(59, 130, 246, 0.08);
+  box-shadow: 0 0 40px rgba(204, 0, 0, 0.18), 0 0 80px rgba(180, 20, 20, 0.08);
   transition: box-shadow 0.3s ease;
 }
 
 .card-glow-gold:hover {
-  box-shadow: 0 0 40px rgba(251, 191, 36, 0.15);
+  box-shadow: 0 0 40px rgba(204, 0, 0, 0.15);
+}
+
+/* Uncharted brand button style */
+.uc-btn-primary {
+  background: var(--uc-red);
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: 2px solid var(--uc-red);
+  transition: background 0.2s, border-color 0.2s;
+}
+.uc-btn-primary:hover {
+  background: var(--uc-red-hover);
+  border-color: var(--uc-red-hover);
 }
 
 @keyframes pulse-glow {
