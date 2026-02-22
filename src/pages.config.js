@@ -56,6 +56,7 @@ import EventsCalendar from './pages/EventsCalendar';
 import CommunityGallery from './pages/CommunityGallery';
 import Profile from './pages/Profile';
 import InstructorDashboard from './pages/InstructorDashboard';
+import FreeCourse from './pages/FreeCourse';
 import __Layout from './Layout.jsx';
 
 
@@ -69,6 +70,7 @@ export const PAGES = {
     "CommunityGallery": CommunityGallery,
     "Profile": Profile,
     "InstructorDashboard": InstructorDashboard,
+    "FreeCourse": FreeCourse,
 }
 
 export const pagesConfig = {
