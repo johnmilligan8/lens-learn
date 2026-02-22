@@ -6,6 +6,7 @@ import GearSetup from '../components/planner/GearSetup';
 import BestShotSuggestions from '../components/planner/BestShotSuggestions';
 import HistoricalWeatherAnalysis from '../components/planner/HistoricalWeatherAnalysis';
 import ExposureCalculator from '../components/planner/ExposureCalculator';
+import ForegroundCompositionGuide from '../components/planner/ForegroundCompositionGuide';
 import GearChecklist from '../components/planner/GearChecklist';
 import ClientEmailGenerator from '../components/planner/ClientEmailGenerator';
 import ExpeditionManager from '../components/planner/ExpeditionManager';
@@ -822,6 +823,9 @@ export default function PlannerTool() {
 
               {/* Exposure Calculator */}
               <ExposureCalculator gear={gear} results={results} date={date} />
+
+              {/* Foreground Composition Guide */}
+              <ForegroundCompositionGuide location={location} date={date} gear={gear} />
 
               {/* Best Shot Suggestions */}
               <BestShotSuggestions gear={gear} results={results} weather={weather} date={date} />
