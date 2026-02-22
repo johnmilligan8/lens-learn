@@ -545,7 +545,11 @@ export default function PlannerTool() {
 
     setResults({ moon, moonImpact, gcData, bortle, bortleInfo, bestWindow, inSeason, isPeak, overallScore, coords: c });
     setAiTips('');
+    setWeather(null);
+    setWeatherError(null);
     setCalcLoading(false);
+    // Auto-fetch weather
+    fetchWeather(c.lat, c.lon, date);
   };
 
   const getAITips = async () => {
