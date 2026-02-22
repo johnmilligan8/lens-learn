@@ -146,17 +146,18 @@ export default function Layout({ children, currentPageName }) {
         {/* Logo */}
         <div className="p-6 border-b border-slate-800/40">
           <Link to={createPageUrl('Dashboard')} className="flex items-center gap-3">
-            <div className="relative w-10 h-10 flex-shrink-0">
-              <div className="absolute inset-0 bg-purple-600/30 rounded-xl blur-md" />
-              <div className="relative bg-gradient-to-br from-purple-600 to-blue-700 rounded-xl w-10 h-10 flex items-center justify-center">
-                <Telescope className="w-5 h-5 text-white" />
+            <img
+              src="https://uncharted.net/wp-content/uploads/2022/09/Uncharted-Logo-Horizontal-White-e1664469570536.png"
+              alt="UNCHARTED"
+              className="h-8 w-auto object-contain"
+              style={{ maxWidth: 160 }}
+              onError={e => { e.target.style.display='none'; e.target.nextSibling.style.display='flex'; }}
+            />
+            <div style={{display:'none'}} className="items-center gap-2">
+              <div className="bg-red-600 rounded-lg w-7 h-7 flex items-center justify-center">
+                <Telescope className="w-4 h-4 text-white" />
               </div>
-            </div>
-            <div>
-              <p className="font-black text-white text-base leading-none tracking-tight">
-                UNCHARTED<sup className="text-[10px] font-normal align-super">®</sup> <span className="gradient-text">GALAXY</span>
-              </p>
-              <p className="text-purple-400/70 text-xs tracking-widest">www.uncharted.net</p>
+              <span className="font-black text-white text-lg tracking-tight">UNCHARTED</span>
             </div>
           </Link>
         </div>
