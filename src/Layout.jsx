@@ -219,7 +219,7 @@ export default function Layout({ children, currentPageName }) {
 
       {/* Mobile Bottom Tab Bar */}
       <nav
-        className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-slate-900/95 backdrop-blur-md border-t border-slate-800/60 flex items-start select-none"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#111111]/98 backdrop-blur-md border-t border-white/5 flex items-start select-none"
         style={{
           paddingBottom: 'env(safe-area-inset-bottom)',
           paddingLeft: 'env(safe-area-inset-left)',
