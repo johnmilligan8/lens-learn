@@ -178,16 +178,26 @@ function decToDMS(dec) {
 const CATEGORY_LABEL = { planet: 'Solar System', star: 'Star', deep_sky: 'Deep Sky' };
 const CATEGORY_COLOR = { planet: 'text-amber-300 border-amber-500/40 bg-amber-900/20', star: 'text-slate-200 border-slate-500/40 bg-slate-800/40', deep_sky: 'text-indigo-300 border-indigo-500/40 bg-indigo-900/20' };
 
-export default function EphemerisLookup({ lat, lon, dateStr }) {
+export default function EphemerisLookup({ lat, lon, dateStr, initialTarget }) {
   const [query, setQuery] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
   const [selected, setSelected] = useState(null);
-  const [queryTime, setQueryTime] = useState('22:00'); // HH:MM UTC
+  const [queryTime, setQueryTime] = useState('22:00');
   const [queryDate, setQueryDate] = useState(dateStr);
   const inputRef = useRef(null);
 
   // Sync date when parent date changes
   useEffect(() => { setQueryDate(dateStr); }, [dateStr]);
+
+  // When Sky Canvas sends a target, pre-populate the search
+  useEffect(() => {
+    if (!initialTarget) return;
+    const found = CATALOG.find(o => o.name === initialTarget || o.name.toLowerCase().includes(initialTarget.toLowerCase()));
+    if (found) {
+      setSelected(found);
+      setQuery(found.name);
+    }
+  }, [initialTarget]);
 
   const filtered = useMemo(() => {
     if (!query.trim()) return [];
