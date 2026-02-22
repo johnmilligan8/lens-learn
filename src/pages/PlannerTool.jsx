@@ -593,7 +593,7 @@ export default function PlannerTool() {
                     else setCoords(null);
                   }}
                 />
-                {coords && <p className="text-xs text-emerald-400 mt-1">📍 {coords.lat.toFixed(4)}°, {coords.lon.toFixed(4)}°</p>}
+
               </div>
               <div>
                 <Label className="text-slate-300 mb-2 block text-sm">Date</Label>
