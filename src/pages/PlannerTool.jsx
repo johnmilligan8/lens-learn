@@ -12,6 +12,7 @@ import AdvancedForecast from '../components/planner/AdvancedForecast';
 import VisibleSkyNow from '../components/sky/VisibleSkyNow';
 import PostShootLogger from '../components/shoot/PostShootLogger';
 import ShootAnalytics from '../components/shoot/ShootAnalytics';
+import AuroraVisibilityCorrelation from '../components/aurora/AuroraVisibilityCorrelation';
 import PostProcessingGuide from '../components/planner/PostProcessingGuide';
 import GearChecklist from '../components/planner/GearChecklist';
 import ClientEmailGenerator from '../components/planner/ClientEmailGenerator';
@@ -863,6 +864,15 @@ export default function PlannerTool() {
                   lon={results.coords?.lon}
                   locationName={results.coords?.name || location}
                   overrideDate={new Date(date + 'T22:00:00Z')}
+                />
+              )}
+
+              {/* Aurora Visibility Forecast (correlated with location) */}
+              {results && (
+                <AuroraVisibilityCorrelation
+                  lat={results.coords?.lat}
+                  lon={results.coords?.lon}
+                  locationName={results.coords?.name || location}
                 />
               )}
 
