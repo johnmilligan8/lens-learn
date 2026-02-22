@@ -5,10 +5,10 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { format, parseISO, isPast, isThisMonth, isAfter, isBefore } from 'date-fns';
+import { format, parseISO, isPast, isThisMonth, isWithinInterval, startOfMonth, endOfMonth } from 'date-fns';
 import {
   Calendar, Star, Sparkles, Moon, Zap, Eye,
-  AlertCircle, ChevronDown, ChevronUp
+  AlertCircle, ChevronDown, ChevronUp, Filter, X
 } from 'lucide-react';
 
 const EVENT_ICONS = {
@@ -51,11 +51,10 @@ const SAMPLE_EVENTS = [
 ];
 
 export default function EventsCalendar() {
-   const [events, setEvents] = useState([]);
-   const [expanded, setExpanded] = useState(null);
-   const [filter, setFilter] = useState('all');
-   const [dateRange, setDateRange] = useState({ start: '', end: '' });
-   const [loading, setLoading] = useState(true);
+  const [events, setEvents] = useState([]);
+  const [expanded, setExpanded] = useState(null);
+  const [filter, setFilter] = useState('all');
+  const [loading, setLoading] = useState(true);
 
   const loadData = useCallback(async () => {
     const res = await base44.entities.AstronomyEvent.list('date', 100);
