@@ -10,6 +10,8 @@ import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Heart, Upload, MapPin, Camera, MessageSquare, X, Loader2, Star } from 'lucide-react';
 import { format } from 'date-fns';
+import PhotoFeedbackThread from '../components/community/PhotoFeedbackThread';
+import ExpertInsightsPanel from '../components/community/ExpertInsightsPanel';
 
 export default function CommunityGallery() {
   const [posts, setPosts] = useState([]);
@@ -82,6 +84,11 @@ export default function CommunityGallery() {
   return (
     <PullToRefresh onRefresh={loadData}>
       <div className="max-w-7xl mx-auto px-4 py-8">
+      {/* Expert Insights Banner */}
+      <div className="mb-8">
+        <ExpertInsightsPanel />
+      </div>
+
       {/* Header */}
       <div className="flex items-start justify-between gap-4 mb-8">
         <div>
@@ -232,13 +239,16 @@ export default function CommunityGallery() {
         </DialogContent>
       </Dialog>
 
-      {/* Lightbox */}
+      {/* Lightbox with Feedback */}
       {selectedPost && (
         <Dialog open={!!selectedPost} onOpenChange={() => setSelectedPost(null)}>
-          <DialogContent className="bg-slate-900 border-slate-700 max-w-3xl p-0 overflow-hidden">
-            <img src={selectedPost.photo_url} alt={selectedPost.caption} className="w-full max-h-[60vh] object-contain bg-black" />
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-3">
+          <DialogContent className="bg-slate-900 border-slate-700 max-w-4xl max-h-[90vh] overflow-y-auto p-0">
+            {/* Image */}
+            <img src={selectedPost.photo_url} alt={selectedPost.caption} className="w-full max-h-[50vh] object-contain bg-black" />
+
+            {/* Post Info + Feedback */}
+            <div className="space-y-6 p-6">
+              <div className="flex items-center justify-between">
                 <div>
                   <p className="text-white font-semibold">{selectedPost.user_name}</p>
                   <p className="text-slate-500 text-sm">{format(new Date(selectedPost.created_date), 'MMMM d, yyyy')}</p>
@@ -248,10 +258,18 @@ export default function CommunityGallery() {
                   {selectedPost.likes || 0}
                 </button>
               </div>
-              {selectedPost.caption && <p className="text-slate-300 mb-3">{selectedPost.caption}</p>}
+              {selectedPost.caption && <p className="text-slate-300">{selectedPost.caption}</p>}
               <div className="flex flex-wrap gap-2">
                 {selectedPost.location && <Badge variant="outline" className="border-slate-700 text-slate-400"><MapPin className="w-3 h-3 mr-1" />{selectedPost.location}</Badge>}
                 {selectedPost.camera_settings && <Badge variant="outline" className="border-slate-700 text-slate-400"><Camera className="w-3 h-3 mr-1" />{selectedPost.camera_settings}</Badge>}
+              </div>
+
+              {/* Community Feedback Thread */}
+              <div className="border-t border-slate-800 pt-4">
+                <PhotoFeedbackThread 
+                  galleryPostId={selectedPost.id}
+                  postCreatorEmail={selectedPost.user_email}
+                />
               </div>
             </div>
           </DialogContent>
