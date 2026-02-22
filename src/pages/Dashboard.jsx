@@ -69,54 +69,54 @@ export default function Dashboard() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <Camera className="w-10 h-10 text-purple-400 star-pulse" />
+        <Telescope className="w-10 h-10 text-purple-400 star-pulse" />
       </div>
     );
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
-      {/* Header */}
-      <div className="mb-10">
-        <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">
-          Welcome back, <span className="gradient-text">{user?.full_name?.split(' ')[0] || 'Photographer'}</span> 🌌
-        </h1>
-        <p className="text-slate-400 text-xl">Continue your journey to mastering Milky Way photography.</p>
+    <div className="max-w-7xl mx-auto px-4 py-8 relative">
+      {/* Hero Header */}
+      <div className="relative mb-12 overflow-hidden rounded-2xl border border-purple-500/20 bg-gradient-to-br from-[#0d0520] via-[#060318] to-[#020212] p-8 md:p-12">
+        {/* Nebula blobs */}
+        <div className="nebula-blob w-96 h-96 bg-purple-700/25 -top-20 -left-20" />
+        <div className="nebula-blob w-64 h-64 bg-blue-700/20 top-10 right-0" />
+        <div className="nebula-blob w-48 h-48 bg-indigo-600/20 bottom-0 left-1/3" />
+
+        <div className="relative z-10">
+          <div className="inline-flex items-center gap-2 bg-purple-900/40 border border-purple-500/30 rounded-full px-3 py-1 mb-5">
+            <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-purple-200 text-xs font-semibold tracking-widest uppercase">Mission Active</span>
+          </div>
+          <h1 className="text-4xl md:text-6xl font-black text-white mb-4 leading-tight">
+            Chart the <span className="gradient-text">Unknown</span>,<br />
+            Master the <span className="gradient-text-gold">Galaxy.</span>
+          </h1>
+          <p className="text-slate-400 text-lg md:text-xl max-w-2xl mb-8">
+            Every great astrophotographer started exactly where you are. Your expedition continues, {user?.full_name?.split(' ')[0] || 'Explorer'}.
+          </p>
+          <div className="flex flex-wrap gap-6">
+            <div className="text-center">
+              <p className="text-3xl font-black text-white">{overallPct}%</p>
+              <p className="text-slate-500 text-xs uppercase tracking-widest mt-1">Course Complete</p>
+            </div>
+            <div className="w-px bg-slate-700" />
+            <div className="text-center">
+              <p className="text-3xl font-black text-white">{completedCount}</p>
+              <p className="text-slate-500 text-xs uppercase tracking-widest mt-1">Lessons Done</p>
+            </div>
+            <div className="w-px bg-slate-700" />
+            <div className="text-center">
+              <p className="text-3xl font-black text-white">{modules.length}</p>
+              <p className="text-slate-500 text-xs uppercase tracking-widest mt-1">Expeditions</p>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Stats Row */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
-        <Card className="bg-slate-900/60 border-slate-800 p-6">
-          <div className="flex items-center justify-between mb-3">
-            <p className="text-slate-400 text-sm font-medium">Overall Progress</p>
-            <TrendingUp className="w-5 h-5 text-purple-400" />
-          </div>
-          <p className="text-4xl font-bold text-white mb-3">{overallPct}%</p>
-          <Progress value={overallPct} className="h-2" />
-        </Card>
-
-        <Card className="bg-slate-900/60 border-slate-800 p-6">
-          <div className="flex items-center justify-between mb-3">
-            <p className="text-slate-400 text-sm font-medium">Lessons Completed</p>
-            <Trophy className="w-5 h-5 text-yellow-400" />
-          </div>
-          <p className="text-4xl font-bold text-white">{completedCount}</p>
-          <p className="text-slate-500 text-sm mt-2">of {totalLessons} total lessons</p>
-        </Card>
-
-        <Card className="bg-slate-900/60 border-slate-800 p-6">
-          <div className="flex items-center justify-between mb-3">
-            <p className="text-slate-400 text-sm font-medium">Modules</p>
-            <BookOpen className="w-5 h-5 text-blue-400" />
-          </div>
-          <p className="text-4xl font-bold text-white">{modules.length}</p>
-          <p className="text-slate-500 text-sm mt-2">full course modules</p>
-        </Card>
-      </div>
-
-      {/* Course Modules */}
+      {/* Course Modules heading */}
       <h2 className="text-2xl font-bold text-white mb-5 flex items-center gap-2">
-        <Star className="w-6 h-6 text-purple-400" /> Course Modules
+        <Rocket className="w-6 h-6 text-purple-400" /> Your Expeditions
       </h2>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
         {modules.map((mod) => {
