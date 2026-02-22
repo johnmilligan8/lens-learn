@@ -105,7 +105,7 @@ export default function Layout({ children, currentPageName }) {
     return (
       <div className="min-h-screen cosmic-bg flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <Telescope className="w-12 h-12 text-purple-400 star-pulse" />
+          <Telescope className="w-12 h-12 text-red-400 star-pulse" />
           <p className="text-slate-400 text-lg tracking-widest uppercase text-sm">Initializing Galaxy...</p>
         </div>
       </div>
