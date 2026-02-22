@@ -234,7 +234,7 @@ export default function FreeCourse() {
             <div className="mt-4 p-4 rounded-xl bg-gradient-to-br from-purple-900/50 to-indigo-900/50 border border-purple-500/40">
               <Lock className="w-5 h-5 text-purple-400 mb-2" />
               <p className="text-white text-sm font-bold mb-1">5 More Modules Locked</p>
-              <p className="text-purple-300/70 text-xs mb-3">Camera mastery, composition, post-processing, advanced techniques & more.</p>
+              <p className="text-purple-200/80 text-xs mb-3">Camera mastery, composition, post-processing, advanced techniques & more.</p>
               <Link to={createPageUrl('PaymentGate')}>
                 <Button className="w-full bg-purple-600 hover:bg-purple-700 text-xs h-8">
                   Unlock Full Course →
@@ -264,10 +264,10 @@ export default function FreeCourse() {
                     {typeIcon(activeLesson.type)}
                     <span className="text-slate-400 text-sm capitalize">{activeLesson.type}</span>
                     <span className="text-slate-600">·</span>
-                    <span className="text-slate-400 text-sm">{activeLesson.duration}</span>
+                    <span className="text-slate-300 text-sm">{activeLesson.duration}</span>
                   </div>
                   <h2 className="text-2xl font-bold text-white">{activeLesson.title}</h2>
-                  <p className="text-slate-400 mt-1">{activeLesson.description}</p>
+                  <p className="text-slate-300 mt-1">{activeLesson.description}</p>
                 </div>
 
                 {/* Video */}

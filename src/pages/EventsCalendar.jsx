@@ -125,12 +125,12 @@ export default function EventsCalendar() {
                   <Badge className="bg-purple-600 text-white text-xs">This Month</Badge>
                 )}
               </div>
-              <p className="text-slate-400 text-sm mb-2">
+              <p className="text-slate-300 text-sm mb-2">
                 {format(parseISO(event.date), 'MMMM d, yyyy')}
                 {event.end_date && event.end_date !== event.date && ` – ${format(parseISO(event.end_date), 'MMMM d')}`}
-                {event.peak_time && <span className="ml-2 text-purple-300">· Peak: {event.peak_time}</span>}
+                {event.peak_time && <span className="ml-2 text-purple-200">· Peak: {event.peak_time}</span>}
               </p>
-              <p className="text-slate-400 text-sm line-clamp-2">{event.description}</p>
+              <p className="text-slate-300 text-sm line-clamp-2">{event.description}</p>
             </div>
           </div>
           <button onClick={() => setExpanded(isOpen ? null : event.id)} className="text-slate-400 hover:text-white flex-shrink-0 mt-1">
@@ -171,7 +171,7 @@ export default function EventsCalendar() {
         <h1 className="text-4xl font-bold text-white mb-2 flex items-center gap-3">
           <Calendar className="w-9 h-9 text-blue-400" /> Cosmic Events
         </h1>
-        <p className="text-slate-400 text-lg">Meteor showers, eclipses, auroras, and more — never miss a shoot.</p>
+        <p className="text-slate-300 text-lg">Meteor showers, eclipses, auroras, and more — never miss a shoot.</p>
       </div>
 
       {/* Aurora View */}

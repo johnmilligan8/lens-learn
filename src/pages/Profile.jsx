@@ -244,11 +244,11 @@ export default function Profile() {
               <div>
                 <p className="text-white font-medium">{locationName}</p>
                 {locationLat && locationLon && (
-                  <p className="text-xs text-slate-500 font-mono mt-0.5">{locationLat.toFixed(5)}, {locationLon.toFixed(5)}</p>
+                  <p className="text-xs text-slate-400 font-mono mt-0.5">{locationLat.toFixed(5)}, {locationLon.toFixed(5)}</p>
                 )}
               </div>
             ) : (
-              <p className="text-slate-500 text-sm">No home base set. Click Edit to add one.</p>
+              <p className="text-slate-400 text-sm">No home base set. Click Edit to add one.</p>
             )}
           </div>
         )}
