@@ -86,23 +86,32 @@ export default function Layout({ children, currentPageName }) {
     );
   }
 
-  const NavLink = ({ item }) => (
-    <Link
-      to={createPageUrl(item.page)}
-      onClick={() => setMobileOpen(false)}
-      className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${
-        currentPageName === item.page
-          ? 'bg-purple-600/20 text-purple-300 border border-purple-500/30'
-          : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-      }`}
-    >
-      <item.icon className="w-5 h-5 flex-shrink-0" />
-      <span className="font-medium">{item.label}</span>
-      {currentPageName === item.page && (
-        <ChevronRight className="w-4 h-4 ml-auto text-purple-400" />
-      )}
-    </Link>
-  );
+  const NavLink = ({ item }) => {
+    const locked = item.paidOnly && !isSubscribed;
+    return (
+      <Link
+        to={locked ? createPageUrl('PaymentGate') : createPageUrl(item.page)}
+        onClick={() => setMobileOpen(false)}
+        className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${
+          currentPageName === item.page
+            ? 'bg-purple-600/20 text-purple-300 border border-purple-500/30'
+            : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+        }`}
+      >
+        <item.icon className="w-5 h-5 flex-shrink-0" />
+        <span className="font-medium">{item.label}</span>
+        {item.freeTag && (
+          <span className="ml-auto text-[10px] bg-emerald-600 text-white px-1.5 py-0.5 rounded font-bold">FREE</span>
+        )}
+        {locked && (
+          <Sparkles className="w-3.5 h-3.5 ml-auto text-yellow-500 flex-shrink-0" />
+        )}
+        {currentPageName === item.page && !item.freeTag && !locked && (
+          <ChevronRight className="w-4 h-4 ml-auto text-purple-400" />
+        )}
+      </Link>
+    );
+  };
 
   return (
     <div className="min-h-screen cosmic-bg flex">
