@@ -22,16 +22,15 @@ export default function CommunityGallery() {
   const [file, setFile] = useState(null);
   const [filePreview, setFilePreview] = useState(null);
 
-  useEffect(() => {
-    const load = async () => {
-      const me = await base44.auth.me();
-      setUser(me);
-      const gallery = await base44.entities.GalleryPost.list('-created_date', 50);
-      setPosts(gallery);
-      setLoading(false);
-    };
-    load();
+  const loadData = useCallback(async () => {
+    const me = await base44.auth.me();
+    setUser(me);
+    const gallery = await base44.entities.GalleryPost.list('-created_date', 50);
+    setPosts(gallery);
+    setLoading(false);
   }, []);
+
+  useEffect(() => { loadData(); }, []);
 
   const handleFileChange = (e) => {
     const f = e.target.files[0];
