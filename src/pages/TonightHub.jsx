@@ -223,51 +223,55 @@ export default function TonightHub() {
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
-      {/* Header */}
-      <div className="mb-6">
-        <div className="flex items-center gap-3 mb-1">
-          <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
-          <span className="text-emerald-400 text-xs font-semibold uppercase tracking-widest">Tonight's Conditions</span>
-        </div>
-        <h1 className="text-3xl font-black text-white">
-          Should You Go? <span className="gradient-text">Decide Now.</span>
-        </h1>
-        <p className="text-slate-400 text-sm mt-1">
-          Mode: <span className="text-white font-medium">{modeLabel}</span>
-          <Link to={createPageUrl('Profile')} className="text-purple-400 hover:text-purple-300 ml-2 text-xs">(change)</Link>
-        </p>
-      </div>
+      {/* Header with clear CTA */}
+      <div className="mb-8">
+         <div className="flex items-center gap-3 mb-3">
+           <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
+           <span className="text-emerald-400 text-xs font-semibold uppercase tracking-widest">Real-Time Sky Analysis</span>
+         </div>
+         <h1 className="text-4xl font-black text-white mb-2">
+           Should You Go <span className="gradient-text">Tonight?</span>
+         </h1>
+         <p className="text-slate-400 text-sm">
+           Get real-time conditions & a ranked event list. Mode: <span className="text-white font-medium">{modeLabel}</span>
+           <Link to={createPageUrl('Profile')} className="text-purple-400 hover:text-purple-300 ml-2 text-xs underline">(change)</Link>
+         </p>
+       </div>
 
-      {/* Location input */}
-      <Card className="bg-slate-900/60 border-slate-800 p-4 mb-5">
+      {/* Location input - prominent CTA */}
+      <Card className="bg-gradient-to-r from-purple-900/40 to-blue-900/20 border border-purple-500/40 p-5 mb-6 sticky top-20 z-40">
+        <p className="text-white text-xs font-bold uppercase tracking-widest mb-3">Step 1: Enter Your Location</p>
         <div className="flex gap-2">
           <div className="relative flex-1">
-            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input
               type="text"
-              placeholder="Enter your location…"
+              placeholder="City, coordinates, or saved location…"
               value={location}
               onChange={e => setLocation(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleSetLocation()}
-              className="w-full bg-slate-800 border border-slate-700 rounded-lg pl-9 pr-3 py-2 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-purple-500"
+              className="w-full bg-slate-800 border border-slate-700 rounded-lg pl-9 pr-3 py-2.5 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-500/20"
             />
           </div>
-          <Button onClick={handleSetLocation} disabled={geoLoading || !location.trim()} className="bg-purple-600 hover:bg-purple-700 text-sm px-4">
-            {geoLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Check'}
+          <Button onClick={handleSetLocation} disabled={geoLoading || !location.trim()} className="bg-purple-600 hover:bg-purple-700 text-sm px-6 font-bold">
+            {geoLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Analyze'}
           </Button>
         </div>
-        {coords && <p className="text-xs text-emerald-400 mt-1.5">📍 {coords.lat.toFixed(2)}°, {coords.lon.toFixed(2)}°</p>}
+        {coords && <p className="text-xs text-emerald-400 mt-3 font-medium">✓ Analyzing {coords.lat.toFixed(2)}°N, {coords.lon.toFixed(2)}°W</p>}
       </Card>
 
       {/* Events */}
       {!coords ? (
-        <div className="text-center py-16">
-          <MapPin className="w-12 h-12 text-slate-700 mx-auto mb-4" />
-          <p className="text-slate-500">Enter your location above to see tonight's ranked events.</p>
+        <div className="text-center py-20">
+          <div className="w-16 h-16 rounded-full bg-slate-800/50 flex items-center justify-center mx-auto mb-4">
+            <MapPin className="w-8 h-8 text-slate-600" />
+          </div>
+          <p className="text-slate-400 font-medium">Enter your location above</p>
+          <p className="text-slate-500 text-sm mt-1">Get personalized sky conditions & ranked events for tonight</p>
         </div>
       ) : events.length === 0 ? (
-        <Card className="bg-slate-900/60 border-slate-800 p-8 text-center">
-          <p className="text-slate-500">No notable sky events computed for tonight. Try changing the date or check the Events Calendar.</p>
+        <Card className="bg-slate-900/40 border-slate-800 p-8 text-center">
+          <p className="text-slate-400">No notable sky events tonight. Check the <Link to={createPageUrl('EventsCalendar')} className="text-purple-400 hover:text-purple-300 underline">full calendar</Link> for upcoming events.</p>
         </Card>
       ) : (
         <div className="space-y-4">
