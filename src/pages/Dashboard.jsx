@@ -140,7 +140,7 @@ export default function Dashboard() {
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     <Badge className="bg-emerald-600 text-white text-xs">FREE</Badge>
-                    <span className="text-slate-400 text-xs">5 lessons · No card required</span>
+                    <span className="text-slate-300 text-xs">5 lessons · No card required</span>
                   </div>
                   <h3 className="text-xl font-bold text-white mb-1 group-hover:text-emerald-300 transition-colors">Your First Night Sky Adventure</h3>
                   <p className="text-slate-300 text-sm mb-3">Gear basics, magic camera settings, simple composition, and your first shoot checklist — everything to capture the Milky Way tonight.</p>
@@ -224,7 +224,7 @@ export default function Dashboard() {
                       {isSubscribed ? <ChevronRight className="w-4 h-4 text-slate-500" /> : <Lock className="w-4 h-4 text-slate-500" />}
                     </div>
                     <h3 className="text-lg font-bold text-white mb-2">{mod.title}</h3>
-                    <p className="text-slate-400 text-sm mb-4 line-clamp-2">{mod.description}</p>
+                    <p className="text-slate-300 text-sm mb-4 line-clamp-2">{mod.description}</p>
                     <div className="flex items-center gap-3 text-xs text-slate-500 mb-3">
                       {mod.total_lessons && <span>{mod.total_lessons} lessons</span>}
                       {mod.total_duration && <><span>•</span><span>{mod.total_duration}</span></>}
