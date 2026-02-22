@@ -37,8 +37,8 @@ export default function Onboarding() {
       content: (
         <div className="text-center space-y-6">
           <div className="relative w-24 h-24 mx-auto">
-            <div className="absolute inset-0 bg-purple-600/30 rounded-full blur-2xl" />
-            <div className="relative bg-gradient-to-br from-purple-600 to-blue-700 rounded-2xl w-24 h-24 flex items-center justify-center">
+            <div className="absolute inset-0 bg-red-600/30 rounded-full blur-2xl" />
+            <div className="relative bg-red-700 rounded-2xl w-24 h-24 flex items-center justify-center">
               <Telescope className="w-12 h-12 text-white" />
             </div>
           </div>
