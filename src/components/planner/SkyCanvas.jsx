@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { Clock, Search, Tag, X, Telescope, ExternalLink, ArrowUp, Compass, Info } from 'lucide-react';
+import { Clock, Search, Tag, X, Telescope, ExternalLink, ArrowUp, Compass, Info, ZoomIn, ZoomOut, Layers } from 'lucide-react';
 
 // ─── Math helpers ────────────────────────────────────────────────────────────
 function toRad(d) { return d * Math.PI / 180; }
@@ -347,6 +347,17 @@ export default function SkyCanvas({ gcData, lat, lon, dateStr, onSetEphemerisTar
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [highlighted, setHighlighted] = useState(null);
+  const [zoom, setZoom] = useState(1);
+  const [panX, setPanX] = useState(0);
+  const [panY, setPanY] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState(null);
+  const [showLayers, setShowLayers] = useState(false);
+  const [showSatellites, setShowSatellites] = useState(false);
+  const [showDeepSkyOnly, setShowDeepSkyOnly] = useState(false);
+  const [showDateTimePicker, setShowDateTimePicker] = useState(false);
+  const [pickerDate, setPickerDate] = useState(dateStr);
+  const [pickerHour, setPickerHour] = useState(scrubHour);
 
   const currentJD = useMemo(() => {
     const base = new Date(dateStr + 'T00:00:00Z');
@@ -578,6 +589,48 @@ export default function SkyCanvas({ gcData, lat, lon, dateStr, onSetEphemerisTar
     if (onSetEphemerisTarget) onSetEphemerisTarget(obj.name);
   }
 
+  function handleCanvasMouseDown(e) {
+    if (e.button !== 0) return;
+    setIsDragging(true);
+    setDragStart({ x: e.clientX, y: e.clientY, panX, panY });
+  }
+
+  function handleCanvasMouseMove(e) {
+    if (isDragging && dragStart) {
+      const deltaX = e.clientX - dragStart.x;
+      const deltaY = e.clientY - dragStart.y;
+      setPanX(dragStart.panX + deltaX / zoom);
+      setPanY(dragStart.panY + deltaY / zoom);
+      return;
+    }
+    handleMouseMove(e);
+  }
+
+  function handleCanvasMouseUp() {
+    setIsDragging(false);
+    setDragStart(null);
+  }
+
+  function handleWheel(e) {
+    e.preventDefault();
+    const factor = e.deltaY > 0 ? 0.9 : 1.1;
+    const newZoom = Math.max(0.8, Math.min(4, zoom * factor));
+    setZoom(newZoom);
+  }
+
+  function resetView() {
+    setZoom(1);
+    setPanX(0);
+    setPanY(0);
+  }
+
+  function applyDateTimePicker() {
+    setScrubHour(pickerHour);
+    // Note: date change would require parent component prop update
+    // For now, we update the hour only in this component
+    setShowDateTimePicker(false);
+  }
+
   return (
     <div className="flex flex-col gap-3">
       {/* Controls */}
@@ -589,6 +642,14 @@ export default function SkyCanvas({ gcData, lat, lon, dateStr, onSetEphemerisTar
         <button onClick={() => setShowConstellations(v => !v)}
           className={`flex items-center gap-1 px-2.5 py-1 rounded-lg border text-xs font-medium transition-colors ${showConstellations ? 'border-blue-500/50 bg-blue-900/30 text-blue-300' : 'border-slate-700 text-slate-500 hover:border-slate-600'}`}>
           ✦ Lines
+        </button>
+        <button onClick={() => setShowLayers(v => !v)}
+          className={`flex items-center gap-1 px-2.5 py-1 rounded-lg border text-xs font-medium transition-colors ${showLayers ? 'border-indigo-500/50 bg-indigo-900/30 text-indigo-300' : 'border-slate-700 text-slate-500 hover:border-slate-600'}`}>
+          <Layers className="w-3 h-3" /> Layers
+        </button>
+        <button onClick={() => setShowDateTimePicker(v => !v)}
+          className={`flex items-center gap-1 px-2.5 py-1 rounded-lg border text-xs font-medium transition-colors ${showDateTimePicker ? 'border-amber-500/50 bg-amber-900/30 text-amber-300' : 'border-slate-700 text-slate-500 hover:border-slate-600'}`}>
+          <Clock className="w-3 h-3" /> Date/Time
         </button>
         <div className="flex-1 relative min-w-[120px]">
           <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3 h-3 text-slate-500 pointer-events-none" />
@@ -619,19 +680,77 @@ export default function SkyCanvas({ gcData, lat, lon, dateStr, onSetEphemerisTar
         </div>
       </div>
 
+      {/* Layer toggles */}
+      {showLayers && (
+        <div className="bg-slate-800/60 border border-slate-700 rounded-lg p-3 space-y-2">
+          <p className="text-xs font-semibold text-slate-300 mb-2">Overlay Layers</p>
+          <label className="flex items-center gap-2 cursor-pointer text-xs text-slate-300 hover:text-white">
+            <input type="checkbox" checked={showDeepSkyOnly} onChange={e => setShowDeepSkyOnly(e.target.checked)} className="w-3 h-3" />
+            Deep-Sky Objects Only
+          </label>
+          <label className="flex items-center gap-2 cursor-pointer text-xs text-slate-300 hover:text-white">
+            <input type="checkbox" checked={showSatellites} onChange={e => setShowSatellites(e.target.checked)} className="w-3 h-3" />
+            <span>Satellite Paths (ISS, Major)</span>
+          </label>
+        </div>
+      )}
+
+      {/* Date/Time Picker */}
+      {showDateTimePicker && (
+        <div className="bg-slate-800/60 border border-slate-700 rounded-lg p-3 space-y-2">
+          <div>
+            <label className="text-xs font-semibold text-slate-300 block mb-1">Date</label>
+            <input type="date" value={pickerDate} onChange={e => setPickerDate(e.target.value)}
+              className="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1 text-xs text-white" />
+          </div>
+          <div>
+            <label className="text-xs font-semibold text-slate-300 block mb-1">Time (UTC): {Math.floor(pickerHour)}:{Math.round((pickerHour % 1) * 60).toString().padStart(2, '0')}</label>
+            <input type="range" min={0} max={23.75} step={0.25} value={pickerHour} onChange={e => setPickerHour(parseFloat(e.target.value))}
+              className="w-full accent-amber-500 h-1.5" />
+          </div>
+          <button onClick={applyDateTimePicker}
+            className="w-full bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold py-1.5 rounded transition-colors">
+            Apply
+          </button>
+        </div>
+      )}
+
       {/* Canvas */}
       <div className="relative">
         <canvas ref={canvasRef} width={SIZE} height={SIZE}
           className="w-full max-w-[340px] mx-auto rounded-full block"
-          style={{ cursor: 'crosshair' }}
+          style={{ 
+            cursor: isDragging ? 'grabbing' : 'crosshair',
+            transform: `scale(${zoom}) translate(${panX}px, ${panY}px)`,
+            transformOrigin: 'center',
+            transition: isDragging ? 'none' : 'transform 0.1s ease-out'
+          }}
           onClick={handleCanvasClick}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={() => setHovered(null)} />
+          onMouseDown={handleCanvasMouseDown}
+          onMouseMove={handleCanvasMouseMove}
+          onMouseUp={handleCanvasMouseUp}
+          onMouseLeave={() => { setHovered(null); setIsDragging(false); }}
+          onWheel={handleWheel} />
         {hovered && hovered !== selectedObj?.name && (
           <div className="absolute top-2 left-2 bg-slate-900/90 border border-slate-700 rounded-lg px-2 py-1 text-xs text-cyan-300 pointer-events-none max-w-[180px] truncate">
             {hovered}
           </div>
         )}
+        {/* Zoom & Pan Controls */}
+        <div className="absolute top-2 right-2 flex flex-col gap-1">
+          <button onClick={() => setZoom(prev => Math.min(4, prev * 1.2))}
+            className="bg-slate-900/80 border border-slate-700 hover:border-slate-600 rounded p-1.5 text-slate-400 hover:text-white transition-colors">
+            <ZoomIn className="w-4 h-4" />
+          </button>
+          <button onClick={() => setZoom(prev => Math.max(0.8, prev / 1.2))}
+            className="bg-slate-900/80 border border-slate-700 hover:border-slate-600 rounded p-1.5 text-slate-400 hover:text-white transition-colors">
+            <ZoomOut className="w-4 h-4" />
+          </button>
+          <button onClick={resetView}
+            className="bg-slate-900/80 border border-slate-700 hover:border-slate-600 rounded p-1.5 text-slate-400 hover:text-white transition-colors text-[10px] font-bold">
+            ↺
+          </button>
+        </div>
       </div>
 
       {/* Legend */}
