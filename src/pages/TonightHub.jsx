@@ -7,6 +7,7 @@ import { Card } from '@/components/ui/card';
 import EventRankCard from '../components/tonight/EventRankCard';
 import GuidedPlanModal from '../components/tonight/GuidedPlanModal';
 import AuroraTeaserCard from '../components/events/AuroraTeaserCard';
+import MilkyWayARCard from '../components/tonight/MilkyWayARCard';
 import { Loader2, Lock, MapPin, ChevronRight, Telescope, Zap } from 'lucide-react';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -275,14 +276,25 @@ export default function TonightHub() {
         </Card>
       ) : (
         <div className="space-y-4">
-          <div className="flex items-center justify-between mb-1">
-            <h2 className="text-white font-bold">Top Events Tonight</h2>
-            <Link to={createPageUrl('EventsCalendar')} className="text-xs text-slate-500 hover:text-purple-300 flex items-center gap-1">
-              Full calendar <ChevronRight className="w-3 h-3" />
-            </Link>
-          </div>
+           <div className="flex items-center justify-between mb-1">
+             <h2 className="text-white font-bold">Top Events Tonight</h2>
+             <Link to={createPageUrl('EventsCalendar')} className="text-xs text-slate-500 hover:text-purple-300 flex items-center gap-1">
+               Full calendar <ChevronRight className="w-3 h-3" />
+             </Link>
+           </div>
 
-          {/* Aurora Teaser */}
+           {/* AR Scout */}
+           {coords && (
+             <MilkyWayARCard
+               lat={coords.lat}
+               lon={coords.lon}
+               dateStr={new Date().toISOString().split('T')[0]}
+               isSubscribed={isSubscribed}
+               shooterMode={profile?.shooter_mode || 'photographer'}
+             />
+           )}
+
+           {/* Aurora Teaser */}
           {auroraForecast && auroraForecast.kp_index > 2 && (
             <Link to={createPageUrl('EventsCalendar')}>
               <AuroraTeaserCard
