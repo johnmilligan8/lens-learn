@@ -114,8 +114,8 @@ export default function Dashboard() {
       {!isSubscribed && (
         <div className="mb-8 p-5 rounded-2xl border border-yellow-500/30 bg-gradient-to-r from-yellow-900/20 via-orange-900/10 to-purple-900/20 flex flex-col md:flex-row items-start md:items-center gap-4">
           <div className="flex-1">
-            <p className="text-yellow-300 font-black text-lg leading-snug">🚀 Ready to master the stars?</p>
-            <p className="text-slate-400 text-sm mt-1">Upgrade for full courses, pro planning tools, instructor feedback & custom alerts — just <strong className="text-white">$19/month</strong>.</p>
+            <p className="text-yellow-200 font-black text-lg leading-snug">🚀 Ready to master the stars?</p>
+            <p className="text-slate-200 text-sm mt-1">Upgrade for full courses, pro planning tools, instructor feedback & custom alerts — just <strong className="text-white">$19/month</strong>.</p>
           </div>
           <Link to={createPageUrl('PaymentGate')}>
             <Button className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-bold whitespace-nowrap">
@@ -143,7 +143,7 @@ export default function Dashboard() {
                     <span className="text-slate-400 text-xs">5 lessons · No card required</span>
                   </div>
                   <h3 className="text-xl font-bold text-white mb-1 group-hover:text-emerald-300 transition-colors">Your First Night Sky Adventure</h3>
-                  <p className="text-slate-400 text-sm mb-3">Gear basics, magic camera settings, simple composition, and your first shoot checklist — everything to capture the Milky Way tonight.</p>
+                  <p className="text-slate-300 text-sm mb-3">Gear basics, magic camera settings, simple composition, and your first shoot checklist — everything to capture the Milky Way tonight.</p>
                   <p className="text-emerald-400 text-sm font-medium flex items-center gap-1">Start free course <ChevronRight className="w-4 h-4" /></p>
                 </div>
               </div>

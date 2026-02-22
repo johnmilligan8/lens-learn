@@ -271,7 +271,7 @@ export default function TonightHub() {
         </div>
       ) : events.length === 0 ? (
         <Card className="bg-slate-900/40 border-slate-800 p-8 text-center">
-          <p className="text-slate-400">No notable sky events tonight. Check the <Link to={createPageUrl('EventsCalendar')} className="text-purple-400 hover:text-purple-300 underline">full calendar</Link> for upcoming events.</p>
+          <p className="text-slate-300">No notable sky events tonight. Check the <Link to={createPageUrl('EventsCalendar')} className="text-purple-300 hover:text-purple-200 underline">full calendar</Link> for upcoming events.</p>
         </Card>
       ) : (
         <div className="space-y-4">
