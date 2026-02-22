@@ -7,6 +7,7 @@ import BestShotSuggestions from '../components/planner/BestShotSuggestions';
 import HistoricalWeatherAnalysis from '../components/planner/HistoricalWeatherAnalysis';
 import GearChecklist from '../components/planner/GearChecklist';
 import ClientEmailGenerator from '../components/planner/ClientEmailGenerator';
+import ExpeditionManager from '../components/planner/ExpeditionManager';
 import LocationPicker from '../components/onboarding/LocationPicker';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -363,6 +364,16 @@ export default function PlannerTool() {
   const [shooterMode, setShooterMode] = useState('photographer');
   const ephemerisRef = React.useRef(null);
 
+  const currentState = {
+    location,
+    date,
+    coords,
+    results,
+    shooterMode,
+    weather,
+    notes: aiTips,
+  };
+
   useEffect(() => {
     const check = async () => {
       const isAuth = await base44.auth.isAuthenticated();
@@ -558,6 +569,14 @@ export default function PlannerTool() {
     if (results?.coords) await calculate();
   }, [results]);
 
+  const handleLoadExpedition = (expeditionState) => {
+    if (expeditionState.location) setLocation(expeditionState.location);
+    if (expeditionState.date) setDate(expeditionState.date);
+    if (expeditionState.coords) setCoords(expeditionState.coords);
+    if (expeditionState.shooterMode) setShooterMode(expeditionState.shooterMode);
+    if (expeditionState.results) setResults(expeditionState.results);
+  };
+
   // ── Paywall ──────────────────────────────────────────────────────────────
   if (isSubscribed === null) {
     return (
@@ -613,6 +632,9 @@ export default function PlannerTool() {
       <div className="grid lg:grid-cols-5 gap-6">
         {/* ── Left: Inputs ── */}
          <div className="lg:col-span-2 space-y-5">
+          {/* Expedition Manager */}
+          <ExpeditionManager userEmail={user?.email} currentState={currentState} onLoadExpedition={handleLoadExpedition} />
+
           {/* Expedition Kit Checklist */}
           <GearChecklist userEmail={user?.email} shooterMode={shooterMode} isPaid={isSubscribed} />
 

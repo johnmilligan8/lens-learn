@@ -58,8 +58,8 @@ import Onboarding from './pages/Onboarding';
 import PaymentGate from './pages/PaymentGate';
 import PlannerTool from './pages/PlannerTool';
 import Profile from './pages/Profile';
-import TonightHub from './pages/TonightHub';
 import StarPointer from './pages/StarPointer';
+import TonightHub from './pages/TonightHub';
 import __Layout from './Layout.jsx';
 
 
@@ -75,8 +75,8 @@ export const PAGES = {
     "PaymentGate": PaymentGate,
     "PlannerTool": PlannerTool,
     "Profile": Profile,
-    "TonightHub": TonightHub,
     "StarPointer": StarPointer,
+    "TonightHub": TonightHub,
 }
 
 export const pagesConfig = {
