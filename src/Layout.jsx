@@ -175,12 +175,19 @@ export default function Layout({ children, currentPageName }) {
       {/* Mobile Top Bar */}
       <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-800/60 flex items-center px-4 justify-between select-none"
         style={{ height: 'calc(3.5rem + env(safe-area-inset-top))', paddingTop: 'env(safe-area-inset-top)' }}>
-        <Link to={createPageUrl('Dashboard')} className="flex items-center gap-2">
-          <div className="bg-gradient-to-br from-purple-600 to-blue-700 rounded-lg w-7 h-7 flex items-center justify-center">
-            <Telescope className="w-4 h-4 text-white" />
-          </div>
-          <span className="font-black gradient-text text-lg tracking-tight">UnchartedGalaxy</span>
-        </Link>
+        {isChildScreen ? (
+          <Button variant="ghost" size="sm" className="text-slate-300 -ml-2 gap-1" onClick={() => navigate(-1)}>
+            <ChevronLeft className="w-5 h-5" />
+            <span className="text-sm font-medium">Back</span>
+          </Button>
+        ) : (
+          <Link to={createPageUrl('Dashboard')} className="flex items-center gap-2">
+            <div className="bg-gradient-to-br from-purple-600 to-blue-700 rounded-lg w-7 h-7 flex items-center justify-center">
+              <Telescope className="w-4 h-4 text-white" />
+            </div>
+            <span className="font-black gradient-text text-lg tracking-tight">UnchartedGalaxy</span>
+          </Link>
+        )}
         <Button variant="ghost" size="icon" className="text-slate-300" onClick={handleLogout}>
           <LogOut className="w-5 h-5" />
         </Button>
