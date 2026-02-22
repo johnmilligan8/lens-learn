@@ -149,33 +149,34 @@ export default function Dashboard() {
       </div>
 
       {/* Quick Actions */}
-      <h2 className="text-2xl font-bold text-white mb-5 flex items-center gap-2">
-        <Telescope className="w-6 h-6 text-blue-400" /> Quick Actions
+      <h2 className="text-2xl font-bold text-white mb-5 flex items-center gap-2 mt-10">
+        <Zap className="w-6 h-6 text-yellow-400" /> Mission Briefings
       </h2>
-      <div className="grid md:grid-cols-2 gap-5">
+      <div className="grid md:grid-cols-3 gap-5">
         <Link to={createPageUrl('PlannerTool')}>
-          <Card className="bg-slate-900/60 border-slate-800 p-6 card-glow hover:border-purple-500/40 transition-all group">
-            <div className="flex items-center gap-4">
-              <div className="bg-purple-600/20 p-4 rounded-xl"><MapPin className="w-7 h-7 text-purple-400" /></div>
-              <div className="flex-1">
-                <h3 className="text-lg font-semibold text-white mb-1">Milky Way Planner</h3>
-                <p className="text-slate-400 text-sm">Check visibility for your next shoot</p>
-              </div>
-              <ChevronRight className="w-5 h-5 text-slate-500 group-hover:text-purple-400 transition-colors" />
-            </div>
+          <Card className="bg-slate-900/60 border-slate-800 p-6 card-glow hover:border-purple-500/40 transition-all group h-full">
+            <div className="bg-purple-600/20 p-4 rounded-xl w-fit mb-4"><MapPin className="w-7 h-7 text-purple-400" /></div>
+            <h3 className="text-lg font-bold text-white mb-1 group-hover:text-purple-300 transition-colors">Sky Planner</h3>
+            <p className="text-slate-400 text-sm">Predict Milky Way visibility, moon interference & optimal shoot windows for any location.</p>
+            <p className="text-purple-400 text-sm mt-3 flex items-center gap-1 font-medium">Plan a shoot <ChevronRight className="w-4 h-4" /></p>
+          </Card>
+        </Link>
+
+        <Link to={createPageUrl('EventsCalendar')}>
+          <Card className="bg-slate-900/60 border-slate-800 p-6 card-glow hover:border-yellow-500/40 transition-all group h-full">
+            <div className="bg-yellow-600/20 p-4 rounded-xl w-fit mb-4"><Star className="w-7 h-7 text-yellow-400" /></div>
+            <h3 className="text-lg font-bold text-white mb-1 group-hover:text-yellow-300 transition-colors">Cosmic Events</h3>
+            <p className="text-slate-400 text-sm">Meteor showers, eclipses, aurora alerts & more. Never miss a once-in-a-lifetime sky event.</p>
+            <p className="text-yellow-400 text-sm mt-3 flex items-center gap-1 font-medium">See events <ChevronRight className="w-4 h-4" /></p>
           </Card>
         </Link>
 
         <Link to={createPageUrl('CommunityGallery')}>
-          <Card className="bg-slate-900/60 border-slate-800 p-6 card-glow hover:border-blue-500/40 transition-all group">
-            <div className="flex items-center gap-4">
-              <div className="bg-blue-600/20 p-4 rounded-xl"><Sparkles className="w-7 h-7 text-blue-400" /></div>
-              <div className="flex-1">
-                <h3 className="text-lg font-semibold text-white mb-1">Community Gallery</h3>
-                <p className="text-slate-400 text-sm">Share your shots & get feedback</p>
-              </div>
-              <ChevronRight className="w-5 h-5 text-slate-500 group-hover:text-blue-400 transition-colors" />
-            </div>
+          <Card className="bg-slate-900/60 border-slate-800 p-6 card-glow hover:border-blue-500/40 transition-all group h-full">
+            <div className="bg-blue-600/20 p-4 rounded-xl w-fit mb-4"><Sparkles className="w-7 h-7 text-blue-400" /></div>
+            <h3 className="text-lg font-bold text-white mb-1 group-hover:text-blue-300 transition-colors">Explorer Gallery</h3>
+            <p className="text-slate-400 text-sm">Share your shots with fellow explorers. Get real feedback from instructors and the community.</p>
+            <p className="text-blue-400 text-sm mt-3 flex items-center gap-1 font-medium">Explore <ChevronRight className="w-4 h-4" /></p>
           </Card>
         </Link>
       </div>
