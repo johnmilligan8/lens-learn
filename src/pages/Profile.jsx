@@ -18,6 +18,9 @@ export default function Profile() {
   const [editing, setEditing] = useState(false);
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(true);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState('');
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -41,6 +44,20 @@ export default function Profile() {
     await base44.auth.updateMe({ full_name: name });
     setUser({ ...user, full_name: name });
     setEditing(false);
+  };
+
+  const handleDeleteAccount = async () => {
+    setDeleting(true);
+    // Delete all user data
+    await Promise.all([
+      base44.entities.LessonProgress.filter({ user_email: user.email }, '-created_date', 500)
+        .then(records => Promise.all(records.map(r => base44.entities.LessonProgress.delete(r.id)))),
+      base44.entities.GalleryPost.filter({ user_email: user.email }, '-created_date', 100)
+        .then(records => Promise.all(records.map(r => base44.entities.GalleryPost.delete(r.id)))),
+      base44.entities.UserProfile.filter({ user_email: user.email }, '-created_date', 5)
+        .then(records => Promise.all(records.map(r => base44.entities.UserProfile.delete(r.id)))),
+    ]);
+    base44.auth.logout();
   };
 
   if (loading) return (
