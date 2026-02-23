@@ -234,7 +234,7 @@ export default function FreeCourse() {
             <div className="mt-4 p-4 rounded-xl bg-gradient-to-br from-red-900/40 to-red-800/20 border border-red-600/40">
               <Lock className="w-5 h-5 text-red-400 mb-2" />
               <p className="text-white text-sm font-bold mb-1">5 More Modules Locked</p>
-              <p className="text-purple-200/80 text-xs mb-3">Camera mastery, composition, post-processing, advanced techniques & more.</p>
+              <p className="text-slate-300 text-xs mb-3">Camera mastery, composition, post-processing, advanced techniques & more.</p>
               <Link to={createPageUrl('PaymentGate')}>
                 <Button className="w-full bg-red-600 hover:bg-red-700 text-xs h-8">
                   Unlock Full Course →
