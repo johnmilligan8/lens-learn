@@ -6,9 +6,9 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import {
-  Aperture, Timer, Zap, Eye, Lightbulb, Crosshair,
-  MapPin, Moon, Star, RefreshCw, ChevronDown, ChevronUp,
-  Flashlight, Sun, Compass, Lock, Telescope, AlertTriangle
+  Aperture, Zap, Eye, Lightbulb, Crosshair,
+  MapPin, RefreshCw,
+  Sun, Lock, Telescope, AlertTriangle
 } from 'lucide-react';
 import CameraSettingsPanel from '../components/fieldmode/CameraSettingsPanel';
 import CompositionPanel from '../components/fieldmode/CompositionPanel';
