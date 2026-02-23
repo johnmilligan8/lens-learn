@@ -99,7 +99,7 @@ export default function PrecisionAROverlay({
   }
 
   // ===== COMPOSITION GUIDES =====
-  if (shooterMode === 'photographer' && coreAlt > 5) {
+  if (coreAlt > 5) {
     const coreX = centerX + visualAz * pxPerDegree;
     const coreY = horizonY - coreAlt * pxPerDegree * 0.6;
 
@@ -112,7 +112,6 @@ export default function PrecisionAROverlay({
       ctx.moveTo((w * i) / 3, 0);
       ctx.lineTo((w * i) / 3, h);
       ctx.stroke();
-
       ctx.beginPath();
       ctx.moveTo(0, (h * i) / 3);
       ctx.lineTo(w, (h * i) / 3);
@@ -133,7 +132,35 @@ export default function PrecisionAROverlay({
     ctx.fillStyle = 'rgba(255, 200, 100, 0.4)';
     ctx.font = '10px Montserrat';
     ctx.textAlign = 'center';
-    ctx.fillText('← Place core here for foreground composition →', w / 2, (h * 2) / 3 + 15);
+    ctx.fillText('← lower third: ideal foreground placement →', w / 2, (h * 2) / 3 + 15);
+
+    if (shooterMode === 'photographer') {
+      // Camera FoV box guide (approximate 14mm on full-frame = ~104° hFoV, narrow for framing)
+      // Show a 60°x40° framing box around the core
+      const fovW = 60 * pxPerDegree;
+      const fovH = 40 * pxPerDegree * 0.6;
+      ctx.strokeStyle = 'rgba(100, 200, 255, 0.5)';
+      ctx.lineWidth = 2;
+      ctx.setLineDash([8, 4]);
+      ctx.strokeRect(coreX - fovW / 2, coreY - fovH / 2, fovW, fovH);
+      ctx.setLineDash([]);
+      ctx.fillStyle = 'rgba(100, 200, 255, 0.6)';
+      ctx.font = '10px Montserrat';
+      ctx.textAlign = 'center';
+      ctx.fillText('14–24mm framing zone', coreX, coreY - fovH / 2 - 6);
+
+      // Portrait frame suggestion
+      const pFovW = 40 * pxPerDegree;
+      const pFovH = 55 * pxPerDegree * 0.6;
+      ctx.strokeStyle = 'rgba(255, 160, 100, 0.3)';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([4, 4]);
+      ctx.strokeRect(coreX - pFovW / 2, coreY - pFovH * 0.7, pFovW, pFovH);
+      ctx.setLineDash([]);
+      ctx.fillStyle = 'rgba(255, 160, 100, 0.5)';
+      ctx.font = '9px Montserrat';
+      ctx.fillText('portrait zone', coreX, coreY - pFovH * 0.7 - 5);
+    }
   }
 
   // ===== MOON POSITION & INTERFERENCE =====
