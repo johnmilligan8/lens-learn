@@ -321,14 +321,14 @@ export default function StarPointer() {
           )}
 
           {/* Featured Constellations */}
-          <Card className="bg-slate-900/60 border-slate-800 p-4">
+          <Card className="bg-[#1a1a1a] border border-white/8 p-4">
             <h3 className="font-bold text-white mb-3 text-sm flex items-center gap-2">
               🌟 {isSubscribed ? 'All Constellations' : 'Key Constellations'}
             </h3>
             <div className="space-y-2">
               {getVisibleConstellations().map(c => (
                 <div key={c.name} className="text-xs">
-                  <p className="text-purple-200 font-semibold">{c.name}</p>
+                  <p className="text-slate-300 font-semibold">{c.name}</p>
                   <p className="text-slate-400 text-xs">{c.guide}</p>
                 </div>
               ))}
