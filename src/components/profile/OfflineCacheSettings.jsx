@@ -38,12 +38,12 @@ export default function OfflineCacheSettings() {
   const [cleared, setCleared] = useState(false);
 
   const refresh = useCallback(() => {
-    setEntries(cacheList());
-    setTotalBytes(cacheTotalBytes());
-    setCleared(false);
-  }, []);
+     setEntries(cacheList());
+     setTotalBytes(cacheTotalBytes());
+     setCleared(false);
+   }, []);
 
-  useEffect(() => { refresh(); }, []);
+   useEffect(() => { refresh(); }, [refresh]);
 
   const handleClearAll = () => {
     cacheClearAll();
@@ -59,14 +59,16 @@ export default function OfflineCacheSettings() {
 
   // Group by category
   const grouped = {};
-  entries.forEach(e => {
-    const cat = friendlyName(e.name);
-    if (!grouped[cat]) grouped[cat] = [];
-    grouped[cat].push(e);
-  });
+  if (Array.isArray(entries)) {
+    entries.forEach(e => {
+      const cat = friendlyName(e.name);
+      if (!grouped[cat]) grouped[cat] = [];
+      grouped[cat].push(e);
+    });
+  }
 
   return (
-    <Card className="bg-slate-900/60 border-slate-800 p-6 mb-6">
+    <Card className="bg-[#1a1a1a] border-white/8 p-6 mb-6">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-white font-semibold flex items-center gap-2">
           <WifiOff className="w-5 h-5 text-blue-400" /> Offline Data Cache
@@ -81,7 +83,7 @@ export default function OfflineCacheSettings() {
       </p>
 
       {/* Storage summary */}
-      <div className="flex items-center gap-3 mb-5 p-3 rounded-xl bg-slate-800/50 border border-slate-700/50">
+      <div className="flex items-center gap-3 mb-5 p-3 rounded-xl bg-white/5 border border-white/8">
         <HardDrive className="w-5 h-5 text-slate-400 flex-shrink-0" />
         <div className="flex-1">
           <p className="text-white text-sm font-medium">{entries.length} cached item{entries.length !== 1 ? 's' : ''}</p>
@@ -118,7 +120,7 @@ export default function OfflineCacheSettings() {
               <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-2">{cat}</p>
               <div className="space-y-2">
                 {items.map(e => (
-                  <div key={e.key} className="flex items-center gap-3 p-3 rounded-lg bg-slate-800/40 border border-slate-700/40">
+                  <div key={e.key} className="flex items-center gap-3 p-3 rounded-lg bg-white/5 border border-white/8">
                     <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
                     <div className="flex-1 min-w-0">
                       <p className="text-white text-sm truncate">{e.name}</p>
