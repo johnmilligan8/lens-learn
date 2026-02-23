@@ -172,11 +172,7 @@ export default function TonightHub() {
         setProfile(prof);
         if (prof?.home_location) setLocation(prof.home_location);
         setAstroEvents(events);
-        try {
-          const auroras = await import('@/functions/fetchAuroraForecast').then(m => m.fetchNoaaKpForecast());
-          const todayForecast = Array.isArray(auroras) ? auroras.find(f => f.date === today) : null;
-          if (todayForecast) setAuroraForecast(todayForecast);
-        } catch (_) {}
+        // Aurora forecast removed (backend unavailable)
       } catch (e) {
         console.warn('TonightHub init error:', e);
       }
