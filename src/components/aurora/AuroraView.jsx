@@ -1,39 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { AlertCircle, Info, Loader } from 'lucide-react';
+import { Info, Loader, RefreshCw } from 'lucide-react';
 import AuroraDailyCard from './AuroraDailyCard';
 import AuroraWeeklyList from './AuroraWeeklyList';
-import { addDays, format } from 'date-fns';
-
-// Mock KP forecast data generator
-function generateMockForecasts(days = 7) {
-  const forecasts = [];
-  const today = new Date();
-  for (let i = 0; i < days; i++) {
-    const date = addDays(today, i);
-    const kpBase = Math.random() * 7;
-    const kpMin = Math.floor(kpBase);
-    const kpMax = Math.floor(kpBase) + 2;
-    let visibility = 'unlikely';
-    if (kpMin >= 5) visibility = 'good';
-    else if (kpMin >= 3) visibility = 'possible';
-
-    forecasts.push({
-      id: `forecast-${i}`,
-      date: format(date, 'yyyy-MM-dd'),
-      kp_index: Math.floor(kpBase),
-      kp_min: kpMin,
-      kp_max: kpMax,
-      cloud_cover_percent: Math.floor(Math.random() * 80),
-      visibility_rating: visibility,
-      source: 'mock',
-    });
-  }
-  return forecasts;
-}
+import { fetchNoaaKpForecast } from '@/functions/fetchAuroraForecast';
+import { fetchCloudCoverForecast } from '@/functions/fetchWeatherForecast';
 
 // Moon calculations
 function getMoonPhaseAndIllumination(date) {
@@ -53,21 +26,46 @@ function getMoonPhaseAndIllumination(date) {
   return { phase, illumination };
 }
 
-export default function AuroraView({ isSubscribed, userLocation = 'Utah' }) {
+export default function AuroraView({ isSubscribed, userLocation = 'Utah', userLat = null, userLon = null }) {
   const [forecasts, setForecasts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [tab, setTab] = useState('daily');
+  const [lastUpdated, setLastUpdated] = useState(null);
 
-  useEffect(() => {
-    const load = async () => {
-      // In future: fetch from NOAA API
-      // For now: use mock data
-      const mocks = generateMockForecasts(14);
-      setForecasts(mocks);
-      setLoading(false);
-    };
-    load();
-  }, []);
+  const load = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      // Fetch NOAA KP forecast + cloud cover in parallel
+      const [kpData, weatherData] = await Promise.all([
+        fetchNoaaKpForecast(),
+        (userLat && userLon)
+          ? fetchCloudCoverForecast(userLat, userLon, 7)
+          : Promise.resolve([]),
+      ]);
+
+      // Merge KP + cloud cover by date
+      const weatherByDate = {};
+      weatherData.forEach(w => { weatherByDate[w.date] = w; });
+
+      const merged = kpData.map((f, i) => ({
+        id: `forecast-${i}`,
+        ...f,
+        cloud_cover_percent: weatherByDate[f.date]?.clouds ?? null,
+        precipitation: weatherByDate[f.date]?.precipitation ?? null,
+      }));
+
+      setForecasts(merged);
+      setLastUpdated(new Date());
+    } catch (err) {
+      console.error('Aurora data error:', err);
+      setError('Could not load live data. NOAA may be temporarily unavailable.');
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => { load(); }, [userLat, userLon]);
 
   if (loading) {
     return (
