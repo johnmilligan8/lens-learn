@@ -208,12 +208,12 @@ export default function FreeCourse() {
                     ? 'bg-purple-900/40 border-purple-500/50 text-white'
                     : done
                     ? 'bg-slate-900/40 border-slate-700/40 text-slate-400'
-                    : 'bg-slate-900/40 border-slate-800 text-slate-300 hover:border-slate-600'
+                    : 'bg-slate-900/40 border-slate-800/60 text-slate-300 hover:border-red-600/40'
                 }`}
               >
                 <div className="flex items-center gap-3">
                   <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold ${
-                    done ? 'bg-emerald-600 text-white' : active ? 'bg-purple-600 text-white' : 'bg-slate-800 text-slate-400'
+                    done ? 'bg-emerald-600 text-white' : active ? 'bg-red-600 text-white' : 'bg-slate-800 text-slate-400'
                   }`}>
                     {done ? <Check className="w-3.5 h-3.5" /> : idx + 1}
                   </div>
@@ -231,12 +231,12 @@ export default function FreeCourse() {
 
           {/* Upgrade CTA in sidebar */}
           {!isSubscribed && (
-            <div className="mt-4 p-4 rounded-xl bg-gradient-to-br from-purple-900/50 to-indigo-900/50 border border-purple-500/40">
-              <Lock className="w-5 h-5 text-purple-400 mb-2" />
+            <div className="mt-4 p-4 rounded-xl bg-gradient-to-br from-red-900/40 to-red-800/20 border border-red-600/40">
+              <Lock className="w-5 h-5 text-red-400 mb-2" />
               <p className="text-white text-sm font-bold mb-1">5 More Modules Locked</p>
               <p className="text-purple-200/80 text-xs mb-3">Camera mastery, composition, post-processing, advanced techniques & more.</p>
               <Link to={createPageUrl('PaymentGate')}>
-                <Button className="w-full bg-purple-600 hover:bg-purple-700 text-xs h-8">
+                <Button className="w-full bg-red-600 hover:bg-red-700 text-xs h-8">
                   Unlock Full Course →
                 </Button>
               </Link>
@@ -251,7 +251,7 @@ export default function FreeCourse() {
               <Telescope className="w-12 h-12 text-purple-400 mx-auto mb-4 star-pulse" />
               <h3 className="text-xl font-bold text-white mb-2">Select a lesson to begin</h3>
               <p className="text-slate-400">Choose any lesson from the list to start your expedition.</p>
-              <Button className="mt-6 bg-purple-600 hover:bg-purple-700" onClick={() => setActiveLesson(FREE_LESSONS[0])}>
+              <Button className="mt-6 bg-red-600 hover:bg-red-700" onClick={() => setActiveLesson(FREE_LESSONS[0])}>
                 Start Lesson 1 →
               </Button>
             </Card>
@@ -369,7 +369,7 @@ export default function FreeCourse() {
                   </Button>
                   {FREE_LESSONS.findIndex(l => l.id === activeLesson.id) < FREE_LESSONS.length - 1 && (
                     <Button
-                      className="bg-purple-600 hover:bg-purple-700"
+                      className="bg-red-600 hover:bg-red-700"
                       onClick={() => {
                         const idx = FREE_LESSONS.findIndex(l => l.id === activeLesson.id);
                         markComplete(activeLesson.id);
