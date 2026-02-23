@@ -205,7 +205,7 @@ export default function FreeCourse() {
                 onClick={() => setActiveLesson(lesson)}
                 className={`w-full text-left p-4 rounded-xl border transition-all ${
                   active
-                    ? 'bg-purple-900/40 border-purple-500/50 text-white'
+                    ? 'bg-red-900/40 border-red-500/50 text-white'
                     : done
                     ? 'bg-slate-900/40 border-slate-700/40 text-slate-400'
                     : 'bg-slate-900/40 border-slate-800/60 text-slate-300 hover:border-red-600/40'
