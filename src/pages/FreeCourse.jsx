@@ -259,7 +259,7 @@ export default function FreeCourse() {
             <div>
               <Card className="bg-[#1a1a1a] border border-white/8 overflow-hidden">
                 {/* Lesson Header */}
-                <div className="p-6 border-b border-slate-800">
+                <div className="p-6 border-b border-white/8">
                   <div className="flex items-center gap-2 mb-2">
                     {typeIcon(activeLesson.type)}
                     <span className="text-slate-400 text-sm capitalize">{activeLesson.type}</span>
