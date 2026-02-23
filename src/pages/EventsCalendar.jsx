@@ -179,7 +179,16 @@ export default function EventsCalendar() {
       </div>
 
       {/* Aurora View */}
-      {tab === 'aurora' && <AuroraView isSubscribed={isSubscribed} userLocation="Your Location" />}
+      {tab === 'aurora' && (
+        <div className="space-y-0">
+          <AuroraPredictionCard
+            userLat={userProfile?.home_lat ?? null}
+            userLon={userProfile?.home_lon ?? null}
+            locationName={userProfile?.home_location ?? null}
+          />
+          <AuroraView isSubscribed={isSubscribed} userLocation={userProfile?.home_location || 'Your Location'} userLat={userProfile?.home_lat ?? null} userLon={userProfile?.home_lon ?? null} />
+        </div>
+      )}
 
       {/* Events View */}
       {tab === 'events' && (
