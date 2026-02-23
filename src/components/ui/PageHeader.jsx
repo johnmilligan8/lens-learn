@@ -12,7 +12,7 @@ export default function PageHeader({
       <div className="flex items-center gap-3 mb-3">
         {Icon && <Icon className="w-6 h-6 text-red-400" />}
         {badge && (
-          <span className="inline-flex items-center gap-2 bg-red-900/30 border border-red-600/30 rounded-full px-3 py-1 text-xs font-semibold text-red-300 uppercase tracking-widest">
+          <span className="inline-flex items-center gap-2 bg-white/5 border border-white/15 rounded-full px-3 py-1 text-xs font-semibold text-slate-300 uppercase tracking-widest">
             {badge}
           </span>
         )}
