@@ -597,7 +597,7 @@ export default function PlannerTool() {
   if (isSubscribed === null) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <Telescope className="w-10 h-10 text-purple-400 star-pulse" />
+        <Telescope className="w-10 h-10 text-red-400 star-pulse" />
       </div>
     );
   }
@@ -606,9 +606,9 @@ export default function PlannerTool() {
     return (
       <div className="max-w-2xl mx-auto px-4 py-24 flex flex-col items-center text-center gap-8">
         <div className="relative">
-          <div className="absolute inset-0 bg-purple-600/20 rounded-full blur-2xl" />
-          <div className="relative bg-gradient-to-br from-purple-700/30 to-blue-800/20 border border-purple-500/30 rounded-2xl p-8">
-            <Lock className="w-14 h-14 text-purple-400 mx-auto mb-4" />
+          <div className="absolute inset-0 bg-red-600/20 rounded-full blur-2xl" />
+          <div className="relative bg-gradient-to-br from-red-900/30 to-red-800/20 border border-red-500/30 rounded-2xl p-8">
+            <Lock className="w-14 h-14 text-red-400 mx-auto mb-4" />
             <h2 className="text-3xl font-black text-white mb-3">Sky Planner</h2>
             <p className="text-slate-400 text-lg mb-1">Milky Way rise/set times, interactive sky map,</p>
             <p className="text-slate-400 text-lg">moon impact analysis & Bortle scale lookup.</p>
@@ -617,7 +617,7 @@ export default function PlannerTool() {
         <div className="space-y-3 text-left w-full max-w-sm">
           {['Galactic core rise, peak & set times', 'Interactive polar sky map', 'Moon phase & illumination impact', 'Bortle scale for any location', 'Best shooting hours chart', 'AI-powered location tips'].map(f => (
             <div key={f} className="flex items-center gap-3">
-              <CheckCircle className="w-4 h-4 text-purple-400 flex-shrink-0" />
+              <CheckCircle className="w-4 h-4 text-red-400 flex-shrink-0" />
               <span className="text-slate-300 text-sm">{f}</span>
             </div>
           ))}
@@ -696,7 +696,7 @@ export default function PlannerTool() {
 
           <Card className="bg-slate-900/60 border-slate-800 p-6">
             <h2 className="text-lg font-bold text-white mb-5 flex items-center gap-2">
-              <Navigation className="w-4 h-4 text-purple-400" /> Shoot Details
+              <Navigation className="w-4 h-4 text-red-400" /> Shoot Details
             </h2>
             <div className="space-y-4">
               <div>
@@ -737,7 +737,7 @@ export default function PlannerTool() {
           {/* Bortle Guide */}
           <Card className="bg-slate-900/60 border-slate-800 p-5">
             <h3 className="text-white font-semibold mb-4 text-sm flex items-center gap-2">
-              <Eye className="w-4 h-4 text-purple-400" /> Bortle Scale Reference
+              <Eye className="w-4 h-4 text-red-400" /> Bortle Scale Reference
             </h3>
             <div className="space-y-2.5">
               {[
@@ -780,7 +780,7 @@ export default function PlannerTool() {
               {/* Core Times */}
               <Card className="bg-slate-900/60 border-slate-800 p-5">
                 <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
-                  <Telescope className="w-4 h-4 text-purple-400" /> Galactic Core (Sgr A*) — {date}
+                    <Telescope className="w-4 h-4 text-red-400" /> Galactic Core (Sgr A*) — {date}
                 </h3>
                 <div className="grid grid-cols-3 gap-3 mb-4">
                   {[
@@ -807,7 +807,7 @@ export default function PlannerTool() {
                 {/* Sky Map */}
                 <Card className="bg-slate-900/60 border-slate-800 p-5">
                   <h3 className="text-white font-semibold mb-3 flex items-center gap-2 text-sm">
-                    <Star className="w-4 h-4 text-purple-400" /> Interactive Sky Map
+                    <Star className="w-4 h-4 text-red-400" /> Interactive Sky Map
                   </h3>
                   <SkyCanvas
                     gcData={results.gcData}
@@ -912,7 +912,7 @@ export default function PlannerTool() {
               {/* Hourly Altitude Chart */}
               <Card className="bg-slate-900/60 border-slate-800 p-5">
                 <h3 className="text-white font-semibold mb-4 flex items-center gap-2 text-sm">
-                  <TrendingUp className="w-4 h-4 text-purple-400" /> Core Altitude Throughout the Day
+                  <TrendingUp className="w-4 h-4 text-red-400" /> Core Altitude Throughout the Day
                 </h3>
                 <HourlyChart gcData={results.gcData} />
               </Card>
@@ -921,7 +921,7 @@ export default function PlannerTool() {
               <div ref={ephemerisRef}>
                 <Card className="bg-slate-900/60 border-slate-800 p-5">
                   <h3 className="text-white font-semibold mb-1 flex items-center gap-2 text-sm">
-                    <Star className="w-4 h-4 text-purple-400" /> Ephemeris Lookup
+                    <Star className="w-4 h-4 text-red-400" /> Ephemeris Lookup
                   </h3>
                   <p className="text-slate-500 text-xs mb-4">Look up the altitude & azimuth of any celestial object for a specific date and time.</p>
                   <EphemerisLookup lat={results.coords?.lat} lon={results.coords?.lon} dateStr={date} initialTarget={ephemerisTarget} />
@@ -971,9 +971,9 @@ export default function PlannerTool() {
           ) : (
             <Card className="bg-slate-900/60 border-slate-800 p-16 text-center">
               <div className="relative w-20 h-20 mx-auto mb-6">
-                <div className="absolute inset-0 bg-purple-600/20 rounded-full blur-xl" />
+                <div className="absolute inset-0 bg-red-600/20 rounded-full blur-xl" />
                 <div className="relative bg-slate-800 rounded-full w-20 h-20 flex items-center justify-center">
-                  <MapPin className="w-10 h-10 text-purple-400" />
+                  <MapPin className="w-10 h-10 text-red-400" />
                 </div>
               </div>
               <h3 className="text-xl font-bold text-slate-400 mb-2">Enter your shoot location</h3>
