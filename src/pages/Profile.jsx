@@ -175,9 +175,9 @@ export default function Profile() {
 
         {/* Stats */}
         <div className="md:col-span-2 space-y-5">
-          <Card className="bg-slate-900/60 border-slate-800 p-6">
-            <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
-              <Trophy className="w-5 h-5 text-red-400" /> Progress Overview
+          <Card className="bg-[#1a1a1a] border-white/8 p-6">
+             <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
+               <Trophy className="w-5 h-5 text-red-400" /> Progress Overview
             </h3>
             <div className="grid grid-cols-3 gap-4 mb-4">
               {[
@@ -194,9 +194,9 @@ export default function Profile() {
           </Card>
 
           {/* Badges */}
-          <Card className="bg-slate-900/60 border-slate-800 p-6">
-            <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
-              <Star className="w-5 h-5 text-red-400" /> Achievements
+           <Card className="bg-[#1a1a1a] border-white/8 p-6">
+             <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
+               <Star className="w-5 h-5 text-red-400" /> Achievements
             </h3>
             <div className="grid grid-cols-3 gap-3">
               {badges.map(badge => (
