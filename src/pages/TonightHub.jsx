@@ -375,8 +375,8 @@ export default function TonightHub() {
       )}
 
       {coords && mode === 'experience' && (
-        <Card className="bg-indigo-900/20 border border-indigo-500/30 p-4 mt-4">
-          <p className="text-indigo-300 text-xs font-semibold mb-1">👁 Sky Experience Tip</p>
+        <Card className="bg-[#1a1a1a] border border-white/8 p-4 mt-4">
+          <p className="text-slate-300 text-xs font-semibold mb-1">👁 Sky Experience Tip</p>
           <p className="text-slate-400 text-xs leading-relaxed">Allow 20–30 minutes for your eyes to dark-adapt. Avoid all white lights. Look slightly beside your target for faint objects — your peripheral vision sees dimmer light.</p>
         </Card>
       )}
