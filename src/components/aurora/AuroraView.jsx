@@ -7,6 +7,7 @@ import AuroraDailyCard from './AuroraDailyCard';
 import AuroraWeeklyList from './AuroraWeeklyList';
 import { fetchNoaaKpForecast } from '@/functions/fetchAuroraForecast';
 import { fetchCloudCoverForecast } from '@/functions/fetchWeatherForecast';
+import { getAuroraWithCache, getWeatherWithCache } from '@/functions/offlineCache';
 
 // Moon calculations
 function getMoonPhaseAndIllumination(date) {
