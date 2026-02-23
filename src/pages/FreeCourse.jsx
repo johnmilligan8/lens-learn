@@ -317,8 +317,8 @@ export default function FreeCourse() {
                                     onClick={() => setQuizAnswers(prev => ({ ...prev, [qi]: oi }))}
                                     className={`p-3 rounded-lg border text-sm text-left transition-all ${
                                       quizAnswers[qi] === oi
-                                        ? 'border-purple-500 bg-purple-900/40 text-white'
-                                        : 'border-slate-700 bg-slate-800/50 text-slate-400 hover:border-slate-500'
+                                        ? 'border-red-600 bg-red-900/30 text-white'
+                                        : 'border-slate-700 bg-slate-800/50 text-slate-400 hover:border-slate-600'
                                     }`}
                                   >
                                     {opt}
@@ -329,7 +329,7 @@ export default function FreeCourse() {
                           ))}
                         </div>
                         <Button
-                          className="mt-6 bg-purple-600 hover:bg-purple-700"
+                          className="mt-6 bg-red-600 hover:bg-red-700"
                           disabled={Object.keys(quizAnswers).length < QUIZ_QUESTIONS.length}
                           onClick={() => setQuizSubmitted(true)}
                         >
@@ -407,7 +407,7 @@ export default function FreeCourse() {
                 <p className="text-white font-bold mb-1">Full Dark Sky Guide + 50+ Locations</p>
                 <p className="text-slate-400 text-sm mb-3">Detailed GPS coordinates, seasonal guides, hazard notes & insider tips — unlocked with any paid plan.</p>
                 <Link to={createPageUrl('PaymentGate')}>
-                  <Button className="bg-purple-600 hover:bg-purple-700">Upgrade to Explorer — $19/mo</Button>
+                <Button className="bg-red-600 hover:bg-red-700">Upgrade to Explorer — $19/mo</Button>
                 </Link>
               </div>
             )}
