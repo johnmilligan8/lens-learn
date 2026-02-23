@@ -20,8 +20,7 @@ import {
   ChevronLeft,
   Rocket,
   Smartphone,
-  Flashlight,
-  FlashlightOff
+  Zap
 } from 'lucide-react';
 
 const navItems = [
