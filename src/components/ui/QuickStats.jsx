@@ -10,7 +10,7 @@ export default function QuickStats({ stats = [] }) {
           <p className="text-slate-400 text-xs uppercase tracking-widest font-medium">{stat.label}</p>
           <p className="text-2xl font-black text-white mt-2">{stat.value}</p>
           {stat.change && (
-            <p className={`text-xs mt-2 ${stat.change.positive ? 'text-emerald-400' : 'text-slate-500'}`}>
+            <p className={`text-xs mt-2 ${stat.change.positive ? 'text-red-400' : 'text-slate-500'}`}>
               {stat.change.positive ? '↑' : '→'} {stat.change.text}
             </p>
           )}

@@ -3,10 +3,10 @@ import { ChevronRight, Lock } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 const SCORE_CONFIG = {
-  excellent: { label: 'Excellent', color: 'text-emerald-400', bg: 'bg-emerald-900/20 border-emerald-500/30', dot: 'bg-emerald-400' },
-  good:      { label: 'Good',      color: 'text-blue-400',    bg: 'bg-blue-900/20 border-blue-500/30',       dot: 'bg-blue-400' },
-  marginal:  { label: 'Marginal',  color: 'text-yellow-400',  bg: 'bg-yellow-900/20 border-yellow-500/30',   dot: 'bg-yellow-400' },
-  poor:      { label: 'Poor',      color: 'text-red-400',     bg: 'bg-red-900/20 border-red-500/30',         dot: 'bg-red-400' },
+  excellent: { label: 'Excellent', color: 'text-white',       bg: 'bg-[#1a1a1a] border-white/10',    dot: 'bg-white' },
+  good:      { label: 'Good',      color: 'text-slate-200',   bg: 'bg-[#1a1a1a] border-white/10',    dot: 'bg-slate-300' },
+  marginal:  { label: 'Marginal',  color: 'text-slate-400',   bg: 'bg-[#1a1a1a] border-white/10',    dot: 'bg-slate-500' },
+  poor:      { label: 'Poor',      color: 'text-red-400',     bg: 'bg-[#1a1a1a] border-red-600/30',  dot: 'bg-red-500' },
 };
 
 export default function EventRankCard({ event, rank, isSubscribed, onCommit, mode }) {
@@ -60,7 +60,7 @@ export default function EventRankCard({ event, rank, isSubscribed, onCommit, mod
               {mode !== 'experience' && (
                 <button
                   onClick={() => onCommit(event)}
-                  className="mt-2 w-full flex items-center justify-center gap-2 bg-purple-700 hover:bg-purple-600 text-white text-xs font-bold rounded-lg py-2 transition-colors"
+                  className="mt-2 w-full flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-lg py-2 transition-colors"
                 >
                   Commit & Build Shoot Plan <ChevronRight className="w-3.5 h-3.5" />
                 </button>
@@ -69,7 +69,7 @@ export default function EventRankCard({ event, rank, isSubscribed, onCommit, mod
           ) : (
             <div className="mt-3 flex items-center gap-2 text-xs text-slate-500 border border-slate-700/50 rounded-lg px-3 py-2 bg-slate-900/40">
               <Lock className="w-3.5 h-3.5 flex-shrink-0" />
-              <span>Full viability score, drivers & shoot plan — <strong className="text-purple-300">Paid</strong></span>
+              <span>Full viability score, drivers & shoot plan — <strong className="text-red-400">Paid</strong></span>
             </div>
           )}
         </div>
