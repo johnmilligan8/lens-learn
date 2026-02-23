@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { format, parseISO, isPast, isThisMonth, isWithinInterval, startOfMonth, endOfMonth } from 'date-fns';
 import AuroraView from '../components/aurora/AuroraView';
+import AuroraPredictionCard from '../components/events/AuroraPredictionCard';
 import {
   Calendar, Star, Sparkles, Moon, Zap, Eye,
   AlertCircle, ChevronDown, ChevronUp, Filter, X
