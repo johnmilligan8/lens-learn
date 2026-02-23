@@ -188,7 +188,7 @@ export default function CommunityGallery() {
                   </button>
                 </div>
               ) : (
-                <label className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-slate-700 rounded-lg cursor-pointer hover:border-purple-500/50 transition-colors">
+                <label className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-slate-700 rounded-lg cursor-pointer hover:border-red-600/50 transition-colors">
                   <Upload className="w-8 h-8 text-slate-500 mb-2" />
                   <p className="text-slate-500 text-sm">Click to select a photo</p>
                   <input type="file" accept="image/*" onChange={handleFileChange} className="hidden" />

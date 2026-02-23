@@ -126,7 +126,7 @@ export default function EventsCalendar() {
               <div className="flex items-center gap-2 flex-wrap mb-1">
                 <h3 className="text-white font-bold text-lg">{event.title}</h3>
                 {isThisMonth(new Date(event.date)) && !past && (
-                  <Badge className="bg-purple-600 text-white text-xs">This Month</Badge>
+                  <Badge className="bg-red-600 text-white text-xs">This Month</Badge>
                 )}
               </div>
               <p className="text-slate-300 text-sm mb-2">
@@ -200,7 +200,7 @@ export default function EventsCalendar() {
           onClick={() => setTab('events')}
           className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors ${
             tab === 'events'
-              ? 'border-purple-600 text-white'
+              ? 'border-red-600 text-white'
               : 'border-transparent text-slate-400 hover:text-slate-300'
           }`}
         >
@@ -210,7 +210,7 @@ export default function EventsCalendar() {
           onClick={() => setTab('aurora')}
           className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors flex items-center gap-2 ${
             tab === 'aurora'
-              ? 'border-purple-600 text-white'
+              ? 'border-red-600 text-white'
               : 'border-transparent text-slate-400 hover:text-slate-300'
           }`}
         >
@@ -222,7 +222,7 @@ export default function EventsCalendar() {
       {upcoming.length > 0 && (
         <div className="mb-10">
           <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-purple-400" /> Upcoming Events
+            <Sparkles className="w-5 h-5 text-red-400" /> Upcoming Events
           </h2>
           <div className="space-y-4">
             {upcoming.map(e => <EventCard key={e.id} event={e} />)}
