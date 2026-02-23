@@ -46,7 +46,7 @@ export default function PostProcessingGuide() {
   ];
 
   return (
-    <Card className="bg-gradient-to-br from-slate-900/60 to-slate-800/30 border-slate-800 p-5">
+    <Card className="bg-[#1a1a1a] border border-white/8 p-5">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <Sparkles className="w-4 h-4 text-red-400" />
@@ -65,7 +65,7 @@ export default function PostProcessingGuide() {
       {!expanded ? (
         <p className="text-slate-400 text-sm">Master stacking, denoising & color grading for stunning Milky Way shots</p>
       ) : (
-        <div className="space-y-4 mt-4 pt-4 border-t border-slate-700">
+        <div className="space-y-4 mt-4 pt-4 border-t border-white/8">
           {sections.map((section, idx) => {
             const Icon = section.icon;
             return (

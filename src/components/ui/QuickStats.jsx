@@ -6,7 +6,7 @@ export default function QuickStats({ stats = [] }) {
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
       {stats.map((stat, i) => (
-        <div key={i} className="bg-slate-800/40 border border-slate-700/50 rounded-lg p-4">
+        <div key={i} className="bg-[#1a1a1a] border border-white/8 rounded-lg p-4">
           <p className="text-slate-400 text-xs uppercase tracking-widest font-medium">{stat.label}</p>
           <p className="text-2xl font-black text-white mt-2">{stat.value}</p>
           {stat.change && (

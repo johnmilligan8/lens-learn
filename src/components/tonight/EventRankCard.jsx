@@ -16,7 +16,7 @@ export default function EventRankCard({ event, rank, isSubscribed, onCommit, mod
     <div className={`rounded-xl border p-4 ${sc.bg} relative overflow-hidden`}>
       {rank === 1 && (
         <div className="absolute top-0 right-0">
-          <div className="bg-yellow-500 text-black text-[10px] font-black px-2 py-0.5 rounded-bl-lg">TOP EVENT</div>
+          <div className="bg-red-600 text-white text-[10px] font-black px-2 py-0.5 rounded-bl-lg">TOP EVENT</div>
         </div>
       )}
 
@@ -48,7 +48,7 @@ export default function EventRankCard({ event, rank, isSubscribed, onCommit, mod
                 <div className="space-y-1">
                   {event.drivers.map((d, i) => (
                     <div key={i} className="flex items-start gap-2 text-xs">
-                      <span className={`mt-0.5 flex-shrink-0 ${d.positive ? 'text-emerald-400' : 'text-red-400'}`}>{d.positive ? '✓' : '✗'}</span>
+                      <span className={`mt-0.5 flex-shrink-0 ${d.positive ? 'text-slate-300' : 'text-red-400'}`}>{d.positive ? '✓' : '✗'}</span>
                       <span className="text-slate-300">{d.text}</span>
                     </div>
                   ))}

@@ -32,9 +32,9 @@ const VISIBILITY_STYLES = {
 };
 
 const KP_BAR_COLOR = (kp) => {
-  if (kp >= 5) return 'bg-emerald-500';
-  if (kp >= 3) return 'bg-yellow-500';
-  return 'bg-slate-500';
+if (kp >= 5) return 'bg-red-500';
+if (kp >= 3) return 'bg-slate-400';
+return 'bg-slate-600';
 };
 
 export default function AuroraPredictionCard({ userLat, userLon, locationName }) {
@@ -163,7 +163,7 @@ export default function AuroraPredictionCard({ userLat, userLon, locationName })
             {/* Cloud Cover */}
             <div className="bg-black/20 rounded-xl p-4">
               <div className="flex items-center gap-1.5 mb-2">
-                <Cloud className="w-3.5 h-3.5 text-blue-400" />
+                <Cloud className="w-3.5 h-3.5 text-slate-400" />
                 <p className="text-xs text-slate-400 font-medium">Cloud Cover</p>
               </div>
               {data.clouds !== null ? (
@@ -171,7 +171,7 @@ export default function AuroraPredictionCard({ userLat, userLon, locationName })
                   <p className="text-3xl font-black text-white">{data.clouds}<span className="text-lg font-normal text-slate-400">%</span></p>
                   <div className="mt-2 h-1.5 rounded-full bg-slate-700 overflow-hidden">
                     <div
-                      className={`h-full rounded-full ${data.clouds < 30 ? 'bg-emerald-500' : data.clouds < 60 ? 'bg-yellow-500' : 'bg-red-500'}`}
+                      className={`h-full rounded-full ${data.clouds < 30 ? 'bg-slate-400' : data.clouds < 60 ? 'bg-slate-500' : 'bg-red-600'}`}
                       style={{ width: `${data.clouds}%` }}
                     />
                   </div>
@@ -190,7 +190,7 @@ export default function AuroraPredictionCard({ userLat, userLon, locationName })
             {/* Moon Phase */}
             <div className="bg-black/20 rounded-xl p-4">
               <div className="flex items-center gap-1.5 mb-2">
-                <Moon className="w-3.5 h-3.5 text-yellow-400" />
+                <Moon className="w-3.5 h-3.5 text-slate-400" />
                 <p className="text-xs text-slate-400 font-medium">Moon Phase</p>
               </div>
               <p className="text-2xl mb-1">{moon.emoji}</p>
@@ -201,7 +201,7 @@ export default function AuroraPredictionCard({ userLat, userLon, locationName })
             {/* Visibility */}
             <div className="bg-black/20 rounded-xl p-4">
               <div className="flex items-center gap-1.5 mb-2">
-                <Eye className="w-3.5 h-3.5 text-emerald-400" />
+                <Eye className="w-3.5 h-3.5 text-slate-400" />
                 <p className="text-xs text-slate-400 font-medium">Visibility</p>
               </div>
               <p className="text-2xl font-black text-white capitalize">{style?.label}</p>
