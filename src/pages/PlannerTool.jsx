@@ -487,7 +487,7 @@ export default function PlannerTool() {
       latitude: lat,
       longitude: lon,
       daily: 'cloud_cover_mean,precipitation_sum,wind_speed_10m_max,temperature_2m_max,temperature_2m_min',
-      hourly: 'cloud_cover,precipitation,wind_speed_10m,temperature_2m',
+      hourly: 'cloud_cover,precipitation,wind_speed_10m,temperature_2m,relative_humidity_2m',
       timezone: 'UTC',
       start_date: targetDate,
       end_date: new Date(target.getTime() + 2 * 86400000).toISOString().split('T')[0],
@@ -522,6 +522,7 @@ export default function PlannerTool() {
         precip: hourly.precipitation?.[i] ?? 0,
         wind: Math.round((hourly.wind_speed_10m?.[i] ?? 0) * 10) / 10,
         temp: Math.round(hourly.temperature_2m?.[i] ?? 0),
+        humidity: Math.round(hourly.relative_humidity_2m?.[i] ?? 0),
       });
       return acc;
     }, []) ?? [];
