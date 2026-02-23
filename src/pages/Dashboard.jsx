@@ -116,7 +116,7 @@ export default function Dashboard() {
         <div className="mb-8 p-5 rounded-2xl border border-yellow-500/30 bg-gradient-to-r from-yellow-900/20 via-orange-900/10 to-purple-900/20 flex flex-col md:flex-row items-start md:items-center gap-4">
           <div className="flex-1">
             <p className="text-yellow-200 font-black text-lg leading-snug">🚀 Ready to master the stars?</p>
-            <p className="text-slate-200 text-sm mt-1">Upgrade for full courses, pro planning tools, instructor feedback & custom alerts — just <strong className="text-white">$19/month</strong>.</p>
+            <p className="text-slate-200 text-sm mt-1">Unlock full planning tools, guided shoot plans, gear checklists & aurora alerts — from <strong className="text-white">$7.99/month</strong>. Or go Pro at $14.99/mo for instructor access & journal insights.</p>
           </div>
           <Link to={createPageUrl('PaymentGate')}>
             <Button className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-bold whitespace-nowrap">
