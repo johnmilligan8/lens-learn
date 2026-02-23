@@ -105,8 +105,8 @@ export default function EventsCalendar() {
   };
 
   if (loading) return (
-    <div className="flex items-center justify-center min-h-screen">
-      <Calendar className="w-10 h-10 text-purple-400 star-pulse" />
+     <div className="flex items-center justify-center min-h-screen">
+       <Calendar className="w-10 h-10 text-red-400 star-pulse" />
     </div>
   );
 
@@ -116,7 +116,7 @@ export default function EventsCalendar() {
     const past = isPast(new Date(event.date + 'T23:59:59'));
 
     return (
-      <Card className={`border p-6 transition-all ${past ? 'opacity-60' : ''} ${EVENT_COLORS[event.type]}`}>
+      <Card className={`bg-[#1a1a1a] border-white/8 p-6 transition-all ${past ? 'opacity-60' : ''}`}>
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-start gap-4 flex-1">
             <div className={`p-3 rounded-xl ${BADGE_COLORS[event.type]} flex-shrink-0`}>
@@ -241,7 +241,7 @@ export default function EventsCalendar() {
       )}
 
       {filtered.length === 0 && (
-        <Card className="bg-slate-900/60 border-slate-800 p-16 text-center">
+         <Card className="bg-[#1a1a1a] border-white/8 p-16 text-center">
           <Calendar className="w-16 h-16 text-slate-700 mx-auto mb-4" />
           <p className="text-slate-500">No events found for this filter.</p>
         </Card>
