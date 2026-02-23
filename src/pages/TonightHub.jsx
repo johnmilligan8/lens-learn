@@ -172,7 +172,9 @@ export default function TonightHub() {
       setProfile(prof);
       if (prof?.home_location) setLocation(prof.home_location);
       setAstroEvents(events);
-      if (auroras.length > 0) setAuroraForecast(auroras[0]);
+      // auroras is now an array from NOAA — find today's entry
+      const todayForecast = Array.isArray(auroras) ? auroras.find(f => f.date === today) : null;
+      if (todayForecast) setAuroraForecast(todayForecast);
       setLoading(false);
     };
     init();
