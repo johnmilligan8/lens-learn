@@ -71,6 +71,16 @@ const GEAR_PRESETS = {
       ]
     },
     {
+      name: 'Low Level Lighting (LLL) / Foreground Illumination',
+      items: [
+        { name: 'Dim-adjustable LED panel (e.g., Nanlite Compac 20)', id: 'lll1' },
+        { name: 'Light stand or tripod mount for LED', id: 'lll2' },
+        { name: 'Warming gel / CTO filter (3200K)', id: 'lll3' },
+        { name: 'Barn doors or foam flags (prevent sky spill)', id: 'lll4' },
+        { name: 'Extra batteries / power bank for LED', id: 'lll5' },
+      ]
+    },
+    {
       name: 'Advanced (Optional)',
       items: [
         { name: 'Camera strobes/flash', id: 'adv1' },
