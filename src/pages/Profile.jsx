@@ -130,7 +130,7 @@ export default function Profile() {
       <div className="grid md:grid-cols-3 gap-6 mb-8">
         {/* Profile Card */}
         <div className="md:col-span-1">
-          <Card className="bg-slate-900/60 border-slate-800 p-6 text-center">
+          <Card className="bg-[#1a1a1a] border-white/8 p-6 text-center">
             <div className="w-20 h-20 rounded-full bg-gradient-to-br from-red-700 to-red-500 flex items-center justify-center text-3xl font-bold text-white mx-auto mb-4">
               {user?.full_name?.[0] || user?.email?.[0] || 'U'}
             </div>
@@ -200,7 +200,7 @@ export default function Profile() {
             </h3>
             <div className="grid grid-cols-3 gap-3">
               {badges.map(badge => (
-                <div key={badge.label} className={`text-center p-4 rounded-xl border transition-all ${badge.unlocked ? 'bg-purple-900/20 border-purple-500/30' : 'bg-slate-800/30 border-slate-700/30 opacity-40'}`}>
+                <div key={badge.label} className={`text-center p-4 rounded-xl border transition-all ${badge.unlocked ? 'bg-red-900/20 border-red-600/30' : 'bg-white/5 border-white/8 opacity-40'}`}>
                   <p className="text-2xl mb-1">{badge.icon}</p>
                   <p className="text-xs font-medium text-white leading-tight">{badge.label}</p>
                   {badge.unlocked && <CheckCircle2 className="w-3 h-3 text-red-400 mx-auto mt-1" />}
@@ -212,7 +212,7 @@ export default function Profile() {
       </div>
 
       {/* Home Location */}
-      <Card className="bg-slate-900/60 border-slate-800 p-6 mb-6">
+      <Card className="bg-[#1a1a1a] border-white/8 p-6 mb-6">
         <div className="flex items-center justify-between mb-3">
           <h3 className="text-white font-semibold flex items-center gap-2">
             <MapPin className="w-5 h-5 text-red-400" /> Home Base Location
@@ -283,7 +283,7 @@ export default function Profile() {
       </Card>
 
       <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-        <DialogContent className="bg-slate-900 border-slate-700 max-w-sm">
+        <DialogContent className="bg-[#1a1a1a] border-white/8 max-w-sm">
           <DialogHeader>
             <DialogTitle className="text-white flex items-center gap-2">
               <AlertTriangle className="w-5 h-5 text-red-400" /> Delete Account
@@ -315,7 +315,7 @@ export default function Profile() {
 
       {/* My Photos */}
       {photos.length > 0 && (
-        <Card className="bg-slate-900/60 border-slate-800 p-6">
+        <Card className="bg-[#1a1a1a] border-white/8 p-6">
           <h3 className="text-white font-semibold mb-5 flex items-center gap-2">
             <Camera className="w-5 h-5 text-blue-400" /> My Gallery Photos
           </h3>
