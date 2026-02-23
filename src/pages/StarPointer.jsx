@@ -192,9 +192,9 @@ export default function StarPointer() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-white mb-2 flex items-center gap-2">
-          <Smartphone className="w-7 h-7 text-purple-400" /> Star Pointer
-        </h1>
+         <h1 className="text-3xl font-bold text-white mb-2 flex items-center gap-2">
+           <Smartphone className="w-7 h-7 text-red-400" /> Star Pointer
+         </h1>
         <p className="text-slate-400">Point your phone at the night sky to identify stars, planets & constellations in real-time.</p>
       </div>
 
