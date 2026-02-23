@@ -65,7 +65,7 @@ const LIFETIME = {
   price: '$99',
   label: 'Lifetime — Plus features, forever',
   features: [
-    'All Plus features unlocked permanently',
+    'All Plus features unlocked permanently (incl. Blue Hour, LLL, Field Mode)',
     'No recurring billing — ever',
     'All future Plus-tier content & updates',
     'Priority support',
@@ -166,7 +166,7 @@ export default function PaymentGate() {
                   )}
                   <div className="absolute top-0 right-0 w-32 h-32 bg-purple-600/5 blur-3xl pointer-events-none" />
 
-                  <Icon className={`w-9 h-9 mb-3 ${tier.id === 'plus' ? 'text-purple-400' : 'text-blue-400'}`} />
+                  <Icon className={`w-9 h-9 mb-3 ${tier.id === 'plus' ? 'text-red-400' : 'text-slate-300'}`} />
                   <h3 className="text-xl font-bold text-white">{tier.name}</h3>
                   <p className="text-slate-400 text-xs mb-4 italic">"{tier.tagline}"</p>
 
@@ -190,7 +190,7 @@ export default function PaymentGate() {
                   <ul className="space-y-2.5 my-6">
                     {tier.features.map((f, i) => (
                       <li key={i} className="flex items-start gap-2.5 text-slate-300 text-sm">
-                        <Check className={`w-4 h-4 flex-shrink-0 mt-0.5 ${tier.id === 'plus' ? 'text-purple-400' : 'text-blue-400'}`} />
+                        <Check className={`w-4 h-4 flex-shrink-0 mt-0.5 ${tier.id === 'plus' ? 'text-red-400' : 'text-slate-400'}`} />
                         {f}
                       </li>
                     ))}
