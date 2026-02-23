@@ -67,12 +67,14 @@ export default function EventsCalendar() {
   const loadData = useCallback(async () => {
     const me = await base44.auth.me();
     setUser(me);
-    const [astrEvents, subs] = await Promise.all([
+    const [astrEvents, subs, profiles] = await Promise.all([
       base44.entities.AstronomyEvent.list('date', 100),
       me.role === 'admin' ? Promise.resolve([{ status: 'active' }]) : base44.entities.Subscription.filter({ user_email: me.email, status: 'active' }, '-created_date', 1),
+      base44.entities.UserProfile.filter({ user_email: me.email }, '-created_date', 1),
     ]);
     setEvents(astrEvents.length > 0 ? astrEvents : SAMPLE_EVENTS);
     setIsSubscribed(subs.length > 0);
+    setUserProfile(profiles[0] ?? null);
     setLoading(false);
   }, []);
 
