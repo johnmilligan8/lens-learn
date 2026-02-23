@@ -17,7 +17,8 @@ import StackingTechniquesGuide from '../components/planner/StackingTechniquesGui
 import PostProcessingGuide from '../components/planner/PostProcessingGuide';
 import GearChecklist from '../components/planner/GearChecklist';
 import ClientEmailGenerator from '../components/planner/ClientEmailGenerator';
-import ExpeditionManager from '../components/planner/ExpeditionManager';
+import TripPlanManager from '../components/planner/TripPlanManager';
+import DetailedWeatherCard from '../components/planner/DetailedWeatherCard';
 import MilkyWayARPreview from '../components/planner/MilkyWayARPreview';
 import LocationPicker from '../components/onboarding/LocationPicker';
 import { Card } from '@/components/ui/card';
