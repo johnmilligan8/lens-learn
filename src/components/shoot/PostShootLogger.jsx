@@ -138,6 +138,16 @@ export default function PostShootLogger({ userEmail, sessionId, onSessionLogged,
         </div>
       )}
 
+      {/* Post-shoot upsell: Pro for insights, or course for basics */}
+      {!isSubscribed && saved && (
+        <UpgradeNudge
+          headline="Improve your results — unlock Pro insights"
+          body="Pattern analysis across all your shoots helps you identify what's holding you back. Unlock Pro for $14.99/mo."
+          cta="See Pro Plan →"
+          tier="pro"
+        />
+      )}
+
       <Button
         onClick={handleLog}
         disabled={loading || !outcome}
