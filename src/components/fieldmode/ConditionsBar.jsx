@@ -26,8 +26,11 @@ export default function ConditionsBar({ coords, mode }) {
   useEffect(() => {
     if (!coords) return;
     import('@/functions/fetchWeatherForecast').then(m => {
-      m.fetchWeatherForecast(coords.lat, coords.lon).then(data => {
-        if (data && data.length > 0) setWeather(data[0]);
+      m.fetchCloudCoverForecast(coords.lat, coords.lon, 1).then(data => {
+        if (data && data.length > 0) {
+          const d = data[0];
+          setWeather({ cloud_cover: d.clouds, temp_c: d.temp_min });
+        }
       }).catch(() => {});
     });
   }, [coords]);
