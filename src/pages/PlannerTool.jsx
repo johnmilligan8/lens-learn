@@ -334,7 +334,7 @@ function HourlyChart({ gcData }) {
           return (
             <div key={i} className="flex-1 flex flex-col items-center gap-0.5">
               <div
-                className={`w-full rounded-t transition-all ${pt.alt > 0 ? 'bg-purple-500/70' : 'bg-slate-700/30'}`}
+                className={`w-full rounded-t transition-all ${pt.alt > 0 ? 'bg-red-600/70' : 'bg-slate-700/30'}`}
                 style={{ height: `${pct}%`, minHeight: pt.alt > 0 ? '2px' : '0' }}
                 title={`Alt: ${pt.alt}°`}
               />
@@ -346,7 +346,7 @@ function HourlyChart({ gcData }) {
         <span>12 AM</span><span>6 AM</span><span>12 PM</span><span>6 PM</span><span>12 AM</span>
       </div>
       <div className="flex items-center gap-3 mt-2">
-        <div className="flex items-center gap-1"><div className="w-3 h-3 rounded bg-purple-500/70" /><span className="text-xs text-slate-400">Core above horizon</span></div>
+        <div className="flex items-center gap-1"><div className="w-3 h-3 rounded bg-red-600/70" /><span className="text-xs text-slate-400">Core above horizon</span></div>
         <div className="flex items-center gap-1"><div className="w-3 h-3 rounded bg-slate-700/30" /><span className="text-xs text-slate-400">Below horizon</span></div>
       </div>
     </div>
@@ -623,7 +623,7 @@ export default function PlannerTool() {
           ))}
         </div>
         <Link to={createPageUrl('PaymentGate')}>
-          <Button className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 h-12 px-8 text-base font-bold">
+          <Button className="bg-red-600 hover:bg-red-700 h-12 px-8 text-base font-bold">
             Unlock Sky Planner <ChevronRight className="w-5 h-5 ml-1" />
           </Button>
         </Link>
@@ -640,13 +640,13 @@ export default function PlannerTool() {
       <div className="mb-8 flex items-center justify-between">
         <div>
           <h1 className="text-4xl font-black text-white mb-2 flex items-center gap-3">
-            <MapPin className="w-9 h-9 text-purple-400" />
+            <MapPin className="w-9 h-9 text-red-400" />
             <span>Sky <span className="gradient-text">Planner</span></span>
           </h1>
           <p className="text-slate-400 text-lg">Plan the perfect Milky Way shoot with precision astronomy data.</p>
         </div>
         <Link to={createPageUrl('SkyBrowser')} className="inline-flex">
-          <Button variant="outline" className="border-purple-500/40 text-purple-300 hover:bg-purple-900/20 text-sm gap-2">
+          <Button variant="outline" className="border-red-600/40 text-red-300 hover:bg-red-900/20 text-sm gap-2">
             <Star className="w-4 h-4" /> Sky Browser
           </Button>
         </Link>
@@ -725,7 +725,7 @@ export default function PlannerTool() {
               <Button
                 onClick={calculate}
                 disabled={!location.trim() || calcLoading || geoLoading}
-                className="w-full bg-purple-600 hover:bg-purple-700 h-11 font-bold"
+                className="w-full bg-red-600 hover:bg-red-700 h-11 font-bold"
               >
                 {calcLoading || geoLoading
                   ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Calculating...</>
@@ -956,7 +956,7 @@ export default function PlannerTool() {
                       disabled={aiLoading}
                       size="sm"
                       variant="outline"
-                      className="border-purple-500/40 text-purple-300 hover:bg-purple-900/20 text-xs"
+                      className="border-red-600/40 text-red-300 hover:bg-red-900/20 text-xs"
                     >
                       {aiLoading ? <><Loader2 className="w-3 h-3 mr-1 animate-spin" /> Loading...</> : 'Get Tips'}
                     </Button>
