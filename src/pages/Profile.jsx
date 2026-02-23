@@ -265,6 +265,9 @@ export default function Profile() {
           />
         )}
 
+        {/* Tier comparison */}
+        <TierComparisonCard currentTier={sub?.tier} />
+
         {/* Offline Cache Settings */}
         <OfflineCacheSettings />
 
