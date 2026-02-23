@@ -402,8 +402,8 @@ export default function FreeCourse() {
               ))}
             </div>
             {!isSubscribed && (
-              <div className="mt-4 p-5 rounded-xl border border-dashed border-purple-500/40 bg-purple-900/10 text-center">
-                <Lock className="w-6 h-6 text-purple-400 mx-auto mb-2" />
+              <div className="mt-4 p-5 rounded-xl border border-dashed border-red-500/40 bg-red-900/10 text-center">
+                <Lock className="w-6 h-6 text-red-400 mx-auto mb-2" />
                 <p className="text-white font-bold mb-1">Full Dark Sky Guide + 50+ Locations</p>
                 <p className="text-slate-400 text-sm mb-3">Detailed GPS coordinates, seasonal guides, hazard notes & insider tips — unlocked with any paid plan.</p>
                 <Link to={createPageUrl('PaymentGate')}>
