@@ -17,8 +17,7 @@ import StackingTechniquesGuide from '../components/planner/StackingTechniquesGui
 import PostProcessingGuide from '../components/planner/PostProcessingGuide';
 import GearChecklist from '../components/planner/GearChecklist';
 import ClientEmailGenerator from '../components/planner/ClientEmailGenerator';
-import TripPlanManager from '../components/planner/TripPlanManager';
-import DetailedWeatherCard from '../components/planner/DetailedWeatherCard';
+import ExpeditionManager from '../components/planner/ExpeditionManager';
 import MilkyWayARPreview from '../components/planner/MilkyWayARPreview';
 import LocationPicker from '../components/onboarding/LocationPicker';
 import { Card } from '@/components/ui/card';
@@ -177,6 +176,142 @@ function astroWeatherScore(cloud, precip, wind) {
   if (wind > 30) score -= 2;
   else if (wind > 20) score -= 1;
   return Math.max(0, score);
+}
+
+// ─── WeatherCard Component ───────────────────────────────────────────────────
+
+function WeatherCard({ weather, weatherLoading, weatherError, onFetch, hasResults }) {
+  if (!hasResults) return null;
+
+  if (weatherLoading) return (
+    <Card className="bg-slate-900/60 border-slate-800 p-5">
+      <div className="flex items-center gap-3">
+        <Loader2 className="w-5 h-5 text-blue-400 animate-spin" />
+        <span className="text-slate-400 text-sm">Fetching weather forecast...</span>
+      </div>
+    </Card>
+  );
+
+  if (weatherError) return (
+    <Card className="bg-slate-900/60 border-slate-800 p-5">
+      <div className="flex items-start justify-between">
+        <div>
+          <h3 className="text-white font-semibold text-sm flex items-center gap-2 mb-1">
+            <Cloud className="w-4 h-4 text-blue-400" /> Weather Forecast
+          </h3>
+          <p className="text-slate-500 text-xs">{weatherError}</p>
+        </div>
+        <Button size="sm" variant="outline" onClick={onFetch} className="border-blue-500/40 text-blue-300 hover:bg-blue-900/20 text-xs">
+          Retry
+        </Button>
+      </div>
+    </Card>
+  );
+
+  if (!weather) return (
+    <Card className="bg-slate-900/60 border-slate-800 p-5">
+      <div className="flex items-center justify-between">
+        <h3 className="text-white font-semibold text-sm flex items-center gap-2">
+          <Cloud className="w-4 h-4 text-blue-400" /> Weather Forecast
+        </h3>
+        <Button size="sm" variant="outline" onClick={onFetch} className="border-blue-500/40 text-blue-300 hover:bg-blue-900/20 text-xs">
+          Load Weather
+        </Button>
+      </div>
+      <p className="text-slate-500 text-xs mt-2">Cloud cover, precipitation & wind for your shoot date.</p>
+    </Card>
+  );
+
+  const score = astroWeatherScore(weather.current.cloud, weather.current.precip_mm, weather.current.wind_kph);
+  const scoreColor = score >= 8 ? 'text-emerald-400' : score >= 5 ? 'text-yellow-400' : 'text-red-400';
+  const scoreBg = score >= 8 ? 'bg-emerald-900/30 border-emerald-500/30' : score >= 5 ? 'bg-yellow-900/30 border-yellow-500/30' : 'bg-red-900/30 border-red-500/30';
+  const cloud = cloudCoverRating(weather.current.cloud);
+
+  return (
+    <Card className="bg-slate-900/60 border-slate-800 p-5">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-white font-semibold text-sm flex items-center gap-2">
+          <Cloud className="w-4 h-4 text-blue-400" /> Weather Conditions
+        </h3>
+        <div className={`px-3 py-1 rounded-full border text-xs font-bold ${scoreBg} ${scoreColor}`}>
+          Astro Score: {score}/10
+        </div>
+      </div>
+
+      {/* Current / target day summary */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+        <div className="bg-slate-800/60 rounded-xl p-3 text-center">
+          <Cloud className="w-5 h-5 mx-auto mb-1 text-slate-400" />
+          <p className="text-slate-400 text-xs">Cloud Cover</p>
+          <p className={`font-bold text-sm ${cloud.color}`}>{weather.current.cloud}%</p>
+          <p className={`text-xs ${cloud.color}`}>{cloud.label}</p>
+        </div>
+        <div className="bg-slate-800/60 rounded-xl p-3 text-center">
+          <Droplets className="w-5 h-5 mx-auto mb-1 text-blue-400" />
+          <p className="text-slate-400 text-xs">Precipitation</p>
+          <p className="text-white font-bold text-sm">{weather.current.precip_mm} mm</p>
+          <p className="text-slate-500 text-xs">{weather.current.precip_mm < 0.1 ? 'None' : weather.current.precip_mm < 1 ? 'Trace' : 'Rain likely'}</p>
+        </div>
+        <div className="bg-slate-800/60 rounded-xl p-3 text-center">
+          <Wind className="w-5 h-5 mx-auto mb-1 text-cyan-400" />
+          <p className="text-slate-400 text-xs">Wind Speed</p>
+          <p className="text-white font-bold text-sm">{weather.current.wind_kph} km/h</p>
+          <p className="text-slate-500 text-xs">{weather.current.wind_dir}</p>
+        </div>
+        <div className="bg-slate-800/60 rounded-xl p-3 text-center">
+          <Thermometer className="w-5 h-5 mx-auto mb-1 text-orange-400" />
+          <p className="text-slate-400 text-xs">Temperature</p>
+          <p className="text-white font-bold text-sm">{weather.current.temp_c}°C</p>
+          <p className="text-slate-500 text-xs">Feels {weather.current.feelslike_c}°C</p>
+        </div>
+      </div>
+
+      {/* Cloud cover bar */}
+      <div className="mb-4">
+        <div className="flex justify-between text-xs text-slate-400 mb-1">
+          <span>Cloud cover</span><span>{weather.current.cloud}%</span>
+        </div>
+        <div className="w-full bg-slate-800 rounded-full h-2">
+          <div className={`h-2 rounded-full transition-all ${cloud.bg}`} style={{ width: `${weather.current.cloud}%` }} />
+        </div>
+      </div>
+
+      {/* 3-day forecast */}
+      {weather.forecast && weather.forecast.length > 0 && (
+        <div>
+          <p className="text-slate-400 text-xs uppercase tracking-widest mb-3">3-Day Forecast</p>
+          <div className="grid grid-cols-3 gap-2">
+            {weather.forecast.map((day, i) => {
+              const dc = cloudCoverRating(day.avgcloud ?? day.cloud ?? 50);
+              return (
+                <div key={i} className={`rounded-lg p-2.5 border text-center ${i === 0 ? 'border-blue-500/40 bg-blue-900/20' : 'border-slate-700/50 bg-slate-800/40'}`}>
+                  <p className="text-slate-400 text-xs mb-1">{i === 0 ? 'Today' : i === 1 ? 'Tomorrow' : day.date}</p>
+                  <p className="text-lg mb-0.5">{day.cloud <= 20 ? '☀️' : day.cloud <= 60 ? '⛅' : day.precip_mm > 0.5 ? '🌧️' : '☁️'}</p>
+                  <p className={`text-xs font-semibold ${dc.color}`}>{day.cloud ?? day.avgcloud}%</p>
+                  <p className="text-slate-500 text-xs">{day.precip_mm > 0 ? `${day.precip_mm}mm` : 'No rain'}</p>
+                  <p className="text-slate-400 text-xs">{day.wind_kph} km/h</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Astro advice */}
+      <div className={`mt-4 rounded-lg p-3 border ${scoreBg}`}>
+        <p className={`text-xs font-semibold ${scoreColor} mb-0.5`}>
+          {score >= 8 ? '✅ Great night for astrophotography!' : score >= 5 ? '⚠️ Partially suitable — check cloud breaks' : '❌ Poor conditions — clouds or precipitation expected'}
+        </p>
+        <p className="text-slate-400 text-xs">
+          {weather.current.cloud <= 30 ? 'Low cloud cover — excellent sky transparency.' : weather.current.cloud <= 60 ? 'Patchy clouds — shooting windows may be limited.' : 'Heavy cloud cover — consider rescheduling.'}
+          {weather.current.precip_mm > 0.1 ? ' Precipitation detected — moisture can also affect lens clarity.' : ''}
+          {weather.current.wind_kph > 25 ? ` Wind at ${weather.current.wind_kph} km/h may cause vibration — use mirror lock-up.` : ''}
+        </p>
+      </div>
+
+      <p className="text-slate-600 text-xs mt-3">Data via Open-Meteo (free, no key required)</p>
+    </Card>
+  );
 }
 
 // ─── Sky Canvas is in components/planner/SkyCanvas.jsx ───────────────────────
@@ -351,7 +486,7 @@ export default function PlannerTool() {
       latitude: lat,
       longitude: lon,
       daily: 'cloud_cover_mean,precipitation_sum,wind_speed_10m_max,temperature_2m_max,temperature_2m_min',
-      hourly: 'cloud_cover,precipitation,wind_speed_10m,temperature_2m,relative_humidity_2m',
+      hourly: 'cloud_cover,precipitation,wind_speed_10m,temperature_2m',
       timezone: 'UTC',
       start_date: targetDate,
       end_date: new Date(target.getTime() + 2 * 86400000).toISOString().split('T')[0],
@@ -386,17 +521,12 @@ export default function PlannerTool() {
         precip: hourly.precipitation?.[i] ?? 0,
         wind: Math.round((hourly.wind_speed_10m?.[i] ?? 0) * 10) / 10,
         temp: Math.round(hourly.temperature_2m?.[i] ?? 0),
-        humidity: Math.round(hourly.relative_humidity_2m?.[i] ?? 0),
       });
       return acc;
     }, []) ?? [];
 
     // Build "current" from first day average
     const f0 = forecast[0] ?? {};
-    // Estimate humidity from night hours average
-    const avgHumidity = nightHours.length > 0
-      ? Math.round(nightHours.reduce((s, h) => s + (h.humidity ?? 60), 0) / nightHours.length)
-      : 60;
     setWeather({
       current: {
         cloud: f0.cloud ?? 0,
@@ -405,7 +535,6 @@ export default function PlannerTool() {
         temp_c: f0.temp_max ?? 0,
         feelslike_c: f0.temp_min ?? 0,
         wind_dir: '',
-        humidity: avgHumidity,
       },
       forecast,
       nightHours,
@@ -526,8 +655,8 @@ export default function PlannerTool() {
       <div className="grid lg:grid-cols-5 gap-6">
         {/* ── Left: Inputs ── */}
          <div className="lg:col-span-2 space-y-5">
-          {/* Trip Plan Manager */}
-          <TripPlanManager userEmail={user?.email} currentState={currentState} onLoadTrip={handleLoadExpedition} />
+          {/* Expedition Manager */}
+          <ExpeditionManager userEmail={user?.email} currentState={currentState} onLoadExpedition={handleLoadExpedition} />
 
           {/* AR Scout */}
           {results && (
@@ -768,8 +897,8 @@ export default function PlannerTool() {
               {/* Post-Processing Guide */}
               <PostProcessingGuide gear={gear} shooterMode={shooterMode} />
 
-              {/* Detailed Weather */}
-              <DetailedWeatherCard
+              {/* Weather */}
+              <WeatherCard
                 weather={weather}
                 weatherLoading={weatherLoading}
                 weatherError={weatherError}

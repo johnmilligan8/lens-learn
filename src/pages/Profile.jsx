@@ -10,7 +10,6 @@ import { Camera, Trophy, Star, CheckCircle2, Edit2, Check, X, Trash2, AlertTrian
 import LocationPicker from '../components/onboarding/LocationPicker';
 import AuroraAlertManager from '../components/aurora/AuroraAlertManager';
 import OfflineCacheSettings from '../components/profile/OfflineCacheSettings';
-import TierComparisonCard from '../components/profile/TierComparisonCard';
 import { format } from 'date-fns';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 
@@ -264,9 +263,6 @@ export default function Profile() {
             onUpdate={handleAuroraAlertUpdate}
           />
         )}
-
-        {/* Tier comparison */}
-        <TierComparisonCard currentTier={sub?.tier} />
 
         {/* Offline Cache Settings */}
         <OfflineCacheSettings />
