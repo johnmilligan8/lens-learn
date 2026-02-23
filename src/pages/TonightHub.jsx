@@ -245,7 +245,7 @@ export default function TonightHub() {
          </h1>
          <p className="text-slate-400 text-sm">
            Get real-time conditions & a ranked event list. Mode: <span className="text-white font-medium">{modeLabel}</span>
-           <Link to={createPageUrl('Profile')} className="text-purple-400 hover:text-purple-300 ml-2 text-xs underline">(change)</Link>
+           <Link to={createPageUrl('Profile')} className="text-red-400 hover:text-red-300 ml-2 text-xs underline">(change)</Link>
          </p>
        </div>
 
@@ -345,15 +345,15 @@ export default function TonightHub() {
           )}
 
           {!isSubscribed && (
-            <Card className="border border-purple-500/30 bg-gradient-to-r from-purple-900/20 to-indigo-900/20 p-5 mt-4">
+            <Card className="border border-red-600/30 bg-gradient-to-r from-red-900/20 to-red-800/10 p-5 mt-4">
               <div className="flex items-start gap-3">
-                <Lock className="w-5 h-5 text-purple-400 flex-shrink-0 mt-0.5" />
+                <Lock className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
                 <div className="flex-1">
                   <p className="text-white font-bold text-sm">Ready to plan smarter?</p>
                   <p className="text-slate-400 text-xs mt-1 mb-3">Unlock full viability scores, guided shoot plans, gear checklist, and aurora alerts. Get Plus for $7.99/mo.</p>
                   <div className="flex items-center gap-3 flex-wrap">
                     <Link to={createPageUrl('PaymentGate')}>
-                      <Button size="sm" className="bg-purple-600 hover:bg-purple-700 text-xs font-bold">
+                      <Button size="sm" className="bg-red-600 hover:bg-red-700 text-xs font-bold">
                         Unlock Plus — $7.99/mo →
                       </Button>
                     </Link>
