@@ -118,8 +118,8 @@ export default function InstructorDashboard() {
 
       <Tabs defaultValue="content">
         <TabsList className="bg-slate-900 border-slate-700 mb-6">
-          <TabsTrigger value="content" className="data-[state=active]:bg-purple-600">Course Content</TabsTrigger>
-          <TabsTrigger value="submissions" className="data-[state=active]:bg-purple-600">
+          <TabsTrigger value="content" className="data-[state=active]:bg-red-600">Course Content</TabsTrigger>
+          <TabsTrigger value="submissions" className="data-[state=active]:bg-red-600">
             Submissions
             {pendingSubs.length > 0 && <Badge className="ml-2 bg-yellow-600 text-white text-xs">{pendingSubs.length}</Badge>}
           </TabsTrigger>
@@ -128,7 +128,7 @@ export default function InstructorDashboard() {
         {/* Content Tab */}
         <TabsContent value="content">
           <div className="flex gap-4 mb-6">
-            <Button className="bg-purple-600 hover:bg-purple-700" onClick={() => setShowModuleForm(true)}>
+            <Button className="bg-red-600 hover:bg-red-700" onClick={() => setShowModuleForm(true)}>
               <Plus className="w-4 h-4 mr-2" /> Add Module
             </Button>
             <Button variant="outline" className="border-slate-700 text-slate-300" onClick={() => setShowLessonForm(true)}>
@@ -194,7 +194,7 @@ export default function InstructorDashboard() {
                         {sub.caption && <p className="text-slate-400 text-sm mt-1">{sub.caption}</p>}
                         <p className="text-slate-500 text-xs mt-1">{format(new Date(sub.created_date), 'MMM d, yyyy')}</p>
                       </div>
-                      <Button className="bg-purple-600 hover:bg-purple-700 flex-shrink-0" onClick={() => { setSelectedSubmission(sub); setFeedback(''); }}>
+                      <Button className="bg-red-600 hover:bg-red-700 flex-shrink-0" onClick={() => { setSelectedSubmission(sub); setFeedback(''); }}>
                         <MessageSquare className="w-4 h-4 mr-2" /> Review
                       </Button>
                     </div>
@@ -250,7 +250,7 @@ export default function InstructorDashboard() {
                 </Select>
               </div>
             </div>
-            <Button className="w-full bg-purple-600 hover:bg-purple-700" onClick={createModule} disabled={!moduleForm.title}>Create Module</Button>
+            <Button className="w-full bg-red-600 hover:bg-red-700" onClick={createModule} disabled={!moduleForm.title}>Create Module</Button>
           </div>
         </DialogContent>
       </Dialog>
@@ -295,7 +295,7 @@ export default function InstructorDashboard() {
             <div><Label className="text-slate-300 mb-2 block">Content (Markdown)</Label>
               <Textarea value={lessonForm.content} onChange={e => setLessonForm({ ...lessonForm, content: e.target.value })} className="bg-slate-800 border-slate-700 text-white" rows={5} placeholder="## Overview..." />
             </div>
-            <Button className="w-full bg-purple-600 hover:bg-purple-700" onClick={createLesson} disabled={!lessonForm.title || !lessonForm.module_id}>Create Lesson</Button>
+            <Button className="w-full bg-red-600 hover:bg-red-700" onClick={createLesson} disabled={!lessonForm.title || !lessonForm.module_id}>Create Lesson</Button>
           </div>
         </DialogContent>
       </Dialog>
@@ -325,7 +325,7 @@ export default function InstructorDashboard() {
                 />
               </div>
               <Button
-                className="w-full bg-purple-600 hover:bg-purple-700"
+                className="w-full bg-red-600 hover:bg-red-700"
                 onClick={submitFeedback}
                 disabled={!feedback || savingFeedback}
               >
