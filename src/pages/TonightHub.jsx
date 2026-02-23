@@ -8,7 +8,7 @@ import EventRankCard from '../components/tonight/EventRankCard';
 import GuidedPlanModal from '../components/tonight/GuidedPlanModal';
 import AuroraTeaserCard from '../components/events/AuroraTeaserCard';
 import MilkyWayARCard from '../components/tonight/MilkyWayARCard';
-import { Loader2, Lock, MapPin, ChevronRight, Telescope, Zap, Star } from 'lucide-react';
+import { Loader2, Lock, MapPin, ChevronRight, Telescope, Zap, Star, Flashlight } from 'lucide-react';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -326,6 +326,15 @@ export default function TonightHub() {
               }}
             />
           ))}
+
+          {isSubscribed && coords && events.length > 0 && (
+            <Link to={createPageUrl('FieldMode') + '?event=' + encodeURIComponent(JSON.stringify(events[0]))}>
+              <div className="flex items-center justify-center gap-2 w-full border border-red-700/50 bg-red-950/30 hover:bg-red-900/30 rounded-xl py-3 text-red-300 text-sm font-bold transition-all mt-2">
+                <Flashlight className="w-4 h-4" />
+                Enter Field Mode — Live Guidance
+              </div>
+            </Link>
+          )}
 
           {!isSubscribed && (
             <Card className="border border-purple-500/30 bg-gradient-to-r from-purple-900/20 to-indigo-900/20 p-5 mt-4">
