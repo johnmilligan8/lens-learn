@@ -8,7 +8,7 @@ import EventRankCard from '../components/tonight/EventRankCard';
 import GuidedPlanModal from '../components/tonight/GuidedPlanModal';
 import AuroraTeaserCard from '../components/events/AuroraTeaserCard';
 import MilkyWayARCard from '../components/tonight/MilkyWayARCard';
-import { Loader2, Lock, MapPin, ChevronRight, Telescope, Zap, Star, Flashlight } from 'lucide-react';
+import { Loader2, Lock, MapPin, ChevronRight, Telescope, Zap, Star } from 'lucide-react';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
