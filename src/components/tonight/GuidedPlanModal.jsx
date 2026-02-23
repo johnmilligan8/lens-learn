@@ -156,7 +156,7 @@ export default function GuidedPlanModal({ event, mode, onClose, onSave }) {
             {/* Progress */}
             <div className="flex gap-1.5">
               {questions.map((_, i) => (
-                <div key={i} className={`h-1 rounded-full flex-1 transition-all ${i <= step ? 'bg-purple-500' : 'bg-slate-700'}`} />
+                <div key={i} className={`h-1 rounded-full flex-1 transition-all ${i <= step ? 'bg-red-600' : 'bg-slate-700'}`} />
               ))}
             </div>
 
@@ -165,7 +165,7 @@ export default function GuidedPlanModal({ event, mode, onClose, onSave }) {
               <div className="space-y-2">
                 {q.options.map(opt => (
                   <button key={opt.value} onClick={() => handleAnswer(q.key, opt.value)}
-                    className="w-full text-left rounded-xl border border-slate-700 bg-slate-800/60 hover:border-purple-500 hover:bg-purple-900/20 px-4 py-3 transition-colors">
+                    className="w-full text-left rounded-xl border border-slate-700 bg-slate-800/60 hover:border-red-600/60 hover:bg-red-900/10 px-4 py-3 transition-colors">
                     <p className="text-white text-sm font-medium">{opt.label}</p>
                     <p className="text-slate-500 text-xs">{opt.desc}</p>
                   </button>
@@ -194,7 +194,7 @@ export default function GuidedPlanModal({ event, mode, onClose, onSave }) {
               </div>
             ))}
 
-            <Button onClick={saveAndClose} disabled={saving} className="w-full bg-purple-600 hover:bg-purple-700 font-bold">
+            <Button onClick={saveAndClose} disabled={saving} className="w-full bg-red-600 hover:bg-red-700 font-bold">
               {saving ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Saving...</> : <>Save Plan & Head Out 🚀</>}
             </Button>
           </div>

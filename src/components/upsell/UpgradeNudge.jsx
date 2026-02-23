@@ -14,17 +14,12 @@ import { X, Zap } from 'lucide-react';
  *   onDismiss - optional dismiss handler
  */
 export default function UpgradeNudge({ headline, body, cta = 'Upgrade Now', tier = 'plus', onDismiss }) {
-  const colors = tier === 'pro'
-    ? 'border-blue-500/30 bg-gradient-to-r from-blue-900/20 to-indigo-900/10'
-    : 'border-purple-500/30 bg-gradient-to-r from-purple-900/20 to-indigo-900/10';
-
-  const btnColors = tier === 'pro'
-    ? 'bg-blue-600 hover:bg-blue-700'
-    : 'bg-purple-600 hover:bg-purple-700';
+  const colors = 'border-red-600/30 bg-[#1a1a1a]';
+  const btnColors = 'bg-red-600 hover:bg-red-700';
 
   return (
     <div className={`rounded-xl border p-4 flex items-start gap-3 ${colors}`}>
-      <Zap className="w-4 h-4 text-purple-400 flex-shrink-0 mt-0.5" />
+      <Zap className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
       <div className="flex-1 min-w-0">
         <p className="text-white font-semibold text-sm">{headline}</p>
         {body && <p className="text-slate-400 text-xs mt-0.5 leading-relaxed">{body}</p>}
