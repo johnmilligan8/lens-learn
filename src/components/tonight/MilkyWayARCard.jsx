@@ -26,7 +26,7 @@ export default function MilkyWayARCard({ lat, lon, dateStr, isSubscribed, shoote
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1">
           <h3 className="text-white font-semibold text-sm flex items-center gap-2 mb-1">
-            <Compass className="w-4 h-4 text-purple-400" /> Milky Way AR Scout
+            <Compass className="w-4 h-4 text-red-400" /> Milky Way AR Scout
           </h3>
           <p className="text-slate-400 text-xs">See where the Milky Way will appear tonight using your camera.</p>
           {!isSubscribed && (
