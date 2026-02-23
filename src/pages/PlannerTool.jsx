@@ -662,8 +662,8 @@ export default function PlannerTool() {
       <div className="grid lg:grid-cols-5 gap-6">
         {/* ── Left: Inputs ── */}
          <div className="lg:col-span-2 space-y-5">
-          {/* Expedition Manager */}
-          <ExpeditionManager userEmail={user?.email} currentState={currentState} onLoadExpedition={handleLoadExpedition} />
+          {/* Trip Plan Manager */}
+          <TripPlanManager userEmail={user?.email} currentState={currentState} onLoadTrip={handleLoadExpedition} />
 
           {/* AR Scout */}
           {results && (
@@ -904,8 +904,8 @@ export default function PlannerTool() {
               {/* Post-Processing Guide */}
               <PostProcessingGuide gear={gear} shooterMode={shooterMode} />
 
-              {/* Weather */}
-              <WeatherCard
+              {/* Detailed Weather */}
+              <DetailedWeatherCard
                 weather={weather}
                 weatherLoading={weatherLoading}
                 weatherError={weatherError}
