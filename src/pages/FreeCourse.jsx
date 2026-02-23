@@ -257,7 +257,7 @@ export default function FreeCourse() {
             </Card>
           ) : (
             <div>
-              <Card className="bg-slate-900/60 border-slate-800 overflow-hidden">
+              <Card className="bg-[#1a1a1a] border border-white/8 overflow-hidden">
                 {/* Lesson Header */}
                 <div className="p-6 border-b border-slate-800">
                   <div className="flex items-center gap-2 mb-2">
