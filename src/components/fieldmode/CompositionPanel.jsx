@@ -108,7 +108,7 @@ export default function CompositionPanel({ mode, event, coords }) {
       {tips.map((tip, i) => (
         <Card
           key={i}
-          className="bg-slate-900/60 border border-slate-800/60 overflow-hidden"
+          className="bg-[#1a1a1a] border border-white/8 overflow-hidden"
         >
           <button
             onClick={() => setExpanded(expanded === i ? null : i)}
@@ -130,8 +130,8 @@ export default function CompositionPanel({ mode, event, coords }) {
       ))}
 
       {/* Golden rule card */}
-      <Card className="bg-gradient-to-r from-amber-950/40 to-yellow-900/20 border border-amber-700/30 p-4 mt-2">
-        <p className="text-amber-300 text-xs font-bold uppercase tracking-widest mb-2">🏆 Golden Rule Tonight</p>
+      <Card className="bg-[#1a1a1a] border border-white/8 p-4 mt-2">
+        <p className="text-red-300 text-xs font-bold uppercase tracking-widest mb-2">🏆 Golden Rule Tonight</p>
         <p className="text-slate-300 text-sm leading-relaxed">
           {mode === 'experience'
             ? 'Stop. Look. Breathe. Let your eyes dark-adapt for 20 minutes before you try to navigate or observe. Red light only. Don\'t rush the process.'
