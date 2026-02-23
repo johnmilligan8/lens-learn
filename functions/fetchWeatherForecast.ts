@@ -1,74 +1,48 @@
 /**
- * Fetches real weather forecast from OpenWeather API
- * Returns cloud cover, temp, humidity, and other astrophotography-relevant metrics
+ * Fetches weather forecast from Open-Meteo (free, no API key required, CORS-enabled)
+ * Returns cloud cover, precipitation, temperature, and wind for astrophotography planning
  */
-export async function fetchWeatherForecast(latitude, longitude, apiKey) {
-  try {
-    // OpenWeather One Call API (3.0 - free tier gives current + 8 days forecast)
-    const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${latitude}&lon=${longitude}&units=metric&appid=${apiKey}`;
-    const response = await fetch(url);
-    
-    if (!response.ok) throw new Error(`OpenWeather API error: ${response.status}`);
-    const data = await response.json();
-    
-    // Extract key astrophotography metrics from daily forecast
-    const forecasts = [];
-    const daily = data.daily || [];
-    
-    daily.slice(0, 7).forEach((day) => {
-      const date = new Date(day.dt * 1000);
-      
-      forecasts.push({
-        date: date.toISOString().split('T')[0],
-        temp_min: Math.round(day.temp.min),
-        temp_max: Math.round(day.temp.max),
-        humidity: day.humidity,
-        clouds: day.clouds, // 0-100%
-        visibility: day.visibility ? Math.round(day.visibility / 1000) : null, // km
-        dew_point: day.dew_point,
-        uvi: day.uvi, // UV Index (higher = worse for night sky)
-        wind_speed: day.wind_speed,
-        precipitation: day.pop * 100, // % chance of rain
-        weather: day.weather[0]?.main || 'Unknown',
-        condition: day.weather[0]?.description || '',
-      });
-    });
-    
-    return { success: true, data: forecasts };
-  } catch (error) {
-    console.error('Weather forecast error:', error);
-    return { success: false, error: error.message, data: [] };
-  }
+export async function fetchCloudCoverForecast(lat, lon, days = 7) {
+  const params = new URLSearchParams({
+    latitude: lat,
+    longitude: lon,
+    daily: 'cloud_cover_mean,precipitation_sum,wind_speed_10m_max,temperature_2m_min',
+    timezone: 'auto',
+    forecast_days: days,
+  });
+
+  const response = await fetch(`https://api.open-meteo.com/v1/forecast?${params}`);
+  if (!response.ok) throw new Error(`Open-Meteo API error: ${response.status}`);
+  const data = await response.json();
+
+  return data.daily.time.map((date, i) => ({
+    date,
+    clouds: Math.round(data.daily.cloud_cover_mean?.[i] ?? 50),
+    precipitation: Math.round((data.daily.precipitation_sum?.[i] ?? 0) * 10) / 10,
+    wind_speed: Math.round(data.daily.wind_speed_10m_max?.[i] ?? 0),
+    temp_min: Math.round(data.daily.temperature_2m_min?.[i] ?? 0),
+  }));
 }
 
 /**
- * Calculates astrophotography score based on weather conditions
- * Higher score = better for shooting
+ * Rates cloud cover for astrophotography
  */
-export function calculateAstroScore(weatherData) {
-  if (!weatherData) return 0;
-  
-  const cloudScore = Math.max(0, 100 - weatherData.clouds); // Less clouds = better
-  const visibilityScore = weatherData.visibility ? Math.min(100, (weatherData.visibility / 10) * 100) : 50;
-  const tempScore = Math.max(0, 100 - Math.abs(weatherData.temp_min)); // Extreme cold is bad for equipment
-  const humidityScore = Math.max(0, 100 - Math.abs(weatherData.humidity - 40)); // 40% humidity is ideal
-  const windScore = Math.max(0, 100 - weatherData.wind_speed * 5); // Higher wind = shakier tracking
-  const rainScore = (1 - weatherData.precipitation / 100) * 100; // % chance of no rain
-  
-  // Weighted average (clouds & rain have highest weight)
-  const score = (cloudScore * 0.3 + visibilityScore * 0.2 + rainScore * 0.2 + 
-                 tempScore * 0.1 + humidityScore * 0.1 + windScore * 0.1);
-  
-  return Math.round(score);
+export function rateCloudCover(cloudPercent) {
+  if (cloudPercent < 15) return { label: 'Clear', color: 'emerald' };
+  if (cloudPercent < 35) return { label: 'Mostly Clear', color: 'lime' };
+  if (cloudPercent < 55) return { label: 'Partly Cloudy', color: 'yellow' };
+  if (cloudPercent < 75) return { label: 'Mostly Cloudy', color: 'orange' };
+  return { label: 'Overcast', color: 'red' };
 }
 
 /**
- * Determines cloud cover rating for user feedback
+ * Combined astro score 0–100 for a night
  */
-export function rateCloudCover(cloudPercentage) {
-  if (cloudPercentage < 10) return { rating: 'Clear', color: 'green' };
-  if (cloudPercentage < 30) return { rating: 'Mostly Clear', color: 'lime' };
-  if (cloudPercentage < 50) return { rating: 'Partly Cloudy', color: 'yellow' };
-  if (cloudPercentage < 70) return { rating: 'Mostly Cloudy', color: 'orange' };
-  return { rating: 'Overcast', color: 'red' };
+export function calcAstroScore({ clouds = 50, precipitation = 0, wind_speed = 0, moonIllum = 50 }) {
+  let score = 100;
+  score -= clouds * 0.5;
+  if (precipitation > 0.5) score -= 20;
+  if (wind_speed > 30) score -= 10;
+  score -= moonIllum * 0.2;
+  return Math.max(0, Math.min(100, Math.round(score)));
 }

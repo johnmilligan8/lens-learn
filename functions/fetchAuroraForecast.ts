@@ -1,77 +1,49 @@
 /**
  * Fetches real aurora forecast data from NOAA Space Weather Prediction Center
- * Returns KP index forecast for next 3 days
+ * Public API — no key required, CORS-enabled
  */
-export async function fetchAuroraForecast() {
-  try {
-    // NOAA 3-Day Forecast API (public, no key required but optional for higher rate limits)
-    const response = await fetch('https://api.swpc.noaa.gov/products/noaa-3day-forecast.json');
-    if (!response.ok) throw new Error(`NOAA API error: ${response.status}`);
-    
-    const data = await response.json();
-    
-    // Parse KP index forecast for next 3 days
-    const forecasts = [];
-    const kpForecast = data.kp_forecast || [];
-    
-    kpForecast.slice(0, 3).forEach((day, index) => {
-      const date = new Date();
-      date.setDate(date.getDate() + index);
-      
-      const kpMin = parseFloat(day.kp_min) || 0;
-      const kpMax = parseFloat(day.kp_max) || 5;
-      const kpIndex = (kpMin + kpMax) / 2;
-      
-      // Determine visibility rating based on KP index
-      let visibility = 'unlikely';
-      if (kpIndex >= 7) visibility = 'good';
-      else if (kpIndex >= 4) visibility = 'possible';
-      
-      forecasts.push({
-        date: date.toISOString().split('T')[0],
-        kp_index: Math.round(kpIndex * 10) / 10,
-        kp_min: kpMin,
-        kp_max: kpMax,
-        visibility_rating: visibility,
-        source: 'NOAA',
-      });
-    });
-    
-    return { success: true, data: forecasts };
-  } catch (error) {
-    console.error('Aurora forecast error:', error);
-    return { success: false, error: error.message, data: [] };
-  }
+export async function fetchNoaaKpForecast() {
+  const response = await fetch(
+    'https://api.swpc.noaa.gov/products/noaa-planetary-k-index-forecast.json'
+  );
+  if (!response.ok) throw new Error(`NOAA API error: ${response.status}`);
+  const raw = await response.json();
+
+  // First row is column headers: ["time_tag", "kp", "observed", "noaa_scale"]
+  const rows = raw.slice(1);
+
+  // Group by day, track max KP per day
+  const byDay = {};
+  rows.forEach(([timeTag, kp]) => {
+    const date = String(timeTag).split(' ')[0];
+    const kpVal = parseFloat(kp) || 0;
+    if (!byDay[date] || kpVal > byDay[date]) byDay[date] = kpVal;
+  });
+
+  return Object.entries(byDay).slice(0, 7).map(([date, kpMax]) => ({
+    date,
+    kp_index: Math.round(kpMax * 10) / 10,
+    kp_min: Math.max(0, Math.round((kpMax - 0.5) * 10) / 10),
+    kp_max: Math.round((kpMax + 0.5) * 10) / 10,
+    visibility_rating: kpMax >= 5 ? 'good' : kpMax >= 3 ? 'possible' : 'unlikely',
+    source: 'NOAA',
+  }));
 }
 
 /**
- * Fetches aurora alerts for specific location based on KP index visibility threshold
+ * Fetches current real-time KP index (last observed value)
  */
-export async function getAuroraVisibilityForLocation(latitude, longitude, forecastDays = 3) {
-  try {
-    const forecast = await fetchAuroraForecast();
-    if (!forecast.success) return { success: false, error: 'Failed to fetch aurora forecast' };
-    
-    // Calculate latitude-based visibility threshold (simplified)
-    const latAbs = Math.abs(latitude);
-    const threshold = latAbs < 50 ? 'good' : (latAbs < 60 ? 'possible' : 'unlikely');
-    
-    // Filter forecasts where visibility is likely at this latitude
-    const visibleDays = forecast.data.filter(day => {
-      if (threshold === 'good') return day.visibility_rating === 'good';
-      if (threshold === 'possible') return ['good', 'possible'].includes(day.visibility_rating);
-      return true;
-    });
-    
-    return {
-      success: true,
-      location: { latitude, longitude },
-      threshold_rating: threshold,
-      visible_days: visibleDays,
-      alert_active: visibleDays.length > 0,
-    };
-  } catch (error) {
-    console.error('Aurora visibility error:', error);
-    return { success: false, error: error.message };
-  }
+export async function fetchCurrentKp() {
+  const response = await fetch(
+    'https://api.swpc.noaa.gov/json/planetary_k_index_1m.json'
+  );
+  if (!response.ok) throw new Error(`NOAA KP API error: ${response.status}`);
+  const data = await response.json();
+  // Returns array of [time_tag, kp_index, ...], most recent last
+  const last = data[data.length - 1];
+  return {
+    time_tag: last[0],
+    kp: parseFloat(last[1]) || 0,
+    source: 'NOAA',
+  };
 }
