@@ -358,7 +358,7 @@ export default function FreeCourse() {
                 )}
 
                 {/* Mark Complete */}
-                <div className="p-6 border-t border-slate-800 flex items-center justify-between">
+                <div className="p-6 border-t border-white/8 flex items-center justify-between">
                   <Button
                     variant="outline"
                     className={`border-slate-600 ${completedLessons.includes(activeLesson.id) ? 'text-emerald-400 border-emerald-600' : 'text-slate-300'}`}
