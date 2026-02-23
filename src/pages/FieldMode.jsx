@@ -97,11 +97,11 @@ export default function FieldMode() {
 
   if (!isSubscribed) return (
     <div className="min-h-screen cosmic-bg flex items-center justify-center p-6">
-      <Card className="bg-slate-900/80 border border-purple-500/40 p-8 max-w-md text-center">
-        <Lock className="w-10 h-10 text-purple-400 mx-auto mb-4" />
+      <Card className="bg-[#1a1a1a] border border-red-700/40 p-8 max-w-md text-center">
+        <Lock className="w-10 h-10 text-red-400 mx-auto mb-4" />
         <h2 className="text-white text-xl font-bold mb-2">Field Mode — Plus & Pro</h2>
         <p className="text-slate-400 text-sm mb-6">Real-time, location-aware guidance in the field: camera settings, composition tips, and low-light assistance. Requires a Plus or Pro plan.</p>
-        <Button className="bg-purple-600 hover:bg-purple-700 font-bold" onClick={() => navigate(createPageUrl('PaymentGate'))}>
+        <Button className="bg-red-600 hover:bg-red-700 font-bold" onClick={() => navigate(createPageUrl('PaymentGate'))}>
           Unlock Plus — $7.99/mo
         </Button>
       </Card>

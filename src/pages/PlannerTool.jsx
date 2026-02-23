@@ -184,7 +184,7 @@ function WeatherCard({ weather, weatherLoading, weatherError, onFetch, hasResult
   if (!hasResults) return null;
 
   if (weatherLoading) return (
-    <Card className="bg-slate-900/60 border-slate-800 p-5">
+  <Card className="bg-[#1a1a1a] border-white/8 p-5">
       <div className="flex items-center gap-3">
         <Loader2 className="w-5 h-5 text-blue-400 animate-spin" />
         <span className="text-slate-400 text-sm">Fetching weather forecast...</span>
@@ -193,7 +193,7 @@ function WeatherCard({ weather, weatherLoading, weatherError, onFetch, hasResult
   );
 
   if (weatherError) return (
-    <Card className="bg-slate-900/60 border-slate-800 p-5">
+    <Card className="bg-[#1a1a1a] border-white/8 p-5">
       <div className="flex items-start justify-between">
         <div>
           <h3 className="text-white font-semibold text-sm flex items-center gap-2 mb-1">
@@ -209,7 +209,7 @@ function WeatherCard({ weather, weatherLoading, weatherError, onFetch, hasResult
   );
 
   if (!weather) return (
-    <Card className="bg-slate-900/60 border-slate-800 p-5">
+    <Card className="bg-[#1a1a1a] border-white/8 p-5">
       <div className="flex items-center justify-between">
         <h3 className="text-white font-semibold text-sm flex items-center gap-2">
           <Cloud className="w-4 h-4 text-blue-400" /> Weather Forecast
@@ -228,10 +228,10 @@ function WeatherCard({ weather, weatherLoading, weatherError, onFetch, hasResult
   const cloud = cloudCoverRating(weather.current.cloud);
 
   return (
-    <Card className="bg-slate-900/60 border-slate-800 p-5">
+    <Card className="bg-[#1a1a1a] border-white/8 p-5">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-white font-semibold text-sm flex items-center gap-2">
-          <Cloud className="w-4 h-4 text-blue-400" /> Weather Conditions
+          <Cloud className="w-4 h-4 text-slate-300" /> Weather Conditions
         </h3>
         <div className={`px-3 py-1 rounded-full border text-xs font-bold ${scoreBg} ${scoreColor}`}>
           Astro Score: {score}/10
@@ -693,9 +693,9 @@ export default function PlannerTool() {
           {/* Gear Setup */}
           <GearSetup userEmail={user?.email} onGearUpdate={handleGearUpdate} loading={gearLoading} />
 
-          <Card className="bg-slate-900/60 border-slate-800 p-6">
-            <h2 className="text-lg font-bold text-white mb-5 flex items-center gap-2">
-              <Navigation className="w-4 h-4 text-red-400" /> Shoot Details
+          <Card className="bg-[#1a1a1a] border-white/8 p-6">
+          <h2 className="text-lg font-bold text-white mb-5 flex items-center gap-2">
+            <Navigation className="w-4 h-4 text-red-400" /> Shoot Details
             </h2>
             <div className="space-y-4">
               <div>
@@ -734,7 +734,7 @@ export default function PlannerTool() {
           </Card>
 
           {/* Bortle Guide */}
-          <Card className="bg-slate-900/60 border-slate-800 p-5">
+          <Card className="bg-[#1a1a1a] border-white/8 p-5">
             <h3 className="text-white font-semibold mb-4 text-sm flex items-center gap-2">
               <Eye className="w-4 h-4 text-red-400" /> Bortle Scale Reference
             </h3>
@@ -777,7 +777,7 @@ export default function PlannerTool() {
               </Card>
 
               {/* Core Times */}
-              <Card className="bg-slate-900/60 border-slate-800 p-5">
+              <Card className="bg-[#1a1a1a] border-white/8 p-5">
                 <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
                   <Telescope className="w-4 h-4 text-red-400" /> Galactic Core (Sgr A*) — {date}
                 </h3>
@@ -804,9 +804,9 @@ export default function PlannerTool() {
               {/* Sky Map + Moon side by side */}
               <div className="grid md:grid-cols-2 gap-5">
                 {/* Sky Map */}
-                <Card className="bg-slate-900/60 border-slate-800 p-5">
-                  <h3 className="text-white font-semibold mb-3 flex items-center gap-2 text-sm">
-                    <Star className="w-4 h-4 text-red-400" /> Interactive Sky Map
+                <Card className="bg-[#1a1a1a] border-white/8 p-5">
+                <h3 className="text-white font-semibold mb-3 flex items-center gap-2 text-sm">
+                  <Star className="w-4 h-4 text-red-400" /> Interactive Sky Map
                   </h3>
                   <SkyCanvas
                     gcData={results.gcData}
@@ -821,7 +821,7 @@ export default function PlannerTool() {
                 </Card>
 
                 {/* Moon */}
-                <Card className="bg-slate-900/60 border-slate-800 p-5 flex flex-col gap-4">
+                <Card className="bg-[#1a1a1a] border-white/8 p-5 flex flex-col gap-4">
                   <h3 className="text-white font-semibold flex items-center gap-2 text-sm">
                     <Moon className="w-4 h-4 text-slate-300" /> Moon Phase
                   </h3>
@@ -918,7 +918,7 @@ export default function PlannerTool() {
 
               {/* Ephemeris Lookup */}
               <div ref={ephemerisRef}>
-                <Card className="bg-slate-900/60 border-slate-800 p-5">
+                <Card className="bg-[#1a1a1a] border-white/8 p-5">
                   <h3 className="text-white font-semibold mb-1 flex items-center gap-2 text-sm">
                     <Star className="w-4 h-4 text-red-400" /> Ephemeris Lookup
                   </h3>
@@ -944,7 +944,7 @@ export default function PlannerTool() {
               </Card>
 
               {/* AI Tips */}
-              <Card className="bg-slate-900/60 border-slate-800 p-5">
+              <Card className="bg-[#1a1a1a] border-white/8 p-5">
                 <div className="flex items-center justify-between mb-3">
                   <h3 className="text-white font-semibold text-sm flex items-center gap-2">
                     ✨ AI Location Tips
