@@ -9,6 +9,8 @@ import GuidedPlanModal from '../components/tonight/GuidedPlanModal';
 import AuroraTeaserCard from '../components/events/AuroraTeaserCard';
 import MilkyWayARCard from '../components/tonight/MilkyWayARCard';
 import { Loader2, Lock, MapPin, ChevronRight, Telescope, Zap, Star, Flashlight } from 'lucide-react';
+import BlueHourCard from '../components/tonight/BlueHourCard';
+import LLLEducationCard from '../components/tonight/LLLEducationCard';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -242,7 +244,7 @@ export default function TonightHub() {
        </div>
 
       {/* Location input - prominent CTA */}
-      <Card className="bg-gradient-to-r from-purple-900/40 to-blue-900/20 border border-purple-500/40 p-5 mb-6 sticky top-20 z-40">
+      <Card className="bg-[#1a1a1a] border border-white/8 p-5 mb-6 sticky top-20 z-40">
         <p className="text-white text-xs font-bold uppercase tracking-widest mb-3">Step 1: Enter Your Location</p>
         <div className="flex gap-2">
           <div className="relative flex-1">
@@ -253,10 +255,10 @@ export default function TonightHub() {
               value={location}
               onChange={e => setLocation(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleSetLocation()}
-              className="w-full bg-slate-800 border border-slate-700 rounded-lg pl-9 pr-3 py-2.5 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-500/20"
+              className="w-full bg-slate-800 border border-slate-700 rounded-lg pl-9 pr-3 py-2.5 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
             />
           </div>
-          <Button onClick={handleSetLocation} disabled={geoLoading || !location.trim()} className="bg-purple-600 hover:bg-purple-700 text-sm px-6 font-bold">
+          <Button onClick={handleSetLocation} disabled={geoLoading || !location.trim()} className="bg-red-600 hover:bg-red-700 text-sm px-6 font-bold">
             {geoLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Analyze'}
           </Button>
         </div>
@@ -313,6 +315,12 @@ export default function TonightHub() {
             </Link>
           )}
 
+          {/* Blue Hour card — always visible when location is set */}
+          <BlueHourCard lat={coords.lat} lon={coords.lon} dateStr={today} />
+
+          {/* LLL tip card */}
+          <LLLEducationCard />
+
           {events.map((event, i) => (
             <EventRankCard
               key={event.id}
@@ -337,19 +345,19 @@ export default function TonightHub() {
           )}
 
           {!isSubscribed && (
-            <Card className="border border-purple-500/30 bg-gradient-to-r from-purple-900/20 to-indigo-900/20 p-5 mt-4">
+            <Card className="border border-red-700/40 bg-[#1a1a1a] p-5 mt-4">
               <div className="flex items-start gap-3">
-                <Lock className="w-5 h-5 text-purple-400 flex-shrink-0 mt-0.5" />
+                <Lock className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
                 <div className="flex-1">
-                  <p className="text-white font-bold text-sm">Ready to plan smarter?</p>
-                  <p className="text-slate-400 text-xs mt-1 mb-3">Unlock full viability scores, guided shoot plans, gear checklist, and aurora alerts. Get Plus for $7.99/mo.</p>
+                  <p className="text-white font-bold text-sm">Unlock the full plan + Field Mode</p>
+                  <p className="text-slate-400 text-xs mt-1 mb-3">Full viability scores, guided shoot plans, gear checklist, Blue Hour planning, LLL guidance & aurora alerts. Plus from <strong className="text-white">$7.99/mo</strong> or <strong className="text-white">$79/year</strong>.</p>
                   <div className="flex items-center gap-3 flex-wrap">
                     <Link to={createPageUrl('PaymentGate')}>
-                      <Button size="sm" className="bg-purple-600 hover:bg-purple-700 text-xs font-bold">
+                      <Button size="sm" className="bg-red-600 hover:bg-red-700 text-xs font-bold">
                         Unlock Plus — $7.99/mo →
                       </Button>
                     </Link>
-                    <span className="text-slate-500 text-xs">or $79/year</span>
+                    <span className="text-slate-500 text-xs">or $79/yr · 7-day guarantee</span>
                   </div>
                 </div>
               </div>
