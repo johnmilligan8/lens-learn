@@ -285,8 +285,8 @@ export default function GearChecklist({ userEmail, shooterMode, onKitLoaded, isP
   };
 
   if (!activeKit && !showForm) {
-    return (
-      <Card className="bg-slate-900/60 border-slate-800 p-5 mb-5">
+     return (
+       <Card className="bg-[#1a1a1a] border-white/8 p-5 mb-5">
         <div className="flex items-center justify-between">
           <div>
             <h3 className="text-white font-semibold text-sm flex items-center gap-2">
@@ -325,7 +325,7 @@ export default function GearChecklist({ userEmail, shooterMode, onKitLoaded, isP
     : 0;
 
   return (
-    <Card className="bg-slate-900/60 border-slate-800 p-5 mb-5">
+     <Card className="bg-[#1a1a1a] border-white/8 p-5 mb-5">
       {showForm ? (
         <div className="space-y-3 mb-4">
           <h3 className="text-white font-semibold text-sm">New Expedition Kit</h3>
@@ -480,7 +480,7 @@ export default function GearChecklist({ userEmail, shooterMode, onKitLoaded, isP
           </div>
 
           {/* Affiliate nudge — contextual */}
-          <div className="mt-3 p-3 rounded-lg border border-slate-700/50 bg-slate-800/30 flex items-center justify-between gap-2">
+          <div className="mt-3 p-3 rounded-lg border border-white/8 bg-white/5 flex items-center justify-between gap-2">
             <p className="text-slate-400 text-xs">🔦 Need a red headlamp for the field?</p>
             <a
               href="https://www.amazon.com/s?k=red+headlamp+astronomy&tag=uncharted-20"

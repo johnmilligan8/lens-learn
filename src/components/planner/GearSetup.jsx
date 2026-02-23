@@ -97,7 +97,7 @@ export default function GearSetup({ userEmail, onGearUpdate, loading, initialGea
     const cameraCount = gear.cameras?.length || 0;
     const lensCount = gear.lenses?.length || 0;
     return (
-      <Card className="bg-slate-900/60 border-slate-800 p-5 mb-5">
+      <Card className="bg-[#1a1a1a] border-white/8 p-5 mb-5">
         <div className="flex items-center justify-between">
           <div className="flex-1">
             <h3 className="text-white font-semibold text-sm flex items-center gap-2">
@@ -121,7 +121,7 @@ export default function GearSetup({ userEmail, onGearUpdate, loading, initialGea
   }
 
   return (
-    <Card className="bg-slate-900/60 border-slate-800 p-5 mb-5">
+     <Card className="bg-[#1a1a1a] border-white/8 p-5 mb-5">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-white font-semibold text-sm">Astrophotography Gear</h3>
         <Button

@@ -61,8 +61,8 @@ Best,
   };
 
   if (generatedEmail) {
-    return (
-      <Card className="bg-slate-900/60 border-slate-800 p-5">
+     return (
+       <Card className="bg-[#1a1a1a] border-white/8 p-5">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-white font-semibold text-sm flex items-center gap-2">
             <Mail className="w-4 h-4 text-blue-400" /> Client Expectations Email
@@ -110,7 +110,7 @@ Best,
   }
 
   return (
-    <Card className="bg-slate-900/60 border-slate-800 p-5">
+     <Card className="bg-[#1a1a1a] border-white/8 p-5">
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-white font-semibold text-sm flex items-center gap-2">
           <Mail className="w-4 h-4 text-blue-400" /> Client Expectations Email
