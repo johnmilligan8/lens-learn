@@ -10,9 +10,9 @@ export default function PageHeader({
   return (
     <div className="mb-8">
       <div className="flex items-center gap-3 mb-3">
-        {Icon && <Icon className="w-6 h-6 text-red-400" />}
+        {Icon && <Icon className="w-6 h-6 text-purple-400" />}
         {badge && (
-          <span className="inline-flex items-center gap-2 bg-red-900/30 border border-red-600/30 rounded-full px-3 py-1 text-xs font-semibold text-red-300 uppercase tracking-widest">
+          <span className="inline-flex items-center gap-2 bg-purple-900/40 border border-purple-500/30 rounded-full px-3 py-1 text-xs font-semibold text-purple-300 uppercase tracking-widest">
             {badge}
           </span>
         )}
