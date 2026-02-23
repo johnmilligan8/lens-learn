@@ -250,7 +250,7 @@ export default function TonightHub() {
        </div>
 
       {/* Location input - prominent CTA */}
-      <Card className="bg-gradient-to-r from-purple-900/40 to-blue-900/20 border border-purple-500/40 p-5 mb-6 sticky top-20 z-40">
+      <Card className="bg-gradient-to-r from-red-900/30 to-red-800/10 border border-red-600/40 p-5 mb-6 sticky top-20 z-40">
         <p className="text-white text-xs font-bold uppercase tracking-widest mb-3">Step 1: Enter Your Location</p>
         <div className="flex gap-2">
           <div className="relative flex-1">
@@ -261,10 +261,10 @@ export default function TonightHub() {
               value={location}
               onChange={e => setLocation(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleSetLocation()}
-              className="w-full bg-slate-800 border border-slate-700 rounded-lg pl-9 pr-3 py-2.5 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-500/20"
+              className="w-full bg-slate-800 border border-slate-700 rounded-lg pl-9 pr-3 py-2.5 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
             />
           </div>
-          <Button onClick={handleSetLocation} disabled={geoLoading || !location.trim()} className="bg-purple-600 hover:bg-purple-700 text-sm px-6 font-bold">
+          <Button onClick={handleSetLocation} disabled={geoLoading || !location.trim()} className="bg-red-600 hover:bg-red-700 text-sm px-6 font-bold">
             {geoLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Analyze'}
           </Button>
         </div>
