@@ -281,8 +281,8 @@ export default function TonightHub() {
           <p className="text-slate-500 text-sm mt-1">Get personalized sky conditions & ranked events for tonight</p>
         </div>
       ) : events.length === 0 ? (
-        <Card className="bg-slate-900/40 border-slate-800 p-8 text-center">
-          <p className="text-slate-300">No notable sky events tonight. Check the <Link to={createPageUrl('EventsCalendar')} className="text-purple-300 hover:text-purple-200 underline">full calendar</Link> for upcoming events.</p>
+        <Card className="bg-[#1a1a1a] border border-white/8 p-8 text-center">
+          <p className="text-slate-300">No notable sky events tonight. Check the <Link to={createPageUrl('EventsCalendar')} className="text-red-400 hover:text-red-300 underline">full calendar</Link> for upcoming events.</p>
         </Card>
       ) : (
         <div className="space-y-4">
