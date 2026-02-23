@@ -229,7 +229,7 @@ export default function StarPointer() {
               {/* Crosshair */}
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                 <div className="text-center">
-                  <div className="w-12 h-12 border-2 border-purple-400/50 rounded-full mb-2" />
+                  <div className="w-12 h-12 border-2 border-red-500/50 rounded-full mb-2" />
                   <p className="text-slate-400 text-sm">Point at sky</p>
                   {permissionGranted && (
                     <p className="text-slate-500 text-xs mt-1">α:{orientation.alpha.toFixed(0)}° β:{orientation.beta.toFixed(0)}° γ:{orientation.gamma.toFixed(0)}°</p>
@@ -311,7 +311,7 @@ export default function StarPointer() {
               {isSubscribed && (
                 <Button
                   size="sm"
-                  className="w-full bg-purple-600 hover:bg-purple-700 text-white"
+                  className="w-full bg-red-600 hover:bg-red-700 text-white"
                   onClick={() => handleSaveObservation(selectedObject)}
                 >
                   <Save className="w-3 h-3 mr-1" /> Log Observation
@@ -337,12 +337,12 @@ export default function StarPointer() {
 
           {/* Plus Indicator */}
           {!isSubscribed && (
-            <Card className="bg-purple-900/30 border-purple-700/50 p-4">
+            <Card className="bg-red-900/20 border-red-700/40 p-4">
               <div className="flex gap-2">
-                <Lock className="w-4 h-4 text-purple-400 flex-shrink-0 mt-0.5" />
+                <Lock className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
                 <div className="flex-1">
-                  <p className="text-purple-300 font-medium text-xs">Plus Features</p>
-                  <p className="text-purple-200/70 text-xs mt-1">Full object catalog, save observations & detailed info.</p>
+                  <p className="text-red-300 font-medium text-xs">Plus Features</p>
+                  <p className="text-red-200/70 text-xs mt-1">Full object catalog, save observations & detailed info.</p>
                 </div>
               </div>
             </Card>
@@ -354,7 +354,7 @@ export default function StarPointer() {
       {isSubscribed && observations.length > 0 && (
         <div className="mt-10">
           <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-            <Info className="w-5 h-5 text-purple-400" /> Recent Observations
+            <Info className="w-5 h-5 text-red-400" /> Recent Observations
           </h2>
           <div className="grid md:grid-cols-2 gap-4">
             {observations.slice(0, 6).map(obs => (
