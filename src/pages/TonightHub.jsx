@@ -368,8 +368,8 @@ export default function TonightHub() {
 
       {/* Mode-specific tip */}
       {coords && mode === 'smartphone' && (
-        <Card className="bg-blue-900/20 border border-blue-500/30 p-4 mt-4">
-          <p className="text-blue-300 text-xs font-semibold mb-1">📱 Smartphone Tip for Tonight</p>
+        <Card className="bg-[#1a1a1a] border border-white/8 p-4 mt-4">
+          <p className="text-slate-300 text-xs font-semibold mb-1">📱 Smartphone Tip for Tonight</p>
           <p className="text-slate-400 text-xs leading-relaxed">Set your phone on a stable surface and use Night Mode. Avoid holding the phone — even breathing causes blur. Use a timer or volume button as shutter.</p>
         </Card>
       )}
