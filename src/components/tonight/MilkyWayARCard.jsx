@@ -41,7 +41,7 @@ export default function MilkyWayARCard({ lat, lon, dateStr, isSubscribed, shoote
         {isSubscribed ? (
           <Button
             onClick={() => setShowAR(true)}
-            className="w-full bg-purple-600 hover:bg-purple-700 h-9 text-sm gap-2"
+            className="w-full bg-red-600 hover:bg-red-700 h-9 text-sm gap-2"
           >
             <Compass className="w-4 h-4" /> Launch AR View
           </Button>
