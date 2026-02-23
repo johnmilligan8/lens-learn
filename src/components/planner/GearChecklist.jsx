@@ -516,7 +516,7 @@ export default function GearChecklist({ userEmail, shooterMode, onKitLoaded, isP
                 className="w-full text-left p-2.5 rounded-lg bg-slate-800/60 hover:bg-slate-800 transition-colors"
               >
                 <span className="text-slate-300 font-medium text-sm flex items-center gap-2">
-                  <FileText className="w-4 h-4 text-purple-400" /> Overall Prep Notes
+                   <FileText className="w-4 h-4 text-red-400" /> Overall Prep Notes
                 </span>
                 {activeKit?.general_notes && (
                   <p className="text-xs text-slate-500 mt-1 line-clamp-1">{activeKit.general_notes}</p>
