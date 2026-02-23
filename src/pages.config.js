@@ -48,37 +48,39 @@
  * The mainPage value must match a key in the PAGES object exactly.
  */
 import CommunityGallery from './pages/CommunityGallery';
+import Dashboard from './pages/Dashboard';
 import EventsCalendar from './pages/EventsCalendar';
 import FreeCourse from './pages/FreeCourse';
 import InstructorDashboard from './pages/InstructorDashboard';
 import LessonView from './pages/LessonView';
 import ModuleView from './pages/ModuleView';
 import Onboarding from './pages/Onboarding';
+import PaymentGate from './pages/PaymentGate';
+import PlannerTool from './pages/PlannerTool';
+import Profile from './pages/Profile';
 import SkyBrowser from './pages/SkyBrowser';
 import StarPointer from './pages/StarPointer';
-import PlannerTool from './pages/PlannerTool';
-import Dashboard from './pages/Dashboard';
-import Profile from './pages/Profile';
 import TonightHub from './pages/TonightHub';
-import PaymentGate from './pages/PaymentGate';
+import FieldMode from './pages/FieldMode';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
     "CommunityGallery": CommunityGallery,
+    "Dashboard": Dashboard,
     "EventsCalendar": EventsCalendar,
     "FreeCourse": FreeCourse,
     "InstructorDashboard": InstructorDashboard,
     "LessonView": LessonView,
     "ModuleView": ModuleView,
     "Onboarding": Onboarding,
+    "PaymentGate": PaymentGate,
+    "PlannerTool": PlannerTool,
+    "Profile": Profile,
     "SkyBrowser": SkyBrowser,
     "StarPointer": StarPointer,
-    "PlannerTool": PlannerTool,
-    "Dashboard": Dashboard,
-    "Profile": Profile,
     "TonightHub": TonightHub,
-    "PaymentGate": PaymentGate,
+    "FieldMode": FieldMode,
 }
 
 export const pagesConfig = {
