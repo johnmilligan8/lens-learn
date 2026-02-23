@@ -5,9 +5,9 @@ import { Cloud, Moon, Eye, Zap } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 
 const VISIBILITY_COLORS = {
-  good: 'bg-emerald-600/20 border-emerald-500/50 text-emerald-300',
-  possible: 'bg-yellow-600/20 border-yellow-500/50 text-yellow-300',
-  unlikely: 'bg-red-600/20 border-red-500/50 text-red-300',
+  good: 'bg-[#1a1a1a] border-red-600/30 text-white',
+  possible: 'bg-[#1a1a1a] border-white/10 text-slate-300',
+  unlikely: 'bg-[#1a1a1a] border-white/10 text-slate-400',
 };
 
 const VISIBILITY_LABELS = {
@@ -21,13 +21,8 @@ export default function AuroraDailyCard({ forecast, isTonight, moonPhase, moonIl
   const isToday = isTonight ? 'Tonight' : format(date, 'EEE, MMM d');
 
   return (
-    <Card className={`p-5 rounded-lg border ${VISIBILITY_COLORS[forecast.visibility_rating]} bg-slate-900/40 relative overflow-hidden`}>
-      {/* Background glow */}
-      <div className="absolute inset-0 opacity-10 pointer-events-none">
-        {forecast.visibility_rating === 'good' && <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-transparent" />}
-        {forecast.visibility_rating === 'possible' && <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/20 to-transparent" />}
-        {forecast.visibility_rating === 'unlikely' && <div className="absolute inset-0 bg-gradient-to-br from-red-500/20 to-transparent" />}
-      </div>
+    <Card className={`p-5 rounded-lg border ${VISIBILITY_COLORS[forecast.visibility_rating]}`}>
+      
 
       <div className="relative z-10">
         {/* Header */}
@@ -36,7 +31,7 @@ export default function AuroraDailyCard({ forecast, isTonight, moonPhase, moonIl
             <h3 className="text-lg font-bold text-white">{isToday}</h3>
             <p className="text-xs text-slate-400 mt-0.5">{locationContext}</p>
           </div>
-          <Badge className={`whitespace-nowrap ${VISIBILITY_COLORS[forecast.visibility_rating].replace('border', 'bg')}`}>
+          <Badge className={`whitespace-nowrap ${forecast.visibility_rating === 'good' ? 'bg-red-600 text-white' : forecast.visibility_rating === 'possible' ? 'bg-slate-600 text-white' : 'bg-slate-700 text-white'}`}>
             {VISIBILITY_LABELS[forecast.visibility_rating]}
           </Badge>
         </div>

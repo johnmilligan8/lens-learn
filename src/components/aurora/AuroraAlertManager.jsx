@@ -49,13 +49,13 @@ export default function AuroraAlertManager({ alertLocations = [], alertsEnabled 
     <Card className="bg-slate-900/60 border-slate-800 p-6">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Bell className="w-5 h-5 text-purple-400" />
+          <Bell className="w-5 h-5 text-red-400" />
           <h3 className="text-white font-semibold">Aurora Alerts</h3>
         </div>
         <Button
           size="sm"
           variant={alertsEnabled ? 'default' : 'outline'}
-          className={alertsEnabled ? 'bg-purple-600 hover:bg-purple-700' : 'border-slate-700'}
+          className={alertsEnabled ? 'bg-red-600 hover:bg-red-700' : 'border-slate-700'}
           onClick={handleToggleAlerts}
         >
           {alertsEnabled ? '✓ Enabled' : '✗ Disabled'}
@@ -132,7 +132,7 @@ export default function AuroraAlertManager({ alertLocations = [], alertsEnabled 
           <div className="flex gap-2">
             <Button
               size="sm"
-              className="flex-1 bg-purple-600 hover:bg-purple-700"
+              className="flex-1 bg-red-600 hover:bg-red-700"
               onClick={handleAdd}
             >
               Add Location
