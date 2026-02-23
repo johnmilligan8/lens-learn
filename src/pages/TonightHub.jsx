@@ -228,7 +228,7 @@ export default function TonightHub() {
 
   if (loading) return (
     <div className="flex items-center justify-center min-h-[60vh]">
-      <Telescope className="w-10 h-10 text-purple-400 star-pulse" />
+      <Telescope className="w-10 h-10 text-red-400 star-pulse" />
     </div>
   );
 
