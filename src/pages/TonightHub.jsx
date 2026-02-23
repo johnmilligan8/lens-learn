@@ -182,13 +182,16 @@ export default function TonightHub() {
 
   const geocode = async (loc) => {
     setGeoLoading(true);
-    const res = await base44.integrations.Core.InvokeLLM({
-      prompt: `Give me the latitude and longitude of: "${loc}". Return ONLY a JSON object with "lat" (number) and "lon" (number).`,
-      response_json_schema: { type: 'object', properties: { lat: { type: 'number' }, lon: { type: 'number' } } }
-    });
-    setCoords({ lat: res.lat, lon: res.lon });
+    try {
+      const res = await base44.integrations.Core.InvokeLLM({
+        prompt: `Give me the latitude and longitude of: "${loc}". Return ONLY a JSON object with "lat" (number) and "lon" (number).`,
+        response_json_schema: { type: 'object', properties: { lat: { type: 'number' }, lon: { type: 'number' } } }
+      });
+      if (res?.lat && res?.lon) setCoords({ lat: res.lat, lon: res.lon });
+    } catch (e) {
+      console.warn('Geocode failed:', e);
+    }
     setGeoLoading(false);
-    return res;
   };
 
   const handleSetLocation = async () => { if (location.trim()) await geocode(location); };
