@@ -39,8 +39,12 @@ export default function AuroraWeeklyList({ forecasts }) {
                   <Badge className={BADGE_COLORS[forecast.visibility_rating]}>{VISIBILITY_LABELS[forecast.visibility_rating]}</Badge>
                 </div>
                 <div className="flex items-center gap-4 text-xs text-slate-300">
-                  <span className="font-medium">KP {forecast.kp_min || forecast.kp_index}–{forecast.kp_max || forecast.kp_index}</span>
-                  <span>Cloud: {forecast.cloud_cover_percent || 'N/A'}%</span>
+                  <span className="font-medium">KP {forecast.kp_min ?? forecast.kp_index}–{forecast.kp_max ?? forecast.kp_index}</span>
+                  {forecast.cloud_cover_percent !== null && forecast.cloud_cover_percent !== undefined
+                    ? <span>☁ {forecast.cloud_cover_percent}%</span>
+                    : null}
+                  {forecast.precipitation > 0 ? <span>💧 {forecast.precipitation}mm</span> : null}
+                  <span className="text-slate-500 text-xs">{forecast.source === 'NOAA' ? '🛰 NOAA' : 'mock'}</span>
                 </div>
               </div>
               <ChevronRight className="w-5 h-5 text-slate-400 flex-shrink-0" />

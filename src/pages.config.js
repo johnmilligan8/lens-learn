@@ -58,9 +58,9 @@ import Onboarding from './pages/Onboarding';
 import PaymentGate from './pages/PaymentGate';
 import PlannerTool from './pages/PlannerTool';
 import Profile from './pages/Profile';
+import SkyBrowser from './pages/SkyBrowser';
 import StarPointer from './pages/StarPointer';
 import TonightHub from './pages/TonightHub';
-import SkyBrowser from './pages/SkyBrowser';
 import __Layout from './Layout.jsx';
 
 
@@ -76,9 +76,9 @@ export const PAGES = {
     "PaymentGate": PaymentGate,
     "PlannerTool": PlannerTool,
     "Profile": Profile,
+    "SkyBrowser": SkyBrowser,
     "StarPointer": StarPointer,
     "TonightHub": TonightHub,
-    "SkyBrowser": SkyBrowser,
 }
 
 export const pagesConfig = {
