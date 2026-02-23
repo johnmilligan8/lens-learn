@@ -20,18 +20,8 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 
 const MODULE_ICONS = { Telescope, Settings, Eye, MapPin, Palette, Sparkles };
-const COLOR_MAP = {
-  purple: 'from-purple-600/20 to-purple-900/10 border-purple-500/30 hover:border-purple-400/60',
-  blue:   'from-blue-600/20 to-blue-900/10 border-blue-500/30 hover:border-blue-400/60',
-  indigo: 'from-indigo-600/20 to-indigo-900/10 border-indigo-500/30 hover:border-indigo-400/60',
-  violet: 'from-violet-600/20 to-violet-900/10 border-violet-500/30 hover:border-violet-400/60',
-  fuchsia:'from-fuchsia-600/20 to-fuchsia-900/10 border-fuchsia-500/30 hover:border-fuchsia-400/60',
-  pink:   'from-pink-600/20 to-pink-900/10 border-pink-500/30 hover:border-pink-400/60',
-};
-const ICON_COLOR = {
-  purple:'text-purple-400', blue:'text-blue-400', indigo:'text-indigo-400',
-  violet:'text-violet-400', fuchsia:'text-fuchsia-400', pink:'text-pink-400',
-};
+const COLOR_MAP = {};
+const ICON_COLOR = {};
 
 const FALLBACK_MODULES = [
   { id:'fallback-1', title:'Gear Essentials', description:'Everything you need to capture the Milky Way', color:'purple', is_free_preview:true, total_lessons:8, total_duration:'2.5 hrs' },
@@ -87,7 +77,7 @@ export default function Dashboard() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <Telescope className="w-10 h-10 text-purple-400 star-pulse" />
+        <Telescope className="w-10 h-10 text-red-400 star-pulse" />
       </div>
     );
   }
@@ -113,13 +103,13 @@ export default function Dashboard() {
 
       {/* Free tier upsell banner */}
       {!isSubscribed && (
-        <div className="mb-8 p-5 rounded-2xl border border-yellow-500/30 bg-gradient-to-r from-yellow-900/20 via-orange-900/10 to-purple-900/20 flex flex-col md:flex-row items-start md:items-center gap-4">
+        <div className="mb-8 p-5 rounded-2xl border border-red-600/30 bg-[#1a1a1a] flex flex-col md:flex-row items-start md:items-center gap-4">
           <div className="flex-1">
-            <p className="text-yellow-200 font-black text-lg leading-snug">🚀 Ready to master the stars?</p>
-            <p className="text-slate-200 text-sm mt-1">Unlock full planning tools, guided shoot plans, gear checklists & aurora alerts — from <strong className="text-white">$7.99/month</strong>. Or go Pro at $14.99/mo for instructor access & journal insights.</p>
+            <p className="text-white font-black text-lg leading-snug">🚀 Ready to master the stars?</p>
+            <p className="text-slate-300 text-sm mt-1">Unlock full planning tools, guided shoot plans, gear checklists & aurora alerts — from <strong className="text-white">$7.99/month</strong>. Or go Pro at $14.99/mo for instructor access & journal insights.</p>
           </div>
           <Link to={createPageUrl('PaymentGate')}>
-            <Button className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-bold whitespace-nowrap">
+            <Button className="bg-red-600 hover:bg-red-700 text-white font-bold whitespace-nowrap">
               Begin Your Expedition →
             </Button>
           </Link>
@@ -130,22 +120,22 @@ export default function Dashboard() {
       {!isSubscribed && (
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-white mb-5 flex items-center gap-2">
-            <Star className="w-6 h-6 text-emerald-400" /> Start Here — Free
+            <Star className="w-6 h-6 text-red-400" /> Start Here — Free
           </h2>
           <Link to={createPageUrl('FreeCourse')}>
-            <Card className="bg-gradient-to-br from-emerald-900/30 to-teal-900/10 border border-emerald-500/40 hover:border-emerald-400/70 p-6 card-glow transition-all group">
+            <Card className="bg-[#1a1a1a] border border-white/8 hover:border-red-600/40 p-6 card-glow transition-all group">
               <div className="flex items-start gap-5">
-                <div className="bg-emerald-600/20 p-4 rounded-xl flex-shrink-0">
-                  <Telescope className="w-8 h-8 text-emerald-400" />
+                <div className="bg-red-600/15 p-4 rounded-xl flex-shrink-0">
+                  <Telescope className="w-8 h-8 text-red-400" />
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     <Badge className="bg-emerald-600 text-white text-xs">FREE</Badge>
                     <span className="text-slate-300 text-xs">5 lessons · No card required</span>
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-1 group-hover:text-emerald-300 transition-colors">Your First Night Sky Adventure</h3>
+                  <h3 className="text-xl font-bold text-white mb-1 transition-colors">Your First Night Sky Adventure</h3>
                   <p className="text-slate-300 text-sm mb-3">Gear basics, magic camera settings, simple composition, and your first shoot checklist — everything to capture the Milky Way tonight.</p>
-                  <p className="text-emerald-400 text-sm font-medium flex items-center gap-1">Start free course <ChevronRight className="w-4 h-4" /></p>
+                  <p className="text-red-400 text-sm font-medium flex items-center gap-1">Start free course <ChevronRight className="w-4 h-4" /></p>
                 </div>
               </div>
             </Card>
@@ -156,7 +146,7 @@ export default function Dashboard() {
       {/* Mission Briefings */}
       <div className="mb-12">
         <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-          <Zap className="w-6 h-6 text-yellow-400" /> What Do You Want To Do?
+          <Zap className="w-6 h-6 text-red-400" /> What Do You Want To Do?
         </h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
           <ActionCard
@@ -210,38 +200,35 @@ export default function Dashboard() {
       {/* Milky Way Courses Section */}
       <div className="mb-10">
         <h2 className="text-2xl font-bold text-white mb-5 flex items-center gap-2">
-          <Rocket className="w-6 h-6 text-purple-400" /> Milky Way Courses
+          <Rocket className="w-6 h-6 text-red-400" /> Milky Way Courses
         </h2>
-        <div className={`p-6 rounded-2xl border ${isSubscribed ? 'bg-slate-900/40 border-slate-800/50' : 'bg-gradient-to-r from-purple-900/30 to-purple-800/20 border-purple-500/30'}`}>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {modules.map((mod) => {
-              const modColor = mod.color || 'purple';
-              const pct = getModuleProgress(mod.id);
-              const iconKeys = Object.keys(MODULE_ICONS);
-              const IconComp = MODULE_ICONS[iconKeys[modules.indexOf(mod) % iconKeys.length]];
-              return (
-                <Link key={mod.id} to={isSubscribed ? createPageUrl('ModuleView') + `?id=${mod.id}` : createPageUrl('PaymentGate')}>
-                  <Card className={`bg-gradient-to-br ${COLOR_MAP[modColor]} border p-6 card-glow hover:scale-[1.02] transition-all duration-200 relative overflow-hidden h-full ${!isSubscribed ? 'opacity-70' : ''}`}>
-                    {mod.is_free_preview && (
-                      <Badge className="absolute top-3 right-3 bg-emerald-600 text-white text-xs">FREE</Badge>
-                    )}
-                    <div className="flex items-start justify-between mb-4">
-                      <IconComp className={`w-10 h-10 ${ICON_COLOR[modColor]}`} />
-                      {isSubscribed ? <ChevronRight className="w-4 h-4 text-slate-500" /> : <Lock className="w-4 h-4 text-slate-500" />}
-                    </div>
-                    <h3 className="text-lg font-bold text-white mb-2">{mod.title}</h3>
-                    <p className="text-slate-300 text-sm mb-4 line-clamp-2">{mod.description}</p>
-                    <div className="flex items-center gap-3 text-xs text-slate-500 mb-3">
-                      {mod.total_lessons && <span>{mod.total_lessons} lessons</span>}
-                      {mod.total_duration && <><span>•</span><span>{mod.total_duration}</span></>}
-                    </div>
-                    <Progress value={pct} className="h-1.5 mb-1" />
-                    <p className="text-xs text-slate-500">{pct}% complete</p>
-                  </Card>
-                </Link>
-              );
-            })}
-          </div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {modules.map((mod) => {
+            const pct = getModuleProgress(mod.id);
+            const iconKeys = Object.keys(MODULE_ICONS);
+            const IconComp = MODULE_ICONS[iconKeys[modules.indexOf(mod) % iconKeys.length]];
+            return (
+              <Link key={mod.id} to={isSubscribed ? createPageUrl('ModuleView') + `?id=${mod.id}` : createPageUrl('PaymentGate')}>
+                <Card className={`bg-[#1a1a1a] border border-white/8 hover:border-red-600/40 p-6 card-glow hover:scale-[1.02] transition-all duration-200 relative overflow-hidden h-full ${!isSubscribed ? 'opacity-70' : ''}`}>
+                  {mod.is_free_preview && (
+                    <Badge className="absolute top-3 right-3 bg-emerald-600 text-white text-xs">FREE</Badge>
+                  )}
+                  <div className="flex items-start justify-between mb-4">
+                    <IconComp className="w-10 h-10 text-red-400" />
+                    {isSubscribed ? <ChevronRight className="w-4 h-4 text-slate-500" /> : <Lock className="w-4 h-4 text-slate-500" />}
+                  </div>
+                  <h3 className="text-lg font-bold text-white mb-2">{mod.title}</h3>
+                  <p className="text-slate-300 text-sm mb-4 line-clamp-2">{mod.description}</p>
+                  <div className="flex items-center gap-3 text-xs text-slate-500 mb-3">
+                    {mod.total_lessons && <span>{mod.total_lessons} lessons</span>}
+                    {mod.total_duration && <><span>•</span><span>{mod.total_duration}</span></>}
+                  </div>
+                  <Progress value={pct} className="h-1.5 mb-1" />
+                  <p className="text-xs text-slate-500">{pct}% complete</p>
+                </Card>
+              </Link>
+            );
+          })}
         </div>
       </div>
       </div>

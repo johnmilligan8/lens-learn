@@ -10,7 +10,7 @@ export default function PostProcessingGuide() {
     {
       icon: Layers,
       title: 'Image Stacking',
-      color: 'text-blue-400',
+      color: 'text-slate-400',
       steps: [
         '1. Shoot 5–10 exposures (better signal-to-noise ratio)',
         '2. Use free tools: Sequator, Hugin, or Starry Landscape Stacker',
@@ -22,7 +22,7 @@ export default function PostProcessingGuide() {
     {
       icon: Zap,
       title: 'Denoising & Clarity',
-      color: 'text-yellow-400',
+      color: 'text-slate-400',
       steps: [
         '• Use Lightroom: Reduce luminance noise (40–60), preserve colors',
         '• Alternative: Adobe Camera Raw, ON1 Photo, Neat Image',
@@ -34,7 +34,7 @@ export default function PostProcessingGuide() {
     {
       icon: Palette,
       title: 'Color Grading',
-      color: 'text-purple-400',
+      color: 'text-red-400',
       steps: [
         '• Milky Way: Cool blues & teals for sky, warm oranges/golds for core',
         '• Foreground: Lift shadows, darken highlights for separation',
@@ -49,14 +49,14 @@ export default function PostProcessingGuide() {
     <Card className="bg-gradient-to-br from-slate-900/60 to-slate-800/30 border-slate-800 p-5">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-purple-400" />
+          <Sparkles className="w-4 h-4 text-red-400" />
           <h3 className="text-white font-semibold">Post-Processing Essentials</h3>
         </div>
         <Button
           variant="ghost"
           size="sm"
           onClick={() => setExpanded(!expanded)}
-          className="text-purple-300 hover:text-purple-200"
+          className="text-slate-300 hover:text-white"
         >
           <ChevronDown className={`w-4 h-4 transition-transform ${expanded ? 'rotate-180' : ''}`} />
         </Button>
@@ -85,8 +85,8 @@ export default function PostProcessingGuide() {
             );
           })}
 
-          <div className="bg-emerald-900/20 border border-emerald-500/30 rounded-lg p-3 mt-4">
-            <p className="text-emerald-300 text-xs font-semibold mb-1">🎯 Quick Workflow</p>
+          <div className="bg-[#1a1a1a] border border-white/8 rounded-lg p-3 mt-4">
+            <p className="text-red-400 text-xs font-semibold mb-1">🎯 Quick Workflow</p>
             <p className="text-slate-400 text-xs">Stack → Denoise → Adjust WB/exposure → Clarity → Split tone → Export as 16-bit TIF</p>
           </div>
         </div>

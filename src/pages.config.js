@@ -47,39 +47,39 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
+import CommunityGallery from './pages/CommunityGallery';
 import Dashboard from './pages/Dashboard';
+import EventsCalendar from './pages/EventsCalendar';
+import FieldMode from './pages/FieldMode';
+import FreeCourse from './pages/FreeCourse';
 import InstructorDashboard from './pages/InstructorDashboard';
 import LessonView from './pages/LessonView';
 import ModuleView from './pages/ModuleView';
 import Onboarding from './pages/Onboarding';
+import PaymentGate from './pages/PaymentGate';
+import PlannerTool from './pages/PlannerTool';
 import Profile from './pages/Profile';
 import SkyBrowser from './pages/SkyBrowser';
 import StarPointer from './pages/StarPointer';
-import FieldMode from './pages/FieldMode';
-import CommunityGallery from './pages/CommunityGallery';
-import EventsCalendar from './pages/EventsCalendar';
-import PlannerTool from './pages/PlannerTool';
-import FreeCourse from './pages/FreeCourse';
-import PaymentGate from './pages/PaymentGate';
 import TonightHub from './pages/TonightHub';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
+    "CommunityGallery": CommunityGallery,
     "Dashboard": Dashboard,
+    "EventsCalendar": EventsCalendar,
+    "FieldMode": FieldMode,
+    "FreeCourse": FreeCourse,
     "InstructorDashboard": InstructorDashboard,
     "LessonView": LessonView,
     "ModuleView": ModuleView,
     "Onboarding": Onboarding,
+    "PaymentGate": PaymentGate,
+    "PlannerTool": PlannerTool,
     "Profile": Profile,
     "SkyBrowser": SkyBrowser,
     "StarPointer": StarPointer,
-    "FieldMode": FieldMode,
-    "CommunityGallery": CommunityGallery,
-    "EventsCalendar": EventsCalendar,
-    "PlannerTool": PlannerTool,
-    "FreeCourse": FreeCourse,
-    "PaymentGate": PaymentGate,
     "TonightHub": TonightHub,
 }
 
