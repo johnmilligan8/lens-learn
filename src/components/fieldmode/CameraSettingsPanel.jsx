@@ -139,7 +139,7 @@ export default function CameraSettingsPanel({ mode, event, coords }) {
       {/* Quick reference — always visible */}
       <div className="grid grid-cols-2 gap-3">
         {fields.map((f, i) => (
-          <div key={i} className={`rounded-xl border border-slate-800/60 bg-slate-900/60 px-4 py-3 ${i === 4 ? 'col-span-2' : ''}`}>
+          <div key={i} className={`rounded-xl border border-white/8 bg-[#1a1a1a] px-4 py-3 ${i === 4 ? 'col-span-2' : ''}`}>
             <p className="text-slate-500 text-[10px] uppercase tracking-widest mb-1">
               {f.icon} {f.label}
             </p>
@@ -149,7 +149,7 @@ export default function CameraSettingsPanel({ mode, event, coords }) {
       </div>
 
       {/* Tips */}
-      <Card className="bg-slate-900/60 border border-slate-800/60">
+      <Card className="bg-[#1a1a1a] border border-white/8">
         <button
           onClick={() => setTipExpanded(v => !v)}
           className="w-full flex items-center justify-between px-4 py-3"
@@ -187,8 +187,8 @@ function FiveHundredRuleCard() {
   const [focal, setFocal] = useState(24);
   const maxShutter = Math.round(500 / focal);
   return (
-    <Card className="bg-indigo-950/40 border border-indigo-700/40 p-4">
-      <p className="text-indigo-300 text-xs font-bold uppercase tracking-widest mb-3">⚡ 500 Rule Calculator</p>
+    <Card className="bg-[#1a1a1a] border border-white/8 p-4">
+      <p className="text-red-300 text-xs font-bold uppercase tracking-widest mb-3">⚡ 500 Rule Calculator</p>
       <div className="flex items-center gap-3">
         <div className="flex-1">
           <label className="text-slate-500 text-[10px] block mb-1">Focal length (mm)</label>
@@ -196,7 +196,7 @@ function FiveHundredRuleCard() {
             type="number"
             value={focal}
             onChange={e => setFocal(Number(e.target.value) || 1)}
-            className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white text-sm font-mono focus:outline-none focus:border-indigo-400"
+            className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white text-sm font-mono focus:outline-none focus:border-red-400"
             min={8}
             max={600}
           />
@@ -216,8 +216,8 @@ function ExposureStopCalc() {
   const [baseISO, setBaseISO] = useState(1600);
   const newISO = Math.round(baseISO * Math.pow(2, stops));
   return (
-    <Card className="bg-slate-900/40 border border-slate-800/60 p-4">
-      <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-3">🔢 Exposure Stop Shift</p>
+    <Card className="bg-[#1a1a1a] border border-white/8 p-4">
+      <p className="text-slate-300 text-xs font-bold uppercase tracking-widest mb-3">🔢 Exposure Stop Shift</p>
       <div className="flex gap-3 items-center">
         <div className="flex-1">
           <label className="text-slate-500 text-[10px] block mb-1">Base ISO</label>
