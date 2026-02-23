@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ChevronDown, ChevronUp, Sun, Eye, Flashlight } from 'lucide-react';
+import { ChevronDown, ChevronUp, Sun, Eye, Zap } from 'lucide-react';
 
 // ─── Red Screen Overlay ─────────────────────────────────────────────────────
 function RedScreenMode({ onClose }) {
