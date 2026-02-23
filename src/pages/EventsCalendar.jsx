@@ -106,7 +106,7 @@ export default function EventsCalendar() {
 
   if (loading) return (
     <div className="flex items-center justify-center min-h-screen">
-      <Calendar className="w-10 h-10 text-purple-400 star-pulse" />
+      <Calendar className="w-10 h-10 text-red-400 star-pulse" />
     </div>
   );
 
@@ -126,13 +126,13 @@ export default function EventsCalendar() {
               <div className="flex items-center gap-2 flex-wrap mb-1">
                 <h3 className="text-white font-bold text-lg">{event.title}</h3>
                 {isThisMonth(new Date(event.date)) && !past && (
-                  <Badge className="bg-purple-600 text-white text-xs">This Month</Badge>
+                  <Badge className="bg-red-700 text-white text-xs">This Month</Badge>
                 )}
               </div>
               <p className="text-slate-300 text-sm mb-2">
                 {format(parseISO(event.date), 'MMMM d, yyyy')}
                 {event.end_date && event.end_date !== event.date && ` – ${format(parseISO(event.end_date), 'MMMM d')}`}
-                {event.peak_time && <span className="ml-2 text-purple-200">· Peak: {event.peak_time}</span>}
+                {event.peak_time && <span className="ml-2 text-slate-400">· Peak: {event.peak_time}</span>}
               </p>
               <p className="text-slate-300 text-sm line-clamp-2">{event.description}</p>
             </div>
@@ -173,7 +173,7 @@ export default function EventsCalendar() {
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="mb-8">
         <h1 className="text-4xl font-bold text-white mb-2 flex items-center gap-3">
-          <Calendar className="w-9 h-9 text-blue-400" /> Cosmic Events
+          <Calendar className="w-9 h-9 text-red-400" /> Cosmic Events
         </h1>
         <p className="text-slate-300 text-lg">Meteor showers, eclipses, auroras, and more — never miss a shoot.</p>
       </div>
@@ -200,7 +200,7 @@ export default function EventsCalendar() {
           onClick={() => setTab('events')}
           className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors ${
             tab === 'events'
-              ? 'border-purple-600 text-white'
+              ? 'border-red-600 text-white'
               : 'border-transparent text-slate-400 hover:text-slate-300'
           }`}
         >
@@ -210,7 +210,7 @@ export default function EventsCalendar() {
           onClick={() => setTab('aurora')}
           className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors flex items-center gap-2 ${
             tab === 'aurora'
-              ? 'border-purple-600 text-white'
+              ? 'border-red-600 text-white'
               : 'border-transparent text-slate-400 hover:text-slate-300'
           }`}
         >
@@ -222,7 +222,7 @@ export default function EventsCalendar() {
       {upcoming.length > 0 && (
         <div className="mb-10">
           <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-purple-400" /> Upcoming Events
+            <Sparkles className="w-5 h-5 text-red-400" /> Upcoming Events
           </h2>
           <div className="space-y-4">
             {upcoming.map(e => <EventCard key={e.id} event={e} />)}
@@ -241,7 +241,7 @@ export default function EventsCalendar() {
       )}
 
       {filtered.length === 0 && (
-        <Card className="bg-slate-900/60 border-slate-800 p-16 text-center">
+        <Card className="bg-[#1a1a1a] border-white/8 p-16 text-center">
           <Calendar className="w-16 h-16 text-slate-700 mx-auto mb-4" />
           <p className="text-slate-500">No events found for this filter.</p>
         </Card>
