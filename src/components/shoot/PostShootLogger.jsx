@@ -4,8 +4,9 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { base44 } from '@/api/base44Client';
 import { CheckCircle, AlertCircle, BarChart3, Loader2 } from 'lucide-react';
+import UpgradeNudge from '../upsell/UpgradeNudge';
 
-export default function PostShootLogger({ userEmail, sessionId, onSessionLogged }) {
+export default function PostShootLogger({ userEmail, sessionId, onSessionLogged, isSubscribed }) {
   const [expanded, setExpanded] = useState(false);
   const [outcome, setOutcome] = useState('nailed');
   const [limitingFactor, setLimitingFactor] = useState('');
