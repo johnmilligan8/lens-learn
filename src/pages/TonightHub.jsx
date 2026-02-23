@@ -159,22 +159,27 @@ export default function TonightHub() {
 
   useEffect(() => {
     const init = async () => {
-      const me = await base44.auth.me();
-      setUser(me);
-      const [subs, profiles, events, auroras] = await Promise.all([
-        me.role === 'admin' ? Promise.resolve([{ status: 'active' }]) : base44.entities.Subscription.filter({ user_email: me.email, status: 'active' }, '-created_date', 1),
-        base44.entities.UserProfile.filter({ user_email: me.email }, '-created_date', 1),
-        base44.entities.AstronomyEvent.filter({}, 'date', 50).catch(() => []),
-        import('@/functions/fetchAuroraForecast').then(m => m.fetchNoaaKpForecast()).catch(() => []),
-      ]);
-      setIsSubscribed(subs.length > 0);
-      const prof = profiles[0] ?? null;
-      setProfile(prof);
-      if (prof?.home_location) setLocation(prof.home_location);
-      setAstroEvents(events);
-      // auroras is now an array from NOAA — find today's entry
-      const todayForecast = Array.isArray(auroras) ? auroras.find(f => f.date === today) : null;
-      if (todayForecast) setAuroraForecast(todayForecast);
+      try {
+        const me = await base44.auth.me();
+        setUser(me);
+        const [subs, profiles, events] = await Promise.all([
+          me.role === 'admin' ? Promise.resolve([{ status: 'active' }]) : base44.entities.Subscription.filter({ user_email: me.email, status: 'active' }, '-created_date', 1).catch(() => []),
+          base44.entities.UserProfile.filter({ user_email: me.email }, '-created_date', 1).catch(() => []),
+          base44.entities.AstronomyEvent.filter({}, 'date', 50).catch(() => []),
+        ]);
+        setIsSubscribed(subs.length > 0);
+        const prof = profiles[0] ?? null;
+        setProfile(prof);
+        if (prof?.home_location) setLocation(prof.home_location);
+        setAstroEvents(events);
+        try {
+          const auroras = await import('@/functions/fetchAuroraForecast').then(m => m.fetchNoaaKpForecast());
+          const todayForecast = Array.isArray(auroras) ? auroras.find(f => f.date === today) : null;
+          if (todayForecast) setAuroraForecast(todayForecast);
+        } catch (_) {}
+      } catch (e) {
+        console.warn('TonightHub init error:', e);
+      }
       setLoading(false);
     };
     init();
