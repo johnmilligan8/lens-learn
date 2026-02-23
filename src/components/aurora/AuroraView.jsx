@@ -38,13 +38,15 @@ export default function AuroraView({ isSubscribed, userLocation = 'Utah', userLa
     setLoading(true);
     setError(null);
     try {
-      // Fetch NOAA KP forecast + cloud cover in parallel
-      const [kpData, weatherData] = await Promise.all([
-        fetchNoaaKpForecast(),
+      // Fetch NOAA KP forecast + cloud cover in parallel (with cache)
+      const [kpResult, weatherResult] = await Promise.all([
+        getAuroraWithCache(() => fetchNoaaKpForecast()),
         (userLat && userLon)
-          ? fetchCloudCoverForecast(userLat, userLon, 7)
-          : Promise.resolve([]),
+          ? getWeatherWithCache(userLat, userLon, () => fetchCloudCoverForecast(userLat, userLon, 7))
+          : Promise.resolve({ data: [], fromCache: false }),
       ]);
+      const kpData = kpResult.data;
+      const weatherData = weatherResult.data;
 
       // Merge KP + cloud cover by date
       const weatherByDate = {};
