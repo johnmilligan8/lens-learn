@@ -22,7 +22,7 @@ export default function MilkyWayARCard({ lat, lon, dateStr, isSubscribed, shoote
   }
 
   return (
-    <Card className="bg-gradient-to-br from-purple-900/40 to-indigo-900/20 border-purple-600/40 p-5">
+    <Card className="bg-[#1a1a1a] border border-white/8 p-5">
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1">
           <h3 className="text-white font-semibold text-sm flex items-center gap-2 mb-1">
