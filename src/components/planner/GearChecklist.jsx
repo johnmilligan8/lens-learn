@@ -479,6 +479,19 @@ export default function GearChecklist({ userEmail, shooterMode, onKitLoaded, isP
             ))}
           </div>
 
+          {/* Affiliate nudge — contextual */}
+          <div className="mt-3 p-3 rounded-lg border border-slate-700/50 bg-slate-800/30 flex items-center justify-between gap-2">
+            <p className="text-slate-400 text-xs">🔦 Need a red headlamp for the field?</p>
+            <a
+              href="https://www.amazon.com/s?k=red+headlamp+astronomy&tag=uncharted-20"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-amber-400 hover:text-amber-300 text-xs font-semibold whitespace-nowrap underline"
+            >
+              Shop via Amazon ↗
+            </a>
+          </div>
+
           {/* Reminders */}
           {packedCount < totalCount && (
             <div className="mt-4 p-3 rounded-lg bg-blue-900/20 border border-blue-500/30 flex gap-2">
