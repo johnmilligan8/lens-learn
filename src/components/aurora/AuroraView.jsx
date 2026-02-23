@@ -186,7 +186,7 @@ export default function AuroraView({ isSubscribed, userLocation = 'Utah', userLa
           </div>
 
           {/* Weekly Summary */}
-          <Card className="bg-slate-900/40 border-slate-800 p-4">
+          <Card className="bg-[#1a1a1a] border-white/8 p-4">
             <h4 className="text-white font-semibold mb-2">This Week's Summary</h4>
             <p className="text-sm text-slate-300">
               Best nights: {weeklyForecasts.filter(f => f.visibility_rating === 'good').length} day(s) with good conditions.{' '}
