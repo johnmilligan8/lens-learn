@@ -146,9 +146,9 @@ export default function AuroraView({ isSubscribed, userLocation = 'Utah', userLa
       {tab === 'daily' && (
         <div className="space-y-4">
           {!isSubscribed && (
-            <Card className="bg-yellow-900/20 border border-yellow-500/50 p-4">
-              <p className="text-sm text-yellow-300">
-                ✨ <strong>Plus members</strong> get detailed daily aurora alerts & weekly trends. Unlock for full insights.
+            <Card className="bg-[#1a1a1a] border border-red-600/30 p-4">
+              <p className="text-sm text-slate-300">
+                ✨ <strong className="text-white">Plus members</strong> get detailed daily aurora alerts & weekly trends. Unlock for full insights.
               </p>
             </Card>
           )}
@@ -171,9 +171,9 @@ export default function AuroraView({ isSubscribed, userLocation = 'Utah', userLa
       {tab === 'weekly' && (
         <div className="space-y-4">
           {!isSubscribed && (
-            <Card className="bg-yellow-900/20 border border-yellow-500/50 p-4">
-              <p className="text-sm text-yellow-300">
-                ✨ <strong>Plus members</strong> get detailed daily aurora alerts & weekly trends. Unlock for full insights.
+            <Card className="bg-[#1a1a1a] border border-red-600/30 p-4">
+              <p className="text-sm text-slate-300">
+                ✨ <strong className="text-white">Plus members</strong> get detailed daily aurora alerts & weekly trends. Unlock for full insights.
               </p>
             </Card>
           )}
