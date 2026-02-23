@@ -1,105 +1,43 @@
-import { fetchAuroraForecast, getAuroraVisibilityForLocation } from './fetchAuroraForecast.js';
-import { fetchWeatherForecast, calculateAstroScore, rateCloudCover } from './fetchWeatherForecast.js';
+/**
+ * Combined data integration helper — merges aurora + weather for planning
+ */
+import { fetchNoaaKpForecast } from './fetchAuroraForecast.js';
+import { fetchCloudCoverForecast, calcAstroScore, rateCloudCover } from './fetchWeatherForecast.js';
 
 /**
- * Main integration function: fetches both aurora and weather for planning
- * Called by frontend components via base44 SDK
+ * Returns a merged 7-day forecast with aurora KP + weather cloud cover
+ * for a given lat/lon
  */
-export async function getCompleteForecast(latitude, longitude, userApiKey) {
-  try {
-    // Fetch both in parallel
-    const [auroraResult, weatherResult] = await Promise.all([
-      getAuroraVisibilityForLocation(latitude, longitude),
-      fetchWeatherForecast(latitude, longitude, userApiKey),
-    ]);
-    
-    if (!auroraResult.success || !weatherResult.success) {
-      return {
-        success: false,
-        error: 'Failed to fetch forecast data',
-        aurora: null,
-        weather: null,
-      };
-    }
-    
-    // Enrich weather data with astrophotography scores
-    const weatherWithScores = weatherResult.data.map(day => ({
-      ...day,
-      astro_score: calculateAstroScore(day),
-      cloud_rating: rateCloudCover(day.clouds),
-    }));
-    
-    // Find best shooting night
-    const bestNight = weatherWithScores.reduce((best, current) => 
-      current.astro_score > best.astro_score ? current : best, weatherWithScores[0]);
-    
+export async function getMergedForecast(lat, lon) {
+  const [kpData, weatherData] = await Promise.all([
+    fetchNoaaKpForecast(),
+    fetchCloudCoverForecast(lat, lon, 7),
+  ]);
+
+  const weatherByDate = {};
+  weatherData.forEach(w => { weatherByDate[w.date] = w; });
+
+  return kpData.map(f => {
+    const w = weatherByDate[f.date] || {};
+    const moonIllum = getMoonIllum(new Date(f.date));
+    const score = calcAstroScore({ clouds: w.clouds, precipitation: w.precipitation, wind_speed: w.wind_speed, moonIllum });
     return {
-      success: true,
-      aurora: auroraResult,
-      weather: {
-        success: true,
-        forecast: weatherWithScores,
-        best_night: bestNight,
-      },
-      combined_recommendation: generateRecommendation(auroraResult, bestNight),
+      ...f,
+      clouds: w.clouds ?? null,
+      precipitation: w.precipitation ?? null,
+      wind_speed: w.wind_speed ?? null,
+      temp_min: w.temp_min ?? null,
+      moon_illum: moonIllum,
+      astro_score: score,
+      cloud_rating: w.clouds != null ? rateCloudCover(w.clouds) : null,
     };
-  } catch (error) {
-    console.error('Complete forecast error:', error);
-    return {
-      success: false,
-      error: error.message,
-      aurora: null,
-      weather: null,
-    };
-  }
+  });
 }
 
-/**
- * Generates human-readable recommendation based on aurora & weather
- */
-function generateRecommendation(auroraData, bestWeatherDay) {
-  const recommendations = [];
-  
-  if (auroraData.alert_active) {
-    recommendations.push('🌌 Aurora activity likely in next 3 days—high priority window!');
-  } else {
-    recommendations.push('🌌 Aurora activity low—focus on Milky Way or deep sky objects.');
-  }
-  
-  if (bestWeatherDay.astro_score > 80) {
-    recommendations.push(`✅ ${bestWeatherDay.date} is your best shot (${bestWeatherDay.astro_score}/100 clarity).`);
-  } else if (bestWeatherDay.astro_score > 60) {
-    recommendations.push(`⚠️ ${bestWeatherDay.date} is decent but check cloud cover (${bestWeatherDay.astro_score}/100).`);
-  } else {
-    recommendations.push('❌ Poor conditions next 7 days—consider indoor planning or location change.');
-  }
-  
-  if (bestWeatherDay.precipitation > 30) {
-    recommendations.push(`💧 ${Math.round(bestWeatherDay.precipitation)}% rain chance—have backup plan.`);
-  }
-  
-  return recommendations.join(' ');
-}
-
-/**
- * Caches forecast data to reduce API calls
- * Frontend can call this to get fresh data every 6 hours
- */
-const forecastCache = new Map();
-
-export function getCachedForecast(cacheKey, maxAgeMinutes = 360) {
-  const cached = forecastCache.get(cacheKey);
-  if (!cached) return null;
-  
-  const age = (Date.now() - cached.timestamp) / 60000;
-  if (age > maxAgeMinutes) {
-    forecastCache.delete(cacheKey);
-    return null;
-  }
-  
-  return cached.data;
-}
-
-export function setCachedForecast(cacheKey, data) {
-  forecastCache.set(cacheKey, { data, timestamp: Date.now() });
+function getMoonIllum(date) {
+  const knownNew = new Date('2000-01-06T00:00:00Z');
+  const cycle = 29.53058867;
+  const diff = (date - knownNew) / 86400000;
+  const phase = ((diff % cycle) + cycle) % cycle;
+  return Math.round((1 - Math.cos((phase / cycle) * 2 * Math.PI)) / 2 * 100);
 }
