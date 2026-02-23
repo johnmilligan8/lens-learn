@@ -163,9 +163,9 @@ export default function FreeCourse() {
   const pct = Math.round((completedCount / FREE_LESSONS.length) * 100);
 
   const typeIcon = (type) => {
-    if (type === 'video') return <Play className="w-4 h-4 text-purple-400" />;
-    if (type === 'article') return <BookOpen className="w-4 h-4 text-blue-400" />;
-    return <CheckSquare className="w-4 h-4 text-green-400" />;
+    if (type === 'video') return <Play className="w-4 h-4 text-red-400" />;
+    if (type === 'article') return <BookOpen className="w-4 h-4 text-slate-400" />;
+    return <CheckSquare className="w-4 h-4 text-emerald-400" />;
   };
 
   const quizScore = QUIZ_QUESTIONS.filter((q, i) => quizAnswers[i] === q.answer).length;
