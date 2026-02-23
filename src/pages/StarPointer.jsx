@@ -183,7 +183,7 @@ export default function StarPointer() {
   };
 
   if (loading) {
-    return <div className="flex items-center justify-center min-h-screen"><Smartphone className="w-10 h-10 text-purple-400 star-pulse" /></div>;
+    return <div className="flex items-center justify-center min-h-screen"><Smartphone className="w-10 h-10 text-red-400 star-pulse" /></div>;
   }
 
   const visibleObjects = getVisibleObjects();
