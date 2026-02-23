@@ -537,7 +537,7 @@ export default function GearChecklist({ userEmail, shooterMode, onKitLoaded, isP
                       saveGeneralNotes(textarea.value);
                     }}
                     size="sm"
-                    className="bg-purple-600 hover:bg-purple-700 h-8 text-xs flex-1"
+                    className="bg-red-600 hover:bg-red-700 h-8 text-xs flex-1"
                   >
                     <Save className="w-3 h-3 mr-1" /> Save Notes
                   </Button>
