@@ -247,8 +247,8 @@ export default function FreeCourse() {
         {/* Lesson Content */}
         <div className="lg:col-span-2">
           {!activeLesson ? (
-            <Card className="bg-slate-900/60 border-slate-800 p-8 text-center">
-              <Telescope className="w-12 h-12 text-purple-400 mx-auto mb-4 star-pulse" />
+            <Card className="bg-[#1a1a1a] border border-white/8 p-8 text-center">
+              <Telescope className="w-12 h-12 text-red-400 mx-auto mb-4 star-pulse" />
               <h3 className="text-xl font-bold text-white mb-2">Select a lesson to begin</h3>
               <p className="text-slate-400">Choose any lesson from the list to start your expedition.</p>
               <Button className="mt-6 bg-red-600 hover:bg-red-700" onClick={() => setActiveLesson(FREE_LESSONS[0])}>
