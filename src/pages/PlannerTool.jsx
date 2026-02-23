@@ -330,11 +330,10 @@ function HourlyChart({ gcData }) {
       <div className="flex items-end gap-0.5 h-28">
         {hours.map((pt, i) => {
           const pct = Math.max(0, pt.alt) / maxAlt * 100;
-          const isNight = pt.hour < -6 || pt.hour > 6; // rough night window
           return (
-            <div key={i} className="flex-1 flex flex-col items-center gap-0.5">
-              <div
-                className={`w-full rounded-t transition-all ${pt.alt > 0 ? 'bg-purple-500/70' : 'bg-slate-700/30'}`}
+          <div key={i} className="flex-1 flex flex-col items-center gap-0.5">
+          <div
+          className={`w-full rounded-t transition-all ${pt.alt > 0 ? 'bg-red-600/70' : 'bg-slate-700/30'}`}
                 style={{ height: `${pct}%`, minHeight: pt.alt > 0 ? '2px' : '0' }}
                 title={`Alt: ${pt.alt}°`}
               />
@@ -346,7 +345,7 @@ function HourlyChart({ gcData }) {
         <span>12 AM</span><span>6 AM</span><span>12 PM</span><span>6 PM</span><span>12 AM</span>
       </div>
       <div className="flex items-center gap-3 mt-2">
-        <div className="flex items-center gap-1"><div className="w-3 h-3 rounded bg-purple-500/70" /><span className="text-xs text-slate-400">Core above horizon</span></div>
+      <div className="flex items-center gap-1"><div className="w-3 h-3 rounded bg-red-600/70" /><span className="text-xs text-slate-400">Core above horizon</span></div>
         <div className="flex items-center gap-1"><div className="w-3 h-3 rounded bg-slate-700/30" /><span className="text-xs text-slate-400">Below horizon</span></div>
       </div>
     </div>
@@ -597,7 +596,7 @@ export default function PlannerTool() {
   if (isSubscribed === null) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <Telescope className="w-10 h-10 text-purple-400 star-pulse" />
+        <Telescope className="w-10 h-10 text-red-400 star-pulse" />
       </div>
     );
   }
@@ -606,9 +605,9 @@ export default function PlannerTool() {
     return (
       <div className="max-w-2xl mx-auto px-4 py-24 flex flex-col items-center text-center gap-8">
         <div className="relative">
-          <div className="absolute inset-0 bg-purple-600/20 rounded-full blur-2xl" />
-          <div className="relative bg-gradient-to-br from-purple-700/30 to-blue-800/20 border border-purple-500/30 rounded-2xl p-8">
-            <Lock className="w-14 h-14 text-purple-400 mx-auto mb-4" />
+          <div className="absolute inset-0 bg-red-600/10 rounded-full blur-2xl" />
+          <div className="relative bg-[#1a1a1a] border border-red-700/40 rounded-2xl p-8">
+            <Lock className="w-14 h-14 text-red-400 mx-auto mb-4" />
             <h2 className="text-3xl font-black text-white mb-3">Sky Planner</h2>
             <p className="text-slate-400 text-lg mb-1">Milky Way rise/set times, interactive sky map,</p>
             <p className="text-slate-400 text-lg">moon impact analysis & Bortle scale lookup.</p>
@@ -617,17 +616,17 @@ export default function PlannerTool() {
         <div className="space-y-3 text-left w-full max-w-sm">
           {['Galactic core rise, peak & set times', 'Interactive polar sky map', 'Moon phase & illumination impact', 'Bortle scale for any location', 'Best shooting hours chart', 'AI-powered location tips'].map(f => (
             <div key={f} className="flex items-center gap-3">
-              <CheckCircle className="w-4 h-4 text-purple-400 flex-shrink-0" />
+              <CheckCircle className="w-4 h-4 text-red-400 flex-shrink-0" />
               <span className="text-slate-300 text-sm">{f}</span>
             </div>
           ))}
         </div>
         <Link to={createPageUrl('PaymentGate')}>
-          <Button className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 h-12 px-8 text-base font-bold">
-            Unlock Sky Planner <ChevronRight className="w-5 h-5 ml-1" />
+          <Button className="bg-red-600 hover:bg-red-700 h-12 px-8 text-base font-bold">
+            Unlock Sky Planner — $7.99/mo <ChevronRight className="w-5 h-5 ml-1" />
           </Button>
         </Link>
-        <p className="text-slate-600 text-sm">From $19/month · Cancel anytime</p>
+        <p className="text-slate-600 text-sm">Plus plan · Cancel anytime</p>
       </div>
     );
   }
@@ -640,13 +639,13 @@ export default function PlannerTool() {
       <div className="mb-8 flex items-center justify-between">
         <div>
           <h1 className="text-4xl font-black text-white mb-2 flex items-center gap-3">
-            <MapPin className="w-9 h-9 text-purple-400" />
+            <MapPin className="w-9 h-9 text-red-400" />
             <span>Sky <span className="gradient-text">Planner</span></span>
           </h1>
           <p className="text-slate-400 text-lg">Plan the perfect Milky Way shoot with precision astronomy data.</p>
         </div>
         <Link to={createPageUrl('SkyBrowser')} className="inline-flex">
-          <Button variant="outline" className="border-purple-500/40 text-purple-300 hover:bg-purple-900/20 text-sm gap-2">
+          <Button variant="outline" className="border-red-700/40 text-red-300 hover:bg-red-900/10 text-sm gap-2">
             <Star className="w-4 h-4" /> Sky Browser
           </Button>
         </Link>
@@ -696,7 +695,7 @@ export default function PlannerTool() {
 
           <Card className="bg-slate-900/60 border-slate-800 p-6">
             <h2 className="text-lg font-bold text-white mb-5 flex items-center gap-2">
-              <Navigation className="w-4 h-4 text-purple-400" /> Shoot Details
+              <Navigation className="w-4 h-4 text-red-400" /> Shoot Details
             </h2>
             <div className="space-y-4">
               <div>
@@ -725,7 +724,7 @@ export default function PlannerTool() {
               <Button
                 onClick={calculate}
                 disabled={!location.trim() || calcLoading || geoLoading}
-                className="w-full bg-purple-600 hover:bg-purple-700 h-11 font-bold"
+                className="w-full bg-red-600 hover:bg-red-700 h-11 font-bold"
               >
                 {calcLoading || geoLoading
                   ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Calculating...</>
@@ -737,7 +736,7 @@ export default function PlannerTool() {
           {/* Bortle Guide */}
           <Card className="bg-slate-900/60 border-slate-800 p-5">
             <h3 className="text-white font-semibold mb-4 text-sm flex items-center gap-2">
-              <Eye className="w-4 h-4 text-purple-400" /> Bortle Scale Reference
+              <Eye className="w-4 h-4 text-red-400" /> Bortle Scale Reference
             </h3>
             <div className="space-y-2.5">
               {[
@@ -780,7 +779,7 @@ export default function PlannerTool() {
               {/* Core Times */}
               <Card className="bg-slate-900/60 border-slate-800 p-5">
                 <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
-                  <Telescope className="w-4 h-4 text-purple-400" /> Galactic Core (Sgr A*) — {date}
+                  <Telescope className="w-4 h-4 text-red-400" /> Galactic Core (Sgr A*) — {date}
                 </h3>
                 <div className="grid grid-cols-3 gap-3 mb-4">
                   {[
@@ -807,7 +806,7 @@ export default function PlannerTool() {
                 {/* Sky Map */}
                 <Card className="bg-slate-900/60 border-slate-800 p-5">
                   <h3 className="text-white font-semibold mb-3 flex items-center gap-2 text-sm">
-                    <Star className="w-4 h-4 text-purple-400" /> Interactive Sky Map
+                    <Star className="w-4 h-4 text-red-400" /> Interactive Sky Map
                   </h3>
                   <SkyCanvas
                     gcData={results.gcData}
@@ -824,7 +823,7 @@ export default function PlannerTool() {
                 {/* Moon */}
                 <Card className="bg-slate-900/60 border-slate-800 p-5 flex flex-col gap-4">
                   <h3 className="text-white font-semibold flex items-center gap-2 text-sm">
-                    <Moon className="w-4 h-4 text-blue-300" /> Moon Phase
+                    <Moon className="w-4 h-4 text-slate-300" /> Moon Phase
                   </h3>
                   <div className="text-center flex-1 flex flex-col items-center justify-center gap-2">
                     <span className="text-6xl">{results.moon.emoji}</span>
@@ -912,7 +911,7 @@ export default function PlannerTool() {
               {/* Hourly Altitude Chart */}
               <Card className="bg-slate-900/60 border-slate-800 p-5">
                 <h3 className="text-white font-semibold mb-4 flex items-center gap-2 text-sm">
-                  <TrendingUp className="w-4 h-4 text-purple-400" /> Core Altitude Throughout the Day
+                <TrendingUp className="w-4 h-4 text-red-400" /> Core Altitude Throughout the Day
                 </h3>
                 <HourlyChart gcData={results.gcData} />
               </Card>
@@ -921,7 +920,7 @@ export default function PlannerTool() {
               <div ref={ephemerisRef}>
                 <Card className="bg-slate-900/60 border-slate-800 p-5">
                   <h3 className="text-white font-semibold mb-1 flex items-center gap-2 text-sm">
-                    <Star className="w-4 h-4 text-purple-400" /> Ephemeris Lookup
+                    <Star className="w-4 h-4 text-red-400" /> Ephemeris Lookup
                   </h3>
                   <p className="text-slate-500 text-xs mb-4">Look up the altitude & azimuth of any celestial object for a specific date and time.</p>
                   <EphemerisLookup lat={results.coords?.lat} lon={results.coords?.lon} dateStr={date} initialTarget={ephemerisTarget} />
@@ -956,7 +955,7 @@ export default function PlannerTool() {
                       disabled={aiLoading}
                       size="sm"
                       variant="outline"
-                      className="border-purple-500/40 text-purple-300 hover:bg-purple-900/20 text-xs"
+                      className="border-red-700/40 text-red-300 hover:bg-red-900/10 text-xs"
                     >
                       {aiLoading ? <><Loader2 className="w-3 h-3 mr-1 animate-spin" /> Loading...</> : 'Get Tips'}
                     </Button>
@@ -969,11 +968,11 @@ export default function PlannerTool() {
               </Card>
             </>
           ) : (
-            <Card className="bg-slate-900/60 border-slate-800 p-16 text-center">
-              <div className="relative w-20 h-20 mx-auto mb-6">
-                <div className="absolute inset-0 bg-purple-600/20 rounded-full blur-xl" />
-                <div className="relative bg-slate-800 rounded-full w-20 h-20 flex items-center justify-center">
-                  <MapPin className="w-10 h-10 text-purple-400" />
+            <Card className="bg-[#1a1a1a] border-white/8 p-16 text-center">
+            <div className="relative w-20 h-20 mx-auto mb-6">
+              <div className="absolute inset-0 bg-red-600/10 rounded-full blur-xl" />
+              <div className="relative bg-slate-800 rounded-full w-20 h-20 flex items-center justify-center">
+                <MapPin className="w-10 h-10 text-red-400" />
                 </div>
               </div>
               <h3 className="text-xl font-bold text-slate-400 mb-2">Enter your shoot location</h3>
