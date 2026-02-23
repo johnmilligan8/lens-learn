@@ -53,7 +53,7 @@ export default function ExpertInsightsPanel({ userGear }) {
   }, [userGear]);
 
   return (
-    <Card className="bg-slate-900/60 border-slate-800 p-5 space-y-4">
+     <Card className="bg-[#1a1a1a] border-white/8 p-5 space-y-4">
       <div className="flex items-center gap-2 mb-2">
         <Lightbulb className="w-5 h-5 text-yellow-400" />
         <h3 className="text-white font-bold text-lg">Expert Insights</h3>
@@ -62,16 +62,16 @@ export default function ExpertInsightsPanel({ userGear }) {
 
       {loading ? (
         <div className="flex items-center gap-2 justify-center py-4">
-          <Loader2 className="w-4 h-4 text-purple-400 animate-spin" />
+           <Loader2 className="w-4 h-4 text-red-400 animate-spin" />
           <p className="text-slate-400 text-sm">Loading insights...</p>
         </div>
       ) : (
         <div className="space-y-3">
-          {insights.map((insight, i) => (
-            <div
-              key={i}
-              className="bg-slate-800/40 border border-slate-700 rounded-lg p-3.5 hover:border-slate-600 transition-colors space-y-2"
-            >
+           {insights.map((insight, i) => (
+             <div
+               key={i}
+               className="bg-white/5 border border-white/8 rounded-lg p-3.5 hover:border-white/15 transition-colors space-y-2"
+             >
               <div className="flex items-start justify-between gap-2">
                 <div className="flex-1 min-w-0">
                   <p className="text-white font-semibold text-sm">{insight.topic}</p>
@@ -84,13 +84,13 @@ export default function ExpertInsightsPanel({ userGear }) {
 
               <div className="flex items-center justify-between pt-1">
                 <div className="flex gap-1.5">
-                  <Badge variant="outline" className="bg-slate-900/60 border-slate-600 text-slate-300 text-xs">
-                    {insight.category}
-                  </Badge>
-                  <Badge variant="outline" className="bg-purple-900/40 border-purple-600 text-purple-300 text-xs">
-                    {insight.relevance}
-                  </Badge>
-                </div>
+                   <Badge variant="outline" className="bg-white/10 border-white/20 text-slate-200 text-xs">
+                     {insight.category}
+                   </Badge>
+                   <Badge variant="outline" className="bg-red-900/30 border-red-600/40 text-red-300 text-xs">
+                     {insight.relevance}
+                   </Badge>
+                 </div>
                 <button className="text-slate-500 hover:text-slate-300 transition-colors">
                   <ExternalLink className="w-3.5 h-3.5" />
                 </button>
@@ -100,7 +100,7 @@ export default function ExpertInsightsPanel({ userGear }) {
         </div>
       )}
 
-      <p className="text-slate-600 text-xs pt-2 border-t border-slate-800">
+      <p className="text-slate-600 text-xs pt-2 border-t border-white/8">
         Insights updated weekly from r/astrophotography, DPReview, and instructor reviews. Request a topic? Contact support.
       </p>
     </Card>
