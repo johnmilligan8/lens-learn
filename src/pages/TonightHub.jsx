@@ -337,7 +337,7 @@ export default function TonightHub() {
 
           {isSubscribed && coords && events.length > 0 && (
             <Link to={createPageUrl('FieldMode') + '?event=' + encodeURIComponent(JSON.stringify(events[0]))}>
-              <div className="flex items-center justify-center gap-2 w-full border border-red-700/50 bg-red-950/30 hover:bg-red-900/30 rounded-xl py-3 text-red-300 text-sm font-bold transition-all mt-2">
+              <div className="flex items-center justify-center gap-2 w-full border border-white/8 bg-[#1a1a1a] hover:bg-black/30 rounded-xl py-3 text-red-400 text-sm font-bold transition-all mt-2">
                 <Zap className="w-4 h-4" />
                 Enter Field Mode — Live Guidance
               </div>
