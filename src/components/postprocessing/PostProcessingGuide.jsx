@@ -69,7 +69,7 @@ export default function PostProcessingGuide() {
           {sections.map((section, idx) => {
             const Icon = section.icon;
             return (
-              <div key={idx} className="bg-slate-800/40 rounded-lg p-4">
+              <div key={idx} className="bg-black/20 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-3">
                   <Icon className={`w-4 h-4 ${section.color}`} />
                   <h4 className="text-white font-semibold text-sm">{section.title}</h4>
