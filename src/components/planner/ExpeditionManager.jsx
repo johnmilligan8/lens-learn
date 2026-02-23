@@ -72,7 +72,7 @@ export default function ExpeditionManager({ userEmail, currentState, onLoadExped
         <Button
           onClick={() => setShowSaveForm(true)}
           size="sm"
-          className="bg-purple-600 hover:bg-purple-700 text-xs gap-1"
+          className="bg-red-600 hover:bg-red-700 text-xs gap-1"
         >
           <Save className="w-3 h-3" /> Save Expedition
         </Button>
@@ -80,7 +80,7 @@ export default function ExpeditionManager({ userEmail, currentState, onLoadExped
           onClick={() => setShowBrowser(true)}
           size="sm"
           variant="outline"
-          className="border-purple-500/40 text-purple-300 hover:bg-purple-900/20 text-xs gap-1"
+          className="border-red-500/40 text-red-300 hover:bg-red-900/20 text-xs gap-1"
         >
           <Folder className="w-3 h-3" /> Expeditions ({expeditions.length})
         </Button>
@@ -88,7 +88,7 @@ export default function ExpeditionManager({ userEmail, currentState, onLoadExped
 
       {/* Save Form Modal */}
       {showSaveForm && (
-        <Card className="bg-slate-900/95 border-slate-700 p-4 fixed inset-4 max-w-md mx-auto my-auto z-50">
+        <Card className="bg-[#1a1a1a] border border-white/8 p-4 fixed inset-4 max-w-md mx-auto my-auto z-50">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-white font-semibold text-sm">Save Expedition</h3>
             <button onClick={() => setShowSaveForm(false)} className="text-slate-400 hover:text-white">
@@ -97,19 +97,19 @@ export default function ExpeditionManager({ userEmail, currentState, onLoadExped
           </div>
           <div className="space-y-3">
             <div>
-              <label className="text-slate-300 text-xs uppercase block mb-1">Expedition Name</label>
-              <Input
-                placeholder="e.g., Milky Way Season, Aurora Hunt"
-                value={expeditionName}
-                onChange={e => setExpeditionName(e.target.value)}
-                className="bg-slate-800 border-slate-700 text-white text-sm"
-              />
+                <label className="text-slate-300 text-xs uppercase block mb-1">Expedition Name</label>
+                <Input
+                  placeholder="e.g., Milky Way Season, Aurora Hunt"
+                  value={expeditionName}
+                  onChange={e => setExpeditionName(e.target.value)}
+                  className="bg-slate-900 border border-slate-700 text-white text-sm"
+                />
             </div>
             <div className="flex gap-2">
               <Button
                 onClick={saveExpedition}
                 disabled={!expeditionName.trim() || loading}
-                className="flex-1 bg-purple-600 hover:bg-purple-700 h-9 text-sm"
+                className="flex-1 bg-red-600 hover:bg-red-700 h-9 text-sm"
               >
                 {loading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
                 Save
@@ -128,8 +128,8 @@ export default function ExpeditionManager({ userEmail, currentState, onLoadExped
 
       {/* Browser Modal */}
       {showBrowser && (
-        <Card className="bg-slate-900/95 border-slate-700 p-4 fixed inset-4 max-w-2xl mx-auto my-auto z-50 max-h-[80vh] overflow-y-auto">
-          <div className="flex items-center justify-between mb-4 sticky top-0 bg-slate-900/95">
+        <Card className="bg-[#1a1a1a] border border-white/8 p-4 fixed inset-4 max-w-2xl mx-auto my-auto z-50 max-h-[80vh] overflow-y-auto">
+          <div className="flex items-center justify-between mb-4 sticky top-0 bg-[#1a1a1a]">
             <h3 className="text-white font-semibold text-sm">Saved Expeditions</h3>
             <button onClick={() => setShowBrowser(false)} className="text-slate-400 hover:text-white">
               <X className="w-4 h-4" />
@@ -145,7 +145,7 @@ export default function ExpeditionManager({ userEmail, currentState, onLoadExped
               {expeditions.map(exp => (
                 <div
                   key={exp.id}
-                  className="bg-slate-800/60 rounded-lg p-3 flex items-start justify-between hover:bg-slate-800 transition-colors"
+                  className="bg-slate-800/40 rounded-lg p-3 flex items-start justify-between hover:bg-slate-700/60 transition-colors border border-slate-700/40"
                 >
                   <div className="flex-1 min-w-0 cursor-pointer" onClick={() => loadExpedition(exp)}>
                     <p className="text-white font-medium text-sm truncate">{exp.pre_shoot_intent}</p>
@@ -158,7 +158,7 @@ export default function ExpeditionManager({ userEmail, currentState, onLoadExped
                     <Button
                       onClick={() => loadExpedition(exp)}
                       size="sm"
-                      className="bg-purple-600 hover:bg-purple-700 h-7 text-xs gap-1"
+                      className="bg-red-600 hover:bg-red-700 h-7 text-xs gap-1"
                     >
                       <RotateCcw className="w-3 h-3" /> Load
                     </Button>
