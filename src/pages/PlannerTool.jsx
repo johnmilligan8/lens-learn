@@ -660,7 +660,7 @@ export default function PlannerTool() {
 
           {/* AR Scout */}
           {results && (
-            <Card className="bg-slate-900/60 border-slate-800 p-0 overflow-hidden">
+            <Card className="bg-[#1a1a1a] border-white/8 p-0 overflow-hidden">
               <MilkyWayARPreview
                 lat={results.coords?.lat}
                 lon={results.coords?.lon}
@@ -694,7 +694,7 @@ export default function PlannerTool() {
           {/* Gear Setup */}
           <GearSetup userEmail={user?.email} onGearUpdate={handleGearUpdate} loading={gearLoading} />
 
-          <Card className="bg-slate-900/60 border-slate-800 p-6">
+          <Card className="bg-[#1a1a1a] border-white/8 p-6">
             <h2 className="text-lg font-bold text-white mb-5 flex items-center gap-2">
               <Navigation className="w-4 h-4 text-red-400" /> Shoot Details
             </h2>
@@ -735,7 +735,7 @@ export default function PlannerTool() {
           </Card>
 
           {/* Bortle Guide */}
-          <Card className="bg-slate-900/60 border-slate-800 p-5">
+          <Card className="bg-[#1a1a1a] border-white/8 p-5">
             <h3 className="text-white font-semibold mb-4 text-sm flex items-center gap-2">
               <Eye className="w-4 h-4 text-red-400" /> Bortle Scale Reference
             </h3>
@@ -778,7 +778,7 @@ export default function PlannerTool() {
               </Card>
 
               {/* Core Times */}
-              <Card className="bg-slate-900/60 border-slate-800 p-5">
+              <Card className="bg-[#1a1a1a] border-white/8 p-5">
                 <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
                     <Telescope className="w-4 h-4 text-red-400" /> Galactic Core (Sgr A*) — {date}
                 </h3>
@@ -805,7 +805,7 @@ export default function PlannerTool() {
               {/* Sky Map + Moon side by side */}
               <div className="grid md:grid-cols-2 gap-5">
                 {/* Sky Map */}
-                <Card className="bg-slate-900/60 border-slate-800 p-5">
+                <Card className="bg-[#1a1a1a] border-white/8 p-5">
                   <h3 className="text-white font-semibold mb-3 flex items-center gap-2 text-sm">
                     <Star className="w-4 h-4 text-red-400" /> Interactive Sky Map
                   </h3>
@@ -822,7 +822,7 @@ export default function PlannerTool() {
                 </Card>
 
                 {/* Moon */}
-                <Card className="bg-slate-900/60 border-slate-800 p-5 flex flex-col gap-4">
+                <Card className="bg-[#1a1a1a] border-white/8 p-5 flex flex-col gap-4">
                   <h3 className="text-white font-semibold flex items-center gap-2 text-sm">
                     <Moon className="w-4 h-4 text-blue-300" /> Moon Phase
                   </h3>
@@ -910,7 +910,7 @@ export default function PlannerTool() {
               <HistoricalWeatherAnalysis location={location} results={results} />
 
               {/* Hourly Altitude Chart */}
-              <Card className="bg-slate-900/60 border-slate-800 p-5">
+              <Card className="bg-[#1a1a1a] border-white/8 p-5">
                 <h3 className="text-white font-semibold mb-4 flex items-center gap-2 text-sm">
                   <TrendingUp className="w-4 h-4 text-red-400" /> Core Altitude Throughout the Day
                 </h3>
@@ -919,7 +919,7 @@ export default function PlannerTool() {
 
               {/* Ephemeris Lookup */}
               <div ref={ephemerisRef}>
-                <Card className="bg-slate-900/60 border-slate-800 p-5">
+                <Card className="bg-[#1a1a1a] border-white/8 p-5">
                   <h3 className="text-white font-semibold mb-1 flex items-center gap-2 text-sm">
                     <Star className="w-4 h-4 text-red-400" /> Ephemeris Lookup
                   </h3>
@@ -945,7 +945,7 @@ export default function PlannerTool() {
               </Card>
 
               {/* AI Tips */}
-              <Card className="bg-slate-900/60 border-slate-800 p-5">
+              <Card className="bg-[#1a1a1a] border-white/8 p-5">
                 <div className="flex items-center justify-between mb-3">
                   <h3 className="text-white font-semibold text-sm flex items-center gap-2">
                     ✨ AI Location Tips
@@ -969,8 +969,8 @@ export default function PlannerTool() {
               </Card>
             </>
           ) : (
-            <Card className="bg-slate-900/60 border-slate-800 p-16 text-center">
-              <div className="relative w-20 h-20 mx-auto mb-6">
+             <Card className="bg-[#1a1a1a] border-white/8 p-16 text-center">
+               <div className="relative w-20 h-20 mx-auto mb-6">
                 <div className="absolute inset-0 bg-red-600/20 rounded-full blur-xl" />
                 <div className="relative bg-slate-800 rounded-full w-20 h-20 flex items-center justify-center">
                   <MapPin className="w-10 h-10 text-red-400" />
