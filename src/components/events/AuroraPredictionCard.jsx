@@ -26,9 +26,9 @@ function getMoonPhase(date) {
 }
 
 const VISIBILITY_STYLES = {
-  good:     { card: 'from-emerald-900/40 to-teal-900/20 border-emerald-500/40',     badge: 'bg-emerald-600', label: 'Good Chance', icon: '🟢' },
-  possible: { card: 'from-yellow-900/40 to-amber-900/20 border-yellow-500/40',      badge: 'bg-yellow-600', label: 'Possible',    icon: '🟡' },
-  unlikely: { card: 'from-slate-900/60 to-slate-800/20 border-slate-600/40',        badge: 'bg-slate-600',  label: 'Unlikely',    icon: '⚫' },
+  good:     { card: 'border-red-600/30',   badge: 'bg-red-600',   label: 'Good Chance', icon: '🟢' },
+  possible: { card: 'border-white/8',      badge: 'bg-slate-600', label: 'Possible',    icon: '🟡' },
+  unlikely: { card: 'border-white/8',      badge: 'bg-slate-700', label: 'Unlikely',    icon: '⚫' },
 };
 
 const KP_BAR_COLOR = (kp) => {
@@ -92,12 +92,12 @@ export default function AuroraPredictionCard({ userLat, userLon, locationName })
   const style = VISIBILITY_STYLES[data?.visibility || 'unlikely'];
 
   return (
-    <Card className={`bg-gradient-to-br ${style?.card} border p-6 mb-6`}>
+    <Card className={`bg-[#1a1a1a] ${style?.card} border p-6 mb-6`}>
       {/* Header */}
       <div className="flex items-start justify-between mb-5">
         <div className="flex items-center gap-3">
-          <div className="p-2.5 rounded-xl bg-purple-600/20 border border-purple-500/30">
-            <Zap className="w-5 h-5 text-purple-300" />
+          <div className="p-2.5 rounded-xl bg-red-600/15 border border-red-600/20">
+            <Zap className="w-5 h-5 text-red-400" />
           </div>
           <div>
             <h3 className="text-white font-bold text-lg leading-tight">Aurora Prediction</h3>
@@ -140,7 +140,7 @@ export default function AuroraPredictionCard({ userLat, userLon, locationName })
             {/* KP Index */}
             <div className="bg-black/20 rounded-xl p-4">
               <div className="flex items-center gap-1.5 mb-2">
-                <Zap className="w-3.5 h-3.5 text-purple-400" />
+                <Zap className="w-3.5 h-3.5 text-red-400" />
                 <p className="text-xs text-slate-400 font-medium">KP Index</p>
               </div>
               {data.kp !== null ? (

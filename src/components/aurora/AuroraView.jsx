@@ -73,7 +73,7 @@ export default function AuroraView({ isSubscribed, userLocation = 'Utah', userLa
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12 gap-3">
-        <Loader className="w-5 h-5 animate-spin text-purple-400" />
+        <Loader className="w-5 h-5 animate-spin text-red-400" />
         <span className="text-slate-400 text-sm">Fetching live NOAA aurora data…</span>
       </div>
     );
@@ -98,21 +98,21 @@ export default function AuroraView({ isSubscribed, userLocation = 'Utah', userLa
           </div>
         </Card>
       ) : (
-        <Card className="bg-emerald-900/20 border border-emerald-500/40 p-4 flex items-start gap-3">
-          <Info className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
+        <Card className="bg-[#1a1a1a] border border-white/8 p-4 flex items-start gap-3">
+          <Info className="w-5 h-5 text-slate-400 flex-shrink-0 mt-0.5" />
           <div className="flex-1">
-            <p className="text-sm font-medium text-emerald-300">
+            <p className="text-sm font-medium text-slate-200">
               Live NOAA Space Weather data{userLat ? ' + Open-Meteo cloud cover' : ''}.
             </p>
-            <p className="text-xs text-emerald-300/70 mt-1">
+            <p className="text-xs text-slate-400 mt-1">
               Source:{' '}
-              <a href="https://www.swpc.noaa.gov/" target="_blank" rel="noopener noreferrer" className="underline hover:text-emerald-200">
+              <a href="https://www.swpc.noaa.gov/" target="_blank" rel="noopener noreferrer" className="underline hover:text-slate-200">
                 NOAA SWPC
               </a>
               {lastUpdated && ` · Updated ${lastUpdated.toLocaleTimeString()}`}
             </p>
           </div>
-          <button onClick={load} className="text-emerald-400 hover:text-emerald-300 flex-shrink-0">
+          <button onClick={load} className="text-slate-400 hover:text-slate-200 flex-shrink-0">
             <RefreshCw className="w-4 h-4" />
           </button>
         </Card>
@@ -124,7 +124,7 @@ export default function AuroraView({ isSubscribed, userLocation = 'Utah', userLa
           onClick={() => setTab('daily')}
           className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors ${
             tab === 'daily'
-              ? 'border-purple-600 text-white'
+              ? 'border-red-600 text-white'
               : 'border-transparent text-slate-400 hover:text-slate-300'
           }`}
         >
@@ -134,7 +134,7 @@ export default function AuroraView({ isSubscribed, userLocation = 'Utah', userLa
           onClick={() => setTab('weekly')}
           className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors ${
             tab === 'weekly'
-              ? 'border-purple-600 text-white'
+              ? 'border-red-600 text-white'
               : 'border-transparent text-slate-400 hover:text-slate-300'
           }`}
         >
