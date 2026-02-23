@@ -47,7 +47,7 @@ export default function MilkyWayARCard({ lat, lon, dateStr, isSubscribed, shoote
           </Button>
         ) : (
           <Link to={createPageUrl('PaymentGate')} className="block">
-            <Button variant="outline" className="w-full border-purple-500/40 text-purple-300 hover:bg-purple-900/20 h-9 text-sm gap-2">
+            <Button variant="outline" className="w-full border-white/15 text-slate-300 hover:bg-white/5 h-9 text-sm gap-2">
               <Lock className="w-3 h-3" /> Upgrade for AR Scout
               <ChevronRight className="w-3 h-3 ml-auto" />
             </Button>
