@@ -164,7 +164,7 @@ export default function TonightHub() {
       const [subs, profiles, events, auroras] = await Promise.all([
         me.role === 'admin' ? Promise.resolve([{ status: 'active' }]) : base44.entities.Subscription.filter({ user_email: me.email, status: 'active' }, '-created_date', 1),
         base44.entities.UserProfile.filter({ user_email: me.email }, '-created_date', 1),
-        base44.entities.AstronomyEvent.filter({}, 'date', 50),
+        base44.entities.AstronomyEvent.filter({}, 'date', 50).catch(() => []),
         import('@/functions/fetchAuroraForecast').then(m => m.fetchNoaaKpForecast()).catch(() => []),
       ]);
       setIsSubscribed(subs.length > 0);
