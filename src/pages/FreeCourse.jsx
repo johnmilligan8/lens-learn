@@ -163,16 +163,16 @@ export default function FreeCourse() {
   const pct = Math.round((completedCount / FREE_LESSONS.length) * 100);
 
   const typeIcon = (type) => {
-    if (type === 'video') return <Play className="w-4 h-4 text-red-400" />;
-    if (type === 'article') return <BookOpen className="w-4 h-4 text-slate-300" />;
-    return <CheckSquare className="w-4 h-4 text-red-400" />;
+    if (type === 'video') return <Play className="w-4 h-4 text-purple-400" />;
+    if (type === 'article') return <BookOpen className="w-4 h-4 text-blue-400" />;
+    return <CheckSquare className="w-4 h-4 text-green-400" />;
   };
 
   const quizScore = QUIZ_QUESTIONS.filter((q, i) => quizAnswers[i] === q.answer).length;
 
   if (loading) return (
     <div className="flex items-center justify-center min-h-screen">
-      <Telescope className="w-10 h-10 text-red-400 star-pulse" />
+      <Telescope className="w-10 h-10 text-purple-400 star-pulse" />
     </div>
   );
 
@@ -180,9 +180,9 @@ export default function FreeCourse() {
     <div className="max-w-5xl mx-auto px-4 py-8">
       {/* Header */}
       <div className="mb-8">
-        <div className="inline-flex items-center gap-2 bg-red-900/20 border border-red-600/30 rounded-full px-3 py-1 mb-4">
-          <Star className="w-3 h-3 text-red-400" />
-          <span className="text-red-300 text-xs font-semibold uppercase tracking-widest">Free Starter Course</span>
+        <div className="inline-flex items-center gap-2 bg-emerald-900/30 border border-emerald-500/30 rounded-full px-3 py-1 mb-4">
+          <Star className="w-3 h-3 text-emerald-400" />
+          <span className="text-emerald-300 text-xs font-semibold uppercase tracking-widest">Free Starter Course</span>
         </div>
         <h1 className="text-3xl md:text-4xl font-black text-white mb-3">Your First Night Sky Adventure</h1>
         <p className="text-slate-400 text-lg mb-6">5 lessons to get you from zero to your first Milky Way photo. No gear required to start.</p>
@@ -213,7 +213,7 @@ export default function FreeCourse() {
               >
                 <div className="flex items-center gap-3">
                   <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold ${
-                    done ? 'bg-red-600 text-white' : active ? 'bg-red-700 text-white' : 'bg-slate-800 text-slate-400'
+                    done ? 'bg-emerald-600 text-white' : active ? 'bg-purple-600 text-white' : 'bg-slate-800 text-slate-400'
                   }`}>
                     {done ? <Check className="w-3.5 h-3.5" /> : idx + 1}
                   </div>
@@ -231,12 +231,12 @@ export default function FreeCourse() {
 
           {/* Upgrade CTA in sidebar */}
           {!isSubscribed && (
-            <div className="mt-4 p-4 rounded-xl bg-[#1a1a1a] border border-red-700/40">
-              <Lock className="w-5 h-5 text-red-400 mb-2" />
+            <div className="mt-4 p-4 rounded-xl bg-gradient-to-br from-purple-900/50 to-indigo-900/50 border border-purple-500/40">
+              <Lock className="w-5 h-5 text-purple-400 mb-2" />
               <p className="text-white text-sm font-bold mb-1">5 More Modules Locked</p>
-              <p className="text-slate-400 text-xs mb-3">Camera mastery, composition, post-processing, advanced techniques & more.</p>
+              <p className="text-purple-200/80 text-xs mb-3">Camera mastery, composition, post-processing, advanced techniques & more.</p>
               <Link to={createPageUrl('PaymentGate')}>
-                <Button className="w-full bg-red-600 hover:bg-red-700 text-xs h-8">
+                <Button className="w-full bg-purple-600 hover:bg-purple-700 text-xs h-8">
                   Unlock Full Course →
                 </Button>
               </Link>
@@ -247,17 +247,17 @@ export default function FreeCourse() {
         {/* Lesson Content */}
         <div className="lg:col-span-2">
           {!activeLesson ? (
-            <Card className="bg-[#1a1a1a] border-white/8 p-8 text-center">
-              <Telescope className="w-12 h-12 text-red-400 mx-auto mb-4 star-pulse" />
+            <Card className="bg-slate-900/60 border-slate-800 p-8 text-center">
+              <Telescope className="w-12 h-12 text-purple-400 mx-auto mb-4 star-pulse" />
               <h3 className="text-xl font-bold text-white mb-2">Select a lesson to begin</h3>
               <p className="text-slate-400">Choose any lesson from the list to start your expedition.</p>
-              <Button className="mt-6 bg-red-600 hover:bg-red-700" onClick={() => setActiveLesson(FREE_LESSONS[0])}>
+              <Button className="mt-6 bg-purple-600 hover:bg-purple-700" onClick={() => setActiveLesson(FREE_LESSONS[0])}>
                 Start Lesson 1 →
               </Button>
             </Card>
           ) : (
             <div>
-              <Card className="bg-[#1a1a1a] border-white/8 overflow-hidden">
+              <Card className="bg-slate-900/60 border-slate-800 overflow-hidden">
                 {/* Lesson Header */}
                 <div className="p-6 border-b border-slate-800">
                   <div className="flex items-center gap-2 mb-2">
@@ -316,10 +316,10 @@ export default function FreeCourse() {
                                     key={oi}
                                     onClick={() => setQuizAnswers(prev => ({ ...prev, [qi]: oi }))}
                                     className={`p-3 rounded-lg border text-sm text-left transition-all ${
-                                                quizAnswers[qi] === oi
-                                                  ? 'border-red-600 bg-red-900/20 text-white'
-                                                  : 'border-slate-700 bg-slate-800/50 text-slate-400 hover:border-slate-500'
-                                              }`}
+                                      quizAnswers[qi] === oi
+                                        ? 'border-purple-500 bg-purple-900/40 text-white'
+                                        : 'border-slate-700 bg-slate-800/50 text-slate-400 hover:border-slate-500'
+                                    }`}
                                   >
                                     {opt}
                                   </button>
@@ -329,7 +329,7 @@ export default function FreeCourse() {
                           ))}
                         </div>
                         <Button
-                          className="mt-6 bg-red-600 hover:bg-red-700"
+                          className="mt-6 bg-purple-600 hover:bg-purple-700"
                           disabled={Object.keys(quizAnswers).length < QUIZ_QUESTIONS.length}
                           onClick={() => setQuizSubmitted(true)}
                         >
@@ -338,7 +338,7 @@ export default function FreeCourse() {
                       </>
                     ) : (
                       <div className="text-center py-8">
-                        <div className={`text-6xl font-black mb-4 ${quizScore >= 3 ? 'text-red-400' : 'text-slate-300'}`}>
+                        <div className={`text-6xl font-black mb-4 ${quizScore >= 3 ? 'text-emerald-400' : 'text-yellow-400'}`}>
                           {quizScore}/{QUIZ_QUESTIONS.length}
                         </div>
                         <p className="text-white text-xl font-bold mb-2">
@@ -361,7 +361,7 @@ export default function FreeCourse() {
                 <div className="p-6 border-t border-slate-800 flex items-center justify-between">
                   <Button
                     variant="outline"
-                    className={`border-slate-600 ${completedLessons.includes(activeLesson.id) ? 'text-red-400 border-red-700' : 'text-slate-300'}`}
+                    className={`border-slate-600 ${completedLessons.includes(activeLesson.id) ? 'text-emerald-400 border-emerald-600' : 'text-slate-300'}`}
                     onClick={() => markComplete(activeLesson.id)}
                     disabled={completedLessons.includes(activeLesson.id)}
                   >
@@ -369,7 +369,7 @@ export default function FreeCourse() {
                   </Button>
                   {FREE_LESSONS.findIndex(l => l.id === activeLesson.id) < FREE_LESSONS.length - 1 && (
                     <Button
-                      className="bg-red-600 hover:bg-red-700"
+                      className="bg-purple-600 hover:bg-purple-700"
                       onClick={() => {
                         const idx = FREE_LESSONS.findIndex(l => l.id === activeLesson.id);
                         markComplete(activeLesson.id);
@@ -387,14 +387,14 @@ export default function FreeCourse() {
           {/* Dark Sky Spots (always visible) */}
           <div className="mt-8">
             <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-              <MapPin className="w-5 h-5 text-red-400" /> Utah Dark Sky Locations
+              <MapPin className="w-5 h-5 text-purple-400" /> Utah Dark Sky Locations
             </h3>
             <div className="grid sm:grid-cols-2 gap-4">
               {DARK_SKY_SPOTS.map((spot, i) => (
-                <Card key={i} className="bg-[#1a1a1a] border-white/8 p-4">
+                <Card key={i} className="bg-slate-900/60 border-slate-800 p-4">
                   <div className="flex items-start justify-between mb-2">
                     <h4 className="text-white font-semibold text-sm">{spot.name}</h4>
-                    <Badge className="bg-red-900/40 text-red-300 border-red-800 text-xs">Bortle {spot.bortle}</Badge>
+                    <Badge className="bg-purple-900/60 text-purple-300 border-purple-700 text-xs">Bortle {spot.bortle}</Badge>
                   </div>
                   <p className="text-slate-500 text-xs mb-2">{spot.distance}</p>
                   <p className="text-slate-400 text-xs">{spot.tip}</p>
@@ -402,12 +402,12 @@ export default function FreeCourse() {
               ))}
             </div>
             {!isSubscribed && (
-              <div className="mt-4 p-5 rounded-xl border border-dashed border-red-700/40 bg-[#1a1a1a] text-center">
-                <Lock className="w-6 h-6 text-red-400 mx-auto mb-2" />
+              <div className="mt-4 p-5 rounded-xl border border-dashed border-purple-500/40 bg-purple-900/10 text-center">
+                <Lock className="w-6 h-6 text-purple-400 mx-auto mb-2" />
                 <p className="text-white font-bold mb-1">Full Dark Sky Guide + 50+ Locations</p>
                 <p className="text-slate-400 text-sm mb-3">Detailed GPS coordinates, seasonal guides, hazard notes & insider tips — unlocked with any paid plan.</p>
                 <Link to={createPageUrl('PaymentGate')}>
-                  <Button className="bg-red-600 hover:bg-red-700">Unlock Plus — $7.99/mo</Button>
+                  <Button className="bg-purple-600 hover:bg-purple-700">Upgrade to Explorer — $19/mo</Button>
                 </Link>
               </div>
             )}

@@ -186,12 +186,6 @@ label, input, select, textarea {
   z-index: 0;
 }
 
-/* Default shadcn card override — match Uncharted dark theme */
-.rounded-xl.border.bg-card {
-  background-color: #1a1a1a !important;
-  border-color: rgba(255,255,255,0.08) !important;
-}
-
 /* Scrollbar styling */
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: #0a0a0f; }

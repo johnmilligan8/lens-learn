@@ -18,16 +18,15 @@ const TIERS = [
     annualPerMonth: '$6.58',
     monthlyRaw: 'monthly_plus',
     annualRaw: 'annual_plus',
-    color: 'border-red-600/40',
-    glow: 'shadow-[0_0_40px_rgba(220,38,38,0.12)]',
-    btnClass: 'bg-red-600 hover:bg-red-700',
+    color: 'border-purple-500/60',
+    glow: 'shadow-[0_0_40px_rgba(139,92,246,0.15)]',
+    btnClass: 'bg-purple-600 hover:bg-purple-700',
     badge: 'MOST POPULAR',
     features: [
       'Full viability scores & condition drivers',
-      'Guided shoot plans per event (Blue Hour + LLL options)',
-      'Field Mode — live on-location guidance',
-      'Sky Planner with moon, Blue Hour & aurora windows',
-      'Gear checklist with LLL category + custom items',
+      'Guided shoot plans (per event)',
+      'Sky Planner with predictions & alerts',
+      'Gear checklist — custom items & notes',
       'Mode-aware guidance (DSLR, phone, experience)',
       'Model release upload & template',
       'Aurora & meteor alerts for custom locations',
@@ -44,13 +43,13 @@ const TIERS = [
     annualPerMonth: '$12.42',
     monthlyRaw: 'monthly_pro',
     annualRaw: 'annual_pro',
-    color: 'border-white/10',
+    color: 'border-blue-500/40',
     glow: '',
-    btnClass: 'bg-slate-700 hover:bg-slate-600',
+    btnClass: 'bg-blue-600 hover:bg-blue-700',
     features: [
       'Everything in Plus',
-      'Journal insights & shoot pattern analysis',
-      'Instructor hub & full course access',
+      'Journal insights & pattern analysis',
+      'Instructor hub & course access',
       'Client email generator',
       'Premium alerts (custom KP/cloud thresholds)',
       'Saved trip planners (multi-session)',
@@ -65,7 +64,7 @@ const LIFETIME = {
   price: '$99',
   label: 'Lifetime — Plus features, forever',
   features: [
-    'All Plus features unlocked permanently (incl. Blue Hour, LLL, Field Mode)',
+    'All Plus features unlocked permanently',
     'No recurring billing — ever',
     'All future Plus-tier content & updates',
     'Priority support',
@@ -166,7 +165,7 @@ export default function PaymentGate() {
                   )}
                   <div className="absolute top-0 right-0 w-32 h-32 bg-purple-600/5 blur-3xl pointer-events-none" />
 
-                  <Icon className={`w-9 h-9 mb-3 ${tier.id === 'plus' ? 'text-red-400' : 'text-slate-300'}`} />
+                  <Icon className={`w-9 h-9 mb-3 ${tier.id === 'plus' ? 'text-purple-400' : 'text-blue-400'}`} />
                   <h3 className="text-xl font-bold text-white">{tier.name}</h3>
                   <p className="text-slate-400 text-xs mb-4 italic">"{tier.tagline}"</p>
 
@@ -190,7 +189,7 @@ export default function PaymentGate() {
                   <ul className="space-y-2.5 my-6">
                     {tier.features.map((f, i) => (
                       <li key={i} className="flex items-start gap-2.5 text-slate-300 text-sm">
-                        <Check className={`w-4 h-4 flex-shrink-0 mt-0.5 ${tier.id === 'plus' ? 'text-red-400' : 'text-slate-400'}`} />
+                        <Check className={`w-4 h-4 flex-shrink-0 mt-0.5 ${tier.id === 'plus' ? 'text-purple-400' : 'text-blue-400'}`} />
                         {f}
                       </li>
                     ))}
