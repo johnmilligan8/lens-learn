@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Moon, Wind, Eye, Thermometer } from 'lucide-react';
+import { RefreshCw } from 'lucide-react';
 
 function getMoonIllum() {
   const knownNew = new Date('2000-01-06T00:00:00Z');
