@@ -131,7 +131,7 @@ export default function Profile() {
         {/* Profile Card */}
         <div className="md:col-span-1">
           <Card className="bg-slate-900/60 border-slate-800 p-6 text-center">
-            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-3xl font-bold text-white mx-auto mb-4">
+            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-red-700 to-red-500 flex items-center justify-center text-3xl font-bold text-white mx-auto mb-4">
               {user?.full_name?.[0] || user?.email?.[0] || 'U'}
             </div>
 
@@ -143,7 +143,7 @@ export default function Profile() {
                   className="bg-slate-800 border-slate-700 text-white text-center"
                 />
                 <div className="flex gap-2">
-                  <Button size="sm" className="flex-1 bg-purple-600 hover:bg-purple-700" onClick={saveProfile}>
+                  <Button size="sm" className="flex-1 bg-red-600 hover:bg-red-700" onClick={saveProfile}>
                     <Check className="w-3 h-3 mr-1" /> Save
                   </Button>
                   <Button size="sm" variant="outline" className="flex-1 border-slate-700" onClick={() => setEditing(false)}>
@@ -162,7 +162,7 @@ export default function Profile() {
             )}
 
             {sub && (
-              <div className={`mt-5 p-3 rounded-lg ${sub.tier === 'lifetime' ? 'bg-gradient-to-r from-purple-900/40 to-blue-900/40 border border-purple-500/30' : 'bg-slate-800/60 border border-slate-700'}`}>
+              <div className={`mt-5 p-3 rounded-lg ${sub.tier === 'lifetime' ? 'bg-gradient-to-r from-red-900/40 to-red-800/20 border border-red-600/30' : 'bg-slate-800/60 border border-slate-700'}`}>
                 <p className="text-xs text-slate-400 mb-0.5">Plan</p>
                 <p className="text-white font-semibold capitalize">{sub.tier}</p>
                 {sub.tier !== 'lifetime' && sub.end_date && (
@@ -177,7 +177,7 @@ export default function Profile() {
         <div className="md:col-span-2 space-y-5">
           <Card className="bg-slate-900/60 border-slate-800 p-6">
             <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
-              <Trophy className="w-5 h-5 text-yellow-400" /> Progress Overview
+              <Trophy className="w-5 h-5 text-red-400" /> Progress Overview
             </h3>
             <div className="grid grid-cols-3 gap-4 mb-4">
               {[
@@ -196,14 +196,14 @@ export default function Profile() {
           {/* Badges */}
           <Card className="bg-slate-900/60 border-slate-800 p-6">
             <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
-              <Star className="w-5 h-5 text-purple-400" /> Achievements
+              <Star className="w-5 h-5 text-red-400" /> Achievements
             </h3>
             <div className="grid grid-cols-3 gap-3">
               {badges.map(badge => (
                 <div key={badge.label} className={`text-center p-4 rounded-xl border transition-all ${badge.unlocked ? 'bg-purple-900/20 border-purple-500/30' : 'bg-slate-800/30 border-slate-700/30 opacity-40'}`}>
                   <p className="text-2xl mb-1">{badge.icon}</p>
                   <p className="text-xs font-medium text-white leading-tight">{badge.label}</p>
-                  {badge.unlocked && <CheckCircle2 className="w-3 h-3 text-purple-400 mx-auto mt-1" />}
+                  {badge.unlocked && <CheckCircle2 className="w-3 h-3 text-red-400 mx-auto mt-1" />}
                 </div>
               ))}
             </div>
