@@ -268,7 +268,7 @@ export default function TonightHub() {
             {geoLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Analyze'}
           </Button>
         </div>
-        {coords && <p className="text-xs text-emerald-400 mt-3 font-medium">✓ Analyzing {coords.lat.toFixed(2)}°N, {coords.lon.toFixed(2)}°W</p>}
+        {coords && <p className="text-xs text-red-400 mt-3 font-medium">✓ Analyzing {coords.lat.toFixed(2)}°N, {coords.lon.toFixed(2)}°W</p>}
       </Card>
 
       {/* Events */}
