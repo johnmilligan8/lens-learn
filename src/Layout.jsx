@@ -19,7 +19,8 @@ import {
   ChevronRight,
   ChevronLeft,
   Rocket,
-  Smartphone
+  Smartphone,
+  Flashlight
 } from 'lucide-react';
 
 const navItems = [
@@ -27,6 +28,7 @@ const navItems = [
   { icon: Rocket, label: 'Tonight?', page: 'TonightHub' },
   { icon: Smartphone, label: 'Star Pointer', page: 'StarPointer' },
   { icon: Star, label: 'Free Starter Course', page: 'FreeCourse', freeTag: true },
+  { icon: Flashlight, label: 'Field Mode', page: 'FieldMode', paidOnly: true },
   { icon: MapPin, label: 'Sky Planner', page: 'PlannerTool', paidOnly: true },
   { icon: Calendar, label: 'Cosmic Events', page: 'EventsCalendar' },
   { icon: Users, label: 'Explorer Gallery', page: 'CommunityGallery' },
@@ -74,7 +76,7 @@ export default function Layout({ children, currentPageName }) {
 
   // Pages that are "root" tabs — all others are child screens
   const rootPages = ['Dashboard', 'TonightHub', 'StarPointer', 'PlannerTool', 'CommunityGallery', 'Profile',
-    'EventsCalendar', 'FreeCourse', 'InstructorDashboard', 'PaymentGate', 'Onboarding'];
+    'EventsCalendar', 'FreeCourse', 'InstructorDashboard', 'PaymentGate', 'Onboarding', 'FieldMode'];
   const isChildScreen = !rootPages.includes(currentPageName);
 
   // Track last visited path per tab
