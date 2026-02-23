@@ -69,8 +69,9 @@ export default function AuroraView({ isSubscribed, userLocation = 'Utah', userLa
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-12">
+      <div className="flex items-center justify-center py-12 gap-3">
         <Loader className="w-5 h-5 animate-spin text-purple-400" />
+        <span className="text-slate-400 text-sm">Fetching live NOAA aurora data…</span>
       </div>
     );
   }
@@ -85,19 +86,34 @@ export default function AuroraView({ isSubscribed, userLocation = 'Utah', userLa
   return (
     <div className="space-y-6">
       {/* Info Banner */}
-      <Card className="bg-blue-900/30 border border-blue-500/50 p-4 flex items-start gap-3">
-        <Info className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
-        <div>
-          <p className="text-sm font-medium text-blue-300">Aurora forecasts are updated daily.</p>
-          <p className="text-xs text-blue-300/70 mt-1">
-            Data source: Mock forecasts (NOAA integration coming). Monitor{' '}
-            <a href="https://www.swpc.noaa.gov/" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-200">
-              NOAA Space Weather
-            </a>{' '}
-            for real-time updates. Conditions can change rapidly.
-          </p>
-        </div>
-      </Card>
+      {error ? (
+        <Card className="bg-red-900/30 border border-red-500/50 p-4 flex items-start gap-3">
+          <Info className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+          <div className="flex-1">
+            <p className="text-sm font-medium text-red-300">{error}</p>
+            <button onClick={load} className="text-xs text-red-400 underline mt-1">Retry</button>
+          </div>
+        </Card>
+      ) : (
+        <Card className="bg-emerald-900/20 border border-emerald-500/40 p-4 flex items-start gap-3">
+          <Info className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
+          <div className="flex-1">
+            <p className="text-sm font-medium text-emerald-300">
+              Live NOAA Space Weather data{userLat ? ' + Open-Meteo cloud cover' : ''}.
+            </p>
+            <p className="text-xs text-emerald-300/70 mt-1">
+              Source:{' '}
+              <a href="https://www.swpc.noaa.gov/" target="_blank" rel="noopener noreferrer" className="underline hover:text-emerald-200">
+                NOAA SWPC
+              </a>
+              {lastUpdated && ` · Updated ${lastUpdated.toLocaleTimeString()}`}
+            </p>
+          </div>
+          <button onClick={load} className="text-emerald-400 hover:text-emerald-300 flex-shrink-0">
+            <RefreshCw className="w-4 h-4" />
+          </button>
+        </Card>
+      )}
 
       {/* Tabs */}
       <div className="flex gap-3 border-b border-slate-800">
