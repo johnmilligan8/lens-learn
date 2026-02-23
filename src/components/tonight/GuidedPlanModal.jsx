@@ -6,6 +6,22 @@ import { base44 } from '@/api/base44Client';
 const QUESTIONS = {
   photographer: [
     {
+      key: 'blue_hour',
+      label: 'Include Blue Hour foreground window?',
+      options: [
+        { value: 'yes', label: '🌇 Yes — include Blue Hour', desc: 'Plan longer exposures with natural ambient light first' },
+        { value: 'no', label: '🌌 No — start at full dark', desc: 'Go straight to Milky Way/astro shooting' },
+      ]
+    },
+    {
+      key: 'lll',
+      label: 'Use Low Level Lighting (LLL) for foreground?',
+      options: [
+        { value: 'yes', label: '💡 Yes — I have an LED panel', desc: 'Dim constant light during exposure for even illumination' },
+        { value: 'no', label: '🌑 No — natural light only', desc: 'Pure ambient or sky glow' },
+      ]
+    },
+    {
       key: 'intent',
       label: 'What\'s your image intent?',
       options: [
@@ -102,7 +118,17 @@ function buildPlan(answers, event, mode) {
     experience: 'Give your eyes 20–30 minutes to dark-adapt. Face away from any lights. Look slightly off-center from your target for faint objects.',
   };
 
+  const blueHourNote = answers.blue_hour === 'yes'
+    ? 'Start shooting during Blue Hour (10–30 min after sunset) — ISO 800–1600, 1–4s, f/2.8–4. Use the natural ambient light for your foreground, then transition to full-dark Milky Way settings as the sky darkens.'
+    : '';
+
+  const lllNote = answers.lll === 'yes'
+    ? 'Include your LLL gear (dim-adjustable LED + warm gel). Set at lowest power, position far back from your subject. Leave on for the full exposure — no painting motion. Use barn doors to prevent sky spill.'
+    : '';
+
   return {
+    blue_hour: blueHourNote,
+    lll: lllNote,
     composition: compositionHints[intent] || '',
     foreground: foregroundHints[foreground] || '',
     lighting: lightingHints[lighting] || '',
@@ -181,9 +207,11 @@ export default function GuidedPlanModal({ event, mode, onClose, onSave }) {
             </div>
 
             {[
+              { label: plan.blue_hour ? 'Blue Hour Window' : null, value: plan.blue_hour, icon: '🌇' },
+              { label: plan.lll ? 'Low Level Lighting' : null, value: plan.lll, icon: '💡' },
               { label: 'Composition', value: plan.composition, icon: '🎯' },
               { label: 'Foreground', value: plan.foreground, icon: '🏔' },
-              { label: plan.lighting ? 'Lighting' : null, value: plan.lighting, icon: '💡' },
+              { label: plan.lighting ? 'Lighting' : null, value: plan.lighting, icon: '🔦' },
               { label: 'Technique', value: plan.mode_tip, icon: '📷' },
               { label: plan.people_note ? 'People' : null, value: plan.people_note, icon: '👤' },
               { label: plan.risks ? 'Risk Note' : null, value: plan.risks, icon: '⚠️' },
