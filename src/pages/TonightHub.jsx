@@ -332,13 +332,16 @@ export default function TonightHub() {
               <div className="flex items-start gap-3">
                 <Lock className="w-5 h-5 text-purple-400 flex-shrink-0 mt-0.5" />
                 <div className="flex-1">
-                  <p className="text-white font-bold text-sm">Unlock the Full Decision Engine</p>
-                  <p className="text-slate-400 text-xs mt-1 mb-3">Viability scores, condition drivers, Guided Shoot Plans, Field Mode, and progressive alerts — all in the paid plan.</p>
-                  <Link to={createPageUrl('PaymentGate')}>
-                    <Button size="sm" className="bg-purple-600 hover:bg-purple-700 text-xs font-bold">
-                      Unlock for $9.99/mo →
-                    </Button>
-                  </Link>
+                  <p className="text-white font-bold text-sm">Ready to plan smarter?</p>
+                  <p className="text-slate-400 text-xs mt-1 mb-3">Unlock full viability scores, guided shoot plans, gear checklist, and aurora alerts. Get Plus for $7.99/mo.</p>
+                  <div className="flex items-center gap-3 flex-wrap">
+                    <Link to={createPageUrl('PaymentGate')}>
+                      <Button size="sm" className="bg-purple-600 hover:bg-purple-700 text-xs font-bold">
+                        Unlock Plus — $7.99/mo →
+                      </Button>
+                    </Link>
+                    <span className="text-slate-500 text-xs">or $79/year</span>
+                  </div>
                 </div>
               </div>
             </Card>

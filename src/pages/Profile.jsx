@@ -265,7 +265,10 @@ export default function Profile() {
           />
         )}
 
-        {/* Offline Cache Settings */}
+        {/* Tier Comparison */}
+        <TierComparisonCard currentTier={sub?.tier || (isSubscribed ? 'monthly' : 'free')} />
+
+      {/* Offline Cache Settings */}
         <OfflineCacheSettings />
 
         {/* Danger Zone */}
