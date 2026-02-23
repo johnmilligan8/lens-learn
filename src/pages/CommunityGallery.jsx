@@ -96,7 +96,7 @@ export default function CommunityGallery() {
           <p className="text-slate-400 text-lg">Share your shots, inspire others, get feedback.</p>
         </div>
         <Button
-          className="bg-purple-600 hover:bg-purple-700 flex-shrink-0"
+          className="bg-red-600 hover:bg-red-700 flex-shrink-0"
           onClick={() => setShowUpload(true)}
         >
           <Upload className="w-4 h-4 mr-2" /> Share a Photo
@@ -109,7 +109,7 @@ export default function CommunityGallery() {
           <Camera className="w-16 h-16 text-slate-700 mx-auto mb-4" />
           <h3 className="text-xl font-semibold text-slate-500 mb-2">No photos yet</h3>
           <p className="text-slate-600 mb-6">Be the first to share a Milky Way photo!</p>
-          <Button className="bg-purple-600 hover:bg-purple-700" onClick={() => setShowUpload(true)}>
+          <Button className="bg-red-600 hover:bg-red-700" onClick={() => setShowUpload(true)}>
             <Upload className="w-4 h-4 mr-2" /> Upload Your First Photo
           </Button>
         </Card>
@@ -231,7 +231,7 @@ export default function CommunityGallery() {
             <Button
               onClick={handleUpload}
               disabled={!file || uploading}
-              className="w-full bg-purple-600 hover:bg-purple-700 h-11"
+              className="w-full bg-red-600 hover:bg-red-700 h-11"
             >
               {uploading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Uploading...</> : 'Share Photo'}
             </Button>
