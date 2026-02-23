@@ -387,14 +387,14 @@ export default function FreeCourse() {
           {/* Dark Sky Spots (always visible) */}
           <div className="mt-8">
             <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-              <MapPin className="w-5 h-5 text-purple-400" /> Utah Dark Sky Locations
+              <MapPin className="w-5 h-5 text-red-400" /> Utah Dark Sky Locations
             </h3>
             <div className="grid sm:grid-cols-2 gap-4">
               {DARK_SKY_SPOTS.map((spot, i) => (
-                <Card key={i} className="bg-slate-900/60 border-slate-800 p-4">
+                <Card key={i} className="bg-[#1a1a1a] border border-white/8 p-4">
                   <div className="flex items-start justify-between mb-2">
                     <h4 className="text-white font-semibold text-sm">{spot.name}</h4>
-                    <Badge className="bg-purple-900/60 text-purple-300 border-purple-700 text-xs">Bortle {spot.bortle}</Badge>
+                    <Badge className="bg-red-900/60 text-red-300 border-red-700 text-xs">Bortle {spot.bortle}</Badge>
                   </div>
                   <p className="text-slate-500 text-xs mb-2">{spot.distance}</p>
                   <p className="text-slate-400 text-xs">{spot.tip}</p>
