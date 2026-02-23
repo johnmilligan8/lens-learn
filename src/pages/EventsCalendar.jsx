@@ -175,7 +175,7 @@ export default function EventsCalendar() {
       </div>
 
       {/* Aurora View */}
-      {tab === 'aurora' && <AuroraView isSubscribed={isSubscribed} userLocation={user?.email ? 'Utah' : 'Your Location'} />}
+      {tab === 'aurora' && <AuroraView isSubscribed={isSubscribed} userLocation="Your Location" />}
 
       {/* Events View */}
       {tab === 'events' && (
