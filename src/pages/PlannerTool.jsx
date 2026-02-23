@@ -529,6 +529,10 @@ export default function PlannerTool() {
 
     // Build "current" from first day average
     const f0 = forecast[0] ?? {};
+    // Estimate humidity from night hours average
+    const avgHumidity = nightHours.length > 0
+      ? Math.round(nightHours.reduce((s, h) => s + (h.humidity ?? 60), 0) / nightHours.length)
+      : 60;
     setWeather({
       current: {
         cloud: f0.cloud ?? 0,
@@ -537,6 +541,7 @@ export default function PlannerTool() {
         temp_c: f0.temp_max ?? 0,
         feelslike_c: f0.temp_min ?? 0,
         wind_dir: '',
+        humidity: avgHumidity,
       },
       forecast,
       nightHours,
