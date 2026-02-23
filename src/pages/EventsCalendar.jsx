@@ -61,6 +61,7 @@ export default function EventsCalendar() {
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState('events');
   const [user, setUser] = useState(null);
+  const [userProfile, setUserProfile] = useState(null);
   const [isSubscribed, setIsSubscribed] = useState(false);
 
   const loadData = useCallback(async () => {
