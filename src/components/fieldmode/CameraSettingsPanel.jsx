@@ -185,13 +185,91 @@ export default function CameraSettingsPanel({ mode, event, coords }) {
 
 function FiveHundredRuleCard() {
   const [focal, setFocal] = useState(24);
-  const maxShutter = Math.round(500 / focal);
+  const [ruleType, setRuleType] = useState('500');
+  const [sensorType, setSensorType] = useState('full_frame');
+  const [customCropFactor, setCustomCropFactor] = useState(1.0);
+
+  const cropFactors = {
+    full_frame: 1.0,
+    aps_c: 1.6,
+    m4_3: 2.0,
+    custom: customCropFactor,
+  };
+
+  const cropFactor = cropFactors[sensorType] || 1.0;
+
+  // Calculate max shutter based on rule type
+  const calculateMaxShutter = () => {
+    if (ruleType === 'npf') {
+      // NPF Rule approximation: (35 × f-stop + 30 × pixel_pitch) / focal_length
+      // Using default f/2.8 and pixel pitch ~5.6µm
+      const fStop = 2.8;
+      const pixelPitch = 5.6;
+      const result = (35 * fStop + 30 * pixelPitch) / (focal * cropFactor);
+      return Math.round(result * 10) / 10;
+    } else {
+      const ruleNum = parseInt(ruleType);
+      return Math.round((ruleNum / (focal * cropFactor)) * 10) / 10;
+    }
+  };
+
+  const maxShutter = calculateMaxShutter();
+
   return (
-    <Card className="bg-[#1a1a1a] border border-white/8 p-4">
-      <p className="text-red-300 text-xs font-bold uppercase tracking-widest mb-3">⚡ 500 Rule Calculator</p>
-      <div className="flex items-center gap-3">
-        <div className="flex-1">
-          <label className="text-slate-500 text-[10px] block mb-1">Focal length (mm)</label>
+    <div className="space-y-4">
+      <Card className="bg-[#1a1a1a] border border-white/8 p-4">
+        <p className="text-red-300 text-xs font-bold uppercase tracking-widest mb-4">⚡ Star Trailing Calculator</p>
+
+        {/* Rule Type & Sensor Type Selectors */}
+        <div className="grid sm:grid-cols-2 gap-3 mb-4">
+          <div>
+            <label className="text-slate-500 text-[10px] block mb-1 font-semibold">Rule Type</label>
+            <select
+              value={ruleType}
+              onChange={e => setRuleType(e.target.value)}
+              className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-red-400"
+            >
+              <option value="500">500 Rule (classic)</option>
+              <option value="300">300 Rule (conservative)</option>
+              <option value="npf">NPF Rule (precise)</option>
+            </select>
+            <p className="text-slate-500 text-[9px] mt-1">500: northern sky · 300: southern/crop · NPF: most accurate</p>
+          </div>
+
+          <div>
+            <label className="text-slate-500 text-[10px] block mb-1 font-semibold">Sensor Type</label>
+            <select
+              value={sensorType}
+              onChange={e => setSensorType(e.target.value)}
+              className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-red-400"
+            >
+              <option value="full_frame">Full Frame (1.0×)</option>
+              <option value="aps_c">APS-C (1.6×)</option>
+              <option value="m4_3">Micro Four Thirds (2.0×)</option>
+              <option value="custom">Custom</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Custom Crop Factor Input */}
+        {sensorType === 'custom' && (
+          <div className="mb-4">
+            <label className="text-slate-500 text-[10px] block mb-1 font-semibold">Crop Factor</label>
+            <input
+              type="number"
+              value={customCropFactor}
+              onChange={e => setCustomCropFactor(Math.max(0.5, Number(e.target.value) || 1))}
+              className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white text-sm font-mono focus:outline-none focus:border-red-400"
+              step={0.1}
+              min={0.5}
+              max={5}
+            />
+          </div>
+        )}
+
+        {/* Focal Length Input */}
+        <div className="mb-4">
+          <label className="text-slate-500 text-[10px] block mb-1 font-semibold">Focal Length (mm)</label>
           <input
             type="number"
             value={focal}
@@ -201,13 +279,21 @@ function FiveHundredRuleCard() {
             max={600}
           />
         </div>
-        <div className="text-center">
-          <p className="text-slate-500 text-[10px]">Max shutter</p>
+
+        {/* Result Display */}
+        <div className="bg-red-900/20 border border-red-600/30 rounded-lg p-3 text-center">
+          <p className="text-slate-400 text-[10px] uppercase tracking-widest mb-1">Max Shutter Time</p>
           <p className="text-white text-3xl font-black">{maxShutter}s</p>
-          <p className="text-slate-500 text-[10px]">before trails</p>
+          <p className="text-slate-500 text-[9px] mt-1">before star trails</p>
         </div>
-      </div>
-    </Card>
+
+        {/* Helpful Note */}
+        <div className="mt-4 p-3 bg-slate-900/50 border border-slate-700/50 rounded-lg text-[10px] text-slate-300 leading-relaxed">
+          <p className="font-semibold text-slate-200 mb-1">💡 Why multiple rules?</p>
+          <p>Southern sky stars move faster. Crop sensors magnify trails. Stricter rules (300/NPF) prevent artifacts. NPF factors aperture &amp; pixel density—most accurate for pinpoint stars.</p>
+        </div>
+      </Card>
+    </div>
   );
 }
 
