@@ -77,7 +77,7 @@ export default function Profile() {
   };
 
   const handleAuroraAlertUpdate = async (updates) => {
-    const newAlerts = updates.locations;
+    const newAlerts = updates.locations !== undefined ? updates.locations : (userProfile?.alert_locations || []);
     const newEnabled = updates.alertsEnabled !== undefined ? updates.alertsEnabled : userProfile?.alert_prefs?.aurora_alerts_enabled;
     const data = {
       user_email: user.email,
