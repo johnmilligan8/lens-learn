@@ -41,8 +41,17 @@ export default function Layout({ children, currentPageName }) {
   const [user, setUser] = useState(null);
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [nightMode, setNightMode] = useState(() => localStorage.getItem('ug_night_mode') === 'true');
   const navigate = useNavigate();
   const location = useLocation();
+
+  const toggleNightMode = () => {
+    setNightMode(prev => {
+      const next = !prev;
+      localStorage.setItem('ug_night_mode', String(next));
+      return next;
+    });
+  };
 
   useEffect(() => {
     const init = async () => {
