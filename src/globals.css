@@ -191,3 +191,14 @@ label, input, select, textarea {
 ::-webkit-scrollbar-track { background: #0a0a0f; }
 ::-webkit-scrollbar-thumb { background: #cc0000; border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: #e60000; }
+
+/* ── Night Vision Mode ── */
+.night-vision-mode {
+  filter: brightness(0.45) saturate(0) sepia(1) hue-rotate(300deg) saturate(4);
+  transition: filter 0.4s ease;
+}
+
+/* Night-vision toggle button should always be readable */
+.night-vision-exempt {
+  filter: none !important;
+}
