@@ -230,9 +230,12 @@ export default function Layout({ children, currentPageName }) {
               <span style={{display:'none'}} className="font-black text-white text-lg tracking-tight">UNCHARTED</span>
             </Link>
         )}
-        <Button variant="ghost" size="icon" className="text-slate-300" onClick={handleLogout}>
-          <LogOut className="w-5 h-5" />
-        </Button>
+        <div className="flex items-center gap-2">
+          <NightModeToggle nightMode={nightMode} onToggle={toggleNightMode} compact />
+          <Button variant="ghost" size="icon" className="text-slate-300" onClick={handleLogout}>
+            <LogOut className="w-5 h-5" />
+          </Button>
+        </div>
       </div>
 
       {/* Mobile Bottom Tab Bar */}
