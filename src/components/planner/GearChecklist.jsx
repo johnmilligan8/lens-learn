@@ -612,86 +612,198 @@ _________________________________________________________________
             )}
           </div>
 
-          {/* Model Release Section (Photographer mode + Paid only) */}
-          {shooterMode === 'photographer' && isPaid && (
-            <div className="mt-4 pt-4 border-t border-slate-700">
-              {!showModelRelease ? (
-                <button
-                  onClick={() => setShowModelRelease(true)}
-                  className="w-full text-left p-2.5 rounded-lg bg-slate-800/60 hover:bg-slate-800 transition-colors"
-                >
-                  <span className="text-slate-300 font-medium text-sm flex items-center gap-2">
-                    <FileCheck className="w-4 h-4 text-red-400" /> Model Release
-                  </span>
-                  {activeKit?.model_release_enabled ? (
-                    <p className="text-xs text-emerald-400 mt-1">✓ People/models included</p>
-                  ) : (
-                    <p className="text-xs text-slate-500 mt-1">Not set up yet</p>
-                  )}
-                </button>
-              ) : (
-                <div className="space-y-3 bg-slate-800/40 rounded-lg p-3">
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      checked={activeKit?.model_release_enabled || false}
-                      onChange={e => {
-                        const notesEl = document.querySelector('[data-release-notes]');
-                        saveModelRelease(e.target.checked, notesEl?.value || '');
-                      }}
-                      className="w-4 h-4 rounded"
-                    />
-                    <label className="text-slate-300 text-sm">Will include people/models in foreground?</label>
-                  </div>
-
-                  {(activeKit?.model_release_enabled) && (
-                    <>
-                      <div>
-                        <label className="text-slate-300 text-xs uppercase mb-1 block font-semibold">Model Names / Release Status</label>
-                        <Input
-                          data-release-notes
-                          placeholder="e.g., John Doe (signed), Jane Smith (pending)"
-                          defaultValue={activeKit?.model_release_notes || ''}
-                          className="bg-slate-800 border-slate-700 text-white text-xs h-8"
-                        />
-                      </div>
-
-                      <div className="bg-blue-900/30 border border-blue-500/30 rounded-lg p-2">
-                        <p className="text-xs text-blue-300 mb-2 font-semibold">📋 Model Release Template:</p>
-                        <p className="text-xs text-blue-200 leading-relaxed">
-                          "I grant permission for photographs including my likeness to be used for instructional and promotional purposes by [Your Name]. I understand no monetary compensation is guaranteed."
-                        </p>
-                      </div>
-
-                      <p className="text-xs text-slate-500">Get signed release before shoot – use template or upload your own PDF.</p>
-                    </>
-                  )}
-
-                  <div className="flex gap-2">
-                    <Button
-                      onClick={() => {
-                        const notesEl = document.querySelector('[data-release-notes]');
-                        const checkEl = document.querySelector('[type="checkbox"]');
-                        saveModelRelease(checkEl.checked, notesEl?.value || '');
-                      }}
-                      size="sm"
-                      className="bg-red-600 hover:bg-red-700 h-8 text-xs flex-1"
-                    >
-                      <Save className="w-3 h-3 mr-1" /> Save
-                    </Button>
-                    <Button
-                      onClick={() => setShowModelRelease(false)}
-                      size="sm"
-                      variant="outline"
-                      className="border-slate-600 text-slate-300 h-8 text-xs"
-                    >
-                      Done
-                    </Button>
-                  </div>
+          {/* Model Release Section */}
+          <div className="mt-4 pt-4 border-t border-slate-700">
+            {!isPaid ? (
+              /* Free-tier teaser */
+              <div className="p-3 rounded-xl bg-gradient-to-r from-indigo-900/40 to-slate-800/60 border border-indigo-500/30 flex items-start gap-3">
+                <Lock className="w-4 h-4 text-indigo-400 flex-shrink-0 mt-0.5" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-indigo-200 font-semibold text-sm">Model Release Tools</p>
+                  <p className="text-slate-400 text-xs mt-0.5">Protect your work and models — handle releases easily.</p>
+                  <p className="text-indigo-300 text-xs mt-1 font-medium">Unlock with Plus – $7.99/mo</p>
                 </div>
-              )}
-            </div>
-          )}
+                <Sparkles className="w-4 h-4 text-yellow-400 flex-shrink-0 mt-0.5" />
+              </div>
+            ) : !showModelRelease ? (
+              /* Collapsed summary */
+              <button
+                onClick={() => setShowModelRelease(true)}
+                className="w-full text-left p-2.5 rounded-lg bg-slate-800/60 hover:bg-slate-800 transition-colors"
+              >
+                <span className="text-slate-300 font-medium text-sm flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-indigo-400" /> Model Release
+                </span>
+                <div className="flex items-center gap-2 mt-1">
+                  {activeKit?.model_release_enabled ? (
+                    <>
+                      <Badge className="bg-emerald-700/60 text-emerald-300 border-emerald-600/40 text-[10px] px-1.5 py-0">
+                        ✓ Models included
+                      </Badge>
+                      {activeKit?.model_release_pdf_url ? (
+                        <Badge className="bg-emerald-700/60 text-emerald-300 border-emerald-600/40 text-[10px] px-1.5 py-0">
+                          Release uploaded
+                        </Badge>
+                      ) : (
+                        <Badge className="bg-amber-700/60 text-amber-300 border-amber-600/40 text-[10px] px-1.5 py-0">
+                          Pending upload
+                        </Badge>
+                      )}
+                    </>
+                  ) : (
+                    <p className="text-xs text-slate-500">Not set up yet – tap to configure</p>
+                  )}
+                </div>
+              </button>
+            ) : (
+              /* Expanded form */
+              <div className="space-y-4 bg-slate-800/40 rounded-xl p-4 border border-slate-700/60">
+                {/* Header */}
+                <div className="flex items-center justify-between">
+                  <span className="text-white font-semibold text-sm flex items-center gap-2">
+                    <ShieldCheck className="w-4 h-4 text-indigo-400" /> Model Release
+                  </span>
+                  <button onClick={() => setShowModelRelease(false)} className="text-slate-500 hover:text-slate-300">
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {/* Reminder banner */}
+                <div className="flex items-start gap-2 bg-indigo-900/20 border border-indigo-500/25 rounded-lg p-2.5">
+                  <Users className="w-3.5 h-3.5 text-indigo-400 flex-shrink-0 mt-0.5" />
+                  <p className="text-xs text-indigo-200 leading-relaxed">
+                    <strong>Protect your work and models</strong> — always get signed releases before including people in shots. Use the template below or upload your own legal form.
+                  </p>
+                </div>
+
+                {/* Checkbox */}
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={activeKit?.model_release_enabled || false}
+                    onChange={e => {
+                      setActiveKit(prev => ({ ...prev, model_release_enabled: e.target.checked }));
+                    }}
+                    className="w-4 h-4 rounded accent-indigo-500"
+                  />
+                  <span className="text-slate-200 text-sm">Will include people/models in foreground?</span>
+                </label>
+
+                {activeKit?.model_release_enabled && (
+                  <>
+                    {/* Upload */}
+                    <div>
+                      <label className="text-slate-300 text-xs uppercase mb-1.5 block font-semibold tracking-wide">
+                        Upload Signed Release (PDF or image)
+                      </label>
+                      <input
+                        ref={releaseFileInputRef}
+                        type="file"
+                        accept=".pdf,.jpg,.jpeg,.png"
+                        className="hidden"
+                        onChange={handleReleaseFileUpload}
+                      />
+                      <div className="flex items-center gap-2">
+                        <Button
+                          onClick={() => releaseFileInputRef.current?.click()}
+                          disabled={uploadingRelease}
+                          size="sm"
+                          variant="outline"
+                          className="border-indigo-500/40 text-indigo-300 hover:bg-indigo-900/20 h-8 text-xs"
+                        >
+                          {uploadingRelease ? (
+                            <><Loader2 className="w-3 h-3 mr-1 animate-spin" /> Uploading…</>
+                          ) : (
+                            <><Upload className="w-3 h-3 mr-1" /> Upload File</>
+                          )}
+                        </Button>
+                        {activeKit?.model_release_pdf_url && (
+                          <div className="flex items-center gap-1.5">
+                            <Badge className="bg-emerald-700/60 text-emerald-300 border-emerald-600/40 text-[10px]">
+                              <FileCheck className="w-3 h-3 mr-1" /> Release uploaded
+                            </Badge>
+                            <a
+                              href={activeKit.model_release_pdf_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-xs text-indigo-400 underline hover:text-indigo-300"
+                            >
+                              View
+                            </a>
+                            <button
+                              onClick={() => {
+                                setActiveKit(prev => ({ ...prev, model_release_pdf_url: null }));
+                                updateKit(activeKit, { model_release_pdf_url: null });
+                              }}
+                              className="text-slate-500 hover:text-red-400"
+                            >
+                              <X className="w-3 h-3" />
+                            </button>
+                          </div>
+                        )}
+                        {!activeKit?.model_release_pdf_url && !uploadingRelease && (
+                          <Badge className="bg-amber-700/60 text-amber-300 border-amber-600/40 text-[10px]">
+                            Pending upload
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Notes */}
+                    <div>
+                      <label className="text-slate-300 text-xs uppercase mb-1.5 block font-semibold tracking-wide">
+                        Model Names / IDs or Notes
+                      </label>
+                      <Input
+                        placeholder='e.g., Jane Doe – signed 2/23/26, John Smith – pending'
+                        value={releaseNotes}
+                        onChange={e => setReleaseNotes(e.target.value)}
+                        className="bg-slate-800 border-slate-700 text-white text-xs h-8"
+                      />
+                    </div>
+
+                    {/* Template download */}
+                    <div className="bg-slate-900/60 border border-slate-700/60 rounded-lg p-3">
+                      <p className="text-xs text-slate-300 font-semibold mb-1">📋 Sample Model Release Template</p>
+                      <p className="text-xs text-slate-400 mb-2 leading-relaxed">
+                        "I, [Name], grant permission to [Photographer] to photograph me at [Location/Date] for commercial/educational use. Signed: ________ Date: ________"
+                      </p>
+                      <Button
+                        onClick={downloadSampleTemplate}
+                        size="sm"
+                        variant="outline"
+                        className="border-slate-600 text-slate-300 hover:bg-slate-700/40 h-7 text-xs"
+                      >
+                        <Download className="w-3 h-3 mr-1" /> Download Sample Template
+                      </Button>
+                    </div>
+                  </>
+                )}
+
+                {/* Save */}
+                <div className="flex gap-2 pt-1">
+                  <Button
+                    onClick={() => saveModelRelease(
+                      activeKit?.model_release_enabled || false,
+                      releaseNotes
+                    )}
+                    size="sm"
+                    className="bg-indigo-600 hover:bg-indigo-700 h-8 text-xs flex-1"
+                  >
+                    <Save className="w-3 h-3 mr-1" /> Save Release Info
+                  </Button>
+                  <Button
+                    onClick={() => setShowModelRelease(false)}
+                    size="sm"
+                    variant="outline"
+                    className="border-slate-600 text-slate-300 h-8 text-xs"
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            )}
+          </div>
         </>
       )}
     </Card>
