@@ -216,7 +216,18 @@ export default function SkyBrowser() {
         {filteredObjects.length === 0 ? (
           <div className="text-center py-12">
             <Eye className="w-12 h-12 text-slate-600 mx-auto mb-3" />
-            <p className="text-slate-400">No objects match your search.</p>
+            <p className="text-slate-400 font-medium mb-1">No objects match your search.</p>
+            <p className="text-slate-500 text-sm">
+              {searchQuery ? 'Try clearing the search field.' : 'Try widening the magnitude range (e.g. -5 to 11) or selecting "All Types".'}
+            </p>
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="mt-3 text-xs text-red-400 underline hover:text-red-300"
+              >
+                Clear search
+              </button>
+            )}
           </div>
         ) : (
           filteredObjects.map(obj => (
