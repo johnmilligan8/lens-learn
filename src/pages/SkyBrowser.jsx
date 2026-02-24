@@ -172,7 +172,7 @@ export default function SkyBrowser() {
               <Input
                 type="number"
                 min="-5"
-                max="10"
+                max="11"
                 step="0.5"
                 value={maxMag}
                 onChange={e => setMaxMag(parseFloat(e.target.value))}
