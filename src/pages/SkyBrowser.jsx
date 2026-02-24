@@ -43,49 +43,54 @@ const typeColors = {
 
 export default function SkyBrowser() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeTab, setActiveTab] = useState('stars'); // stars, messier, planets, constellations
+  const [activeTab, setActiveTab] = useState('stars');
   const [filterType, setFilterType] = useState('all');
   const [minMag, setMinMag] = useState(-5);
-  const [maxMag, setMaxMag] = useState(10);
+  const [maxMag, setMaxMag] = useState(11); // 11 to include all catalog objects
   const [expandedObject, setExpandedObject] = useState(null);
 
   // Filter & search logic
   const filteredObjects = useMemo(() => {
-    let objects = [];
+    const q = searchQuery.toLowerCase();
 
     if (activeTab === 'stars') {
-      objects = catalog.stars.filter(s => {
-        const matchesSearch = s.name.toLowerCase().includes(searchQuery.toLowerCase());
+      const objects = catalog.stars.filter(s => {
+        const matchesSearch = !q || s.name.toLowerCase().includes(q);
         const matchesType = filterType === 'all' || s.type === filterType;
         const matchesMag = s.mag >= minMag && s.mag <= maxMag;
         return matchesSearch && matchesType && matchesMag;
       });
-      objects.sort((a, b) => a.mag - b.mag); // Sort by magnitude (brightest first)
+      return objects.sort((a, b) => a.mag - b.mag);
+
     } else if (activeTab === 'messier') {
-      objects = catalog.messier.filter(m => {
-        const matchesSearch = m.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                              m.constellation.toLowerCase().includes(searchQuery.toLowerCase());
+      const objects = catalog.messier.filter(m => {
+        const matchesSearch = !q ||
+          m.name.toLowerCase().includes(q) ||
+          (m.constellation || '').toLowerCase().includes(q) ||
+          (m.description || '').toLowerCase().includes(q);
         const matchesType = filterType === 'all' || m.type === filterType;
         const matchesMag = m.mag >= minMag && m.mag <= maxMag;
         return matchesSearch && matchesType && matchesMag;
       });
-      objects.sort((a, b) => parseFloat(a.name.slice(1)) - parseFloat(b.name.slice(1))); // Sort by M number
+      return objects.sort((a, b) => parseFloat(a.name.slice(1)) - parseFloat(b.name.slice(1)));
+
     } else if (activeTab === 'planets') {
-      objects = catalog.planets.filter(p => {
-        const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase());
+      return catalog.planets.filter(p => {
+        const matchesSearch = !q || p.name.toLowerCase().includes(q);
         const matchesType = filterType === 'all' || p.type === filterType;
         return matchesSearch && matchesType;
       });
+
     } else if (activeTab === 'constellations') {
-      objects = catalog.constellations.filter(c => {
-        const matchesSearch = c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                              c.abbr.toLowerCase().includes(searchQuery.toLowerCase());
-        return matchesSearch;
+      const objects = catalog.constellations.filter(c => {
+        return !q ||
+          c.name.toLowerCase().includes(q) ||
+          (c.abbr || '').toLowerCase().includes(q);
       });
-      objects.sort((a, b) => a.name.localeCompare(b.name));
+      return objects.sort((a, b) => a.name.localeCompare(b.name));
     }
 
-    return objects;
+    return [];
   }, [searchQuery, activeTab, filterType, minMag, maxMag]);
 
   const getTypeOptions = () => {
