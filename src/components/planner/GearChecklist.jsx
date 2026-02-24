@@ -276,13 +276,70 @@ export default function GearChecklist({ userEmail, shooterMode, onKitLoaded, isP
     setShowGeneralNotes(false);
   };
 
-  const saveModelRelease = (enabled, notes) => {
+  const [uploadingRelease, setUploadingRelease] = useState(false);
+  const [releaseNotes, setReleaseNotes] = useState('');
+  const releaseFileInputRef = useRef(null);
+
+  // Sync releaseNotes with activeKit
+  useEffect(() => {
+    setReleaseNotes(activeKit?.model_release_notes || '');
+  }, [activeKit?.id]);
+
+  const saveModelRelease = async (enabled, notes, pdfUrl) => {
     if (!activeKit) return;
-    updateKit(activeKit, {
+    const updateData = {
       model_release_enabled: enabled,
-      model_release_notes: notes
-    });
+      model_release_notes: notes,
+    };
+    if (pdfUrl !== undefined) updateData.model_release_pdf_url = pdfUrl;
+    await updateKit(activeKit, updateData);
     setShowModelRelease(false);
+  };
+
+  const handleReleaseFileUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingRelease(true);
+    const { file_url } = await base44.integrations.Core.UploadFile({ file });
+    setUploadingRelease(false);
+    // Save immediately with updated URL
+    await updateKit(activeKit, {
+      model_release_pdf_url: file_url,
+      model_release_enabled: true,
+    });
+    setActiveKit(prev => ({ ...prev, model_release_pdf_url: file_url, model_release_enabled: true }));
+  };
+
+  const downloadSampleTemplate = () => {
+    const templateText = `MODEL RELEASE FORM
+====================
+
+I, _________________________ (Model Name), hereby grant permission to 
+_________________________ (Photographer Name) to photograph me at 
+_________________________ (Location) on _________________________ (Date).
+
+These photographs may be used for commercial, educational, or promotional 
+purposes including but not limited to print, digital media, and online content.
+
+I understand that no monetary compensation is guaranteed unless separately agreed.
+
+Model Signature: _______________________   Date: _______________
+
+Photographer Signature: ________________   Date: _______________
+
+Notes / Additional Terms:
+_________________________________________________________________
+_________________________________________________________________
+
+© Uncharted Galaxy – Always get a signed release before including people in your work.
+`;
+    const blob = new Blob([templateText], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Model_Release_Template_Uncharted.txt';
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   if (!activeKit && !showForm) {
