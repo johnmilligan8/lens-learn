@@ -82,13 +82,13 @@ export default function TierComparisonCard({ currentTier }) {
   const [collapsed, setCollapsed] = useState(true);
 
   return (
-    <Card className="bg-slate-900/60 border-slate-800 p-6 mb-6">
+    <div className="rounded-xl border border-white/8 p-6 mb-6" style={{ background: '#1a1a1a' }}>
       <button
         className="w-full flex items-center justify-between"
         onClick={() => setCollapsed(c => !c)}
       >
         <h3 className="text-white font-semibold flex items-center gap-2">
-          <Zap className="w-5 h-5 text-purple-400" /> Plan Comparison
+          <Zap className="w-5 h-5 text-indigo-400" /> Plan Comparison
         </h3>
         <span className="text-slate-500 text-xs">{collapsed ? 'Show ▾' : 'Hide ▴'}</span>
       </button>
@@ -102,17 +102,21 @@ export default function TierComparisonCard({ currentTier }) {
               return (
                 <div
                   key={tier.id}
-                  className={`rounded-xl border p-4 relative ${tier.border} ${tier.highlight ? 'bg-purple-900/10' : 'bg-slate-800/30'}`}
+                  className="rounded-xl p-4 relative"
+                  style={{
+                    background: tier.highlight ? 'rgba(79,70,229,0.08)' : '#111111',
+                    border: tier.highlight ? '1px solid rgba(99,88,234,0.4)' : '1px solid rgba(255,255,255,0.07)'
+                  }}
                 >
                   {tier.badge && (
-                    <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-purple-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap">
+                    <div className="absolute -top-2 left-1/2 -translate-x-1/2 text-white text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap" style={{ background: '#4f46e5' }}>
                       {tier.badge}
                     </div>
                   )}
                   <Icon className={`w-5 h-5 ${tier.color} mb-2`} />
                   <p className="text-white font-bold text-sm">{tier.label}</p>
                   <p className={`font-bold text-lg ${tier.color}`}>
-                    {tier.price}<span className="text-xs text-slate-400 font-normal">{tier.period}</span>
+                    {tier.price}<span className="text-xs text-slate-500 font-normal">{tier.period}</span>
                   </p>
                   {tier.annual && (
                     <p className="text-xs text-slate-500">{tier.annual} — save 17%</p>
@@ -124,7 +128,7 @@ export default function TierComparisonCard({ currentTier }) {
                       <div key={i} className="flex items-center gap-1.5">
                         {f.yes
                           ? <Check className="w-3 h-3 text-emerald-400 flex-shrink-0" />
-                          : <Minus className="w-3 h-3 text-slate-600 flex-shrink-0" />}
+                          : <Minus className="w-3 h-3 text-slate-700 flex-shrink-0" />}
                         <span className={`text-[11px] leading-tight ${f.yes ? 'text-slate-300' : 'text-slate-600'}`}>{f.label}</span>
                       </div>
                     ))}
@@ -134,9 +138,14 @@ export default function TierComparisonCard({ currentTier }) {
                     <div className="mt-3 text-center text-xs text-emerald-400 font-semibold">✓ Current plan</div>
                   ) : tier.id !== 'free' ? (
                     <Link to={createPageUrl('PaymentGate')}>
-                      <Button size="sm" className={`w-full mt-3 h-7 text-xs font-bold ${tier.highlight ? 'bg-purple-600 hover:bg-purple-700' : 'bg-blue-600 hover:bg-blue-700'}`}>
+                      <button
+                        className="w-full mt-3 h-7 text-xs font-bold rounded-lg text-white flex items-center justify-center gap-1 transition-colors"
+                        style={{ background: '#4f46e5' }}
+                        onMouseEnter={e => e.currentTarget.style.background = '#4338ca'}
+                        onMouseLeave={e => e.currentTarget.style.background = '#4f46e5'}
+                      >
                         Upgrade <ArrowRight className="w-3 h-3" />
-                      </Button>
+                      </button>
                     </Link>
                   ) : null}
                 </div>
@@ -145,19 +154,24 @@ export default function TierComparisonCard({ currentTier }) {
           </div>
 
           {/* Lifetime callout */}
-          <div className="mt-4 p-3 rounded-lg border border-yellow-500/30 bg-yellow-900/10 flex items-center justify-between gap-3">
+          <div className="mt-4 p-3 rounded-lg flex items-center justify-between gap-3" style={{ border: '1px solid rgba(255,255,255,0.1)', background: '#111111' }}>
             <div>
-              <p className="text-yellow-300 font-semibold text-sm">⭐ Lifetime Access — $99 one-time</p>
-              <p className="text-slate-400 text-xs">Unlocks Plus features forever. No recurring charges.</p>
+              <p className="text-slate-200 font-semibold text-sm">⭐ Lifetime Access — $99 one-time</p>
+              <p className="text-slate-500 text-xs">Unlocks Plus features forever. No recurring charges.</p>
             </div>
             <Link to={createPageUrl('PaymentGate')}>
-              <Button size="sm" className="bg-yellow-600 hover:bg-yellow-700 text-black font-bold text-xs whitespace-nowrap h-7">
+              <button
+                className="text-white font-bold text-xs whitespace-nowrap h-7 px-3 rounded-lg transition-colors"
+                style={{ background: '#4f46e5' }}
+                onMouseEnter={e => e.currentTarget.style.background = '#4338ca'}
+                onMouseLeave={e => e.currentTarget.style.background = '#4f46e5'}
+              >
                 Get Lifetime
-              </Button>
+              </button>
             </Link>
           </div>
         </div>
       )}
-    </Card>
+    </div>
   );
 }
