@@ -183,6 +183,10 @@ export default function Layout({ children, currentPageName }) {
 
         {/* User / Logout */}
         <div className="p-4 border-t border-slate-800/60">
+          {/* Night Vision Toggle */}
+          <div className="mb-3">
+            <NightModeToggle nightMode={nightMode} onToggle={toggleNightMode} />
+          </div>
           {!isSubscribed && (
             <Link to={createPageUrl('PaymentGate')}>
                 <div className="mb-3 p-3 rounded-xl bg-gradient-to-r from-red-900/40 to-red-800/20 border border-red-600/40 hover:border-red-500/60 transition-colors">
