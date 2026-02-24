@@ -8,6 +8,13 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { catalog as rawCatalog } from '@/functions/celestialCatalog';
 
+const catalog = {
+  stars: Array.isArray(rawCatalog?.stars) ? rawCatalog.stars : [],
+  messier: Array.isArray(rawCatalog?.messier) ? rawCatalog.messier : [],
+  planets: Array.isArray(rawCatalog?.planets) ? rawCatalog.planets : [],
+  constellations: Array.isArray(rawCatalog?.constellations) ? rawCatalog.constellations : [],
+};
+
 const typeIcons = {
   'binary': <Zap className="w-4 h-4" />,
   'main-sequence': <Star className="w-4 h-4" />,
