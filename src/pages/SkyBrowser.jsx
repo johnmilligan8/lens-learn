@@ -115,16 +115,16 @@ export default function SkyBrowser() {
         <p className="text-slate-400 text-sm">Explore bright stars, deep-sky objects, planets & constellations</p>
 
         {/* Tabs */}
-        <div className="flex gap-2 mt-4">
+        <div className="flex flex-wrap gap-2 mt-4">
           {[
             { id: 'stars', label: '⭐ Bright Stars', count: catalog.stars.length },
-            { id: 'messier', label: '🌌 Messier (M1–M110)', count: catalog.messier.length },
+            { id: 'messier', label: '🌌 Messier', count: catalog.messier.length },
             { id: 'planets', label: '🪐 Planets', count: catalog.planets.length },
             { id: 'constellations', label: '🗺 Constellations', count: catalog.constellations.length },
           ].map(tab => (
             <button
               key={tab.id}
-              onClick={() => { setActiveTab(tab.id); setFilterType('all'); }}
+              onClick={() => { setActiveTab(tab.id); setFilterType('all'); setSearchQuery(''); }}
               className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all ${
                 activeTab === tab.id
                   ? 'bg-red-600 text-white'
