@@ -22,6 +22,7 @@ import {
   Smartphone,
   Zap
 } from 'lucide-react';
+import NightModeToggle from '@/components/ui/NightModeToggle';
 
 const navItems = [
   { icon: Home, label: 'Mission Control', page: 'Dashboard' },
