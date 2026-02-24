@@ -7,12 +7,6 @@ import { Search, Filter, Star, Radio, Zap, Eye, Compass, ChevronDown } from 'luc
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { catalog as rawCatalog } from '@/functions/celestialCatalog';
-const catalog = {
-  stars: rawCatalog?.stars || [],
-  messier: rawCatalog?.messier || [],
-  planets: rawCatalog?.planets || [],
-  constellations: rawCatalog?.constellations || [],
-};
 
 const typeIcons = {
   'binary': <Zap className="w-4 h-4" />,
