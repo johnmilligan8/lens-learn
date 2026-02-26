@@ -33,7 +33,7 @@ import {
   MapPin, Moon, Eye, Clock, Star, Loader2,
   Navigation, Lock, ChevronRight, Telescope, Sun,
   AlertTriangle, CheckCircle, TrendingUp, Cloud, Wind,
-  Droplets, Thermometer, CloudRain, CloudSnow, CloudOff
+  Droplets, Thermometer, CloudRain, CloudSnow, CloudOff, Calendar
 } from 'lucide-react';
 
 // ─── Astronomy Math ─────────────────────────────────────────────────────────
