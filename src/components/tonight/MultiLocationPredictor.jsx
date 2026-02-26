@@ -588,7 +588,8 @@ export default function MultiLocationPredictor({ isSubscribed, homeLocation, hom
 
       {/* Location List / Map View toggle */}
       {locations.length > 0 && (
-        <div className="flex justify-end">
+        <div className="flex items-center justify-between">
+          <p className="text-slate-500 text-xs">{locations.length} location{locations.length !== 1 ? 's' : ''} added</p>
           <button
             onClick={() => setShowAllMap(v => !v)}
             className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border transition-all font-semibold ${
