@@ -273,13 +273,13 @@ export default function TonightHub() {
       </Card>
 
       {/* ── Multi-Location Predictor ── */}
-      <div className="mt-2 mb-8 pt-2 border-t border-white/8">
+      <Card className="bg-[#1a1a1a] border border-white/8 p-5 mb-6">
         <MultiLocationPredictor
           isSubscribed={isSubscribed}
           homeLocation={profile?.home_location || location || null}
           homeCoords={coords}
         />
-      </div>
+      </Card>
 
       {/* Events */}
       {!coords ? (
