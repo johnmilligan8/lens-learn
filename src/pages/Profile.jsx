@@ -230,6 +230,48 @@ export default function Profile() {
         </div>
       </div>
 
+      {/* Exploration Mode */}
+      <Card className="bg-[#1a1a1a] border-white/8 p-6 mb-6">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-white font-semibold flex items-center gap-2">
+            <Telescope className="w-5 h-5 text-red-400" /> Exploration Mode
+          </h3>
+          {!editingMode && (
+            <Button variant="outline" size="sm" className="border-slate-700 text-slate-400" onClick={() => setEditingMode(true)}>
+              <Edit2 className="w-3 h-3 mr-1" /> Edit
+            </Button>
+          )}
+        </div>
+        {editingMode ? (
+          <div className="space-y-4">
+            <p className="text-slate-400 text-xs">Tailor your experience — choose how you explore the night sky.</p>
+            <ModeSelector value={selectedMode} onChange={setSelectedMode} />
+            <div className="flex gap-2 pt-1">
+              <Button size="sm" className="bg-red-600 hover:bg-red-700 text-white" onClick={saveMode} disabled={savingMode}>
+                {savingMode ? 'Saving...' : <><Check className="w-3 h-3 mr-1" /> Save Mode</>}
+              </Button>
+              <Button size="sm" variant="outline" className="border-slate-700 text-slate-400" onClick={() => { setEditingMode(false); setSelectedMode(userProfile?.shooter_mode || 'photographer'); }}>
+                <X className="w-3 h-3 mr-1" /> Cancel
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <div className="flex items-center gap-3">
+            {{photographer: '📷', smartphone: '📱', experience: '👁'}[userProfile?.shooter_mode || 'photographer'] && (
+              <span className="text-2xl">{{photographer: '📷', smartphone: '📱', experience: '👁'}[userProfile?.shooter_mode || 'photographer']}</span>
+            )}
+            <div>
+              <p className="text-white font-medium">
+                {{photographer: 'DSLR / Mirrorless', smartphone: 'Smartphone', experience: 'Sky Watching'}[userProfile?.shooter_mode || 'photographer']}
+              </p>
+              <p className="text-slate-500 text-xs">
+                {{photographer: 'Full camera settings, stacking, and field technique.', smartphone: 'Night Mode tips and stability tricks.', experience: 'Visibility forecasts — what to see and when.'}[userProfile?.shooter_mode || 'photographer']}
+              </p>
+            </div>
+          </div>
+        )}
+      </Card>
+
       {/* Home Location */}
       <Card className="bg-[#1a1a1a] border-white/8 p-6 mb-6">
         <div className="flex items-center justify-between mb-3">
