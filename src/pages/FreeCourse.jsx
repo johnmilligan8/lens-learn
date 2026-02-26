@@ -396,6 +396,7 @@ export default function FreeCourse() {
   const [quizAnswers, setQuizAnswers] = useState({});
   const [quizSubmitted, setQuizSubmitted] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [shooterMode, setShooterMode] = useState('photographer');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -408,8 +409,12 @@ export default function FreeCourse() {
         const subs = await base44.entities.Subscription.filter({ user_email: me.email, status: 'active' }, '-created_date', 1);
         setIsSubscribed(subs.length > 0);
       }
-      const prog = await base44.entities.LessonProgress.filter({ user_email: me.email, module_id: { $in: FREE_MODULES.map(m => m.id) } });
+      const [prog, profiles] = await Promise.all([
+        base44.entities.LessonProgress.filter({ user_email: me.email, module_id: { $in: FREE_MODULES.map(m => m.id) } }),
+        base44.entities.UserProfile.filter({ user_email: me.email }, '-created_date', 1),
+      ]);
       setCompletedLessons(prog.filter(p => p.completed).map(p => p.lesson_id));
+      if (profiles[0]?.shooter_mode) setShooterMode(profiles[0].shooter_mode);
       setLoading(false);
     };
     init();
