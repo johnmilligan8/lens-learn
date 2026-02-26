@@ -144,11 +144,10 @@ export default function FieldMode() {
       {/* Tab strip */}
       <div className="sticky top-[calc(5.5rem)] z-40 bg-[#08000a]/90 backdrop-blur-sm border-b border-slate-800/60">
         <div className="flex max-w-2xl mx-auto">
-          {[
-            { id: 'camera', label: 'Camera', icon: Aperture },
-            { id: 'compose', label: 'Compose', icon: Crosshair },
-            { id: 'light', label: 'Lighting', icon: Lightbulb },
-          ].map(tab => {
+          {(mode === 'experience'
+            ? [{ id: 'compose', label: 'What to See', icon: Eye }, { id: 'light', label: 'Conditions', icon: Lightbulb }]
+            : [{ id: 'camera', label: 'Camera', icon: Aperture }, { id: 'compose', label: 'Compose', icon: Crosshair }, { id: 'light', label: 'Lighting', icon: Lightbulb }]
+          ).map(tab => {
             const Icon = tab.icon;
             const active = activeTab === tab.id;
             return (
