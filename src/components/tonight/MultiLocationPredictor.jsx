@@ -153,8 +153,13 @@ export default function MultiLocationPredictor({ isSubscribed, homeLocation, hom
 
   // Auto-populate home location when coords become available
   React.useEffect(() => {
-    if (homeLocation && homeCoords && locations.length === 0) {
-      setLocations([{ id: 'home', name: homeLocation, lat: homeCoords.lat, lon: homeCoords.lon }]);
+    if (homeLocation && homeCoords) {
+      setLocations(prev => {
+        // Only add if home isn't already in the list
+        const alreadyHasHome = prev.some(l => l.id === 'home');
+        if (alreadyHasHome) return prev;
+        return [{ id: 'home', name: homeLocation, lat: homeCoords.lat, lon: homeCoords.lon }, ...prev];
+      });
     }
   }, [homeLocation, homeCoords]);
 
