@@ -629,7 +629,7 @@ export default function MultiLocationPredictor({ isSubscribed, homeLocation, hom
         ))}
 
         {/* Add Location Input (hide in map view) */}
-        {locations.length < limit && (
+        {!showAllMap && locations.length < limit && (
           <div className="flex gap-2">
             <div className="relative flex-1">
               <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500" />
