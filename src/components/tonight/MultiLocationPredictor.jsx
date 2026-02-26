@@ -140,12 +140,181 @@ const EVENT_OPTIONS = [
 const FREE_LOCATION_LIMIT = 2;
 const PAID_LOCATION_LIMIT = 5;
 
+// ── Leaflet Map Picker Modal ──────────────────────────────────────────────────
+
+function LocationMapPicker({ initial, onConfirm, onCancel }) {
+  const mapRef = useRef(null);
+  const leafletMapRef = useRef(null);
+  const markerRef = useRef(null);
+  const [pos, setPos] = useState(initial || { lat: 39.5, lon: -98.35 });
+  const [name, setName] = useState(initial?.name || '');
+  const [gpsLoading, setGpsLoading] = useState(false);
+  const [mapReady, setMapReady] = useState(false);
+
+  useEffect(() => {
+    let L;
+    let map;
+    let marker;
+
+    const init = async () => {
+      if (!window.L) {
+        // Load Leaflet CSS
+        if (!document.querySelector('#leaflet-css')) {
+          const link = document.createElement('link');
+          link.id = 'leaflet-css';
+          link.rel = 'stylesheet';
+          link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+          document.head.appendChild(link);
+        }
+        // Load Leaflet JS
+        await new Promise((resolve) => {
+          const script = document.createElement('script');
+          script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+          script.onload = resolve;
+          document.head.appendChild(script);
+        });
+      }
+      L = window.L;
+
+      if (!mapRef.current || leafletMapRef.current) return;
+
+      map = L.map(mapRef.current, { zoomControl: true }).setView([pos.lat, pos.lon], 10);
+      leafletMapRef.current = map;
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap'
+      }).addTo(map);
+
+      const icon = L.divIcon({
+        html: `<div style="width:32px;height:32px;background:#ef4444;border:3px solid white;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 2px 8px rgba(0,0,0,0.5)"></div>`,
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        className: ''
+      });
+
+      marker = L.marker([pos.lat, pos.lon], { draggable: true, icon }).addTo(map);
+      markerRef.current = marker;
+
+      marker.on('dragend', () => {
+        const latlng = marker.getLatLng();
+        setPos({ lat: parseFloat(latlng.lat.toFixed(5)), lon: parseFloat(latlng.lng.toFixed(5)) });
+      });
+
+      map.on('click', (e) => {
+        const { lat, lng } = e.latlng;
+        marker.setLatLng([lat, lng]);
+        setPos({ lat: parseFloat(lat.toFixed(5)), lon: parseFloat(lng.toFixed(5)) });
+      });
+
+      setMapReady(true);
+    };
+
+    init();
+
+    return () => {
+      if (leafletMapRef.current) {
+        leafletMapRef.current.remove();
+        leafletMapRef.current = null;
+      }
+    };
+  }, []);
+
+  // Pan map when pos changes externally (GPS)
+  useEffect(() => {
+    if (leafletMapRef.current && markerRef.current) {
+      leafletMapRef.current.setView([pos.lat, pos.lon], 12);
+      markerRef.current.setLatLng([pos.lat, pos.lon]);
+    }
+  }, [pos.lat, pos.lon]);
+
+  const handleGPS = () => {
+    if (!navigator.geolocation) return;
+    setGpsLoading(true);
+    navigator.geolocation.getCurrentPosition(
+      (p) => {
+        const newPos = { lat: parseFloat(p.coords.latitude.toFixed(5)), lon: parseFloat(p.coords.longitude.toFixed(5)) };
+        setPos(newPos);
+        if (!name) setName('My Current Location');
+        setGpsLoading(false);
+      },
+      () => setGpsLoading(false),
+      { timeout: 8000 }
+    );
+  };
+
+  const handleConfirm = () => {
+    onConfirm({ lat: pos.lat, lon: pos.lon, name: name.trim() || `${pos.lat.toFixed(3)}, ${pos.lon.toFixed(3)}` });
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/70 backdrop-blur-sm p-0 sm:p-4">
+      <div className="bg-[#0f0f1a] border border-slate-700 rounded-t-2xl sm:rounded-2xl w-full sm:max-w-lg overflow-hidden flex flex-col" style={{ maxHeight: '90vh' }}>
+        {/* Header */}
+        <div className="flex items-center justify-between px-4 py-3 border-b border-slate-800">
+          <h3 className="text-white font-bold text-sm">Pin Your Location</h3>
+          <button onClick={onCancel} className="text-slate-500 hover:text-white transition-colors">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        {/* Name input */}
+        <div className="px-4 pt-3 pb-2">
+          <Input
+            placeholder="Location name (e.g. Bryce Canyon Rim)"
+            value={name}
+            onChange={e => setName(e.target.value)}
+            className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500 h-10"
+          />
+        </div>
+
+        {/* GPS button */}
+        <div className="px-4 pb-2">
+          <button
+            onClick={handleGPS}
+            disabled={gpsLoading}
+            className="flex items-center gap-2 text-xs text-blue-400 hover:text-blue-300 transition-colors"
+          >
+            {gpsLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Navigation className="w-3.5 h-3.5" />}
+            Use my current location
+          </button>
+        </div>
+
+        {/* Map */}
+        <div className="relative flex-1" style={{ minHeight: '260px' }}>
+          {!mapReady && (
+            <div className="absolute inset-0 flex items-center justify-center bg-slate-900 z-10">
+              <Loader2 className="w-6 h-6 text-slate-400 animate-spin" />
+            </div>
+          )}
+          <div ref={mapRef} style={{ width: '100%', height: '100%', minHeight: '260px' }} />
+        </div>
+
+        {/* Coords hint */}
+        <div className="px-4 pt-2 text-center">
+          <p className="text-slate-500 text-[11px]">
+            Drag the marker or tap the map to adjust · {pos.lat.toFixed(4)}, {pos.lon.toFixed(4)}
+          </p>
+        </div>
+
+        {/* Confirm */}
+        <div className="px-4 py-3">
+          <Button onClick={handleConfirm} className="w-full bg-red-600 hover:bg-red-700 font-bold h-11 gap-2">
+            <Check className="w-4 h-4" /> Confirm Location
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ── Main Component ────────────────────────────────────────────────────────────
 
 export default function MultiLocationPredictor({ isSubscribed, homeLocation, homeCoords }) {
   const [locations, setLocations] = useState([]);
   const [inputVal, setInputVal] = useState('');
   const [addingLocation, setAddingLocation] = useState(false);
+  const [pendingLocation, setPendingLocation] = useState(null); // { lat, lon, name } waiting for map confirm
+  const [showMapPicker, setShowMapPicker] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState('milky_way');
   const [rankings, setRankings] = useState(null);
   const [ranking, setRanking] = useState(false);
