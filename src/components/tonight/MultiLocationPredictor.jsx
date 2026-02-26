@@ -170,6 +170,43 @@ const PAID_LOCATION_LIMIT = 5;
 
 // LocationMapPicker is now handled by the shared LeafletLocationPicker component
 
+// ── Leaflet loader ────────────────────────────────────────────────────────────
+async function ensureLeaflet() {
+  if (window.L) return window.L;
+  if (!document.querySelector('#leaflet-css')) {
+    const link = document.createElement('link');
+    link.id = 'leaflet-css';
+    link.rel = 'stylesheet';
+    link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+    document.head.appendChild(link);
+  }
+  if (!document.querySelector('#leaflet-js')) {
+    await new Promise((resolve) => {
+      const s = document.createElement('script');
+      s.id = 'leaflet-js';
+      s.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+      s.onload = resolve;
+      document.head.appendChild(s);
+    });
+  }
+  return window.L;
+}
+
+// ── Nominatim geocoder ────────────────────────────────────────────────────────
+async function nominatimGeocode(query) {
+  const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1&addressdetails=0`;
+  const res = await fetch(url, {
+    headers: { 'Accept-Language': 'en', 'User-Agent': 'UnchartedSkyApp/1.0' },
+  });
+  const data = await res.json();
+  if (!data.length) return null;
+  return {
+    lat: parseFloat(data[0].lat),
+    lon: parseFloat(data[0].lon),
+    display_name: data[0].display_name.split(',').slice(0, 2).join(', '),
+  };
+}
+
 // ── All Locations Map View ────────────────────────────────────────────────────
 
 function AllLocationsMap({ locations, onUpdateLocation, onClose }) {
@@ -180,22 +217,7 @@ function AllLocationsMap({ locations, onUpdateLocation, onClose }) {
 
   useEffect(() => {
     const init = async () => {
-      if (!window.L) {
-        if (!document.querySelector('#leaflet-css')) {
-          const link = document.createElement('link');
-          link.id = 'leaflet-css';
-          link.rel = 'stylesheet';
-          link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
-          document.head.appendChild(link);
-        }
-        await new Promise((resolve) => {
-          const script = document.createElement('script');
-          script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
-          script.onload = resolve;
-          document.head.appendChild(script);
-        });
-      }
-      const L = window.L;
+      const L = await ensureLeaflet();
       if (!mapRef.current || leafletMapRef.current) return;
 
       const COLORS = ['#ef4444','#3b82f6','#22c55e','#f59e0b','#a855f7'];
