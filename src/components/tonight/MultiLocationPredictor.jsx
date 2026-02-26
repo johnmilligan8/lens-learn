@@ -151,6 +151,13 @@ export default function MultiLocationPredictor({ isSubscribed, homeLocation, hom
   const [kpIndex, setKpIndex] = useState(null);
   const [showUpsell, setShowUpsell] = useState(false);
 
+  // Auto-populate home location when coords become available
+  React.useEffect(() => {
+    if (homeLocation && homeCoords && locations.length === 0) {
+      setLocations([{ id: 'home', name: homeLocation, lat: homeCoords.lat, lon: homeCoords.lon }]);
+    }
+  }, [homeLocation, homeCoords]);
+
   const limit = isSubscribed ? PAID_LOCATION_LIMIT : FREE_LOCATION_LIMIT;
 
   const geocodeLocation = async (name) => {
