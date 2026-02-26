@@ -611,7 +611,7 @@ export default function MultiLocationPredictor({ isSubscribed, homeLocation, hom
 
       {/* Map Picker Modal */}
       {showMapPicker && (
-        <LocationMapPicker
+        <LeafletLocationPicker
           initial={pendingLocation}
           onConfirm={confirmLocation}
           onCancel={cancelMapPicker}
