@@ -272,6 +272,15 @@ export default function TonightHub() {
         {coords && <p className="text-xs text-red-400 mt-3 font-medium">✓ Analyzing {coords.lat.toFixed(2)}°N, {coords.lon.toFixed(2)}°W</p>}
       </Card>
 
+      {/* ── Multi-Location Predictor ── */}
+      <div className="mt-2 mb-8 pt-2 border-t border-white/8">
+        <MultiLocationPredictor
+          isSubscribed={isSubscribed}
+          homeLocation={profile?.home_location || location || null}
+          homeCoords={coords}
+        />
+      </div>
+
       {/* Events */}
       {!coords ? (
         <div className="text-center py-20">
