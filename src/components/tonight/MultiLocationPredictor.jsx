@@ -314,22 +314,7 @@ export default function MultiLocationPredictor({ isSubscribed, homeLocation, hom
 
   const limit = isSubscribed ? PAID_LOCATION_LIMIT : FREE_LOCATION_LIMIT;
 
-  const geocodeLocation = async (name) => {
-    const res = await base44.integrations.Core.InvokeLLM({
-      prompt: `Give me the latitude and longitude of: "${name}". Return ONLY a JSON object with "lat" (number), "lon" (number), "display_name" (string, clean short city name).`,
-      response_json_schema: {
-        type: 'object',
-        properties: {
-          lat: { type: 'number' },
-          lon: { type: 'number' },
-          display_name: { type: 'string' }
-        }
-      }
-    });
-    return res;
-  };
-
-  // Step 1: geocode the typed name, then open map picker for confirmation
+  // Step 1: geocode the typed name using Nominatim, then open map picker
   const openMapPicker = async () => {
     if (!inputVal.trim()) return;
     if (locations.length >= limit) {
@@ -338,9 +323,12 @@ export default function MultiLocationPredictor({ isSubscribed, homeLocation, hom
     }
     setAddingLocation(true);
     let initial = null;
-    const geo = await geocodeLocation(inputVal.trim());
+    const geo = await nominatimGeocode(inputVal.trim()).catch(() => null);
     if (geo?.lat && geo?.lon) {
       initial = { lat: geo.lat, lon: geo.lon, name: geo.display_name || inputVal.trim() };
+    } else {
+      // Fallback: open picker centered on US with user's typed name
+      initial = { lat: 39.5, lon: -98.35, name: inputVal.trim() };
     }
     setAddingLocation(false);
     setPendingLocation(initial);
