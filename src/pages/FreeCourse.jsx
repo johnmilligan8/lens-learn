@@ -716,6 +716,15 @@ export default function FreeCourse() {
               </div>
             )}
 
+            {/* Mode-specific action hint */}
+            {activeLesson.type === 'article' && (
+              <div className="px-6 pb-4 text-xs text-slate-500 italic">
+                {shooterMode === 'photographer' && '📷 Tip: Apply these settings in Manual (M) mode tonight.'}
+                {shooterMode === 'smartphone' && '📱 Tip: Open your phone\'s Pro/Expert mode and try these concepts.'}
+                {shooterMode === 'experience' && '👁 Tip: No gear needed — focus on the visibility and timing takeaways.'}
+              </div>
+            )}
+
             {/* Footer Actions */}
             <div className="p-5 border-t border-white/8 flex items-center justify-between gap-3 flex-wrap">
               <Button
