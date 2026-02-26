@@ -589,6 +589,22 @@ export default function PlannerTool() {
     if (expeditionState.results) setResults(expeditionState.results);
   };
 
+  const [calendarRange, setCalendarRange] = useState(null);
+
+  const handleCalendarDate = (dateStr) => {
+    setDate(dateStr);
+    // auto-run if we already have a location
+    if (location.trim() || coords) {
+      setTimeout(() => calculate(), 50);
+    }
+  };
+
+  const handleCalendarRange = ({ start, end }) => {
+    setCalendarRange({ start, end });
+    setDate(start);
+    if (location.trim() || coords) setTimeout(() => calculate(), 50);
+  };
+
   const handleSelectDateFromForecast = (selectedDate) => {
     setDate(selectedDate);
     setTimeout(() => calculate(), 100);
