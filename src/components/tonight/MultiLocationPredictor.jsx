@@ -586,19 +586,21 @@ export default function MultiLocationPredictor({ isSubscribed, homeLocation, hom
         </div>
       </div>
 
-      {/* Location List / Map View toggle */}
+      {/* Map View toggle — always visible when locations exist */}
       {locations.length > 0 && (
-        <div className="flex items-center justify-between">
-          <p className="text-slate-500 text-xs">{locations.length} location{locations.length !== 1 ? 's' : ''} added</p>
+        <div className="flex items-center justify-between bg-slate-800/50 border border-slate-700 rounded-xl px-3 py-2">
+          <span className="text-slate-400 text-xs font-medium flex items-center gap-1.5">
+            <Map className="w-3.5 h-3.5 text-slate-500" />
+            View all on map
+          </span>
           <button
             onClick={() => setShowAllMap(v => !v)}
-            className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border transition-all font-semibold ${
+            className={`flex items-center gap-1.5 text-xs px-3 py-1 rounded-full border transition-all font-bold ${
               showAllMap
-                ? 'bg-red-600/20 border-red-500 text-red-300'
-                : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-white'
+                ? 'bg-red-600 border-red-500 text-white'
+                : 'bg-slate-700 border-slate-600 text-white hover:bg-slate-600'
             }`}
           >
-            <Map className="w-3.5 h-3.5" />
             {showAllMap ? 'List View' : 'Map View'}
           </button>
         </div>
