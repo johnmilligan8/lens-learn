@@ -367,6 +367,15 @@ export default function TonightHub() {
         </div>
       )}
 
+      {/* ── Multi-Location Predictor ── */}
+      <div className="mt-8 pt-6 border-t border-white/8">
+        <MultiLocationPredictor
+          isSubscribed={isSubscribed}
+          homeLocation={profile?.home_location || location || null}
+          homeCoords={coords}
+        />
+      </div>
+
       {/* Curriculum cross-link tip */}
       {coords && (
         <Card className="bg-[#1a1a1a] border border-emerald-500/20 p-4 mt-4">
