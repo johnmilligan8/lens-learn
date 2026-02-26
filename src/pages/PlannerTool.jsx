@@ -652,6 +652,18 @@ export default function PlannerTool() {
         </Link>
       </div>
 
+      {/* Curriculum cross-link — Module 3 */}
+      <div className="mb-5 flex items-start gap-2 bg-[#0a1a0a]/60 border border-emerald-900/40 rounded-xl px-4 py-3">
+        <span className="text-emerald-400 text-sm leading-none mt-0.5 flex-shrink-0">📚</span>
+        <p className="text-slate-400 text-xs leading-relaxed">
+          <span className="text-emerald-300 font-semibold">Course tip (Module 3): </span>
+          After calculating your shoot window here, use <strong className="text-white">AR Scout</strong> (below) to preview the exact Milky Way arc in your scene. Scout your foreground in daylight — AR Scout shows the galaxy's position at any future date and time.
+        </p>
+        <Link to={createPageUrl('FreeCourse')} className="text-emerald-400 text-xs font-semibold hover:text-emerald-300 whitespace-nowrap ml-2">
+          Course →
+        </Link>
+      </div>
+
       <div className="grid lg:grid-cols-5 gap-6">
         {/* ── Left: Inputs ── */}
          <div className="lg:col-span-2 space-y-5">
