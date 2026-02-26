@@ -586,9 +586,35 @@ export default function MultiLocationPredictor({ isSubscribed, homeLocation, hom
         </div>
       </div>
 
+      {/* Location List / Map View toggle */}
+      {locations.length > 0 && (
+        <div className="flex justify-end">
+          <button
+            onClick={() => setShowAllMap(v => !v)}
+            className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border transition-all font-semibold ${
+              showAllMap
+                ? 'bg-red-600/20 border-red-500 text-red-300'
+                : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-white'
+            }`}
+          >
+            <Map className="w-3.5 h-3.5" />
+            {showAllMap ? 'List View' : 'Map View'}
+          </button>
+        </div>
+      )}
+
+      {/* All-locations map */}
+      {showAllMap && locations.length > 0 && (
+        <AllLocationsMap
+          locations={locations}
+          onUpdateLocation={updateLocationCoords}
+          onClose={() => setShowAllMap(false)}
+        />
+      )}
+
       {/* Location List */}
       <div className="space-y-2">
-        {locations.map((loc, i) => (
+        {!showAllMap && locations.map((loc, i) => (
           <div key={loc.id} className="flex items-center gap-2 bg-[#111] border border-white/8 rounded-xl px-3 py-2.5">
             <div className="w-6 h-6 rounded-full bg-slate-800 flex items-center justify-center text-xs font-bold text-slate-400 flex-shrink-0">
               {i + 1}
