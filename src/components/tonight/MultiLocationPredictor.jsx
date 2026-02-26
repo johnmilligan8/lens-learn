@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import {
   MapPin, Plus, X, Loader2, Star, Lock, Trophy,
-  Navigation, Check
+  Navigation, Check, Map
 } from 'lucide-react';
 
 // ── Astronomy helpers ────────────────────────────────────────────────────────
