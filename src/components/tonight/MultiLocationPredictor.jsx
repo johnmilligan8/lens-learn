@@ -99,8 +99,8 @@ function estimateBortle(lat, lon, name = '') {
   if (/\b(city|cities)\b/.test(n)) return 7;
   if (/\b(town|village|borough|township)\b/.test(n)) return 5;
 
-  // Genuinely remote / natural features
-  if (/\b(lake|mountain|peak|summit|desert|canyon|valley|forest|basin|flat|flats|ridge|mesa|butte|crater|springs|reservoir|creek|river|wilderness|range)\b/.test(n)) return 3;
+  // Genuinely remote / natural features (dark sky)
+  if (/\b(lake|mountain|peak|summit|desert|canyon|valley|forest|basin|flat|flats|ridge|mesa|butte|crater|springs|reservoir|creek|river|wilderness|range|spike|dune|dunes|pass|divide|gulch|wash|hollow|bluff|overlook|viewpoint|campground|trailhead|national monument|historic site)\b/.test(n)) return 3;
 
   // Default: rural but not explicitly dark
   return 4;
