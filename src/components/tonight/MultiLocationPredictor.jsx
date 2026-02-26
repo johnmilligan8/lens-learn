@@ -142,12 +142,7 @@ const PAID_LOCATION_LIMIT = 5;
 // ── Main Component ────────────────────────────────────────────────────────────
 
 export default function MultiLocationPredictor({ isSubscribed, homeLocation, homeCoords }) {
-  const [locations, setLocations] = useState(() => {
-    if (homeLocation && homeCoords) {
-      return [{ id: 'home', name: homeLocation, lat: homeCoords.lat, lon: homeCoords.lon, loaded: false }];
-    }
-    return [];
-  });
+  const [locations, setLocations] = useState([]);
   const [inputVal, setInputVal] = useState('');
   const [addingLocation, setAddingLocation] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState('milky_way');
