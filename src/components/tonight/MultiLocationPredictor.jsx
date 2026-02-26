@@ -6,9 +6,9 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
+import LeafletLocationPicker from '@/components/ui/LeafletLocationPicker';
 import {
-  MapPin, Plus, X, Loader2, Star, Lock, Trophy,
-  Navigation, Check, Map
+  MapPin, Plus, X, Loader2, Star, Lock, Trophy, Map
 } from 'lucide-react';
 
 // ── Astronomy helpers ────────────────────────────────────────────────────────
