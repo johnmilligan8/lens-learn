@@ -559,16 +559,18 @@ export default function MultiLocationPredictor({ isSubscribed, homeLocation, hom
       setKpIndex(kp);
     }
 
-    // Fetch weather for all locations in parallel
-    const weatherResults = await Promise.all(
-      locations.map(loc => fetchWeather(loc.lat, loc.lon).catch(() => ({ cloud: 50, wind: 15 })))
-    );
+    // Fetch weather and Bortle data for all locations in parallel
+    const [weatherResults, bortleResults] = await Promise.all([
+      Promise.all(locations.map(loc => fetchWeather(loc.lat, loc.lon).catch(() => ({ cloud: 50, wind: 15 })))),
+      Promise.all(locations.map(loc => fetchBortleForLocation(loc.lat, loc.lon).catch(() => ({ bortle: 4 })))),
+    ]);
 
     // Score each
     const scored = locations.map((loc, i) => {
       const w = weatherResults[i];
-      const result = scoreLocation({ ...loc, ...w }, selectedEvent, kp);
-      return { ...loc, ...w, ...result };
+      const bortleData = bortleResults[i];
+      const result = scoreLocation({ ...loc, ...w, bortleData }, selectedEvent, kp);
+      return { ...loc, ...w, bortleData, ...result };
     });
 
     // Sort by score descending, assign rank
