@@ -487,6 +487,11 @@ export default function MultiLocationPredictor({ isSubscribed, homeLocation, hom
     setRankings(null);
   };
 
+  const updateLocationCoords = (id, lat, lon) => {
+    setLocations(prev => prev.map(l => l.id === id ? { ...l, lat, lon } : l));
+    setRankings(null);
+  };
+
   const fetchWeather = async (lat, lon) => {
     const params = new URLSearchParams({
       latitude: lat,
