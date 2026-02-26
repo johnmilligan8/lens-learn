@@ -46,12 +46,63 @@ function getGCPeakAlt(lat, lon) {
 
 function estimateBortle(lat, lon, name = '') {
   const n = (name || '').toLowerCase();
-  if (/national park|dark sky|wilderness|bryce|arches|capitol reef|death valley|big bend|rural/.test(n)) return 2;
-  if (/mountain|peak|summit|desert|canyon|valley|forest|lake/.test(n)) return 3;
-  if (/suburb|town|village|county/.test(n)) return 6;
-  if (/new york|los angeles|chicago|houston|phoenix|london|tokyo|paris/.test(n)) return 8;
-  if (/city|urban|downtown|metro/.test(n)) return 7;
-  if (Math.abs(lat) > 50) return 3;
+
+  // Explicit major city check (Bortle 8-9)
+  if (/\b(new york|los angeles|chicago|houston|phoenix|dallas|san jose|austin|jacksonville|san francisco|london|tokyo|paris|beijing|seoul|moscow|sydney|toronto|chicago)\b/.test(n)) return 8;
+
+  // Explicit urban/suburban keywords (Bortle 6-7)
+  if (/\b(suburb|downtown|metro|urban|district)\b/.test(n)) return 6;
+
+  // Explicit dark sky / wilderness (Bortle 2)
+  if (/national park|dark sky park|wilderness area|state park|bryce|arches|capitol reef|death valley|big bend|zion/.test(n)) return 2;
+
+  // Now use coordinates to estimate light pollution
+  // Compare lon/lat to known population centers — use distance-based approach
+  // Major US cities coords for proximity check
+  const cities = [
+    [40.71, -74.01, 9],  // NYC
+    [34.05, -118.24, 9], // LA
+    [41.85, -87.65, 9],  // Chicago
+    [29.76, -95.37, 8],  // Houston
+    [33.45, -112.07, 8], // Phoenix
+    [32.78, -96.80, 8],  // Dallas
+    [47.61, -122.33, 8], // Seattle
+    [37.77, -122.42, 8], // SF
+    [39.74, -104.98, 7], // Denver
+    [40.76, -111.89, 7], // Salt Lake City
+    [36.17, -115.14, 8], // Las Vegas
+    [35.23, -80.84, 7],  // Charlotte
+    [39.95, -75.17, 8],  // Philadelphia
+    [42.36, -71.06, 8],  // Boston
+    [45.52, -122.68, 7], // Portland
+    [43.05, -76.15, 7],  // Syracuse
+  ];
+
+  let nearestBortle = null;
+  let nearestDist = Infinity;
+  for (const [clat, clon, bortle] of cities) {
+    const dist = Math.sqrt((lat - clat) ** 2 + (lon - clon) ** 2);
+    if (dist < nearestDist) {
+      nearestDist = dist;
+      nearestBortle = bortle;
+    }
+  }
+
+  // Within ~25km of a major city core
+  if (nearestDist < 0.25) return nearestBortle;
+  // Suburban ring ~50km
+  if (nearestDist < 0.5) return Math.min(nearestBortle, 6);
+  // Exurban ~100km
+  if (nearestDist < 1.0) return Math.min(nearestBortle, 5);
+
+  // Rural area by default — check name for settlement indicators
+  if (/\b(city|cities)\b/.test(n)) return 7;
+  if (/\b(town|village|borough|township)\b/.test(n)) return 5;
+
+  // Genuinely remote / natural features
+  if (/\b(lake|mountain|peak|summit|desert|canyon|valley|forest|basin|flat|flats|ridge|mesa|butte|crater|springs|reservoir|creek|river|wilderness|range)\b/.test(n)) return 3;
+
+  // Default: rural but not explicitly dark
   return 4;
 }
 
