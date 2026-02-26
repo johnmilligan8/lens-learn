@@ -8,124 +8,391 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import {
   Play, BookOpen, CheckSquare, ChevronRight, Lock,
-  Star, Rocket, Camera, MapPin, Telescope, Zap, Check
+  Star, Camera, MapPin, Telescope, Zap, Check,
+  Compass, Eye, Moon, Mountain, Settings, Layers
 } from 'lucide-react';
 
-const FREE_LESSONS = [
-  {
-    id: 'free-1',
-    title: 'Welcome to the Galaxy',
-    type: 'video',
-    duration: '8 min',
-    description: "What astrophotography is, why Utah's dark skies are world-class, and your first steps.",
-    video_url: 'https://www.youtube.com/embed/7gD9OFJCYCc',
-    completed: false,
-  },
-  {
-    id: 'free-2',
-    title: 'Gear Essentials for Beginners',
-    type: 'article',
-    duration: '10 min read',
-    description: 'Camera body, lenses (fast wide-angle f/1.8–f/2.8), tripods, and what NOT to buy yet.',
-    completed: false,
-  },
-  {
-    id: 'free-3',
-    title: 'The Magic Camera Settings',
-    type: 'video',
-    duration: '12 min',
-    description: 'The "500 Rule", ISO 3200–6400, f/2.8, 20–25 second exposures explained simply.',
-    video_url: 'https://www.youtube.com/embed/6E5dpxiW6DU',
-    completed: false,
-  },
-  {
-    id: 'free-4',
-    title: 'Simple Composition Tips',
-    type: 'article',
-    duration: '8 min read',
-    description: 'Rule of thirds, leading lines, using foreground interest to frame the Milky Way.',
-    completed: false,
-  },
-  {
-    id: 'free-5',
-    title: 'Your First Shoot Checklist',
-    type: 'quiz',
-    duration: '5 min',
-    description: 'Gear checklist, location prep, and a quick quiz to confirm you\'re ready to go out tonight.',
-    completed: false,
-  },
-];
+// ── Module & Lesson Definitions ────────────────────────────────────────────
 
-const DARK_SKY_SPOTS = [
-  { name: 'Bonneville Salt Flats', distance: '1.5 hrs from SLC', bortle: 2, tip: 'Perfect flat foreground, Milky Way core reflects in wet season.' },
-  { name: 'Stansbury Island', distance: '45 min from SLC', bortle: 3, tip: 'Easy access, great mountain silhouette foreground.' },
-  { name: 'Little Sahara Recreation Area', distance: '2 hrs from SLC', bortle: 2, tip: 'Sand dunes create stunning foreground textures.' },
-  { name: 'Capitol Reef National Park', distance: '3.5 hrs from SLC', bortle: 1, tip: 'Gold Tier dark sky. Plan an overnight trip.' },
-];
+const FREE_MODULES = [
+  {
+    id: 'mod-1',
+    title: 'Pre-Class Preparation',
+    subtitle: 'Gear up, find your spot, learn the app',
+    icon: Compass,
+    color: 'emerald',
+    lessons: [
+      {
+        id: 'm1-l1',
+        title: 'Welcome — Your Milky Way Journey Starts Here',
+        type: 'article',
+        duration: '5 min read',
+        description: 'Your first Milky Way shot starts here — with Uncharted Galaxy as your companion. Here\'s what this course covers and how to use the app alongside each lesson.',
+        content: `## Welcome, Explorer
 
-const ARTICLE_CONTENT = {
-  'free-2': `## Essential Gear for Your First Night Sky Shoot
+Your first Milky Way shot starts here — and **Uncharted Galaxy** is your companion every step of the way.
 
-### The Camera
-Any modern DSLR or mirrorless camera with **manual mode** will work. You don't need the latest model — a Canon Rebel, Sony A6000, or Nikon D3500 are all excellent starting points.
+This free starter course teaches you everything you need to go from total beginner to capturing a jaw-dropping image of the galaxy. We'll use the app's built-in tools at every step so you're learning and doing simultaneously.
 
-### The Most Important Piece: Your Lens
-This is where budget matters. You want a **fast wide-angle lens**:
-- **Focal length**: 14mm – 24mm (full-frame equivalent)
-- **Aperture**: f/1.8 – f/2.8 (wider = more light = better)
-- **Recommended**: Rokinon/Samyang 14mm f/2.8 (~$300) — the go-to beginner lens
+### What You'll Learn
+
+**Module 1 (Free): Pre-Class Preparation**
+Setting up your gear list, choosing your location, and navigating the app so nothing surprises you in the dark.
+
+**Module 2 (Free): Exposure & Settings Fundamentals**
+The exact ISO, aperture, and shutter speed settings that work — and how to use the app's Camera Calculator to dial them in on the fly.
+
+**Plus Modules (Unlock for $7.99/mo):**
+- Module 3: Planning the Shot — Sky Planner + Cosmic Events + AR Scout
+- Module 4: Composition & Focus — Guided Shoot Plan + foreground alignment
+- Module 5: In-Class Execution — Field Mode walkthrough + Blue Hour/LLL
+- Module 6: Post-Class Reflection — Journal, outcome tagging, insights
+
+### How to Use This Course
+Open the app alongside each lesson. When we say "open Tonight?", open it. When we say "set your home location", do it now. The best way to learn is to do.
+
+Let's begin.
+`,
+      },
+      {
+        id: 'm1-l2',
+        title: 'Gear Checklist — What You Actually Need',
+        type: 'article',
+        duration: '8 min read',
+        description: 'The essential gear list for your first Milky Way shoot — and how to use the Sky Planner Gear section to track it.',
+        appLink: { label: 'Open Sky Planner → Gear', page: 'PlannerTool' },
+        content: `## Gear Checklist — What You Actually Need
+
+The good news: you probably already have most of what you need.
+
+### Camera
+Any DSLR or mirrorless with **manual mode** works. Canon Rebel, Sony A6000, Nikon D3500 — all excellent starters. Even a newer smartphone (iPhone 14 Pro+, Pixel 8+) can capture the Milky Way in Night Mode.
+
+### The Lens (Most Important)
+This is where it matters. You want:
+- **Focal length**: 14mm–24mm (full-frame equivalent)
+- **Aperture**: f/1.8–f/2.8 (wider = more light = better)
+- **Budget pick**: Rokinon/Samyang 14mm f/2.8 (~$300)
 
 ### Tripod
-**Non-negotiable.** Any sturdy tripod works. Ball heads make framing easier. Budget: $50–$150.
+Non-negotiable. Any sturdy tripod works. Ball head makes framing easier.
 
 ### What NOT to Buy Yet
 - Tracking mounts (learn fixed tripod first)
-- Filters (not needed for basic Milky Way)
+- Filters (not needed for Milky Way)
 - New camera body (your existing one is fine)
 
-### The "500 Rule" Settings to Start
-| Setting | Value |
-|---------|-------|
-| ISO | 3200–6400 |
-| Aperture | f/2.8 (or widest) |
-| Shutter | 20–25 seconds |
-| Focus | Manual, set to ∞ then back slightly |
+### Use the App's Gear Checklist
+**Open Sky Planner → Gear** in the app. There's a pre-built checklist for photographer, smartphone, and experience modes. Check items off before every shoot so nothing gets left behind.
+
+**Your action:** Open the Sky Planner Gear section now and select your shooter mode. Check off what you already own.
 `,
-  'free-4': `## Simple Composition for Night Sky Photography
+      },
+      {
+        id: 'm1-l3',
+        title: 'Set Your Home Base — Location Setup',
+        type: 'article',
+        duration: '6 min read',
+        description: 'Set your home location in the app to get accurate tonight forecasts, moon phases, and galactic core timing.',
+        appLink: { label: 'Open Profile → Set Location', page: 'Profile' },
+        content: `## Set Your Home Base
 
-### Rule of Thirds
-Imagine your frame divided into a 3×3 grid. Place the **horizon on the lower third** and the Milky Way's galactic core on one of the vertical third lines. Never center everything — it looks static.
+The app uses your location to calculate everything: when the Milky Way rises, what the moon phase is, Bortle scale (light pollution), and weather forecasts.
 
-### Use a Foreground Subject
-The Milky Way alone looks flat. Add:
-- A lone tree or Joshua tree
-- Rocky formations or boulders
-- A road or path leading into the frame
-- A person (use a headlamp for a "light painting" silhouette)
+### Set It Now
+1. Tap **My Profile** in the navigation
+2. Find **Home Location** and tap Set Location
+3. You can type a city name, use GPS, or pick from the dark sky spots list
 
-### Leading Lines
-Roads, rivers, fence lines, and canyon walls all naturally draw the eye toward the sky. Find them during daylight scouting.
+### Utah's Best Dark Sky Spots
 
-### Silhouettes Work Best
-Keep foreground elements as **dark silhouettes** against the starry sky. Bright foregrounds distract from the stars.
+| Location | Drive from SLC | Bortle |
+|----------|---------------|--------|
+| Stansbury Island | 45 min | 3 |
+| Bonneville Salt Flats | 1.5 hrs | 2 |
+| Little Sahara | 2 hrs | 2 |
+| Capitol Reef NP | 3.5 hrs | 1 |
 
-### Golden Tip: Scout in Daylight
-Visit your location during the day. Check composition, note hazards, and confirm your exact setup position so you're not fumbling in the dark at 2am.
+**Bortle 1–3** = excellent dark skies. Anything above 5 and the Milky Way starts washing out.
+
+### Understanding Light Pollution
+The app shows your location's estimated Bortle scale in the Sky Planner. Aim for a location with Bortle 3 or lower for your first shoot.
+
+**Your action:** Set your home location in Profile now. Then open **Tonight?** and confirm you can see conditions for your area.
 `,
+      },
+      {
+        id: 'm1-l4',
+        title: 'App Navigation Overview — Your Pre-Shoot Workflow',
+        type: 'article',
+        duration: '7 min read',
+        description: 'A quick tour of every screen you\'ll use before a shoot — and the exact workflow to follow the night before.',
+        appLink: { label: 'Open Tonight?', page: 'TonightHub' },
+        content: `## App Navigation Overview
+
+Before every shoot, run through this sequence in Uncharted Galaxy:
+
+### 1. Check Tonight? First
+Open **Tonight?** from the bottom nav. This is your go-to screen before any shoot. It shows:
+- Tonight's aurora, moon phase, and Milky Way conditions at a glance
+- Weather summary and cloud cover
+- Ranked events — the app tells you what's worth shooting tonight
+
+**Curriculum tip from Tonight?:** Aim for moon phase below 10%. The app shows this prominently — if the moon is bright, pick a different night or wait until it sets.
+
+### 2. Sky Planner for Detailed Planning
+For serious sessions, open **Sky Planner**. Enter your location and date to see:
+- Galactic core rise/set/peak times
+- Moon phase calculator
+- Bortle scale for your spot
+- Weather forecast with an astrophotography-specific Astro Score
+
+### 3. Cosmic Events for What's Upcoming
+Check **Cosmic Events** for upcoming meteor showers, eclipses, and aurora alerts. These are the nights worth planning around.
+
+### 4. Star Pointer for Orientation
+In the field, use **Star Pointer** to point your phone at the sky and identify what you're looking at. Great for finding the galactic core direction before dark.
+
+### 5. Field Mode for Execution
+When you're on location and ready to shoot, open **Field Mode**. It shows current conditions, a settings calculator, composition tips, and a guided plan if you set one up.
+
+**Your action:** Open **Tonight?** right now and read the conditions for tonight. Note the moon phase percentage.
+`,
+      },
+    ],
+  },
+  {
+    id: 'mod-2',
+    title: 'Exposure & Settings Fundamentals',
+    subtitle: 'ISO, aperture, shutter — dialed in with the app',
+    icon: Camera,
+    color: 'red',
+    lessons: [
+      {
+        id: 'm2-l1',
+        title: 'The Three Settings That Matter',
+        type: 'article',
+        duration: '8 min read',
+        description: 'ISO 3200–6400, aperture f/2.8+, and shutter speed — the three pillars of a Milky Way exposure, explained simply.',
+        content: `## The Three Settings That Matter
+
+Night sky photography is just three settings, dialed correctly. Here they are.
+
+### 1. ISO: Your Light Sensitivity
+**Start at ISO 3200.** If the image looks too dark, go to 6400.
+
+- ISO 1600 = dimmer stars, cleaner image
+- ISO 3200 = good balance for most cameras
+- ISO 6400 = brighter stars, more noise (grain)
+- ISO 12800+ = only if your camera handles it cleanly
+
+**Rule of thumb:** Use the highest ISO where the grain (noise) is still acceptable to you.
+
+### 2. Aperture: Open It Wide
+**Set your aperture as wide as it goes.** f/1.8, f/2.0, f/2.8 — the lower the number, the more light you collect.
+
+- f/1.4–f/1.8 = excellent, very bright stars
+- f/2.0–f/2.8 = the sweet spot for most lenses
+- f/3.5–f/4.0 = usable but you'll need higher ISO to compensate
+- f/5.6+ = not suitable for Milky Way
+
+### 3. Shutter Speed: Keep Stars as Points
+Stars are moving (technically Earth is rotating). Too long an exposure and stars become streaks instead of points.
+
+**The quick rule:** 20–25 seconds for most wide-angle lenses. The app's Camera Calculator will give you a precise number based on your focal length.
+
+### Focus: The Most Overlooked Step
+Switch to **manual focus**. Point at a bright star, zoom in on your camera's live view, and rotate focus until the star is as small/sharp as possible. Then don't touch it.
+
+**Your action:** Set your camera to ISO 3200, your widest aperture, and 20 seconds. Take a test shot indoors pointing at a light source to confirm settings are saving correctly.
+`,
+      },
+      {
+        id: 'm2-l2',
+        title: 'The 500/300/NPF Rule — Use the App Calculator',
+        type: 'article',
+        duration: '6 min read',
+        description: 'The rules that tell you your maximum shutter speed before star trails appear — and how to find it in the app\'s Camera tab.',
+        appLink: { label: 'Open Field Mode → Camera Tab', page: 'FieldMode' },
+        content: `## The 500 / 300 / NPF Rule
+
+Star trails appear when your shutter is open too long. These rules tell you the maximum safe shutter speed.
+
+### The 500 Rule (Simplest)
+**Max shutter = 500 ÷ focal length**
+
+Examples:
+- 14mm lens → 500 ÷ 14 = **35 seconds**
+- 20mm lens → 500 ÷ 20 = **25 seconds**
+- 24mm lens → 500 ÷ 24 = **20 seconds**
+
+Works well for full-frame cameras.
+
+### The 300 Rule (Crop Sensors)
+If your camera has a crop sensor (APS-C), use 300 instead of 500:
+- 14mm lens on crop sensor → 300 ÷ 14 = **21 seconds**
+
+### The NPF Rule (Most Accurate)
+The NPF rule factors in your camera's pixel density for a more precise result. It's more complex to calculate manually — which is exactly why the app does it for you.
+
+### Use the App's Camera Calculator
+**Open Field Mode → Camera tab** in the app. Enter your:
+- Camera sensor size
+- Focal length
+- Desired sharpness level
+
+The app calculates your ideal ISO, aperture, and shutter speed using the NPF rule. Use this in the field — don't try to do the math in the dark.
+
+**Your action:** Open Field Mode and navigate to the Camera tab. Enter your camera and lens details. Note the shutter speed it recommends for your setup.
+`,
+      },
+      {
+        id: 'm2-l3',
+        title: 'Reading the Histogram',
+        type: 'article',
+        duration: '5 min read',
+        description: 'The histogram tells you if your exposure is right — and it\'s the most reliable tool in the dark.',
+        content: `## Reading the Histogram
+
+In the dark, your eyes can't judge exposure accurately. Your histogram always can.
+
+### What a Histogram Shows
+A histogram is a graph of pixel brightness from left (black/dark) to right (bright/white). The height at each point shows how many pixels are at that brightness.
+
+### What You Want for Night Sky
+For Milky Way photography, your histogram should be:
+- **Pushed left** (mostly dark — this is correct!)
+- A small spike on the left for the black sky
+- A small bump in the middle-right for the stars and Milky Way
+- **No spike touching the far right** — that means overexposure
+
+### Common Mistake: Underexposure
+If the entire histogram is smashed against the left wall with nothing in the middle, you're underexposed. Increase ISO or open aperture wider.
+
+### Common Mistake: Overexposure
+Any part of the histogram touching the right edge means blown highlights — detail is lost forever. Reduce ISO or shutter speed.
+
+### Practical Workflow
+1. Take a test shot
+2. Check histogram (not just the screen preview — screens look bright in the dark)
+3. Adjust ISO up or down until the histogram has a small mountain in the left-center zone
+4. Lock those settings
+
+**Your action:** Take a test shot of a dark room or night sky scene. Pull up the histogram on your camera. Practice reading where the exposure falls.
+`,
+      },
+      {
+        id: 'm2-l4',
+        title: 'Module 2 Quiz — Are You Ready to Shoot?',
+        type: 'quiz',
+        duration: '4 questions',
+        description: 'Test your exposure knowledge before your first shoot.',
+        quiz: [
+          { q: 'What is the recommended starting ISO for Milky Way photography?', options: ['ISO 400', 'ISO 800', 'ISO 3200', 'ISO 100'], answer: 2 },
+          { q: 'Using the 500 Rule with a 20mm lens, what is the maximum shutter speed?', options: ['10 seconds', '20 seconds', '25 seconds', '30 seconds'], answer: 2 },
+          { q: 'Where should the histogram be positioned for a correctly exposed night sky shot?', options: ['Centered', 'Pushed to the right', 'Pushed to the left with a small bump', 'Touching the far right edge'], answer: 2 },
+          { q: 'Which app screen has the built-in camera settings calculator?', options: ['Tonight?', 'Sky Planner', 'Field Mode', 'Star Pointer'], answer: 2 },
+        ],
+      },
+    ],
+  },
+];
+
+const PAID_MODULE_TEASERS = [
+  {
+    id: 'mod-3',
+    title: 'Planning the Shot',
+    subtitle: 'Sky Planner + Cosmic Events + AR Scout',
+    icon: MapPin,
+    description: 'Use Sky Planner to find the Milky Way\'s peak time, Cosmic Events for the best nights, and AR Scout to preview the galaxy\'s position during daylight scouting.',
+    highlights: ['Galactic core timing', 'AR Scout daytime preview', 'Dark sky GPS spots', 'Best nights of the month'],
+  },
+  {
+    id: 'mod-4',
+    title: 'Composition & Focus',
+    subtitle: 'Guided Shoot Plan + AR foreground alignment',
+    icon: Eye,
+    description: 'Set up a Guided Shoot Plan before you go: define your intent, foreground, lighting style, and whether people are in the shot. Use AR Scout to align your foreground in daylight.',
+    highlights: ['Guided Shoot Plan setup', 'Foreground % planning', 'People / model release', 'AR foreground alignment'],
+  },
+  {
+    id: 'mod-5',
+    title: 'In-Class Execution',
+    subtitle: 'Field Mode walkthrough + Blue Hour reminders',
+    icon: Zap,
+    description: 'A full Field Mode walkthrough for the night of your shoot. Blue Hour timing, Low Light Landscape reminders, execution notes from your Guided Plan, and live conditions.',
+    highlights: ['Field Mode live conditions', 'Blue Hour / LLL reminders', 'Guided plan execution', 'Real-time astro score'],
+  },
+  {
+    id: 'mod-6',
+    title: 'Post-Class Reflection',
+    subtitle: 'Journal + outcome tagging + insights',
+    icon: Star,
+    description: 'Log your shoot outcome in the app, add field notes, and see insights like "Your best shots happen when moon is <5% and Bortle ≤3." Build your own data over time.',
+    highlights: ['Shoot outcome tagging', 'Field journal', 'Personal insights', '"Your best shots when..." patterns'],
+  },
+];
+
+// ── Helpers ─────────────────────────────────────────────────────────────────
+
+const typeIcon = (type) => {
+  if (type === 'video') return <Play className="w-4 h-4 text-red-400" />;
+  if (type === 'article') return <BookOpen className="w-4 h-4 text-slate-400" />;
+  return <CheckSquare className="w-4 h-4 text-emerald-400" />;
 };
 
-const QUIZ_QUESTIONS = [
-  { q: 'What is the recommended minimum aperture for Milky Way photography?', options: ['f/8', 'f/4', 'f/2.8', 'f/16'], answer: 2 },
-  { q: 'What does the "500 Rule" help you determine?', options: ['ISO setting', 'Maximum shutter speed before star trails', 'Aperture size', 'White balance'], answer: 1 },
-  { q: 'Which moon phase is best for Milky Way photography?', options: ['Full Moon', 'Quarter Moon', 'New Moon', 'Any phase works'], answer: 2 },
-  { q: 'What Bortle scale number represents the darkest possible sky?', options: ['9', '5', '1', '3'], answer: 2 },
-];
+const colorMap = {
+  emerald: { badge: 'bg-emerald-900/40 border-emerald-500/40 text-emerald-300', ring: 'ring-emerald-500/30', dot: 'bg-emerald-500' },
+  red: { badge: 'bg-red-900/40 border-red-500/40 text-red-300', ring: 'ring-red-500/30', dot: 'bg-red-500' },
+};
+
+// ── Markdown-ish renderer ────────────────────────────────────────────────────
+
+function ArticleRenderer({ content }) {
+  const lines = content.split('\n');
+  return (
+    <div className="space-y-2 text-sm text-slate-300 leading-relaxed">
+      {lines.map((line, i) => {
+        if (line.startsWith('## ')) return <h2 key={i} className="text-xl font-bold text-white mt-6 mb-2">{line.slice(3)}</h2>;
+        if (line.startsWith('### ')) return <h3 key={i} className="text-base font-semibold text-slate-100 mt-4 mb-1">{line.slice(4)}</h3>;
+        if (line.startsWith('**') && line.endsWith('**') && line.length > 4) {
+          return <p key={i} className="font-semibold text-white">{line.slice(2, -2)}</p>;
+        }
+        if (line.startsWith('- ')) return <li key={i} className="ml-4 list-disc text-slate-300">{line.slice(2).replace(/\*\*(.*?)\*\*/g, '$1')}</li>;
+        if (line.startsWith('| ')) {
+          const cells = line.split('|').filter(c => c.trim());
+          const isHeader = lines[i + 1]?.includes('---');
+          const isSep = line.includes('---');
+          if (isSep) return null;
+          return (
+            <div key={i} className={`grid gap-2 py-1 border-b border-white/5 text-xs ${cells.length === 3 ? 'grid-cols-3' : 'grid-cols-2'}`}>
+              {cells.map((c, ci) => (
+                <span key={ci} className={isHeader ? 'text-slate-400 font-semibold' : 'text-slate-300'}>{c.trim()}</span>
+              ))}
+            </div>
+          );
+        }
+        if (line.trim() === '') return <div key={i} className="h-1" />;
+        // Inline bold
+        const parts = line.split(/\*\*(.*?)\*\*/g);
+        return (
+          <p key={i} className="text-slate-300">
+            {parts.map((p, pi) => pi % 2 === 1 ? <strong key={pi} className="text-white font-semibold">{p}</strong> : p)}
+          </p>
+        );
+      })}
+    </div>
+  );
+}
+
+// ── Main Component ───────────────────────────────────────────────────────────
 
 export default function FreeCourse() {
   const [user, setUser] = useState(null);
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [completedLessons, setCompletedLessons] = useState([]);
-  const [activeLesson, setActiveLesson] = useState(null);
+  const [activeModuleId, setActiveModuleId] = useState('mod-1');
+  const [activeLessonId, setActiveLessonId] = useState('m1-l1');
   const [quizAnswers, setQuizAnswers] = useState({});
   const [quizSubmitted, setQuizSubmitted] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -141,34 +408,65 @@ export default function FreeCourse() {
         const subs = await base44.entities.Subscription.filter({ user_email: me.email, status: 'active' }, '-created_date', 1);
         setIsSubscribed(subs.length > 0);
       }
-      const prog = await base44.entities.LessonProgress.filter({ user_email: me.email, module_id: 'free-module' });
+      const prog = await base44.entities.LessonProgress.filter({ user_email: me.email, module_id: { $in: FREE_MODULES.map(m => m.id) } });
       setCompletedLessons(prog.filter(p => p.completed).map(p => p.lesson_id));
       setLoading(false);
     };
     init();
   }, []);
 
-  const markComplete = async (lessonId) => {
+  const markComplete = async (lessonId, moduleId) => {
     if (completedLessons.includes(lessonId)) return;
     await base44.entities.LessonProgress.create({
       lesson_id: lessonId,
-      module_id: 'free-module',
+      module_id: moduleId,
       user_email: user.email,
       completed: true,
     });
     setCompletedLessons(prev => [...prev, lessonId]);
   };
 
-  const completedCount = completedLessons.length;
-  const pct = Math.round((completedCount / FREE_LESSONS.length) * 100);
+  const allFreeLessons = FREE_MODULES.flatMap(m => m.lessons);
+  const totalFree = allFreeLessons.length;
+  const completedFreeCount = allFreeLessons.filter(l => completedLessons.includes(l.id)).length;
+  const overallPct = Math.round((completedFreeCount / totalFree) * 100);
 
-  const typeIcon = (type) => {
-    if (type === 'video') return <Play className="w-4 h-4 text-red-400" />;
-    if (type === 'article') return <BookOpen className="w-4 h-4 text-slate-400" />;
-    return <CheckSquare className="w-4 h-4 text-emerald-400" />;
+  const activeModule = FREE_MODULES.find(m => m.id === activeModuleId) || FREE_MODULES[0];
+  const activeLesson = activeModule.lessons.find(l => l.id === activeLessonId) || activeModule.lessons[0];
+
+  const modCompleted = (mod) => mod.lessons.filter(l => completedLessons.includes(l.id)).length;
+  const modPct = (mod) => Math.round((modCompleted(mod) / mod.lessons.length) * 100);
+
+  const handleNextLesson = () => {
+    const currentLessons = activeModule.lessons;
+    const idx = currentLessons.findIndex(l => l.id === activeLessonId);
+    if (idx < currentLessons.length - 1) {
+      markComplete(activeLessonId, activeModuleId);
+      setActiveLessonId(currentLessons[idx + 1].id);
+      setQuizAnswers({});
+      setQuizSubmitted(false);
+    } else {
+      // Move to next module
+      const modIdx = FREE_MODULES.findIndex(m => m.id === activeModuleId);
+      if (modIdx < FREE_MODULES.length - 1) {
+        markComplete(activeLessonId, activeModuleId);
+        const nextMod = FREE_MODULES[modIdx + 1];
+        setActiveModuleId(nextMod.id);
+        setActiveLessonId(nextMod.lessons[0].id);
+        setQuizAnswers({});
+        setQuizSubmitted(false);
+      }
+    }
   };
 
-  const quizScore = QUIZ_QUESTIONS.filter((q, i) => quizAnswers[i] === q.answer).length;
+  const isLastLesson = () => {
+    const modIdx = FREE_MODULES.findIndex(m => m.id === activeModuleId);
+    const lessonIdx = activeModule.lessons.findIndex(l => l.id === activeLessonId);
+    return modIdx === FREE_MODULES.length - 1 && lessonIdx === activeModule.lessons.length - 1;
+  };
+
+  const quizData = activeLesson?.quiz || [];
+  const quizScore = quizData.filter((q, i) => quizAnswers[i] === q.answer).length;
 
   if (loading) return (
     <div className="flex items-center justify-center min-h-screen">
@@ -177,238 +475,282 @@ export default function FreeCourse() {
   );
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8">
-      {/* Header */}
+    <div className="max-w-6xl mx-auto px-4 py-8">
+
+      {/* ── Header ── */}
       <div className="mb-8">
         <div className="inline-flex items-center gap-2 bg-emerald-900/30 border border-emerald-500/30 rounded-full px-3 py-1 mb-4">
           <Star className="w-3 h-3 text-emerald-400" />
           <span className="text-emerald-300 text-xs font-semibold uppercase tracking-widest">Free Starter Course</span>
         </div>
-        <h1 className="text-3xl md:text-4xl font-black text-white mb-3">Your First Night Sky Adventure</h1>
-        <p className="text-slate-400 text-lg mb-6">5 lessons to get you from zero to your first Milky Way photo. No gear required to start.</p>
-        <div className="flex items-center gap-4 mb-3">
-          <Progress value={pct} className="flex-1 h-2" />
-          <span className="text-white font-bold text-sm w-12">{pct}%</span>
+        <h1 className="text-3xl md:text-4xl font-black text-white mb-2">Milky Way Photography with Uncharted Galaxy</h1>
+        <p className="text-slate-400 text-lg mb-5">Your first Milky Way shot starts here — with Uncharted Galaxy as your companion at every step.</p>
+        <div className="flex items-center gap-4">
+          <Progress value={overallPct} className="flex-1 h-2" />
+          <span className="text-white font-bold text-sm w-14 text-right">{overallPct}%</span>
         </div>
-        <p className="text-slate-500 text-sm">{completedCount} of {FREE_LESSONS.length} lessons complete</p>
+        <p className="text-slate-500 text-sm mt-1">{completedFreeCount} of {totalFree} lessons complete</p>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
-        {/* Lesson List */}
-        <div className="lg:col-span-1 space-y-2">
-          {FREE_LESSONS.map((lesson, idx) => {
-            const done = completedLessons.includes(lesson.id);
-            const active = activeLesson?.id === lesson.id;
+      <div className="grid lg:grid-cols-3 gap-6">
+
+        {/* ── Left Sidebar — Module + Lesson List ── */}
+        <div className="lg:col-span-1 space-y-3">
+
+          {/* Free Modules */}
+          {FREE_MODULES.map((mod) => {
+            const ModIcon = mod.icon;
+            const pct = modPct(mod);
+            const colors = colorMap[mod.color] || colorMap.red;
             return (
-              <button
-                key={lesson.id}
-                onClick={() => setActiveLesson(lesson)}
-                className={`w-full text-left p-4 rounded-xl border transition-all ${
-                  active
-                    ? 'bg-red-900/40 border-red-500/50 text-white'
-                    : done
-                    ? 'bg-[#1a1a1a] border-white/8 text-slate-400'
-                    : 'bg-[#1a1a1a] border-white/8 text-slate-300 hover:border-red-600/40'
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold ${
-                    done ? 'bg-emerald-600 text-white' : active ? 'bg-red-600 text-white' : 'bg-slate-800 text-slate-400'
-                  }`}>
-                    {done ? <Check className="w-3.5 h-3.5" /> : idx + 1}
+              <div key={mod.id} className="rounded-xl border border-white/8 bg-[#1a1a1a] overflow-hidden">
+                {/* Module Header */}
+                <button
+                  onClick={() => { setActiveModuleId(mod.id); setActiveLessonId(mod.lessons[0].id); setQuizAnswers({}); setQuizSubmitted(false); }}
+                  className="w-full text-left p-4 flex items-center gap-3 hover:bg-white/3 transition-colors"
+                >
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 border ${colors.badge}`}>
+                    <ModIcon className="w-4 h-4" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium text-sm truncate">{lesson.title}</p>
-                    <div className="flex items-center gap-1.5 mt-0.5">
-                      {typeIcon(lesson.type)}
-                      <span className="text-xs text-slate-500">{lesson.duration}</span>
-                    </div>
+                    <p className="text-white font-semibold text-sm truncate">{mod.title}</p>
+                    <p className="text-slate-500 text-xs truncate">{mod.subtitle}</p>
                   </div>
-                </div>
-              </button>
+                  <span className={`text-xs font-bold px-2 py-0.5 rounded-full border ${colors.badge}`}>{pct}%</span>
+                </button>
+
+                {/* Lessons */}
+                {activeModuleId === mod.id && (
+                  <div className="border-t border-white/6">
+                    {mod.lessons.map((lesson, idx) => {
+                      const done = completedLessons.includes(lesson.id);
+                      const active = activeLessonId === lesson.id;
+                      return (
+                        <button
+                          key={lesson.id}
+                          onClick={() => { setActiveLessonId(lesson.id); setQuizAnswers({}); setQuizSubmitted(false); }}
+                          className={`w-full text-left px-4 py-3 flex items-center gap-3 transition-all border-b border-white/4 last:border-0 ${
+                            active ? 'bg-red-900/30' : 'hover:bg-white/3'
+                          }`}
+                        >
+                          <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold ${
+                            done ? 'bg-emerald-600 text-white' : active ? 'bg-red-600 text-white' : 'bg-slate-800 text-slate-400'
+                          }`}>
+                            {done ? <Check className="w-3 h-3" /> : idx + 1}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className={`text-xs font-medium truncate ${active ? 'text-white' : done ? 'text-slate-500' : 'text-slate-300'}`}>{lesson.title}</p>
+                            <div className="flex items-center gap-1 mt-0.5">
+                              {typeIcon(lesson.type)}
+                              <span className="text-xs text-slate-600">{lesson.duration}</span>
+                            </div>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
             );
           })}
 
-          {/* Upgrade CTA in sidebar */}
-          {!isSubscribed && (
-            <div className="mt-4 p-4 rounded-xl bg-gradient-to-br from-red-900/40 to-red-800/20 border border-red-600/40">
-              <Lock className="w-5 h-5 text-red-400 mb-2" />
-              <p className="text-white text-sm font-bold mb-1">5 More Modules Locked</p>
-              <p className="text-slate-300 text-xs mb-3">Camera mastery, composition, post-processing, advanced techniques & more.</p>
-              <Link to={createPageUrl('PaymentGate')}>
-                <Button className="w-full bg-red-600 hover:bg-red-700 text-xs h-8">
-                  Unlock Full Course →
-                </Button>
-              </Link>
+          {/* Paid Module Teasers */}
+          <div className="rounded-xl border border-dashed border-red-500/30 bg-red-900/10 p-4">
+            <div className="flex items-center gap-2 mb-3">
+              <Lock className="w-4 h-4 text-red-400" />
+              <span className="text-red-300 text-xs font-bold uppercase tracking-wide">Unlock with Plus — $7.99/mo</span>
             </div>
-          )}
+            <div className="space-y-2">
+              {PAID_MODULE_TEASERS.map((mod, i) => {
+                const ModIcon = mod.icon;
+                return (
+                  <div key={mod.id} className="flex items-center gap-3 opacity-60">
+                    <div className="w-6 h-6 rounded-full bg-slate-800 flex items-center justify-center flex-shrink-0">
+                      <Lock className="w-3 h-3 text-slate-500" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-slate-400 text-xs font-medium">Module {i + 3}: {mod.title}</p>
+                      <p className="text-slate-600 text-xs truncate">{mod.subtitle}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <Link to={createPageUrl('PaymentGate')}>
+              <Button className="w-full mt-4 bg-red-600 hover:bg-red-700 text-xs h-8">
+                Unlock Planning, AR Scout + More →
+              </Button>
+            </Link>
+          </div>
         </div>
 
-        {/* Lesson Content */}
-        <div className="lg:col-span-2">
-          {!activeLesson ? (
-            <Card className="bg-[#1a1a1a] border border-white/8 p-8 text-center">
-              <Telescope className="w-12 h-12 text-red-400 mx-auto mb-4 star-pulse" />
-              <h3 className="text-xl font-bold text-white mb-2">Select a lesson to begin</h3>
-              <p className="text-slate-400">Choose any lesson from the list to start your expedition.</p>
-              <Button className="mt-6 bg-red-600 hover:bg-red-700" onClick={() => setActiveLesson(FREE_LESSONS[0])}>
-                Start Lesson 1 →
-              </Button>
-            </Card>
-          ) : (
-            <div>
-              <Card className="bg-[#1a1a1a] border border-white/8 overflow-hidden">
-                {/* Lesson Header */}
-                <div className="p-6 border-b border-white/8">
-                  <div className="flex items-center gap-2 mb-2">
-                    {typeIcon(activeLesson.type)}
-                    <span className="text-slate-400 text-sm capitalize">{activeLesson.type}</span>
-                    <span className="text-slate-600">·</span>
-                    <span className="text-slate-300 text-sm">{activeLesson.duration}</span>
-                  </div>
-                  <h2 className="text-2xl font-bold text-white">{activeLesson.title}</h2>
-                  <p className="text-slate-300 mt-1">{activeLesson.description}</p>
-                </div>
+        {/* ── Main Content Area ── */}
+        <div className="lg:col-span-2 space-y-4">
 
-                {/* Video */}
-                {activeLesson.type === 'video' && activeLesson.video_url && (
-                  <div className="aspect-video">
-                    <iframe
-                      src={activeLesson.video_url}
-                      className="w-full h-full"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    />
-                  </div>
+          {/* Lesson Card */}
+          <Card className="bg-[#1a1a1a] border border-white/8 overflow-hidden">
+            {/* Lesson Header */}
+            <div className="p-6 border-b border-white/8">
+              <div className="flex items-center gap-2 mb-2 flex-wrap">
+                {typeIcon(activeLesson.type)}
+                <span className="text-slate-500 text-xs capitalize">{activeLesson.type}</span>
+                <span className="text-slate-700">·</span>
+                <span className="text-slate-500 text-xs">{activeLesson.duration}</span>
+                {activeLesson.appLink && (
+                  <>
+                    <span className="text-slate-700">·</span>
+                    <Link to={createPageUrl(activeLesson.appLink.page)}
+                      className="inline-flex items-center gap-1 text-xs text-red-400 hover:text-red-300 font-semibold transition-colors">
+                      <Zap className="w-3 h-3" />
+                      {activeLesson.appLink.label}
+                    </Link>
+                  </>
                 )}
-
-                {/* Article */}
-                {activeLesson.type === 'article' && (
-                  <div className="p-6 prose prose-invert prose-sm max-w-none prose-headings:text-white prose-p:text-slate-300 prose-li:text-slate-300 prose-strong:text-white prose-table:text-slate-300">
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: ARTICLE_CONTENT[activeLesson.id]
-                          ? ARTICLE_CONTENT[activeLesson.id]
-                              .replace(/## (.*)/g, '<h2>$1</h2>')
-                              .replace(/### (.*)/g, '<h3>$1</h3>')
-                              .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                              .replace(/\n\n/g, '<br/><br/>')
-                              .replace(/- (.*)/g, '<li>$1</li>')
-                          : `<p>${activeLesson.description}</p>`
-                      }}
-                    />
-                  </div>
-                )}
-
-                {/* Quiz */}
-                {activeLesson.type === 'quiz' && (
-                  <div className="p-6">
-                    {!quizSubmitted ? (
-                      <>
-                        <h3 className="text-lg font-bold text-white mb-6">Beginner's Night Sky Quiz</h3>
-                        <div className="space-y-6">
-                          {QUIZ_QUESTIONS.map((q, qi) => (
-                            <div key={qi}>
-                              <p className="text-slate-200 font-medium mb-3">{qi + 1}. {q.q}</p>
-                              <div className="grid grid-cols-2 gap-2">
-                                {q.options.map((opt, oi) => (
-                                  <button
-                                    key={oi}
-                                    onClick={() => setQuizAnswers(prev => ({ ...prev, [qi]: oi }))}
-                                    className={`p-3 rounded-lg border text-sm text-left transition-all ${
-                                      quizAnswers[qi] === oi
-                                        ? 'border-red-600 bg-red-900/30 text-white'
-                                        : 'border-slate-700 bg-slate-800/50 text-slate-400 hover:border-slate-600'
-                                    }`}
-                                  >
-                                    {opt}
-                                  </button>
-                                ))}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                        <Button
-                          className="mt-6 bg-red-600 hover:bg-red-700"
-                          disabled={Object.keys(quizAnswers).length < QUIZ_QUESTIONS.length}
-                          onClick={() => setQuizSubmitted(true)}
-                        >
-                          Submit Quiz
-                        </Button>
-                      </>
-                    ) : (
-                      <div className="text-center py-8">
-                        <div className={`text-6xl font-black mb-4 ${quizScore >= 3 ? 'text-emerald-400' : 'text-yellow-400'}`}>
-                          {quizScore}/{QUIZ_QUESTIONS.length}
-                        </div>
-                        <p className="text-white text-xl font-bold mb-2">
-                          {quizScore === 4 ? '🌟 Perfect Score!' : quizScore >= 3 ? '🎉 Great work, Explorer!' : '📚 Keep studying!'}
-                        </p>
-                        <p className="text-slate-400 mb-6">
-                          {quizScore >= 3
-                            ? "You're ready for your first night shoot. Check out the dark sky spots below!"
-                            : 'Review the lessons above and try again when ready.'}
-                        </p>
-                        <Button variant="outline" className="border-slate-600 text-slate-300" onClick={() => { setQuizAnswers({}); setQuizSubmitted(false); }}>
-                          Retake Quiz
-                        </Button>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* Mark Complete */}
-                <div className="p-6 border-t border-white/8 flex items-center justify-between">
-                  <Button
-                    variant="outline"
-                    className={`border-slate-600 ${completedLessons.includes(activeLesson.id) ? 'text-emerald-400 border-emerald-600' : 'text-slate-300'}`}
-                    onClick={() => markComplete(activeLesson.id)}
-                    disabled={completedLessons.includes(activeLesson.id)}
-                  >
-                    {completedLessons.includes(activeLesson.id) ? '✓ Completed' : 'Mark as Complete'}
-                  </Button>
-                  {FREE_LESSONS.findIndex(l => l.id === activeLesson.id) < FREE_LESSONS.length - 1 && (
-                    <Button
-                      className="bg-red-600 hover:bg-red-700"
-                      onClick={() => {
-                        const idx = FREE_LESSONS.findIndex(l => l.id === activeLesson.id);
-                        markComplete(activeLesson.id);
-                        setActiveLesson(FREE_LESSONS[idx + 1]);
-                      }}
-                    >
-                      Next Lesson <ChevronRight className="w-4 h-4" />
-                    </Button>
-                  )}
-                </div>
-              </Card>
+              </div>
+              <h2 className="text-xl font-bold text-white">{activeLesson.title}</h2>
+              <p className="text-slate-400 text-sm mt-1">{activeLesson.description}</p>
             </div>
-          )}
 
-          {/* Dark Sky Spots (always visible) */}
-          <div className="mt-8">
-            <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-              <MapPin className="w-5 h-5 text-red-400" /> Utah Dark Sky Locations
-            </h3>
-            <div className="grid sm:grid-cols-2 gap-4">
-              {DARK_SKY_SPOTS.map((spot, i) => (
-                <Card key={i} className="bg-[#1a1a1a] border border-white/8 p-4">
-                  <div className="flex items-start justify-between mb-2">
-                    <h4 className="text-white font-semibold text-sm">{spot.name}</h4>
-                    <Badge className="bg-red-900/60 text-red-300 border-red-700 text-xs">Bortle {spot.bortle}</Badge>
+            {/* Article Content */}
+            {activeLesson.type === 'article' && activeLesson.content && (
+              <div className="p-6">
+                <ArticleRenderer content={activeLesson.content} />
+              </div>
+            )}
+
+            {/* Video Content */}
+            {activeLesson.type === 'video' && activeLesson.video_url && (
+              <div className="aspect-video">
+                <iframe
+                  src={activeLesson.video_url}
+                  className="w-full h-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
+            )}
+
+            {/* Quiz Content */}
+            {activeLesson.type === 'quiz' && quizData.length > 0 && (
+              <div className="p-6">
+                {!quizSubmitted ? (
+                  <>
+                    <h3 className="text-lg font-bold text-white mb-6">Are You Ready to Shoot?</h3>
+                    <div className="space-y-6">
+                      {quizData.map((q, qi) => (
+                        <div key={qi}>
+                          <p className="text-slate-200 font-medium mb-3">{qi + 1}. {q.q}</p>
+                          <div className="grid grid-cols-2 gap-2">
+                            {q.options.map((opt, oi) => (
+                              <button
+                                key={oi}
+                                onClick={() => setQuizAnswers(prev => ({ ...prev, [qi]: oi }))}
+                                className={`p-3 rounded-lg border text-sm text-left transition-all ${
+                                  quizAnswers[qi] === oi
+                                    ? 'border-red-600 bg-red-900/30 text-white'
+                                    : 'border-slate-700 bg-slate-800/50 text-slate-400 hover:border-slate-600'
+                                }`}
+                              >
+                                {opt}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <Button
+                      className="mt-6 bg-red-600 hover:bg-red-700"
+                      disabled={Object.keys(quizAnswers).length < quizData.length}
+                      onClick={() => setQuizSubmitted(true)}
+                    >
+                      Submit Quiz
+                    </Button>
+                  </>
+                ) : (
+                  <div className="text-center py-8">
+                    <div className={`text-6xl font-black mb-4 ${quizScore >= 3 ? 'text-emerald-400' : 'text-yellow-400'}`}>
+                      {quizScore}/{quizData.length}
+                    </div>
+                    <p className="text-white text-xl font-bold mb-2">
+                      {quizScore === quizData.length ? '🌟 Perfect! You\'re ready.' : quizScore >= 3 ? '🎉 Good work, Explorer!' : '📚 Review and try again!'}
+                    </p>
+                    <p className="text-slate-400 text-sm mb-6">
+                      {quizScore >= 3
+                        ? "You understand the fundamentals. Time to plan your first shoot."
+                        : 'Go back through the lessons and retake when ready.'}
+                    </p>
+                    <Button variant="outline" className="border-slate-600 text-slate-300" onClick={() => { setQuizAnswers({}); setQuizSubmitted(false); }}>
+                      Retake Quiz
+                    </Button>
                   </div>
-                  <p className="text-slate-500 text-xs mb-2">{spot.distance}</p>
-                  <p className="text-slate-400 text-xs">{spot.tip}</p>
-                </Card>
-              ))}
+                )}
+              </div>
+            )}
+
+            {/* Footer Actions */}
+            <div className="p-5 border-t border-white/8 flex items-center justify-between gap-3 flex-wrap">
+              <Button
+                variant="outline"
+                size="sm"
+                className={`border-slate-600 ${completedLessons.includes(activeLesson.id) ? 'text-emerald-400 border-emerald-600' : 'text-slate-300'}`}
+                onClick={() => markComplete(activeLesson.id, activeModuleId)}
+                disabled={completedLessons.includes(activeLesson.id)}
+              >
+                {completedLessons.includes(activeLesson.id) ? '✓ Completed' : 'Mark as Complete'}
+              </Button>
+              {!isLastLesson() && (
+                <Button className="bg-red-600 hover:bg-red-700" size="sm" onClick={handleNextLesson}>
+                  Next Lesson <ChevronRight className="w-4 h-4 ml-1" />
+                </Button>
+              )}
+              {isLastLesson() && completedFreeCount === totalFree && (
+                <div className="text-emerald-400 text-sm font-semibold flex items-center gap-2">
+                  <Check className="w-4 h-4" /> Free course complete! Unlock more below.
+                </div>
+              )}
+            </div>
+          </Card>
+
+          {/* ── Paid Module Preview Cards ── */}
+          <div>
+            <h3 className="text-white font-bold text-base mb-3 flex items-center gap-2">
+              <Lock className="w-4 h-4 text-red-400" />
+              Continue Your Expedition — Unlock with Plus
+            </h3>
+            <div className="grid sm:grid-cols-2 gap-3">
+              {PAID_MODULE_TEASERS.map((mod, i) => {
+                const ModIcon = mod.icon;
+                return (
+                  <Card key={mod.id} className="bg-[#1a1a1a] border border-white/8 p-4 relative overflow-hidden opacity-80 hover:opacity-100 transition-opacity">
+                    <div className="absolute inset-0 bg-gradient-to-br from-red-900/10 to-transparent pointer-events-none" />
+                    <div className="flex items-start gap-3 mb-3">
+                      <div className="w-8 h-8 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center flex-shrink-0">
+                        <ModIcon className="w-4 h-4 text-slate-400" />
+                      </div>
+                      <div>
+                        <p className="text-slate-200 text-sm font-semibold">Module {i + 3}: {mod.title}</p>
+                        <p className="text-slate-500 text-xs">{mod.subtitle}</p>
+                      </div>
+                      <Lock className="w-4 h-4 text-red-500 ml-auto flex-shrink-0" />
+                    </div>
+                    <p className="text-slate-500 text-xs mb-3">{mod.description}</p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {mod.highlights.map((h, hi) => (
+                        <span key={hi} className="text-xs px-2 py-0.5 rounded-full bg-slate-800 text-slate-500 border border-slate-700">{h}</span>
+                      ))}
+                    </div>
+                  </Card>
+                );
+              })}
             </div>
             {!isSubscribed && (
-              <div className="mt-4 p-5 rounded-xl border border-dashed border-red-500/40 bg-red-900/10 text-center">
-                <Lock className="w-6 h-6 text-red-400 mx-auto mb-2" />
-                <p className="text-white font-bold mb-1">Full Dark Sky Guide + 50+ Locations</p>
-                <p className="text-slate-400 text-sm mb-3">Detailed GPS coordinates, seasonal guides, hazard notes & insider tips — unlocked with any paid plan.</p>
+              <div className="mt-4 text-center">
                 <Link to={createPageUrl('PaymentGate')}>
-                <Button className="bg-red-600 hover:bg-red-700">Upgrade to Explorer — $19/mo</Button>
+                  <Button className="bg-red-600 hover:bg-red-700 px-8">
+                    Unlock Full Course — $7.99/mo →
+                  </Button>
                 </Link>
+                <p className="text-slate-600 text-xs mt-2">Includes Sky Planner, AR Scout, Field Mode, Guided Shoot Plans, and all 6 modules.</p>
               </div>
             )}
           </div>
