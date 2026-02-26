@@ -5,7 +5,6 @@ import { base44 } from '@/api/base44Client';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
 import LeafletLocationPicker from '@/components/ui/LeafletLocationPicker';
 import {
   MapPin, Plus, X, Loader2, Star, Lock, Trophy, Map
