@@ -168,6 +168,17 @@ export default function FieldMode() {
 
       {/* Content */}
       <div className="flex-1 max-w-2xl mx-auto w-full px-4 py-5 pb-24">
+        {/* Curriculum execution tip — Module 5 cross-link */}
+        <div className="mb-4 flex items-start gap-2 bg-[#1a0a00]/60 border border-red-900/30 rounded-xl px-4 py-3">
+          <span className="text-red-400 text-sm leading-none mt-0.5 flex-shrink-0">📚</span>
+          <p className="text-slate-400 text-xs leading-relaxed">
+            <span className="text-red-300 font-semibold">Execution tip (Module 5): </span>
+            {activeTab === 'camera' && 'Use the Camera Calculator below for NPF-precise shutter speed. Start at ISO 3200, widest aperture, then check your histogram after the first shot.'}
+            {activeTab === 'compose' && 'Place your foreground element on the lower-third. Use Star Pointer to locate the galactic core direction before full dark. AR Scout (Sky Planner) previews the exact arc.'}
+            {activeTab === 'light' && 'Blue Hour ends 30–45 min after sunset. LLL (Low Light Landscape) window follows. Avoid using phone screens — they destroy dark adaptation.'}
+          </p>
+        </div>
+
         {activeTab === 'camera' && (
           <CameraSettingsPanel mode={mode} event={event} coords={coords} />
         )}

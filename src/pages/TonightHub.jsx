@@ -366,6 +366,29 @@ export default function TonightHub() {
         </div>
       )}
 
+      {/* Curriculum cross-link tip */}
+      {coords && (
+        <Card className="bg-[#1a1a1a] border border-emerald-500/20 p-4 mt-4">
+          <div className="flex items-start gap-2">
+            <span className="text-emerald-400 text-base leading-none mt-0.5">📚</span>
+            <div>
+              <p className="text-emerald-300 text-xs font-bold mb-1">From the Free Course — Module 1</p>
+              <p className="text-slate-400 text-xs leading-relaxed">
+                {(() => {
+                  const { illum } = getMoonPhase();
+                  if (illum < 10) return `Moon is ${illum}% — perfect Milky Way conditions. This is a "go" night. Open Sky Planner to find the galactic core peak time.`;
+                  if (illum < 30) return `Moon is ${illum}% — still workable. Aim for the window before moonrise. Check galactic core timing in Sky Planner.`;
+                  return `Moon is ${illum}% — too bright for Milky Way. Use this time to scout your location in daylight and plan a future shoot.`;
+                })()}
+              </p>
+              <Link to={createPageUrl('FreeCourse')} className="text-emerald-400 text-xs font-semibold hover:text-emerald-300 mt-1 inline-block">
+                Continue Free Course →
+              </Link>
+            </div>
+          </div>
+        </Card>
+      )}
+
       {/* Mode-specific tip */}
       {coords && mode === 'smartphone' && (
         <Card className="bg-[#1a1a1a] border border-white/8 p-4 mt-4">
