@@ -715,8 +715,6 @@ export default function PlannerTool() {
       <div className="grid lg:grid-cols-5 gap-6">
         {/* ── Left: Inputs ── */}
          <div className="lg:col-span-2 space-y-5">
-          {/* Expedition Manager */}
-          <ExpeditionManager userEmail={user?.email} currentState={currentState} onLoadExpedition={handleLoadExpedition} />
 
           {/* AR Scout */}
           {results && (
