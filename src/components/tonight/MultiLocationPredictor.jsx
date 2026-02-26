@@ -637,35 +637,6 @@ export default function MultiLocationPredictor({ isSubscribed, homeLocation, hom
         </div>
       </div>
 
-      {/* Map View toggle — always visible when locations exist */}
-      {locations.length > 0 && (
-        <div className="flex items-center justify-between bg-slate-800/50 border border-slate-700 rounded-xl px-3 py-2">
-          <span className="text-slate-400 text-xs font-medium flex items-center gap-1.5">
-            <Map className="w-3.5 h-3.5 text-slate-500" />
-            View all on map
-          </span>
-          <button
-            onClick={() => setShowAllMap(v => !v)}
-            className={`flex items-center gap-1.5 text-xs px-3 py-1 rounded-full border transition-all font-bold ${
-              showAllMap
-                ? 'bg-red-600 border-red-500 text-white'
-                : 'bg-slate-700 border-slate-600 text-white hover:bg-slate-600'
-            }`}
-          >
-            {showAllMap ? 'List View' : 'Map View'}
-          </button>
-        </div>
-      )}
-
-      {/* All-locations map */}
-      {showAllMap && locations.length > 0 && (
-        <AllLocationsMap
-          locations={locations}
-          onUpdateLocation={updateLocationCoords}
-          onClose={() => setShowAllMap(false)}
-        />
-      )}
-
       {/* Location List */}
       <div className="space-y-2">
         {!showAllMap && locations.map((loc, i) => (
