@@ -691,6 +691,30 @@ export default function MultiLocationPredictor({ isSubscribed, homeLocation, hom
         )}
       </div>
 
+      {/* Map View toggle */}
+      {locations.length > 0 && (
+        <button
+          onClick={() => setShowAllMap(v => !v)}
+          className={`w-full flex items-center justify-center gap-2 text-sm font-semibold px-4 py-2.5 rounded-xl border transition-all ${
+            showAllMap
+              ? 'bg-red-600/20 border-red-500 text-red-300'
+              : 'bg-slate-800 border-slate-600 text-slate-300 hover:text-white hover:border-slate-400'
+          }`}
+        >
+          <Map className="w-4 h-4" />
+          {showAllMap ? 'Hide Map' : 'View All on Map'}
+        </button>
+      )}
+
+      {/* All-locations map */}
+      {showAllMap && locations.length > 0 && (
+        <AllLocationsMap
+          locations={locations}
+          onUpdateLocation={updateLocationCoords}
+          onClose={() => setShowAllMap(false)}
+        />
+      )}
+
       {/* Rank Button */}
       {locations.length > 0 && (
         <Button
