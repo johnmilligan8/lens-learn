@@ -32,6 +32,9 @@ export default function Profile() {
   const [deleteConfirm, setDeleteConfirm] = useState('');
   const [deleting, setDeleting] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const [editingMode, setEditingMode] = useState(false);
+  const [selectedMode, setSelectedMode] = useState('photographer');
+  const [savingMode, setSavingMode] = useState(false);
 
   useEffect(() => {
     const load = async () => {
