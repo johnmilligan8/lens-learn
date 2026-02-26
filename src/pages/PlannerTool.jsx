@@ -654,19 +654,50 @@ export default function PlannerTool() {
     <PullToRefresh onRefresh={handleRefresh}>
       <div className="max-w-6xl mx-auto px-4 py-8">
       {/* Header */}
-      <div className="mb-8 flex items-center justify-between">
+      <div className="mb-6 flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-black text-white mb-2 flex items-center gap-3">
+          <h1 className="text-4xl font-black text-white mb-1 flex items-center gap-3">
             <MapPin className="w-9 h-9 text-red-400" />
             <span>Sky <span className="gradient-text">Planner</span></span>
           </h1>
-          <p className="text-slate-400 text-lg">Plan the perfect Milky Way shoot with precision astronomy data.</p>
+          <p className="text-slate-400">Plan your expedition — select dates, events, and locations.</p>
         </div>
-        <Link to={createPageUrl('SkyBrowser')} className="inline-flex">
+        <Link to={createPageUrl('SkyBrowser')} className="inline-flex flex-shrink-0">
           <Button variant="outline" className="border-red-600/40 text-red-300 hover:bg-red-900/20 text-sm gap-2">
             <Star className="w-4 h-4" /> Sky Browser
           </Button>
         </Link>
+      </div>
+
+      {/* Trip Manager */}
+      <div className="mb-6">
+        <TripManager
+          userEmail={user?.email}
+          isPaid={isSubscribed}
+          currentState={currentState}
+          onLoadTrip={handleLoadExpedition}
+        />
+      </div>
+
+      {/* Expedition Calendar */}
+      <div className="mb-8">
+        <h2 className="text-lg font-bold text-white mb-3 flex items-center gap-2">
+          <Calendar className="w-5 h-5 text-red-400" /> Expedition Calendar
+        </h2>
+        <ExpeditionCalendar
+          selectedDate={date}
+          selectedRange={calendarRange}
+          onSelectDate={handleCalendarDate}
+          onSelectRange={handleCalendarRange}
+        />
+        {calendarRange && (
+          <div className="mt-2 flex items-center gap-2 text-xs text-slate-400">
+            <Calendar className="w-3.5 h-3.5 text-red-400" />
+            Range selected: <span className="text-white font-semibold">{calendarRange.start}</span> →
+            <span className="text-white font-semibold">{calendarRange.end}</span>
+            <button onClick={() => setCalendarRange(null)} className="text-slate-500 hover:text-red-400 ml-1">✕</button>
+          </div>
+        )}
       </div>
 
       {/* Curriculum cross-link — Module 3 */}
