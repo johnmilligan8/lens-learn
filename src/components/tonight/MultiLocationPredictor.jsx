@@ -413,6 +413,7 @@ export default function MultiLocationPredictor({ isSubscribed, homeLocation, hom
   const [ranking, setRanking] = useState(false);
   const [kpIndex, setKpIndex] = useState(null);
   const [showUpsell, setShowUpsell] = useState(false);
+  const [showAllMap, setShowAllMap] = useState(false);
 
   // Auto-populate home location when coords become available
   React.useEffect(() => {
