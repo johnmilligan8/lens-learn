@@ -655,7 +655,7 @@ export default function MultiLocationPredictor({ isSubscribed, homeLocation, hom
         )}
 
         {/* Upsell nudge when free limit hit */}
-        {!isSubscribed && locations.length >= FREE_LOCATION_LIMIT && (
+        {!showAllMap && !isSubscribed && locations.length >= FREE_LOCATION_LIMIT && (
           <button
             onClick={() => setShowUpsell(true)}
             className="w-full flex items-center gap-2 border border-dashed border-red-500/40 rounded-xl px-3 py-2.5 text-xs text-red-400 hover:bg-red-900/10 transition-colors"
