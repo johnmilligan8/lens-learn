@@ -592,6 +592,30 @@ export default function FreeCourse() {
         {/* ── Main Content Area ── */}
         <div className="lg:col-span-2 space-y-4">
 
+          {/* Mode-aware tip banner */}
+          <div className={`flex items-start gap-3 rounded-xl border px-4 py-3 ${
+            shooterMode === 'photographer' ? 'bg-purple-900/20 border-purple-600/30' :
+            shooterMode === 'smartphone' ? 'bg-blue-900/20 border-blue-600/30' :
+            'bg-indigo-900/20 border-indigo-600/30'
+          }`}>
+            <span className="text-lg leading-none mt-0.5">
+              {shooterMode === 'photographer' ? '📷' : shooterMode === 'smartphone' ? '📱' : '👁'}
+            </span>
+            <div className="flex-1">
+              <p className={`text-xs font-bold uppercase tracking-wide mb-0.5 ${
+                shooterMode === 'photographer' ? 'text-purple-300' : shooterMode === 'smartphone' ? 'text-blue-300' : 'text-indigo-300'
+              }`}>
+                {shooterMode === 'photographer' ? 'DSLR / Mirrorless Mode' : shooterMode === 'smartphone' ? 'Smartphone Mode' : 'Sky Watching Mode'}
+              </p>
+              <p className="text-slate-400 text-xs leading-relaxed">
+                {shooterMode === 'photographer' && 'Lessons include full manual settings, RAW workflow, stacking, and advanced composition for camera shooters.'}
+                {shooterMode === 'smartphone' && 'Focus on Night Mode, stability, and phone-specific tips — you\'ll skip the heavy gear sections.'}
+                {shooterMode === 'experience' && 'You\'re here for the sky itself — lessons cover what to look for, when to go, and how to read conditions. No gear required.'}
+              </p>
+            </div>
+            <Link to={createPageUrl('Profile')} className="text-slate-600 hover:text-slate-400 text-xs underline flex-shrink-0 mt-0.5">Change</Link>
+          </div>
+
           {/* Lesson Card */}
           <Card className="bg-[#1a1a1a] border border-white/8 overflow-hidden">
             {/* Lesson Header */}
