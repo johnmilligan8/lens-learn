@@ -167,19 +167,35 @@ export default function FieldMode() {
 
       {/* Content */}
       <div className="flex-1 max-w-2xl mx-auto w-full px-4 py-5 pb-24">
-        {/* Curriculum execution tip — Module 5 cross-link */}
+        {/* Mode-aware execution tip */}
         <div className="mb-4 flex items-start gap-2 bg-[#1a0a00]/60 border border-red-900/30 rounded-xl px-4 py-3">
-          <span className="text-red-400 text-sm leading-none mt-0.5 flex-shrink-0">📚</span>
+          <span className="text-red-400 text-sm leading-none mt-0.5 flex-shrink-0">
+            {mode === 'photographer' ? '📷' : mode === 'smartphone' ? '📱' : '👁'}
+          </span>
           <p className="text-slate-400 text-xs leading-relaxed">
-            <span className="text-red-300 font-semibold">Execution tip (Module 5): </span>
-            {activeTab === 'camera' && 'Use the Camera Calculator below for NPF-precise shutter speed. Start at ISO 3200, widest aperture, then check your histogram after the first shot.'}
-            {activeTab === 'compose' && 'Place your foreground element on the lower-third. Use Star Pointer to locate the galactic core direction before full dark. AR Scout (Sky Planner) previews the exact arc.'}
-            {activeTab === 'light' && 'Blue Hour ends 30–45 min after sunset. LLL (Low Light Landscape) window follows. Avoid using phone screens — they destroy dark adaptation.'}
+            <span className="text-red-300 font-semibold">
+              {mode === 'experience' ? 'Sky Watching tip: ' : mode === 'smartphone' ? 'Phone tip: ' : 'Field tip (Module 5): '}
+            </span>
+            {mode === 'experience' && activeTab === 'compose' && 'Give your eyes 20–30 min to fully dark-adapt. Avoid all white lights. Look slightly beside faint objects — your peripheral vision is more sensitive.'}
+            {mode === 'experience' && activeTab === 'light' && 'Best sky watching is 1–2 hrs after sunset. Check the moon phase — a bright moon washes out faint stars and Milky Way. Head out on new moon nights.'}
+            {mode === 'smartphone' && activeTab === 'camera' && 'Use a tripod and self-timer. Enable Pro/Expert mode for manual shutter and ISO. iPhone users: let Night Mode do its thing — just stay perfectly still.'}
+            {mode === 'smartphone' && activeTab === 'compose' && 'Shoot horizontally for more sky. Prop your phone against something stable. Self-timer or volume button = less shake than tapping the screen.'}
+            {mode === 'smartphone' && activeTab === 'light' && 'Shoot during the blue hour (just after sunset) for color. For Milky Way, wait until the sky is fully dark — 1.5+ hours after sunset.'}
+            {mode === 'photographer' && activeTab === 'camera' && 'Use the Camera Calculator below for NPF-precise shutter speed. Start at ISO 3200, widest aperture, then check your histogram after the first shot.'}
+            {mode === 'photographer' && activeTab === 'compose' && 'Place your foreground element on the lower-third. Use Star Pointer to locate the galactic core direction before full dark. AR Scout (Sky Planner) previews the exact arc.'}
+            {mode === 'photographer' && activeTab === 'light' && 'Blue Hour ends 30–45 min after sunset. LLL (Low Light Landscape) window follows. Avoid using phone screens — they destroy dark adaptation.'}
           </p>
         </div>
 
-        {activeTab === 'camera' && (
+        {activeTab === 'camera' && mode !== 'experience' && (
           <CameraSettingsPanel mode={mode} event={event} coords={coords} />
+        )}
+        {activeTab === 'camera' && mode === 'experience' && (
+          <div className="rounded-xl bg-[#1a1a1a] border border-white/8 p-5 text-center">
+            <p className="text-4xl mb-3">👁</p>
+            <p className="text-white font-semibold mb-1">No Camera Needed</p>
+            <p className="text-slate-400 text-sm">You're in Sky Watching mode — switch to "What to See" for visibility tips.</p>
+          </div>
         )}
         {activeTab === 'compose' && (
           <CompositionPanel mode={mode} event={event} coords={coords} />
