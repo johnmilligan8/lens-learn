@@ -307,6 +307,99 @@ function LocationMapPicker({ initial, onConfirm, onCancel }) {
   );
 }
 
+// ── All Locations Map View ────────────────────────────────────────────────────
+
+function AllLocationsMap({ locations, onUpdateLocation, onClose }) {
+  const mapRef = useRef(null);
+  const leafletMapRef = useRef(null);
+  const markersRef = useRef({});
+  const [mapReady, setMapReady] = useState(false);
+
+  useEffect(() => {
+    const init = async () => {
+      if (!window.L) {
+        if (!document.querySelector('#leaflet-css')) {
+          const link = document.createElement('link');
+          link.id = 'leaflet-css';
+          link.rel = 'stylesheet';
+          link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+          document.head.appendChild(link);
+        }
+        await new Promise((resolve) => {
+          const script = document.createElement('script');
+          script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+          script.onload = resolve;
+          document.head.appendChild(script);
+        });
+      }
+      const L = window.L;
+      if (!mapRef.current || leafletMapRef.current) return;
+
+      const COLORS = ['#ef4444','#3b82f6','#22c55e','#f59e0b','#a855f7'];
+
+      // Fit bounds to all locations
+      const latlngs = locations.map(l => [l.lat, l.lon]);
+      const map = L.map(mapRef.current, { zoomControl: true });
+      leafletMapRef.current = map;
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap'
+      }).addTo(map);
+
+      if (latlngs.length === 1) {
+        map.setView(latlngs[0], 10);
+      } else {
+        map.fitBounds(L.latLngBounds(latlngs), { padding: [40, 40] });
+      }
+
+      locations.forEach((loc, i) => {
+        const color = COLORS[i % COLORS.length];
+        const icon = L.divIcon({
+          html: `<div style="position:relative">
+            <div style="width:36px;height:36px;background:${color};border:3px solid white;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 2px 8px rgba(0,0,0,0.6)"></div>
+            <div style="position:absolute;top:6px;left:6px;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:white;transform:rotate(45deg)">${i + 1}</div>
+          </div>`,
+          iconSize: [36, 36],
+          iconAnchor: [18, 36],
+          className: ''
+        });
+
+        const marker = L.marker([loc.lat, loc.lon], { draggable: true, icon }).addTo(map);
+        marker.bindPopup(`<b style="font-size:13px">${loc.name}</b><br><span style="font-size:11px;color:#888">${loc.lat.toFixed(4)}, ${loc.lon.toFixed(4)}</span>`);
+        markersRef.current[loc.id] = marker;
+
+        marker.on('dragend', () => {
+          const ll = marker.getLatLng();
+          onUpdateLocation(loc.id, parseFloat(ll.lat.toFixed(5)), parseFloat(ll.lng.toFixed(5)));
+        });
+      });
+
+      setMapReady(true);
+    };
+    init();
+    return () => {
+      if (leafletMapRef.current) { leafletMapRef.current.remove(); leafletMapRef.current = null; }
+    };
+  }, []);
+
+  return (
+    <div className="rounded-2xl overflow-hidden border border-slate-700 bg-slate-900 relative" style={{ height: '320px' }}>
+      {!mapReady && (
+        <div className="absolute inset-0 flex items-center justify-center bg-slate-900 z-10">
+          <Loader2 className="w-6 h-6 text-slate-400 animate-spin" />
+        </div>
+      )}
+      <div ref={mapRef} style={{ width: '100%', height: '100%' }} />
+      <button
+        onClick={onClose}
+        className="absolute top-2 right-2 z-[999] bg-slate-900/90 border border-slate-600 rounded-lg px-2.5 py-1 text-xs text-slate-300 hover:text-white transition-colors"
+      >
+        List View
+      </button>
+    </div>
+  );
+}
+
 // ── Main Component ────────────────────────────────────────────────────────────
 
 export default function MultiLocationPredictor({ isSubscribed, homeLocation, homeCoords }) {
