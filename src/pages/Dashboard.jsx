@@ -143,6 +143,32 @@ export default function Dashboard() {
         </div>
       )}
 
+      {/* Mode Banner — shown when profile is set */}
+      {profile?.shooter_mode && (
+        <div className={`mb-8 flex items-center gap-4 p-4 rounded-2xl border ${
+          profile.shooter_mode === 'photographer' ? 'bg-purple-900/20 border-purple-600/30' :
+          profile.shooter_mode === 'smartphone'   ? 'bg-blue-900/20 border-blue-600/30' :
+                                                    'bg-indigo-900/20 border-indigo-600/30'
+        }`}>
+          <span className="text-2xl leading-none">
+            {profile.shooter_mode === 'photographer' ? '📷' : profile.shooter_mode === 'smartphone' ? '📱' : '👁'}
+          </span>
+          <div className="flex-1 min-w-0">
+            <p className={`text-xs font-bold uppercase tracking-wide ${
+              profile.shooter_mode === 'photographer' ? 'text-purple-300' : profile.shooter_mode === 'smartphone' ? 'text-blue-300' : 'text-indigo-300'
+            }`}>
+              {profile.shooter_mode === 'photographer' ? 'DSLR / Mirrorless' : profile.shooter_mode === 'smartphone' ? 'Smartphone' : 'Sky Watching'} Mode Active
+            </p>
+            <p className="text-slate-400 text-xs mt-0.5">
+              {profile.shooter_mode === 'photographer' && 'Field Mode, lessons & plans are tuned for camera shooters.'}
+              {profile.shooter_mode === 'smartphone' && 'Field Mode & lessons are tuned for phone night photography.'}
+              {profile.shooter_mode === 'experience' && 'Lessons focus on what to see. Field Mode is set to sky watching tips.'}
+            </p>
+          </div>
+          <Link to={createPageUrl('Profile')} className="text-slate-500 hover:text-slate-300 text-xs underline flex-shrink-0">Change</Link>
+        </div>
+      )}
+
       {/* Mission Briefings */}
       <div className="mb-12">
         <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
@@ -156,6 +182,19 @@ export default function Dashboard() {
             label="Decide now"
             href={createPageUrl('TonightHub')}
             color="emerald"
+          />
+          <ActionCard
+            icon={Zap}
+            title="Field Mode"
+            description={
+              profile?.shooter_mode === 'experience' ? 'Live sky watching tips & conditions for tonight.' :
+              profile?.shooter_mode === 'smartphone' ? 'Live phone camera settings & composition guidance.' :
+              'Real-time camera settings, composition & lighting in the field.'
+            }
+            label="Go live"
+            href={createPageUrl('FieldMode')}
+            color="red"
+            disabled={!isSubscribed}
           />
           <ActionCard
             icon={MapPin}
@@ -173,14 +212,6 @@ export default function Dashboard() {
             label="See events"
             href={createPageUrl('EventsCalendar')}
             color="yellow"
-          />
-          <ActionCard
-            icon={Sparkles}
-            title="Explorer Gallery"
-            description="Share your shots with fellow explorers & get feedback."
-            label="Explore"
-            href={createPageUrl('CommunityGallery')}
-            color="blue"
           />
         </div>
       </div>
