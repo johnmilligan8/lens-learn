@@ -84,9 +84,10 @@ function estimateBortleByCoords(lat, lon) {
 // ── Scoring ──────────────────────────────────────────────────────────────────
 
 function scoreLocation(locData, eventType, kpIndex) {
-  const { cloud, wind, lat, lon, name } = locData;
+  const { cloud, wind, lat, lon, bortleData } = locData;
   const { illum: moonIllum } = getMoonPhase();
-  const bortle = estimateBortle(lat, lon, name);
+  const bortle = bortleData?.bortle ?? 4;
+  const bortleDesc = bortleData?.description ?? 'rural sky';
   const month = new Date().getMonth(); // 0-indexed
   const inMWSeason = month >= 2 && month <= 9;
   const gcAlt = getGCPeakAlt(lat, lon);
