@@ -169,25 +169,36 @@ function rgbToBortle(r, g, b, a) {
 }
 
 function estimateBortleByCoords(lat, lon) {
+  // [lat, lon, bortle_at_center, radius_deg_for_b7, radius_deg_for_b6, radius_deg_for_b5]
   const cities = [
+    // Core: [lat, lon, bortle]
     [40.71, -74.01, 9], [34.05, -118.24, 9], [41.85, -87.65, 9],
     [29.76, -95.37, 8], [33.45, -112.07, 8], [32.78, -96.80, 8],
     [47.61, -122.33, 8], [37.77, -122.42, 8], [39.74, -104.98, 7],
-    [40.76, -111.89, 7], [36.17, -115.14, 8], [39.95, -75.17, 8],
+    [40.76, -111.89, 7], // Salt Lake City
+    [36.17, -115.14, 8], [39.95, -75.17, 8],
     [42.36, -71.06, 8], [45.52, -122.68, 7], [35.23, -80.84, 7],
     [30.27, -97.74, 7], [25.77, -80.19, 8], [33.75, -84.39, 7],
-    [41.5, -81.69, 7], [44.98, -93.27, 7],
+    [41.50, -81.69, 7], [44.98, -93.27, 7],
+    // Smaller cities (Bortle 5-6)
+    [41.23, -111.97, 6], // Ogden UT
+    [40.23, -111.66, 6], // Provo UT
+    [37.09, -113.57, 5], // St George UT
+    [41.74, -111.83, 5], // Logan UT
   ];
-  let nearestBortle = 4, nearestDist = Infinity;
+  let nearestBortle = 9, nearestDist = Infinity;
   for (const [clat, clon, b] of cities) {
     const dist = Math.sqrt((lat - clat) ** 2 + (lon - clon) ** 2);
     if (dist < nearestDist) { nearestDist = dist; nearestBortle = b; }
   }
-  if (nearestDist < 0.2) return nearestBortle;
-  if (nearestDist < 0.4) return Math.min(nearestBortle, 6);
-  if (nearestDist < 0.8) return Math.min(nearestBortle, 5);
-  if (nearestDist < 1.5) return Math.min(nearestBortle, 4);
-  return 3; // truly rural if far from any major city
+
+  // Scale bortle based on distance from nearest city
+  if (nearestDist < 0.15) return nearestBortle;
+  if (nearestDist < 0.35) return Math.min(nearestBortle, Math.max(nearestBortle - 1, 5));
+  if (nearestDist < 0.7)  return Math.min(5, nearestBortle);
+  if (nearestDist < 1.2)  return Math.min(4, nearestBortle);
+  if (nearestDist < 2.0)  return 3;
+  return 2; // very remote
 }
 
 function bortleToSQM(b) {
