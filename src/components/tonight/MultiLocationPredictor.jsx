@@ -510,18 +510,19 @@ export default function MultiLocationPredictor({ isSubscribed, homeLocation, hom
               <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500" />
               <input
                 type="text"
-                placeholder="Add a location (city, park, coordinates…)"
+                placeholder="Search a location (city, park, coordinates…)"
                 value={inputVal}
                 onChange={e => setInputVal(e.target.value)}
-                onKeyDown={e => e.key === 'Enter' && addLocation()}
+                onKeyDown={e => e.key === 'Enter' && openMapPicker()}
                 className="w-full bg-slate-800 border border-slate-700 rounded-lg pl-9 pr-3 py-2 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-red-500"
               />
             </div>
             <Button
               size="sm"
-              onClick={addLocation}
+              onClick={openMapPicker}
               disabled={addingLocation || !inputVal.trim()}
               className="bg-slate-700 hover:bg-slate-600 text-white px-3"
+              title="Search & pin on map"
             >
               {addingLocation ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
             </Button>
