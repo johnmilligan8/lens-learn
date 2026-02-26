@@ -106,7 +106,8 @@ function scoreLocation(locData, eventType, kpIndex) {
   // Bortle (0–20 pts)
   const bortleScore = Math.round(Math.max(0, 20 - (bortle - 1) * 2.5));
   score -= (20 - bortleScore);
-  factors.push({ good: bortle <= 3, text: `Bortle ${bortle} (${bortle <= 3 ? 'dark sky' : bortle <= 5 ? 'suburban' : 'light polluted'})` });
+  const bortleLabel = bortleDesc || (bortle <= 3 ? 'dark sky' : bortle <= 5 ? 'rural' : bortle <= 6 ? 'suburban' : 'light polluted');
+  factors.push({ good: bortle <= 4, text: `Bortle ${bortle} — ${bortleLabel}` });
 
   // Wind (0–10 pts)
   const windScore = wind < 15 ? 10 : wind < 25 ? 6 : wind < 35 ? 3 : 0;
