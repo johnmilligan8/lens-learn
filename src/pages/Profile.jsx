@@ -69,6 +69,20 @@ export default function Profile() {
     setEditing(false);
   };
 
+  const saveMode = async () => {
+    setSavingMode(true);
+    const data = { user_email: user.email, shooter_mode: selectedMode };
+    if (userProfile) {
+      await base44.entities.UserProfile.update(userProfile.id, data);
+      setUserProfile({ ...userProfile, ...data });
+    } else {
+      const created = await base44.entities.UserProfile.create({ ...data, onboarding_complete: true });
+      setUserProfile(created);
+    }
+    setSavingMode(false);
+    setEditingMode(false);
+  };
+
   const saveLocation = async () => {
     const data = { user_email: user.email, home_location: locationName, home_lat: locationLat, home_lon: locationLon };
     if (userProfile) {
