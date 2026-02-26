@@ -350,26 +350,42 @@ export default function MultiLocationPredictor({ isSubscribed, homeLocation, hom
     return res;
   };
 
-  const addLocation = async () => {
+  // Step 1: geocode the typed name, then open map picker for confirmation
+  const openMapPicker = async () => {
     if (!inputVal.trim()) return;
     if (locations.length >= limit) {
       if (!isSubscribed) { setShowUpsell(true); return; }
       return;
     }
     setAddingLocation(true);
+    let initial = null;
     const geo = await geocodeLocation(inputVal.trim());
     if (geo?.lat && geo?.lon) {
-      setLocations(prev => [...prev, {
-        id: Date.now().toString(),
-        name: geo.display_name || inputVal.trim(),
-        lat: geo.lat,
-        lon: geo.lon,
-        loaded: false,
-      }]);
+      initial = { lat: geo.lat, lon: geo.lon, name: geo.display_name || inputVal.trim() };
     }
-    setInputVal('');
     setAddingLocation(false);
+    setPendingLocation(initial);
+    setShowMapPicker(true);
+  };
+
+  // Step 2: user confirms location from map
+  const confirmLocation = ({ lat, lon, name }) => {
+    setLocations(prev => [...prev, {
+      id: Date.now().toString(),
+      name,
+      lat,
+      lon,
+    }]);
+    setInputVal('');
+    setShowMapPicker(false);
+    setPendingLocation(null);
     setRankings(null);
+  };
+
+  const cancelMapPicker = () => {
+    setShowMapPicker(false);
+    setPendingLocation(null);
+    setAddingLocation(false);
   };
 
   const removeLocation = (id) => {
