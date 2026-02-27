@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Info, Loader, RefreshCw } from 'lucide-react';
 import AuroraDailyCard from './AuroraDailyCard';
 import AuroraWeeklyList from './AuroraWeeklyList';
+import AuroraForecastMap from './AuroraForecastMap';
 import { fetchNoaaKpForecast } from '@/functions/fetchAuroraForecast';
 import { fetchCloudCoverForecast } from '@/functions/fetchWeatherForecast';
 import { getAuroraWithCache, getWeatherWithCache } from '@/functions/offlineCache';
