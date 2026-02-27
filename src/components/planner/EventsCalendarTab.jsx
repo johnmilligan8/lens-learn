@@ -272,9 +272,9 @@ export default function EventsCalendarTab({ isSubscribed, userProfile }) {
       {/* Header */}
       <div>
         <h2 className="text-white font-bold text-lg flex items-center gap-2">
-          <Calendar className="w-5 h-5 text-red-400" /> Cosmic Events Calendar
+          <Calendar className="w-5 h-5 text-red-400" /> Events & Calendar
         </h2>
-        <p className="text-slate-500 text-xs mt-0.5">Meteor showers, eclipses, aurora windows, and dark moon nights — all in one place.</p>
+        <p className="text-slate-500 text-xs mt-0.5">Meteor showers, eclipses, aurora windows, and dark moon nights — tap any date to see what's happening.</p>
       </div>
 
       {/* Tabs */}
