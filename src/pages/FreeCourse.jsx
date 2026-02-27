@@ -244,39 +244,114 @@ When you're on location and ready to shoot, open **Field Mode**. It shows curren
         title: 'The Three Settings That Matter',
         type: 'article',
         duration: '8 min read',
-        description: 'ISO 3200–6400, aperture f/2.8+, and shutter speed — the three pillars of a Milky Way exposure, explained simply.',
-        content: `## The Three Settings That Matter
+        description: 'Exposure settings explained — ISO, aperture, shutter speed.',
+        modeVariant: {
+          photographer: `## The Three Settings That Matter — Camera Edition
 
-Night sky photography is just three settings, dialed correctly. Here they are.
+      Night sky photography is just three settings, dialed correctly. Master these and you control light.
 
-### 1. ISO: Your Light Sensitivity
-**Start at ISO 3200.** If the image looks too dark, go to 6400.
+      ### 1. ISO: Your Light Sensitivity
+      **Start at ISO 3200.** If the image looks too dark, try 6400.
 
-- ISO 1600 = dimmer stars, cleaner image
-- ISO 3200 = good balance for most cameras
-- ISO 6400 = brighter stars, more noise (grain)
-- ISO 12800+ = only if your camera handles it cleanly
+      - ISO 1600 = dimmer stars, cleaner image
+      - ISO 3200 = good balance for most cameras
+      - ISO 6400 = brighter stars, more noise (grain)
+      - ISO 12800+ = only if your camera handles it cleanly (full-frame preferred)
 
-**Rule of thumb:** Use the highest ISO where the grain (noise) is still acceptable to you.
+      **Rule of thumb:** Use the highest ISO where grain is still acceptable. Full-frame sensors clean up better at high ISO.
 
-### 2. Aperture: Open It Wide
-**Set your aperture as wide as it goes.** f/1.8, f/2.0, f/2.8 — the lower the number, the more light you collect.
+      ### 2. Aperture: Open It as Wide as Possible
+      **Set your aperture as wide as it goes.** f/1.4, f/1.8, f/2.0, f/2.8 — the lower the number, the more light you collect.
 
-- f/1.4–f/1.8 = excellent, very bright stars
-- f/2.0–f/2.8 = the sweet spot for most lenses
-- f/3.5–f/4.0 = usable but you'll need higher ISO to compensate
-- f/5.6+ = not suitable for Milky Way
+      - f/1.4–f/1.8 = excellent, very bright stars
+      - f/2.0–f/2.8 = the sweet spot for most lenses
+      - f/3.5–f/4.0 = usable but you'll need higher ISO to compensate
+      - f/5.6+ = not suitable for Milky Way
 
-### 3. Shutter Speed: Keep Stars as Points
-Stars are moving (technically Earth is rotating). Too long an exposure and stars become streaks instead of points.
+      ### 3. Shutter Speed: Keep Stars as Points
+      Stars appear to move (technically Earth rotates). Too long an exposure and stars become streaks instead of points.
 
-**The quick rule:** 20–25 seconds for most wide-angle lenses. The app's Camera Calculator will give you a precise number based on your focal length.
+      **The quick rule:** 20–25 seconds for most wide-angle lenses. The app's Camera Calculator will give you a precise number based on your focal length and sensor.
 
-### Focus: The Most Overlooked Step
-Switch to **manual focus**. Point at a bright star, zoom in on your camera's live view, and rotate focus until the star is as small/sharp as possible. Then don't touch it.
+      ### Manual Focus: The Most Overlooked Step
+      Switch to **manual focus**. Point at a bright star, zoom in on your camera's live view to 10x magnification, and rotate the focus ring until the star is as small/sharp as possible. **Lock it and don't touch it.**
 
-**Your action:** Set your camera to ISO 3200, your widest aperture, and 20 seconds. Take a test shot indoors pointing at a light source to confirm settings are saving correctly.
-`,
+      ### Pro Tip: RAW Only
+      Always shoot **RAW** — you'll have infinite control in post (white balance, shadow recovery, highlight recovery). JPEGs are baked-in forever.
+
+      **Your action:** Set your camera to ISO 3200, your widest aperture, and 20 seconds. Take a test shot pointing at a light source to confirm settings are saving correctly.
+      `,
+          smartphone: `## The Three Settings That Matter — Phone Night Mode Edition
+
+      Phone Night Mode does much of the heavy lifting for you. Here's what you actually control.
+
+      ### Night Mode Activation
+      - **iPhone**: Open Camera app, select Night Mode (golden icon, lower half of screen)
+      - **Pixel**: Open Camera app, Night Sight mode, or use Magic Eraser for composites
+      - **Samsung**: Open Camera, Pro mode, then switch to Night/Astrophotography
+
+      Once activated, **hold very still**. Phone takes multiple exposures automatically (5–10 seconds). A tripod or stabilizer is non-negotiable.
+
+      ### What You Can Adjust
+      - **Brightness slider**: Increase for more light; decrease if overexposed
+      - **Focus**: Tap the star area on screen to focus there
+      - **Time**: Don't move until the counter finishes (usually 10+ seconds)
+
+      ### Realistic Expectations
+      Phone Night Mode excels at:
+      - **Bright, nearby Milky Way** (if Bortle 1–2)
+      - **Moon and bright planets**
+      - **Foreground + stars** (blended composite)
+
+      Phone Night Mode struggles with:
+      - **Faint Milky Way details** (phone sensors smaller, more noise)
+      - **Aurora** (needs brightness and real-time movement capture)
+      - **Star color** (phone tends to render cool/blue)
+
+      ### Post-Processing on Phone
+      After the shot, edit in:
+      - **Snapseed**: Adjust shadows, highlights, warmth
+      - **Lightroom Mobile**: White balance, curves, clarity
+
+      This is where phone Milky Way images shine — edit aggressively.
+
+      **Your action:** Open your phone's Night Mode now. Find a star or streetlight. Take a 10-second exposure and check focus. See how much light your phone can gather.
+      `,
+          experience: `## What to Look For — Sky Observation Basics
+
+      You're here to see the night sky without camera gear. Here's what's visible and when.
+
+      ### The Milky Way Band
+      The Milky Way is most visible:
+      - **South horizon**, highest in the sky (true galactic center)
+      - **Best months**: December–August (summer = brightest core)
+      - **Best time**: 2–3 hours after sunset when sky is fully dark
+      - **Bortle 1–3 locations**: Visible to the naked eye as a cloudy band
+      - **What you'll see**: White/pale cloudy streak with darker dust lanes, bright core toward south
+
+      ### Bright Objects to Find
+      - **Mars, Jupiter, Saturn** (planets shine steadier than stars)
+      - **Polaris** (North Star, above north horizon — used for orientation)
+      - **Pleiades** (open cluster, looks like tiny dipper — visible to naked eye)
+      - **Orion Nebula** (faint greenish tint to the eye in dark skies, easily found with binoculars)
+
+      ### Aurora (Green/Red Lights in the Sky)
+      If you're in high latitude (45°N+) and KP index is high (5+):
+      - **Green light**: Most common, dances in curtains or arcs
+      - **Red light**: Upper atmosphere, rarer, softer
+      - **Movement**: Appears to sway and shift in real-time (this is Earth's magnetosphere!)
+
+      ### Meteor Streaks
+      - **How to see them**: Just watch the sky; don't stare at one spot
+      - **Frequency**: During meteor showers (peak nights), 5–20 per hour if Bortle 1–2
+      - **What you'll see**: Fast streak across sky, usually lasts < 1 second
+
+      ### How Long to Look?
+      **Wait 20–30 minutes** after arriving for dark adaptation. This is crucial — your eyes are 4–6x more light-sensitive after full adaptation.
+
+      **Your action:** On a clear night, find a dark spot, set a red headlamp, and spend 30 minutes just looking. What do you notice about the sky?
+      `,
+        },
       },
       {
         id: 'm2-l2',
