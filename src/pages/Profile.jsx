@@ -53,7 +53,6 @@ export default function Profile() {
       setPhotos(myPhotos);
       const profile = profiles[0] || null;
       setUserProfile(profile);
-      setSelectedMode(profile?.shooter_mode || 'photographer');
       setLocationName(profile?.home_location || '');
       setLocationLat(profile?.home_lat ?? null);
       setLocationLon(profile?.home_lon ?? null);
