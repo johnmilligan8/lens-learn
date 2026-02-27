@@ -210,7 +210,7 @@ export default function Dashboard() {
             title="Cosmic Events"
             description="Meteor showers, eclipses, aurora alerts & more events."
             label="See events"
-            href={createPageUrl('EventsCalendar')}
+            href={createPageUrl('PlannerTool') + '?tab=events'}
             color="yellow"
           />
         </div>
