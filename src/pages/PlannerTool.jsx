@@ -661,7 +661,7 @@ export default function PlannerTool() {
       <div className="flex gap-1 border-b border-white/8 mb-6">
         {[
           { id: 'planner', label: '🔭 Plan a Shoot' },
-          { id: 'events', label: '📅 Cosmic Events' },
+          { id: 'events', label: '📅 Events & Calendar' },
         ].map(t => (
           <button
             key={t.id}
