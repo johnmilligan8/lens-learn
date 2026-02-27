@@ -186,6 +186,56 @@ export default function CameraSettingsPanel({ mode, event, coords }) {
   );
 }
 
+function WhiteBalanceTipCard({ mode }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <Card className="bg-[#1a1a1a] border border-white/8">
+      <button
+        onClick={() => setOpen(v => !v)}
+        className="w-full flex items-center justify-between px-4 py-3"
+      >
+        <span className="text-white text-sm font-bold flex items-center gap-2">
+          <span>🌡️</span> White Balance Guide
+        </span>
+        {open ? <ChevronUp className="w-4 h-4 text-slate-500" /> : <ChevronDown className="w-4 h-4 text-slate-500" />}
+      </button>
+      {open && (
+        <div className="px-4 pb-4 space-y-3">
+          {mode === 'smartphone' ? (
+            <div className="bg-blue-900/20 border border-blue-700/30 rounded-lg p-3">
+              <p className="text-blue-300 text-xs font-bold mb-1">📱 Phone Tip</p>
+              <p className="text-slate-300 text-xs leading-relaxed">Most phones lock WB automatically in Night Mode. Adjust the feel in Lightroom Mobile or Snapseed after your shoot — slide the Temp slider toward blue (3800K) or neutral (4500K) to taste.</p>
+            </div>
+          ) : (
+            <>
+              <p className="text-slate-400 text-xs leading-relaxed">WB shapes how blue or black the sky appears and how natural your foreground looks. The sky itself is neutral — your chosen Kelvin value creates the mood.</p>
+              <div className="space-y-2">
+                <div className="flex items-start gap-3 bg-blue-900/20 border border-blue-700/20 rounded-lg p-3">
+                  <span className="text-blue-300 text-lg leading-none flex-shrink-0">🔵</span>
+                  <div>
+                    <p className="text-blue-200 text-xs font-bold mb-0.5">Deep Blue Sky — Classic Look</p>
+                    <p className="text-slate-400 text-xs">3500–4000K · Start at <span className="text-white font-semibold">3800K</span></p>
+                    <p className="text-slate-500 text-[10px] mt-0.5">Rich inky blue background, moody & cinematic</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 bg-orange-900/20 border border-orange-700/20 rounded-lg p-3">
+                  <span className="text-orange-300 text-lg leading-none flex-shrink-0">🟠</span>
+                  <div>
+                    <p className="text-orange-200 text-xs font-bold mb-0.5">Neutral/Black Sky — Modern Look</p>
+                    <p className="text-slate-400 text-xs">4200–5000K · Start at <span className="text-white font-semibold">4500K</span></p>
+                    <p className="text-slate-500 text-[10px] mt-0.5">Dark/black sky, warmer foreground, high contrast core</p>
+                  </div>
+                </div>
+              </div>
+              <p className="text-emerald-400 text-[10px] font-semibold">✦ Shoot RAW — adjust WB freely in post with zero quality loss.</p>
+            </>
+          )}
+        </div>
+      )}
+    </Card>
+  );
+}
+
 function FiveHundredRuleCard() {
   const [focal, setFocal] = useState(24);
   const [ruleType, setRuleType] = useState('500');
