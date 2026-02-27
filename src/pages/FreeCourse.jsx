@@ -580,7 +580,7 @@ const PAID_MODULE_TEASERS = [
 const typeIcon = (type) => {
   if (type === 'video') return <Play className="w-4 h-4 text-red-400" />;
   if (type === 'article') return <BookOpen className="w-4 h-4 text-slate-400" />;
-  return <CheckSquare className="w-4 h-4 text-emerald-400" />;
+  return <CheckSquare className="w-4 h-4 text-red-400" />;
 };
 
 const colorMap = {
