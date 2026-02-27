@@ -206,11 +206,11 @@ export default function Dashboard() {
             disabled={!isSubscribed}
           />
           <ActionCard
-            icon={Star}
-            title="Cosmic Events"
-            description="Meteor showers, eclipses, aurora alerts & more events."
-            label="See events"
-            href={createPageUrl('PlannerTool') + '?tab=events'}
+            icon={BookOpen}
+            title="Free Course"
+            description="Start your Milky Way journey with the free starter course."
+            label="Start learning"
+            href={createPageUrl('FreeCourse')}
             color="yellow"
           />
         </div>
