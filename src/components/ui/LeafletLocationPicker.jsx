@@ -259,10 +259,10 @@ export default function LeafletLocationPicker({ initial, onConfirm, onCancel, co
         <button
           onClick={handleGPS}
           disabled={gpsLoading}
-          className="flex items-center gap-2 text-xs text-blue-400 hover:text-blue-300 transition-colors"
+          className="flex items-center gap-2 text-xs font-semibold px-3 py-2 rounded-lg border border-blue-500/40 bg-blue-900/20 text-blue-300 hover:bg-blue-900/40 transition-colors w-full justify-center"
         >
           {gpsLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Navigation className="w-3.5 h-3.5" />}
-          Use My Current Location
+          Use My Current Location (GPS)
         </button>
       </div>
 
