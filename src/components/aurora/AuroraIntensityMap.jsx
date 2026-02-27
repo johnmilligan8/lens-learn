@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Card } from '@/components/ui/card';
 import { Loader, MapPin, Zap, Eye } from 'lucide-react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import L from 'leaflet';
+import dynamic from 'next/dynamic';
 
 const INTENSITY_COLORS = {
   green: { label: 'Low', hex: '#22c55e', rgb: 'rgba(34, 197, 94, 0.3)' },
