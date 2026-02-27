@@ -110,9 +110,11 @@ export default function AuroraPredictionCard({ userLat, userLon, locationName })
           <div>
             <h3 className="text-white font-bold text-lg leading-tight">Aurora Prediction</h3>
             <p className="text-slate-400 text-xs flex items-center gap-1 mt-0.5">
-              {locationName
-                ? <><MapPin className="w-3 h-3" />{locationName}</>
-                : 'Tonight · Your Location'}
+              {hasLocation ? (
+                <><MapPin className="w-3 h-3" />{displayLocation}</>
+              ) : (
+                <>Set location in profile for personalized data</>
+              )}
               {fromCache && <span className="text-slate-600 ml-1">· cached</span>}
             </p>
           </div>
