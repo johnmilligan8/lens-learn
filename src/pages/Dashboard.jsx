@@ -119,6 +119,14 @@ export default function Dashboard() {
         { label: 'Streak', value: '7d', change: { positive: true, text: 'Keep it up!' } },
       ]} />
 
+      {/* Exploration Mode Banner */}
+      {profile?.shooter_mode && (
+        <ExplorationModeBanner 
+          mode={profile.shooter_mode} 
+          onEdit={() => setModeModalOpen(true)}
+        />
+      )}
+
       {/* Free tier upsell banner */}
       {!isSubscribed && (
         <div className="mb-8 p-5 rounded-2xl border border-red-600/30 bg-[#1a1a1a] flex flex-col md:flex-row items-start md:items-center gap-4">
