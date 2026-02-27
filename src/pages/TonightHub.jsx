@@ -158,7 +158,7 @@ export default function TonightHub() {
   const [geoLoading, setGeoLoading] = useState(false);
   const [commitEvent, setCommitEvent] = useState(null);
   const [auroraForecast, setAuroraForecast] = useState(null);
-  const [moonPhase, setMoonPhase] = useState(null);
+  const [moonPhase, setMoonPhase] = useState(() => getMoonPhase());
   const today = new Date().toISOString().split('T')[0];
 
   useEffect(() => {
