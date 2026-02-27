@@ -44,6 +44,7 @@ function HourlyTrendChart({ kpForecast }) {
                   height: `${Math.max(height, 3)}%`,
                   backgroundColor: color.hex,
                 }}
+                title={`${h}h: KP ${kpForecast[h]?.toFixed(1) || '0.0'}`}
               />
               {h % 3 === 0 && (
                 <span className="text-xs text-slate-500 mt-1">{h}h</span>
