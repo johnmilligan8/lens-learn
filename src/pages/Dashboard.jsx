@@ -36,15 +36,16 @@ const FALLBACK_MODULES = [
 ];
 
 export default function Dashboard() {
-  const [user, setUser] = useState(null);
-  const [modules, setModules] = useState([]);
-  const [progress, setProgress] = useState([]);
-  const [isSubscribed, setIsSubscribed] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [profile, setProfile] = useState(null);
-  const [modeModalOpen, setModeModalOpen] = useState(false);
-  const [savingMode, setSavingMode] = useState(false);
-  const navigate = useNavigate();
+   const [user, setUser] = useState(null);
+   const [modules, setModules] = useState([]);
+   const [progress, setProgress] = useState([]);
+   const [isSubscribed, setIsSubscribed] = useState(false);
+   const [loading, setLoading] = useState(true);
+   const [profile, setProfile] = useState(null);
+   const [modeModalOpen, setModeModalOpen] = useState(false);
+   const [savingMode, setSavingMode] = useState(false);
+   const [skyInterest, setSkyInterest] = useState('milky_way'); // 'milky_way' | 'aurora' | 'meteor_shower' | 'eclipse'
+   const navigate = useNavigate();
 
   const loadData = useCallback(async () => {
     const me = await base44.auth.me();
