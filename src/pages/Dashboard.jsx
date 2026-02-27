@@ -126,21 +126,21 @@ export default function Dashboard() {
 
           {/* ── MODE HERO BANNER ── */}
           {profile?.shooter_mode && (
-            <div className="p-5 rounded-2xl border border-slate-800/60 bg-gradient-to-br from-slate-900/80 to-slate-800/60 backdrop-blur-sm flex items-center justify-between">
+            <div className="p-5 rounded-2xl border border-red-600/40 bg-gradient-to-br from-red-950/30 to-slate-900/40 backdrop-blur-sm flex items-center justify-between gap-4">
               <div>
-                <p className="text-xs text-slate-500 uppercase tracking-widest font-semibold mb-1">Active Mode</p>
+                <p className="text-xs text-red-400 uppercase tracking-widest font-semibold mb-1">Active Mode</p>
                 <h2 className="text-xl md:text-2xl font-black text-white">
                   {profile.shooter_mode === 'photographer' && '📷 DSLR / Mirrorless Mode Active'}
                   {profile.shooter_mode === 'smartphone' && '📱 Smartphone Night Mode Active'}
                   {profile.shooter_mode === 'experience' && '👁️ Sky Experience Mode Active'}
                 </h2>
               </div>
-              <button
+              <Button
                 onClick={() => setModeModalOpen(true)}
-                className="text-slate-500 hover:text-slate-300 text-xs underline transition-colors flex-shrink-0"
+                className="bg-red-600 hover:bg-red-700 text-white font-bold text-sm whitespace-nowrap flex-shrink-0"
               >
-                Change
-              </button>
+                Change Mode
+              </Button>
             </div>
           )}
 
