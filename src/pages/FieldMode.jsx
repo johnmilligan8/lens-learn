@@ -16,6 +16,42 @@ import LightingPanel from '../components/fieldmode/LightingPanel';
 import ConditionsBar from '../components/fieldmode/ConditionsBar';
 import GuidedWalkthrough from '../components/fieldmode/GuidedWalkthrough';
 
+function FreeWalkthroughTeaser() {
+  const [seconds, setSeconds] = React.useState(0);
+  const [running, setRunning] = React.useState(false);
+  React.useEffect(() => {
+    if (!running) return;
+    const id = setInterval(() => setSeconds(s => s + 1), 1000);
+    return () => clearInterval(id);
+  }, [running]);
+  const fmt = s => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
+  return (
+    <div className="mb-5 rounded-2xl border border-slate-700/40 bg-[#0f0a00]/50 p-4">
+      <div className="flex items-center justify-between mb-3">
+        <p className="text-slate-300 text-xs font-black uppercase tracking-widest">Guided Walkthrough</p>
+        <span className="text-[10px] bg-yellow-600/20 text-yellow-400 border border-yellow-600/30 px-2 py-0.5 rounded-full font-bold">Plus &amp; Pro</span>
+      </div>
+      <p className="text-slate-500 text-xs mb-3 leading-relaxed">Step-by-step, mode-aware guidance from scouting to post-shoot. Upgrade to unlock all 7 steps.</p>
+      <div className="bg-slate-900/60 border border-slate-700/40 rounded-xl p-3 mb-3">
+        <p className="text-yellow-300 text-[10px] font-bold uppercase tracking-widest mb-1">💡 Reminder</p>
+        <p className="text-slate-300 text-xs">Check focus before your first shot — tap a bright star in your viewfinder and fine-tune until it's a pinpoint.</p>
+      </div>
+      <div className="flex items-center gap-3">
+        <div className="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-center">
+          <p className="text-slate-500 text-[9px] uppercase mb-0.5">Session Timer</p>
+          <p className="text-white font-mono text-lg font-bold">{fmt(seconds)}</p>
+        </div>
+        <button
+          onClick={() => setRunning(r => !r)}
+          className={`px-4 py-2 rounded-lg text-xs font-bold transition-colors ${running ? 'bg-red-700 hover:bg-red-800 text-white' : 'bg-red-600 hover:bg-red-700 text-white'}`}
+        >
+          {running ? 'Pause' : seconds > 0 ? 'Resume' : 'Start'}
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function FieldMode() {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
