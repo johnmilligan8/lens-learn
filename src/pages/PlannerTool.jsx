@@ -681,7 +681,7 @@ export default function PlannerTool() {
       )}
 
       {/* Planner Tab */}
-      {mainTab !== 'events' && (
+      {mainTab !== 'events' && (<>
 
       {/* Curriculum cross-link — Module 3 */}
       <div className="mb-5 flex items-start gap-2 bg-[#0a1a0a]/60 border border-emerald-900/40 rounded-xl px-4 py-3">
