@@ -19,7 +19,8 @@ import {
   ChevronLeft,
   Rocket,
   Smartphone,
-  Zap
+  Zap,
+  BookOpen
 } from 'lucide-react';
 import NightModeToggle from '@/components/ui/NightModeToggle';
 
