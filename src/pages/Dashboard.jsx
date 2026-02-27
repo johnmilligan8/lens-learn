@@ -177,19 +177,28 @@ export default function Dashboard() {
             </Card>
           </div>
 
-          {/* ── HERO ACTION BUTTONS (4 large, equal, strong CTAs) ── */}
-          <div className="grid sm:grid-cols-2 gap-4">
-            <Link to={createPageUrl('TonightHub')} className="group">
-              <div className="p-6 rounded-xl border border-white/10 bg-[#111111]/80 hover:border-white/20 hover:bg-[#111111]/95 transition-all h-full flex flex-col">
-                <p className="text-2xl mb-2">🌙</p>
-                <h3 className="text-lg font-bold text-white mb-1">Tonight?</h3>
-                <p className="text-slate-400 text-xs mb-4 flex-1">What's happening in your sky tonight</p>
-                <p className="text-red-400 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
-                  Decide now <ChevronRight className="w-4 h-4" />
+          {/* ── HERO TONIGHT? CARD (full width, premium UX) ── */}
+          <Link to={createPageUrl('TonightHub')} className="group">
+            <Card className="bg-gradient-to-r from-red-950/40 via-[#111111]/80 to-[#111111]/80 border border-red-600/40 hover:border-red-500/60 p-8 md:p-10 transition-all relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-red-600/10 rounded-full blur-3xl -mr-32 -mt-32" />
+              <div className="relative z-10">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <p className="text-xs text-red-400 uppercase tracking-widest font-bold mb-2">Decision Time</p>
+                    <h2 className="text-3xl md:text-4xl font-black text-white">Tonight?</h2>
+                  </div>
+                  <p className="text-5xl md:text-6xl">🌙</p>
+                </div>
+                <p className="text-slate-300 text-base md:text-lg max-w-2xl mb-6">Ranked sky events, live conditions, visibility scores & your personal viability forecast. Everything you need to decide if tonight's the night.</p>
+                <p className="text-red-400 font-bold text-base flex items-center gap-2 group-hover:gap-3 transition-all">
+                  Decide now <ChevronRight className="w-5 h-5" />
                 </p>
               </div>
-            </Link>
+            </Card>
+          </Link>
 
+          {/* ── SECONDARY ACTIONS (3-column grid) ── */}
+          <div className="grid sm:grid-cols-3 gap-4">
             <Link to={isSubscribed ? createPageUrl('FieldMode') : createPageUrl('PaymentGate')} className="group">
               <div className={`p-6 rounded-xl border transition-all h-full flex flex-col ${
                 isSubscribed 
@@ -235,9 +244,6 @@ export default function Dashboard() {
               </div>
             </Link>
           </div>
-
-          {/* ── NEXT UP EVENTS ── */}
-          <NextUpEvents isSubscribed={isSubscribed} locationName={profile?.home_location || null} />
 
           {/* ── FREE TIER UPSELL (if applicable) ── */}
           {!isSubscribed && (
