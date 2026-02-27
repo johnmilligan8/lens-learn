@@ -194,34 +194,34 @@ label, input, select, textarea {
 
 /* ── Night Vision Mode ── */
 /*
-  Strategy: overlay a translucent red layer on top of the entire page.
-  This tints light/white areas red while leaving dark backgrounds nearly unchanged.
-  We use a ::before pseudo-element on a wrapper div via the .night-vision-mode class.
+  Applied via body.night-vision-active class for true global coverage.
+  A fixed ::after overlay sits on top of everything using mix-blend-mode: multiply,
+  which tints white/light areas red while leaving dark/black areas unchanged.
 */
-.night-vision-mode {
-  position: relative;
+
+body.night-vision-active {
+  /* Slight global brightness reduction */
+  filter: brightness(0.88) saturate(0.5);
 }
 
-.night-vision-mode::after {
+body.night-vision-active::after {
   content: '';
   position: fixed;
   inset: 0;
-  background: rgba(180, 0, 0, 0.28);
+  /* Red overlay — mix-blend-mode multiply only darkens/tints light pixels */
+  background: rgba(200, 0, 0, 0.35);
   mix-blend-mode: multiply;
   pointer-events: none;
-  z-index: 9998;
-  transition: opacity 0.35s ease;
+  z-index: 99999;
 }
 
-/* Desaturate non-red colors subtly so red tones stand out */
-.night-vision-mode > * {
-  filter: saturate(0.15) brightness(0.82);
-  transition: filter 0.35s ease;
-}
-
-/* Night-vision exempt elements stay fully visible and interactive above the overlay */
+/* Exempt the toggle button itself from the body filter */
 .night-vision-exempt {
   filter: none !important;
   position: relative;
-  z-index: 9999;
+  z-index: 100000 !important;
 }
+
+/* Legacy class — no-op, kept for safety */
+.night-vision-mode {}
+.night-vision-mode > * {}
