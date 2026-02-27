@@ -159,7 +159,7 @@ export default function Layout({ children, currentPageName }) {
   };
 
   return (
-    <div className={`min-h-screen cosmic-bg flex${nightMode ? ' night-vision-mode' : ''}`}>
+    <div className="min-h-screen cosmic-bg flex">
       {/* Sidebar — desktop */}
       <aside className="hidden md:flex flex-col w-64 bg-[#111111]/95 backdrop-blur-md border-r border-white/5 sticky top-0 h-screen">
         {/* Logo */}
