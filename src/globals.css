@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
 
 @tailwind base;
@@ -193,29 +194,21 @@ label, input, select, textarea {
 ::-webkit-scrollbar-thumb:hover { background: #e60000; }
 
 /* ── Night Vision Mode ── */
-/*
-  Applied via body.night-vision-active class for true global coverage.
-  A fixed ::after overlay sits on top of everything using mix-blend-mode: multiply,
-  which tints white/light areas red while leaving dark/black areas unchanged.
-*/
 
-body.night-vision-active {
-  /* Slight global brightness reduction */
-  filter: brightness(0.88) saturate(0.5);
-}
-
-body.night-vision-active::after {
-  content: '';
+#night-vision-overlay {
   position: fixed;
   inset: 0;
-  /* Red overlay — mix-blend-mode multiply only darkens/tints light pixels */
-  background: rgba(200, 0, 0, 0.35);
+  background: rgba(200, 0, 0, 0.38);
   mix-blend-mode: multiply;
   pointer-events: none;
   z-index: 99999;
+  transition: opacity 0.3s ease;
 }
 
-/* Exempt the toggle button itself from the body filter */
+body.night-vision-active {
+  filter: brightness(0.85) saturate(0.4);
+}
+
 .night-vision-exempt {
   filter: none !important;
   position: relative;
