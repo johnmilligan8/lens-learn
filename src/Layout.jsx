@@ -45,21 +45,26 @@ export default function Layout({ children, currentPageName }) {
     return localStorage.getItem('ug_night_mode') === 'true';
   });
 
-  // Inject/remove a real DOM overlay element — pseudo-elements on body don't pierce stacking contexts
+  // Apply night vision: inject a fixed overlay div + body class
   useEffect(() => {
-    let overlay = document.getElementById('night-vision-overlay');
+    const existing = document.getElementById('night-vision-overlay');
+    if (existing) existing.remove();
+
     if (nightMode) {
       document.body.classList.add('night-vision-active');
-      if (!overlay) {
-        overlay = document.createElement('div');
-        overlay.id = 'night-vision-overlay';
-        document.body.appendChild(overlay);
-      }
+      const overlay = document.createElement('div');
+      overlay.id = 'night-vision-overlay';
+      overlay.style.cssText = `
+        position: fixed;
+        inset: 0;
+        background: rgba(200, 0, 0, 0.30);
+        pointer-events: none;
+        z-index: 2147483647;
+      `;
+      document.body.appendChild(overlay);
     } else {
       document.body.classList.remove('night-vision-active');
-      if (overlay) overlay.remove();
     }
-    return () => {}; // keep overlay alive across re-renders
   }, [nightMode]);
   const navigate = useNavigate();
   const location = useLocation();
