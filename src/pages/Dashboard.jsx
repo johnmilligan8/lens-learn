@@ -7,7 +7,6 @@ import ActionCard from '../components/ui/ActionCard';
 import PageHeader from '../components/ui/PageHeader';
 import NextUpEvents from '../components/dashboard/NextUpEvents';
 import QuickStats from '../components/ui/QuickStats';
-import AuroraPredictionCard from '../components/events/AuroraPredictionCard';
 import { createPageUrl } from '@/utils';
 import { base44 } from '@/api/base44Client';
 import { Card } from '@/components/ui/card';
