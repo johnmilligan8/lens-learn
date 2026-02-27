@@ -5,7 +5,7 @@ export default function NightModeToggle({ nightMode, onToggle, compact = false }
   return (
     <button
       onClick={onToggle}
-      title={nightMode ? 'Night Vision (On) — tap to turn off' : 'Night Vision – red mode to protect your eyes in the dark'}
+      title="Night Vision – red tint to protect your eyes in the dark. Tap to toggle."
       className={`night-vision-exempt flex items-center gap-2 transition-all duration-200 rounded-xl text-xs font-semibold select-none
         ${compact ? 'p-2' : 'px-3 py-2'}
         ${nightMode
