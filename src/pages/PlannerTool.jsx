@@ -995,18 +995,7 @@ export default function PlannerTool() {
                 }
               </Card>
             </>
-          ) : (
-             <Card className="bg-[#1a1a1a] border-white/8 p-16 text-center">
-               <div className="relative w-20 h-20 mx-auto mb-6">
-                <div className="absolute inset-0 bg-red-600/20 rounded-full blur-xl" />
-                <div className="relative bg-slate-800 rounded-full w-20 h-20 flex items-center justify-center">
-                  <MapPin className="w-10 h-10 text-red-400" />
-                </div>
-              </div>
-              <h3 className="text-xl font-bold text-slate-400 mb-2">Enter your shoot location</h3>
-              <p className="text-slate-600 max-w-sm mx-auto">We'll calculate moon phase, galactic core visibility times, a sky map, and optimal shooting windows.</p>
-            </Card>
-          )}
+          ) : null}
         </div>
       </div>
       </>)}
