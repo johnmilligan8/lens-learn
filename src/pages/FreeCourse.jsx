@@ -59,34 +59,105 @@ Let's begin.
         title: 'Gear Checklist — What You Actually Need',
         type: 'article',
         duration: '8 min read',
-        description: 'The essential gear list for your first Milky Way shoot — and how to use the Sky Planner Gear section to track it.',
+        description: 'The essential gear list for your first shoot — tailored to your mode.',
         appLink: { label: 'Open Sky Planner → Gear', page: 'PlannerTool' },
-        content: `## Gear Checklist — What You Actually Need
+        modeVariant: {
+          photographer: `## Gear Checklist — Full Expedition Kit
 
-The good news: you probably already have most of what you need.
+      You'll be packing serious gear for advanced Milky Way and night sky work.
 
-### Camera
-Any DSLR or mirrorless with **manual mode** works. Canon Rebel, Sony A6000, Nikon D3500 — all excellent starters. Even a newer smartphone (iPhone 14 Pro+, Pixel 8+) can capture the Milky Way in Night Mode.
+      ### Camera Body
+      Any DSLR or mirrorless with **manual mode** works. Canon Rebel, Sony A6000, Nikon D3500 — all excellent starters. Full-frame preferred for Milky Way depth.
 
-### The Lens (Most Important)
-This is where it matters. You want:
-- **Focal length**: 14mm–24mm (full-frame equivalent)
-- **Aperture**: f/1.8–f/2.8 (wider = more light = better)
-- **Budget pick**: Rokinon/Samyang 14mm f/2.8 (~$300)
+      ### The Lens (Most Important)
+      This is where it matters. You want:
+      - **Focal length**: 14mm–24mm (full-frame equivalent)
+      - **Aperture**: f/1.4–f/2.8 (wider = more light = better)
+      - **Budget pick**: Rokinon/Samyang 14mm f/2.8 (~$300)
+      - **Premium pick**: Samyang 14mm f/2.4, Tokina 16–35mm f/2.8
 
-### Tripod
-Non-negotiable. Any sturdy tripod works. Ball head makes framing easier.
+      ### Tripod & Stability
+      Non-negotiable. You'll need:
+      - Sturdy tripod with ball head or fluid head
+      - L-bracket for vertical shots
+      - Leveling base or wedges
 
-### What NOT to Buy Yet
-- Tracking mounts (learn fixed tripod first)
-- Filters (not needed for Milky Way)
-- New camera body (your existing one is fine)
+      ### Advanced Gear (Unlock with Plus/Pro)
+      - Intervalometer for timelapses and star trackers
+      - Dew heater & controller (high-altitude/humid shoots)
+      - Remote trigger (wired/wireless)
+      - Extra batteries, high-speed memory cards (256GB+)
 
-### Use the App's Gear Checklist
-**Open Sky Planner → Gear** in the app. There's a pre-built checklist for photographer, smartphone, and experience modes. Check items off before every shoot so nothing gets left behind.
+      ### Use the App's Gear Checklist
+      **Open Sky Planner → Gear** and create a kit. Full photographer preset includes every category. Customize and save for each expedition type.
 
-**Your action:** Open the Sky Planner Gear section now and select your shooter mode. Check off what you already own.
-`,
+      **Your action:** Open Sky Planner Gear, select Photographer mode, and check off what you own.
+      `,
+          smartphone: `## Gear Checklist — Phone-Friendly Essentials
+
+      You're traveling light and focused on Night Mode stability.
+
+      ### Phone & Mount
+      - Recent flagship: iPhone 14+ Pro, Google Pixel 8+, Samsung S24
+      - **Phone tripod/clamp** (non-negotiable for long exposure)
+      - Small Bluetooth remote or self-timer (hands-free stability)
+
+      ### Power
+      - **Power bank**: 20,000+ mAh (Night Mode is battery-hungry)
+      - Charging cable (USB-C preferred)
+      - Consider a solar charger for field sessions
+
+      ### Stability & Comfort
+      - Mini tripod or gorillapod (low-light hand-holding is difficult)
+      - Phone grip or strap (cold hands slip)
+      - Warm layers, headlamp (red + white mode)
+      - Snacks, water bottle
+
+      ### Optional: Night Mode Apps
+      - Native iPhone Night Mode or Google Pixel Astrophotography
+      - Adobe Lightroom Mobile (editing in the field)
+      - Snapseed (quick touch-ups)
+
+      ### What NOT to Bring
+      - Heavy DSLR gear (defeats the purpose)
+      - Lens filters (phone fixed lens)
+      - Tripod head (clamp works fine)
+
+      ### Use the App's Gear Checklist
+      **Open Sky Planner → Gear** and select **Smartphone** mode. The checklist focuses on power, stability, and warmth — skip the heavy camera gear.
+
+      **Your action:** Open Sky Planner Gear, select Smartphone mode, and check off what you have.
+      `,
+          experience: `## Gear Checklist — Light Viewing Essentials
+
+      You're here for the sky itself. Minimal gear, maximum wonder.
+
+      ### Must-Have
+      - **Headlamp** with red light mode (preserves night vision — crucial)
+      - Warm layers, hat, blanket or sleeping bag
+      - Comfortable chair or blanket to lie on
+      - Water, snacks, hot drink (thermos)
+
+      ### Optional Gear
+      - **Binoculars** (10x50 or similar) to see more stars
+      - **Small telescope** (low magnification like 25–50x, great for star clusters and Moon)
+      - Smartphone for star-finding apps (SkySafari, Stellarium)
+
+      ### What You Don't Need
+      - Camera
+      - Tripod
+      - Complex settings
+      - Post-processing
+
+      ### Dark Adaptation Tip
+      **Wait 20–30 minutes after arriving** before looking up at the sky. Your eyes need time to adapt to darkness. Red headlamp light won't reset this adaptation.
+
+      ### Use the App's Gear Checklist
+      **Open Sky Planner → Gear** and select **Sky Experience** mode. Checklist emphasizes comfort and observation tools only.
+
+      **Your action:** Open Sky Planner Gear, select Sky Experience mode, and note what helps you stay comfortable in the dark.
+      `,
+        },
       },
       {
         id: 'm1-l3',
