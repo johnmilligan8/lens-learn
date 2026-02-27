@@ -102,198 +102,247 @@ export default function Dashboard() {
 
   return (
     <PullToRefresh onRefresh={loadData}>
-      <div className="max-w-7xl mx-auto px-4 py-8 relative">
-      {/* Hero Header */}
-      <PageHeader
-        icon={Rocket}
-        badge="Mission Active"
-        title={<>Chart the <span className="gradient-text">Unknown</span>,<br />Master the <span className="gradient-text-gold">Galaxy</span></>}
-        subtitle={`Every great astrophotographer started exactly where you are. Your expedition continues, ${user?.full_name?.split(' ')[0] || 'Explorer'}.`}
-      />
-
-      {/* Quick Stats */}
-      <QuickStats stats={[
-        { label: 'Course Progress', value: `${overallPct}%` },
-        { label: 'Lessons Done', value: completedCount },
-        { label: 'Total Expeditions', value: modules.length },
-        { label: 'Streak', value: '7d', change: { positive: true, text: 'Keep it up!' } },
-      ]} />
-
-      {/* Exploration Mode Banner */}
-      {profile?.shooter_mode && (
-        <ExplorationModeBanner 
-          mode={profile.shooter_mode} 
-          onEdit={() => setModeModalOpen(true)}
-        />
-      )}
-
-      {/* Mode Selector Modal */}
-      <ModeSelectorModal
-        open={modeModalOpen}
-        onOpenChange={setModeModalOpen}
-        currentMode={profile?.shooter_mode}
-        onSave={handleSaveMode}
-        saving={savingMode}
-      />
-
-      {/* Free tier upsell banner */}
-      {!isSubscribed && (
-        <div className="mb-8 p-5 rounded-2xl border border-red-600/30 bg-[#1a1a1a] flex flex-col md:flex-row items-start md:items-center gap-4">
-          <div className="flex-1">
-            <p className="text-white font-black text-lg leading-snug">🚀 Ready to master the stars?</p>
-            <p className="text-slate-300 text-sm mt-1">Unlock full planning tools, guided shoot plans, gear checklists & aurora alerts — from <strong className="text-white">$7.99/month</strong>. Or go Pro at $14.99/mo for instructor access & journal insights.</p>
+      <div className="min-h-screen flex flex-col">
+        {/* ── TOP GREETING ── */}
+        <div className="max-w-5xl mx-auto w-full px-4 pt-6 pb-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-slate-500 text-xs uppercase tracking-widest font-semibold">Welcome back</p>
+              <h1 className="text-2xl md:text-3xl font-black text-white mt-1">
+                {user?.full_name?.split(' ')[0] || 'Explorer'}
+              </h1>
+              <p className="text-slate-400 text-sm mt-1">Your expedition continues — let's explore tonight.</p>
+            </div>
+            <Link to={createPageUrl('Profile')} className="text-slate-500 hover:text-slate-300 transition-colors">
+              <div className="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center text-white font-bold text-sm">
+                {user?.full_name?.[0] || 'U'}
+              </div>
+            </Link>
           </div>
-          <Link to={createPageUrl('PaymentGate')}>
-            <Button className="bg-red-600 hover:bg-red-700 text-white font-bold whitespace-nowrap">
-              Begin Your Expedition →
-            </Button>
-          </Link>
         </div>
-      )}
 
-      {/* Free Course Card for non-subscribers */}
-      {!isSubscribed && (
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold text-white mb-5 flex items-center gap-2">
-            <Star className="w-6 h-6 text-red-400" /> Start Here — Free
-          </h2>
-          <Link to={createPageUrl('FreeCourse')}>
-            <Card className="bg-[#1a1a1a] border border-white/8 hover:border-red-600/40 p-6 card-glow transition-all group">
-              <div className="flex items-start gap-5">
-                <div className="bg-red-600/15 p-4 rounded-xl flex-shrink-0">
-                  <Telescope className="w-8 h-8 text-red-400" />
-                </div>
+        {/* ── MAIN CONTENT (flex-1 to push bottom content down) ── */}
+        <div className="flex-1 max-w-5xl mx-auto w-full px-4 py-6 space-y-6">
+
+          {/* ── MODE HERO BANNER ── */}
+          {profile?.shooter_mode && (
+            <div className="p-5 rounded-2xl border border-slate-800/60 bg-gradient-to-br from-slate-900/80 to-slate-800/60 backdrop-blur-sm flex items-center justify-between">
+              <div>
+                <p className="text-xs text-slate-500 uppercase tracking-widest font-semibold mb-1">Active Mode</p>
+                <h2 className="text-xl md:text-2xl font-black text-white">
+                  {profile.shooter_mode === 'photographer' && '📷 DSLR / Mirrorless Mode Active'}
+                  {profile.shooter_mode === 'smartphone' && '📱 Smartphone Night Mode Active'}
+                  {profile.shooter_mode === 'experience' && '👁️ Sky Experience Mode Active'}
+                </h2>
+              </div>
+              <button
+                onClick={() => setModeModalOpen(true)}
+                className="text-slate-500 hover:text-slate-300 text-xs underline transition-colors flex-shrink-0"
+              >
+                Change
+              </button>
+            </div>
+          )}
+
+          {/* ── HERO STREAK CARD (40% width on desktop, full on mobile) ── */}
+          <div className="lg:w-2/5">
+            <Card className="bg-gradient-to-br from-emerald-950/40 to-slate-900/40 border border-emerald-600/30 p-6 shadow-lg hover:shadow-emerald-600/20 transition-shadow relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-600/5 rounded-full blur-3xl -mr-16 -mt-16" />
+              <div className="relative z-10">
+                <div className="text-4xl mb-2">🔥</div>
+                <p className="text-xs text-emerald-300 uppercase tracking-widest font-bold mb-1">7 Day Streak</p>
+                <h3 className="text-3xl font-black text-white mb-1">Keep it up!</h3>
+                <p className="text-emerald-300 text-sm">You're in the zone. Don't break the chain.</p>
+              </div>
+            </Card>
+          </div>
+
+          {/* ── STATS ROW (4 smaller glanceable cards) ── */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <Card className="bg-slate-800/40 border border-slate-700/40 p-4">
+              <p className="text-xs text-slate-500 uppercase tracking-widest font-semibold mb-1">Progress</p>
+              <p className="text-2xl font-black text-white">{overallPct}%</p>
+            </Card>
+            <Card className="bg-slate-800/40 border border-slate-700/40 p-4">
+              <p className="text-xs text-slate-500 uppercase tracking-widest font-semibold mb-1">Lessons</p>
+              <p className="text-2xl font-black text-white">{completedCount}</p>
+            </Card>
+            <Card className="bg-slate-800/40 border border-slate-700/40 p-4">
+              <p className="text-xs text-slate-500 uppercase tracking-widest font-semibold mb-1">Courses</p>
+              <p className="text-2xl font-black text-white">{modules.length}</p>
+            </Card>
+            <Card className="bg-slate-800/40 border border-slate-700/40 p-4">
+              <p className="text-xs text-slate-500 uppercase tracking-widest font-semibold mb-1">On Fire</p>
+              <p className="text-2xl font-black text-emerald-400">7d</p>
+            </Card>
+          </div>
+
+          {/* ── HERO ACTION BUTTONS (4 large, equal, strong CTAs) ── */}
+          <div className="grid sm:grid-cols-2 gap-4">
+            <Link to={createPageUrl('TonightHub')} className="group">
+              <div className="p-6 rounded-xl border border-orange-600/30 bg-gradient-to-br from-orange-950/30 to-slate-900/30 hover:border-orange-500/50 hover:from-orange-950/50 transition-all h-full flex flex-col">
+                <p className="text-2xl mb-2">🌙</p>
+                <h3 className="text-lg font-bold text-white mb-1">Tonight?</h3>
+                <p className="text-slate-400 text-xs mb-4 flex-1">What's happening in your sky tonight</p>
+                <p className="text-orange-400 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
+                  Decide now <ChevronRight className="w-4 h-4" />
+                </p>
+              </div>
+            </Link>
+
+            <Link to={isSubscribed ? createPageUrl('FieldMode') : createPageUrl('PaymentGate')} className="group">
+              <div className={`p-6 rounded-xl border transition-all h-full flex flex-col ${
+                isSubscribed 
+                  ? 'border-emerald-600/30 bg-gradient-to-br from-emerald-950/30 to-slate-900/30 hover:border-emerald-500/50 hover:from-emerald-950/50' 
+                  : 'border-slate-700/40 bg-slate-900/30 opacity-60 cursor-not-allowed'
+              }`}>
+                <p className="text-2xl mb-2">{isSubscribed ? '⚡' : '🔒'}</p>
+                <h3 className="text-lg font-bold text-white mb-1">Field Mode</h3>
+                <p className="text-slate-400 text-xs mb-4 flex-1">Live settings & guidance in the field</p>
+                <p className={`font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all ${
+                  isSubscribed ? 'text-emerald-400' : 'text-slate-500'
+                }`}>
+                  {isSubscribed ? 'Go live' : 'Upgrade'} <ChevronRight className="w-4 h-4" />
+                </p>
+              </div>
+            </Link>
+
+            <Link to={isSubscribed ? createPageUrl('PlannerTool') : createPageUrl('PaymentGate')} className="group">
+              <div className={`p-6 rounded-xl border transition-all h-full flex flex-col ${
+                isSubscribed 
+                  ? 'border-purple-600/30 bg-gradient-to-br from-purple-950/30 to-slate-900/30 hover:border-purple-500/50 hover:from-purple-950/50' 
+                  : 'border-slate-700/40 bg-slate-900/30 opacity-60 cursor-not-allowed'
+              }`}>
+                <p className="text-2xl mb-2">{isSubscribed ? '📍' : '🔒'}</p>
+                <h3 className="text-lg font-bold text-white mb-1">Sky Planner</h3>
+                <p className="text-slate-400 text-xs mb-4 flex-1">Detailed planning & visibility windows</p>
+                <p className={`font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all ${
+                  isSubscribed ? 'text-purple-400' : 'text-slate-500'
+                }`}>
+                  {isSubscribed ? 'Plan a shoot' : 'Upgrade'} <ChevronRight className="w-4 h-4" />
+                </p>
+              </div>
+            </Link>
+
+            <Link to={createPageUrl('PlannerTool') + '?tab=events'} className="group">
+              <div className="p-6 rounded-xl border border-slate-700/40 bg-gradient-to-br from-slate-900/40 to-slate-900/20 hover:border-slate-600/60 hover:from-slate-900/60 transition-all h-full flex flex-col">
+                <p className="text-2xl mb-2">📅</p>
+                <h3 className="text-lg font-bold text-white mb-1">Cosmic Events</h3>
+                <p className="text-slate-400 text-xs mb-4 flex-1">Showers, eclipses, aurora, dark moons</p>
+                <p className="text-slate-400 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
+                  See upcoming <ChevronRight className="w-4 h-4" />
+                </p>
+              </div>
+            </Link>
+          </div>
+
+          {/* ── NEXT UP EVENTS ── */}
+          <NextUpEvents isSubscribed={isSubscribed} locationName={profile?.home_location || null} />
+
+          {/* ── FREE TIER UPSELL (if applicable) ── */}
+          {!isSubscribed && (
+            <Card className="bg-gradient-to-br from-red-950/40 to-slate-900/40 border border-red-600/30 p-6">
+              <div className="flex items-start gap-4">
+                <p className="text-3xl">🚀</p>
                 <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Badge className="bg-emerald-600 text-white text-xs">FREE</Badge>
-                    <span className="text-slate-300 text-xs">5 lessons · No card required</span>
-                  </div>
-                  <h3 className="text-xl font-bold text-white mb-1 transition-colors">Your First Night Sky Adventure</h3>
-                  <p className="text-slate-300 text-sm mb-3">Gear basics, magic camera settings, simple composition, and your first shoot checklist — everything to capture the Milky Way tonight.</p>
-                  <p className="text-red-400 text-sm font-medium flex items-center gap-1">Start free course <ChevronRight className="w-4 h-4" /></p>
+                  <h3 className="text-lg font-bold text-white mb-1">Ready to master the stars?</h3>
+                  <p className="text-slate-300 text-sm mb-4">Unlock full planning tools, guided shoots, gear checklists & aurora alerts from $7.99/month.</p>
+                  <Link to={createPageUrl('PaymentGate')}>
+                    <Button className="bg-red-600 hover:bg-red-700 text-white font-bold">
+                      Begin Your Expedition →
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </Card>
-          </Link>
-        </div>
-      )}
+          )}
 
+          {/* ── FREE COURSE (if not subscribed) ── */}
+          {!isSubscribed && (
+            <Link to={createPageUrl('FreeCourse')}>
+              <Card className="bg-gradient-to-br from-emerald-950/30 to-slate-900/40 border border-emerald-600/30 hover:border-emerald-500/50 p-6 transition-all hover:shadow-emerald-600/10 hover:shadow-lg">
+                <div className="flex items-start gap-4">
+                  <p className="text-3xl">⭐</p>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Badge className="bg-emerald-600 text-white text-xs">FREE</Badge>
+                      <span className="text-slate-500 text-xs">5 lessons</span>
+                    </div>
+                    <h3 className="text-lg font-bold text-white mb-1">Your First Night Sky Adventure</h3>
+                    <p className="text-slate-400 text-sm">Gear basics, magic camera settings, and your first shoot checklist.</p>
+                    <p className="text-emerald-400 text-sm font-semibold mt-2 flex items-center gap-1">
+                      Start free course <ChevronRight className="w-4 h-4" />
+                    </p>
+                  </div>
+                </div>
+              </Card>
+            </Link>
+          )}
 
+          {/* ── POST-PROCESSING GUIDE ── */}
+          <PostProcessingGuide />
 
-      {/* Mission Briefings */}
-      <div className="mb-12">
-        <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-          <Zap className="w-6 h-6 text-red-400" /> What Do You Want To Do?
-        </h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
-          <ActionCard
-            icon={Rocket}
-            title="Tonight?"
-            description="Top ranked sky events for tonight with viability scores."
-            label="Decide now"
-            href={createPageUrl('TonightHub')}
-            color="emerald"
-          />
-          <ActionCard
-            icon={Zap}
-            title="Field Mode"
-            description={
-              profile?.shooter_mode === 'experience' ? 'Live sky watching tips & conditions for tonight.' :
-              profile?.shooter_mode === 'smartphone' ? 'Live phone camera settings & composition guidance.' :
-              'Real-time camera settings, composition & lighting in the field.'
-            }
-            label="Go live"
-            href={createPageUrl('FieldMode')}
-            color="red"
-            disabled={!isSubscribed}
-          />
-          <ActionCard
-            icon={MapPin}
-            title="Sky Planner"
-            description="Plan a shoot — visibility windows, moon phase, Astro Score & gear."
-            label="Plan a shoot"
-            href={createPageUrl('PlannerTool')}
-            color="purple"
-            disabled={!isSubscribed}
-          />
-          <ActionCard
-            icon={Calendar}
-            title="Cosmic Events"
-            description="Meteor showers, eclipses, aurora alerts & dark moon windows."
-            label="See events"
-            href={createPageUrl('PlannerTool') + '?tab=events'}
-            color="yellow"
-          />
-        </div>
-      </div>
+          {/* ── SKY PLANNER PREVIEW (free only) ── */}
+          {!isSubscribed && <SkyPlannerPreview />}
 
-      {/* Next Up — Celestial Events */}
-      <NextUpEvents isSubscribed={isSubscribed} locationName={profile?.home_location || null} />
-
-      {/* About the App — JTBD card */}
-      <div className="mb-12">
-        <Card className="bg-[#1a1a1a] border border-white/8 p-6 relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-red-600 to-red-900 rounded-l-xl" />
-          <div className="pl-4">
-            <p className="text-xs font-bold uppercase tracking-widest text-red-400 mb-2">What Uncharted Galaxy Is For</p>
-            <p className="text-slate-300 text-sm leading-relaxed">
-              Uncharted Galaxy helps you decide the <strong className="text-white">best time and place</strong> to experience or photograph the night sky, guides you calmly in the field, and helps you improve through reflection and learning — all in one calm, trustworthy app — while providing structured courses and meaningful interaction with instructors and the community.
-            </p>
-            <p className="text-slate-400 text-sm leading-relaxed mt-3">
-              It preserves strategic optionality by offloading thinking in pressure situations, giving you the best sensing capabilities — <strong className="text-white">real-time KP, clouds, Bortle, moon, weather</strong> — in an easy management layer so you never lose options or miss moments.
-            </p>
+          {/* ── COURSES SECTION ── */}
+          <div>
+            <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+              <Rocket className="w-5 h-5 text-red-400" /> Continue Learning
+            </h2>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {modules.map((mod) => {
+                const pct = getModuleProgress(mod.id);
+                const iconKeys = Object.keys(MODULE_ICONS);
+                const IconComp = MODULE_ICONS[iconKeys[modules.indexOf(mod) % iconKeys.length]];
+                return (
+                  <Link key={mod.id} to={isSubscribed ? createPageUrl('ModuleView') + `?id=${mod.id}` : createPageUrl('PaymentGate')}>
+                    <Card className={`bg-slate-900/40 border border-slate-700/40 hover:border-slate-600/60 p-5 transition-all h-full ${!isSubscribed ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-lg'}`}>
+                      {mod.is_free_preview && (
+                        <Badge className="inline-block bg-emerald-600 text-white text-xs mb-3">FREE</Badge>
+                      )}
+                      <div className="flex items-start gap-2 mb-3">
+                        <IconComp className="w-8 h-8 text-red-400 flex-shrink-0" />
+                        {!isSubscribed && <Lock className="w-4 h-4 text-slate-600 flex-shrink-0 ml-auto" />}
+                      </div>
+                      <h3 className="text-base font-bold text-white mb-1">{mod.title}</h3>
+                      <p className="text-slate-400 text-xs mb-3 line-clamp-2">{mod.description}</p>
+                      <div className="text-xs text-slate-500 mb-2">
+                        {mod.total_lessons && <span>{mod.total_lessons} lessons</span>}
+                        {mod.total_duration && <span> • {mod.total_duration}</span>}
+                      </div>
+                      <Progress value={pct} className="h-1 mb-1" />
+                      <p className="text-xs text-slate-600">{pct}% done</p>
+                    </Card>
+                  </Link>
+                );
+              })}
+            </div>
           </div>
-        </Card>
-      </div>
 
-      {/* Post-Processing Guide */}
-      <div className="mb-12">
-        <PostProcessingGuide />
-      </div>
-
-      {/* Sky Planner Preview for Free Users */}
-      {!isSubscribed && (
-        <div className="mb-12">
-          <SkyPlannerPreview />
         </div>
-      )}
 
-      {/* Milky Way Courses Section */}
-      <div className="mb-10">
-        <h2 className="text-2xl font-bold text-white mb-5 flex items-center gap-2">
-          <Rocket className="w-6 h-6 text-red-400" /> Milky Way Courses
-        </h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {modules.map((mod) => {
-            const pct = getModuleProgress(mod.id);
-            const iconKeys = Object.keys(MODULE_ICONS);
-            const IconComp = MODULE_ICONS[iconKeys[modules.indexOf(mod) % iconKeys.length]];
-            return (
-              <Link key={mod.id} to={isSubscribed ? createPageUrl('ModuleView') + `?id=${mod.id}` : createPageUrl('PaymentGate')}>
-                <Card className={`bg-[#1a1a1a] border border-white/8 hover:border-red-600/40 p-6 card-glow hover:scale-[1.02] transition-all duration-200 relative overflow-hidden h-full ${!isSubscribed ? 'opacity-70' : ''}`}>
-                  {mod.is_free_preview && (
-                    <Badge className="absolute top-3 right-3 bg-emerald-600 text-white text-xs">FREE</Badge>
-                  )}
-                  <div className="flex items-start justify-between mb-4">
-                    <IconComp className="w-10 h-10 text-red-400" />
-                    {isSubscribed ? <ChevronRight className="w-4 h-4 text-slate-500" /> : <Lock className="w-4 h-4 text-slate-500" />}
-                  </div>
-                  <h3 className="text-lg font-bold text-white mb-2">{mod.title}</h3>
-                  <p className="text-slate-300 text-sm mb-4 line-clamp-2">{mod.description}</p>
-                  <div className="flex items-center gap-3 text-xs text-slate-500 mb-3">
-                    {mod.total_lessons && <span>{mod.total_lessons} lessons</span>}
-                    {mod.total_duration && <><span>•</span><span>{mod.total_duration}</span></>}
-                  </div>
-                  <Progress value={pct} className="h-1.5 mb-1" />
-                  <p className="text-xs text-slate-500">{pct}% complete</p>
-                </Card>
-              </Link>
-            );
-          })}
+        {/* ── BOTTOM BAR (sticky) ── */}
+        <div className="mt-auto border-t border-slate-800/40 bg-slate-900/30 backdrop-blur-sm">
+          <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+            {/* Mode Selector Modal */}
+            <ModeSelectorModal
+              open={modeModalOpen}
+              onOpenChange={setModeModalOpen}
+              currentMode={profile?.shooter_mode}
+              onSave={handleSaveMode}
+              saving={savingMode}
+            />
+            <div className="text-xs text-slate-500">
+              {profile?.home_location && <span>📍 {profile.home_location}</span>}
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="text-xs text-slate-600">Night Vision</span>
+              {/* Night Vision toggle would go here */}
+            </div>
+          </div>
         </div>
       </div>
-
-      </div>
-      </PullToRefresh>
-      );
-      }
+    </PullToRefresh>
+  );
+}
