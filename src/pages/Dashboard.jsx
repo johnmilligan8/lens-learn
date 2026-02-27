@@ -79,6 +79,19 @@ export default function Dashboard() {
     return Math.round((done / mod.total_lessons) * 100);
   };
 
+  const handleSaveMode = async (selectedMode) => {
+    setSavingMode(true);
+    const data = { user_email: user.email, shooter_mode: selectedMode };
+    if (profile) {
+      await base44.entities.UserProfile.update(profile.id, data);
+      setProfile({ ...profile, ...data });
+    } else {
+      const created = await base44.entities.UserProfile.create({ ...data, onboarding_complete: true });
+      setProfile(created);
+    }
+    setSavingMode(false);
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
