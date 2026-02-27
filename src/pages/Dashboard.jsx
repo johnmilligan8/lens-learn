@@ -217,15 +217,6 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Aurora Prediction Card */}
-      <div className="mb-12">
-        <AuroraPredictionCard 
-          userLat={profile?.home_lat} 
-          userLon={profile?.home_lon} 
-          locationName={profile?.home_location} 
-        />
-      </div>
-
       {/* Next Up — Celestial Events */}
       <NextUpEvents isSubscribed={isSubscribed} locationName={profile?.home_location || null} />
 
