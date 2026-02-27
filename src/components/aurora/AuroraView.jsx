@@ -32,7 +32,7 @@ export default function AuroraView({ isSubscribed, userLocation = 'Utah', userLa
   const [forecasts, setForecasts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [tab, setTab] = useState('daily');
+  const [tab, setTab] = useState('map');
   const [lastUpdated, setLastUpdated] = useState(null);
 
   const load = async () => {
