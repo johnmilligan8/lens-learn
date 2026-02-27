@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Camera, Trophy, Star, CheckCircle2, Edit2, Check, X, Trash2, AlertTriangle, MapPin, Telescope } from 'lucide-react';
 import LocationPicker from '../components/onboarding/LocationPicker';
-import ModeSelector from '../components/onboarding/ModeSelector';
+
 import AuroraAlertManager from '../components/aurora/AuroraAlertManager';
 import AuroraAlertSettings from '../components/profile/AuroraAlertSettings';
 import OfflineCacheSettings from '../components/profile/OfflineCacheSettings';
