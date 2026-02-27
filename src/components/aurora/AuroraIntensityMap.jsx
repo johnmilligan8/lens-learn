@@ -182,12 +182,11 @@ export default function AuroraIntensityMap({
 
       {/* Map Section */}
       {isSubscribed ? (
-        <div className="border-b border-white/8 bg-black/30">
-          <div style={{ height: '380px', width: '100%', position: 'relative' }}>
+        <div className="border-b border-white/8 bg-black/30" style={{ height: '380px' }}>
             <MapContainer
               center={[50, -100]}
               zoom={4}
-              style={{ height: '100%', width: '100%', position: 'absolute', top: 0, left: 0 }}
+              style={{ height: '100%', width: '100%' }}
               attributionControl={true}
             >
               <TileLayer
