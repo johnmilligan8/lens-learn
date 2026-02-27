@@ -438,6 +438,15 @@ _________________________________________________________________
             </div>
           </div>
 
+          {/* Mode-specific intro */}
+          <div className="mb-4 p-3 rounded-lg bg-slate-800/50 border border-slate-700/60">
+            <p className="text-slate-300 text-xs leading-relaxed">
+              {shooterMode === 'photographer' && '📷 Full camera expedition gear – pack for advanced shoots.'}
+              {shooterMode === 'smartphone' && '📱 Phone-friendly kit – focus on stability and power.'}
+              {shooterMode === 'experience' && '👁️ Light viewing essentials – enjoy the sky without gear.'}
+            </p>
+          </div>
+
           {/* Search */}
           <div className="mb-4 relative">
             <Search className="w-4 h-4 absolute left-3 top-2.5 text-slate-500" />
