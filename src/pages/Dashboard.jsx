@@ -126,7 +126,7 @@ export default function Dashboard() {
 
           {/* ── MODE HERO BANNER ── */}
           {profile?.shooter_mode && (
-            <div className="p-5 rounded-2xl border border-red-600/40 bg-gradient-to-br from-red-950/30 to-slate-900/40 backdrop-blur-sm flex items-center justify-between gap-4">
+            <div className="p-5 rounded-2xl border border-white/10 bg-[#111111]/80 backdrop-blur-sm flex items-center justify-between gap-4">
               <div>
                 <p className="text-xs text-red-400 uppercase tracking-widest font-semibold mb-1">Active Mode</p>
                 <h2 className="text-xl md:text-2xl font-black text-white">
@@ -146,7 +146,7 @@ export default function Dashboard() {
 
           {/* ── HERO STREAK CARD (40% width on desktop, full on mobile) ── */}
           <div className="lg:w-2/5">
-            <Card className="bg-slate-800/50 border border-slate-700/60 p-6 shadow-lg hover:shadow-red-600/10 hover:border-slate-600/80 transition-all relative overflow-hidden">
+            <Card className="bg-[#111111]/80 border border-white/10 p-6 shadow-lg hover:shadow-red-600/10 hover:border-white/20 transition-all relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-red-600/5 rounded-full blur-3xl -mr-16 -mt-16" />
               <div className="relative z-10">
                 <div className="text-4xl mb-2">🔥</div>
@@ -159,19 +159,19 @@ export default function Dashboard() {
 
           {/* ── STATS ROW (4 smaller glanceable cards) ── */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            <Card className="bg-slate-800/50 border border-slate-700/60 p-4 hover:border-slate-600/80 transition-colors">
+            <Card className="bg-[#111111]/80 border border-white/10 p-4 hover:border-white/20 transition-colors">
               <p className="text-xs text-red-400 uppercase tracking-widest font-semibold mb-1">Progress</p>
               <p className="text-2xl font-black text-white">{overallPct}%</p>
             </Card>
-            <Card className="bg-slate-800/50 border border-slate-700/60 p-4 hover:border-slate-600/80 transition-colors">
+            <Card className="bg-[#111111]/80 border border-white/10 p-4 hover:border-white/20 transition-colors">
               <p className="text-xs text-red-400 uppercase tracking-widest font-semibold mb-1">Lessons</p>
               <p className="text-2xl font-black text-white">{completedCount}</p>
             </Card>
-            <Card className="bg-slate-800/50 border border-slate-700/60 p-4 hover:border-slate-600/80 transition-colors">
+            <Card className="bg-[#111111]/80 border border-white/10 p-4 hover:border-white/20 transition-colors">
               <p className="text-xs text-red-400 uppercase tracking-widest font-semibold mb-1">Courses</p>
               <p className="text-2xl font-black text-white">{modules.length}</p>
             </Card>
-            <Card className="bg-slate-800/50 border border-slate-700/60 p-4 hover:border-slate-600/80 transition-colors">
+            <Card className="bg-[#111111]/80 border border-white/10 p-4 hover:border-white/20 transition-colors">
               <p className="text-xs text-red-400 uppercase tracking-widest font-semibold mb-1">On Fire</p>
               <p className="text-2xl font-black text-red-400">7d</p>
             </Card>
@@ -180,7 +180,7 @@ export default function Dashboard() {
           {/* ── HERO ACTION BUTTONS (4 large, equal, strong CTAs) ── */}
           <div className="grid sm:grid-cols-2 gap-4">
             <Link to={createPageUrl('TonightHub')} className="group">
-              <div className="p-6 rounded-xl border border-slate-700/60 bg-slate-800/50 hover:border-slate-600/80 hover:bg-slate-800/70 transition-all h-full flex flex-col">
+              <div className="p-6 rounded-xl border border-white/10 bg-[#111111]/80 hover:border-white/20 hover:bg-[#111111]/95 transition-all h-full flex flex-col">
                 <p className="text-2xl mb-2">🌙</p>
                 <h3 className="text-lg font-bold text-white mb-1">Tonight?</h3>
                 <p className="text-slate-400 text-xs mb-4 flex-1">What's happening in your sky tonight</p>
@@ -193,8 +193,8 @@ export default function Dashboard() {
             <Link to={isSubscribed ? createPageUrl('FieldMode') : createPageUrl('PaymentGate')} className="group">
               <div className={`p-6 rounded-xl border transition-all h-full flex flex-col ${
                 isSubscribed 
-                  ? 'border-slate-700/60 bg-slate-800/50 hover:border-slate-600/80 hover:bg-slate-800/70' 
-                  : 'border-slate-700/40 bg-slate-900/30 opacity-60 cursor-not-allowed'
+                  ? 'border-white/10 bg-[#111111]/80 hover:border-white/20 hover:bg-[#111111]/95' 
+                  : 'border-white/5 bg-[#111111]/50 opacity-60 cursor-not-allowed'
               }`}>
                 <p className="text-2xl mb-2">{isSubscribed ? '⚡' : '🔒'}</p>
                 <h3 className="text-lg font-bold text-white mb-1">Field Mode</h3>
@@ -210,8 +210,8 @@ export default function Dashboard() {
             <Link to={isSubscribed ? createPageUrl('PlannerTool') : createPageUrl('PaymentGate')} className="group">
               <div className={`p-6 rounded-xl border transition-all h-full flex flex-col ${
                 isSubscribed 
-                  ? 'border-slate-700/60 bg-slate-800/50 hover:border-slate-600/80 hover:bg-slate-800/70' 
-                  : 'border-slate-700/40 bg-slate-900/30 opacity-60 cursor-not-allowed'
+                  ? 'border-white/10 bg-[#111111]/80 hover:border-white/20 hover:bg-[#111111]/95' 
+                  : 'border-white/5 bg-[#111111]/50 opacity-60 cursor-not-allowed'
               }`}>
                 <p className="text-2xl mb-2">{isSubscribed ? '📍' : '🔒'}</p>
                 <h3 className="text-lg font-bold text-white mb-1">Sky Planner</h3>
@@ -225,7 +225,7 @@ export default function Dashboard() {
             </Link>
 
             <Link to={createPageUrl('PlannerTool') + '?tab=events'} className="group">
-              <div className="p-6 rounded-xl border border-slate-700/60 bg-slate-800/50 hover:border-slate-600/80 hover:bg-slate-800/70 transition-all h-full flex flex-col">
+              <div className="p-6 rounded-xl border border-white/10 bg-[#111111]/80 hover:border-white/20 hover:bg-[#111111]/95 transition-all h-full flex flex-col">
                 <p className="text-2xl mb-2">📅</p>
                 <h3 className="text-lg font-bold text-white mb-1">Cosmic Events</h3>
                 <p className="text-slate-400 text-xs mb-4 flex-1">Showers, eclipses, aurora, dark moons</p>
@@ -241,7 +241,7 @@ export default function Dashboard() {
 
           {/* ── FREE TIER UPSELL (if applicable) ── */}
           {!isSubscribed && (
-            <Card className="bg-slate-800/50 border border-slate-700/60 p-6">
+            <Card className="bg-[#111111]/80 border border-white/10 p-6">
               <div className="flex items-start gap-4">
                 <p className="text-3xl">🚀</p>
                 <div className="flex-1">
@@ -260,7 +260,7 @@ export default function Dashboard() {
           {/* ── FREE COURSE (if not subscribed) ── */}
           {!isSubscribed && (
             <Link to={createPageUrl('FreeCourse')}>
-              <Card className="bg-slate-800/50 border border-slate-700/60 hover:border-slate-600/80 p-6 transition-all">
+              <Card className="bg-[#111111]/80 border border-white/10 hover:border-white/20 p-6 transition-all">
                 <div className="flex items-start gap-4">
                   <p className="text-3xl">⭐</p>
                   <div className="flex-1">
@@ -297,7 +297,7 @@ export default function Dashboard() {
                 const IconComp = MODULE_ICONS[iconKeys[modules.indexOf(mod) % iconKeys.length]];
                 return (
                   <Link key={mod.id} to={isSubscribed ? createPageUrl('ModuleView') + `?id=${mod.id}` : createPageUrl('PaymentGate')}>
-                    <Card className={`bg-slate-800/50 border border-slate-700/60 hover:border-slate-600/80 p-5 transition-all h-full ${!isSubscribed ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                    <Card className={`bg-[#111111]/80 border border-white/10 hover:border-white/20 p-5 transition-all h-full ${!isSubscribed ? 'opacity-50 cursor-not-allowed' : ''}`}>
                       {mod.is_free_preview && (
                         <Badge className="inline-block bg-red-600 text-white text-xs mb-3">FREE</Badge>
                       )}
