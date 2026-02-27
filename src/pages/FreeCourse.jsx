@@ -726,9 +726,9 @@ export default function FreeCourse() {
 
       {/* ── Header ── */}
       <div className="mb-8">
-        <div className="inline-flex items-center gap-2 bg-emerald-900/30 border border-emerald-500/30 rounded-full px-3 py-1 mb-4">
-          <Star className="w-3 h-3 text-emerald-400" />
-          <span className="text-emerald-300 text-xs font-semibold uppercase tracking-widest">Free Starter Course</span>
+        <div className="inline-flex items-center gap-2 bg-red-900/30 border border-red-500/30 rounded-full px-3 py-1 mb-4">
+          <Star className="w-3 h-3 text-red-400" />
+          <span className="text-red-300 text-xs font-semibold uppercase tracking-widest">Free Starter Course</span>
         </div>
         <h1 className="text-3xl md:text-4xl font-black text-white mb-2">Milky Way Photography with Uncharted Galaxy</h1>
         <p className="text-slate-400 text-lg mb-5">Your first Milky Way shot starts here — with Uncharted Galaxy as your companion at every step.</p>
