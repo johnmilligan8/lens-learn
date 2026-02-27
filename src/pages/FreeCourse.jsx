@@ -584,7 +584,7 @@ const typeIcon = (type) => {
 };
 
 const colorMap = {
-  emerald: { badge: 'bg-emerald-900/40 border-emerald-500/40 text-emerald-300', ring: 'ring-emerald-500/30', dot: 'bg-emerald-500' },
+  emerald: { badge: 'bg-red-900/40 border-red-500/40 text-red-300', ring: 'ring-red-500/30', dot: 'bg-red-500' },
   red: { badge: 'bg-red-900/40 border-red-500/40 text-red-300', ring: 'ring-red-500/30', dot: 'bg-red-500' },
 };
 
