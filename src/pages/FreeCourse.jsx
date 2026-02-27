@@ -355,42 +355,105 @@ When you're on location and ready to shoot, open **Field Mode**. It shows curren
       },
       {
         id: 'm2-l2',
-        title: 'The 500/300/NPF Rule — Use the App Calculator',
+        title: 'The 500/300/NPF Rule & Shutter Speed',
         type: 'article',
         duration: '6 min read',
-        description: 'The rules that tell you your maximum shutter speed before star trails appear — and how to find it in the app\'s Camera tab.',
+        description: 'Maximum shutter speed explained.',
         appLink: { label: 'Open Field Mode → Camera Tab', page: 'FieldMode' },
-        content: `## The 500 / 300 / NPF Rule
+        modeVariant: {
+          photographer: `## The 500 / 300 / NPF Rule — Shutter Speed Limits
 
-Star trails appear when your shutter is open too long. These rules tell you the maximum safe shutter speed.
+      Star trails appear when your shutter is open too long. These rules tell you the maximum safe shutter speed.
 
-### The 500 Rule (Simplest)
-**Max shutter = 500 ÷ focal length**
+      ### The 500 Rule (Full-Frame, Simplest)
+      **Max shutter = 500 ÷ focal length (in mm)**
 
-Examples:
-- 14mm lens → 500 ÷ 14 = **35 seconds**
-- 20mm lens → 500 ÷ 20 = **25 seconds**
-- 24mm lens → 500 ÷ 24 = **20 seconds**
+      Examples:
+      - 14mm lens → 500 ÷ 14 = **35.7 seconds**
+      - 20mm lens → 500 ÷ 20 = **25 seconds**
+      - 24mm lens → 500 ÷ 24 = **20.8 seconds**
 
-Works well for full-frame cameras.
+      Works well for full-frame cameras.
 
-### The 300 Rule (Crop Sensors)
-If your camera has a crop sensor (APS-C), use 300 instead of 500:
-- 14mm lens on crop sensor → 300 ÷ 14 = **21 seconds**
+      ### The 300 Rule (Crop Sensors / APS-C)
+      If your camera has a crop sensor, use 300 instead of 500 (accounts for crop factor):
+      - 14mm lens on crop sensor → 300 ÷ 14 = **21.4 seconds**
+      - 20mm on crop → 300 ÷ 20 = **15 seconds**
 
-### The NPF Rule (Most Accurate)
-The NPF rule factors in your camera's pixel density for a more precise result. It's more complex to calculate manually — which is exactly why the app does it for you.
+      ### The NPF Rule (Most Accurate for Your Gear)
+      The NPF rule factors in your camera's pixel density AND focal length for precision. Formula: **35mm equivalent = (35 ÷ (focal length × crop factor)) × (focal length ÷ desired pixel size)**
 
-### Use the App's Camera Calculator
-**Open Field Mode → Camera tab** in the app. Enter your:
-- Camera sensor size
-- Focal length
-- Desired sharpness level
+      This is complex. Use the app instead.
 
-The app calculates your ideal ISO, aperture, and shutter speed using the NPF rule. Use this in the field — don't try to do the math in the dark.
+      ### Use the App's Camera Calculator
+      **Open Field Mode → Camera tab** in the app. Enter:
+      - Camera body (Canon, Sony, Nikon, etc.)
+      - Sensor size (full-frame, APS-C, etc.)
+      - Focal length of your lens
+      - Desired sharpness level
 
-**Your action:** Open Field Mode and navigate to the Camera tab. Enter your camera and lens details. Note the shutter speed it recommends for your setup.
-`,
+      The app calculates your precise shutter speed using the NPF rule. This is your **field bible** — write it down or screenshot it before every shoot.
+
+      ### Why This Matters
+      Even a few seconds past your maximum shutter speed and stars start trailing. Stay within the rule, and you'll keep stars as perfect points.
+
+      **Your action:** Open Field Mode → Camera tab. Enter your exact camera/lens setup. Screenshot the recommended shutter speed.
+      `,
+          smartphone: `## Exposure Time on Your Phone — What You Control
+
+      Your phone's Night Mode handles most timing automatically, but you should know what's happening.
+
+      ### Standard Night Mode Duration
+      - **iPhone Night Mode**: 3–10 seconds (depends on brightness)
+      - **Pixel Night Sight**: 3–15 seconds (adapts to light)
+      - **Samsung Night**: 3–10 seconds
+
+      Your phone **takes multiple exposures** and blends them. You see a single final image.
+
+      ### Can You Adjust Duration?
+      Most modern phones **don't let you** manually control exposure time — it's automatic. However:
+      - **Slower movement**: Hold the phone steadier = brighter final image (phone compensates)
+      - **Tripod**: Essential for consistency and preventing camera shake
+
+      ### Real-World Limitations
+      - **Milky Way detail**: Limited (phone sensors are small)
+      - **Aurora**: Difficult (phone can't capture rapid movement well)
+      - **Star color**: Phone tends toward cool/blue tint (fix in post with Snapseed)
+
+      ### Night Mode Limitations at a Glance
+      - Faint stars don't show up clearly
+      - Colors look washed out (edit in post)
+      - Can't match a real camera's depth
+
+      **Don't feel limited!** Phone Night Mode is remarkable for how much light it gathers. Work with it, not against it.
+
+      **Your action:** In Night Mode, compare a 5-second exposure (steadier phone) vs. a 10-second one (more motion blur). See the difference stability makes.
+      `,
+          experience: `## Watching the Sky — Observation Tips
+
+      You're not taking photos, so exposure time doesn't apply. Instead, focus on **when** to look and **what** to see.
+
+      ### Dark Adaptation Timeline
+      - **0–5 minutes**: Eyes still adjusting, very little visible
+      - **10–15 minutes**: Rod cells activating, more stars appear
+      - **20–30 minutes**: Full adaptation, Milky Way band visible even in Bortle 3
+      - **45–60 minutes**: Maximum sensitivity (if you use red light only)
+
+      **Key rule**: Avoid **any white light** for at least 20 minutes. Use your red headlamp only. One white light exposure resets adaptation for 5+ minutes.
+
+      ### Best Viewing Windows
+      - **Moon-free nights**: Moon washes out faint stars (aim for < 10% illumination)
+      - **After midnight**: Earth rotates, galaxy angles peak around 2–4 AM
+      - **Summer months (Dec–Aug)**: Milky Way core highest in southern sky
+
+      ### Visual Phenomena Timing
+      - **Meteor showers**: Peak nights listed on Cosmic Events; expect 5–20 per hour
+      - **Aurora**: Visible 30 min after sunset on strong KP nights (5–7+)
+      - **Planets**: Visible all night once found, brightest after sunset
+
+      **Your action:** Pick a clear night this month. Arrive 30 min before sunset, wait until full dark, and spend an hour just watching. Note what you see and how visibility improves over time.
+      `,
+        },
       },
       {
         id: 'm2-l2b',
