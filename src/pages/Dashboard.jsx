@@ -146,45 +146,45 @@ export default function Dashboard() {
 
           {/* ── HERO STREAK CARD (40% width on desktop, full on mobile) ── */}
           <div className="lg:w-2/5">
-            <Card className="bg-gradient-to-br from-emerald-950/40 to-slate-900/40 border border-emerald-600/30 p-6 shadow-lg hover:shadow-emerald-600/20 transition-shadow relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-600/5 rounded-full blur-3xl -mr-16 -mt-16" />
+            <Card className="bg-slate-800/50 border border-slate-700/60 p-6 shadow-lg hover:shadow-red-600/10 hover:border-slate-600/80 transition-all relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-red-600/5 rounded-full blur-3xl -mr-16 -mt-16" />
               <div className="relative z-10">
                 <div className="text-4xl mb-2">🔥</div>
-                <p className="text-xs text-emerald-300 uppercase tracking-widest font-bold mb-1">7 Day Streak</p>
+                <p className="text-xs text-red-400 uppercase tracking-widest font-bold mb-1">7 Day Streak</p>
                 <h3 className="text-3xl font-black text-white mb-1">Keep it up!</h3>
-                <p className="text-emerald-300 text-sm">You're in the zone. Don't break the chain.</p>
+                <p className="text-slate-300 text-sm">You're in the zone. Don't break the chain.</p>
               </div>
             </Card>
           </div>
 
           {/* ── STATS ROW (4 smaller glanceable cards) ── */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            <Card className="bg-slate-800/40 border border-slate-700/40 p-4">
-              <p className="text-xs text-slate-500 uppercase tracking-widest font-semibold mb-1">Progress</p>
+            <Card className="bg-slate-800/50 border border-slate-700/60 p-4 hover:border-slate-600/80 transition-colors">
+              <p className="text-xs text-red-400 uppercase tracking-widest font-semibold mb-1">Progress</p>
               <p className="text-2xl font-black text-white">{overallPct}%</p>
             </Card>
-            <Card className="bg-slate-800/40 border border-slate-700/40 p-4">
-              <p className="text-xs text-slate-500 uppercase tracking-widest font-semibold mb-1">Lessons</p>
+            <Card className="bg-slate-800/50 border border-slate-700/60 p-4 hover:border-slate-600/80 transition-colors">
+              <p className="text-xs text-red-400 uppercase tracking-widest font-semibold mb-1">Lessons</p>
               <p className="text-2xl font-black text-white">{completedCount}</p>
             </Card>
-            <Card className="bg-slate-800/40 border border-slate-700/40 p-4">
-              <p className="text-xs text-slate-500 uppercase tracking-widest font-semibold mb-1">Courses</p>
+            <Card className="bg-slate-800/50 border border-slate-700/60 p-4 hover:border-slate-600/80 transition-colors">
+              <p className="text-xs text-red-400 uppercase tracking-widest font-semibold mb-1">Courses</p>
               <p className="text-2xl font-black text-white">{modules.length}</p>
             </Card>
-            <Card className="bg-slate-800/40 border border-slate-700/40 p-4">
-              <p className="text-xs text-slate-500 uppercase tracking-widest font-semibold mb-1">On Fire</p>
-              <p className="text-2xl font-black text-emerald-400">7d</p>
+            <Card className="bg-slate-800/50 border border-slate-700/60 p-4 hover:border-slate-600/80 transition-colors">
+              <p className="text-xs text-red-400 uppercase tracking-widest font-semibold mb-1">On Fire</p>
+              <p className="text-2xl font-black text-red-400">7d</p>
             </Card>
           </div>
 
           {/* ── HERO ACTION BUTTONS (4 large, equal, strong CTAs) ── */}
           <div className="grid sm:grid-cols-2 gap-4">
             <Link to={createPageUrl('TonightHub')} className="group">
-              <div className="p-6 rounded-xl border border-orange-600/30 bg-gradient-to-br from-orange-950/30 to-slate-900/30 hover:border-orange-500/50 hover:from-orange-950/50 transition-all h-full flex flex-col">
+              <div className="p-6 rounded-xl border border-slate-700/60 bg-slate-800/50 hover:border-slate-600/80 hover:bg-slate-800/70 transition-all h-full flex flex-col">
                 <p className="text-2xl mb-2">🌙</p>
                 <h3 className="text-lg font-bold text-white mb-1">Tonight?</h3>
                 <p className="text-slate-400 text-xs mb-4 flex-1">What's happening in your sky tonight</p>
-                <p className="text-orange-400 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
+                <p className="text-red-400 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
                   Decide now <ChevronRight className="w-4 h-4" />
                 </p>
               </div>
@@ -193,14 +193,14 @@ export default function Dashboard() {
             <Link to={isSubscribed ? createPageUrl('FieldMode') : createPageUrl('PaymentGate')} className="group">
               <div className={`p-6 rounded-xl border transition-all h-full flex flex-col ${
                 isSubscribed 
-                  ? 'border-emerald-600/30 bg-gradient-to-br from-emerald-950/30 to-slate-900/30 hover:border-emerald-500/50 hover:from-emerald-950/50' 
+                  ? 'border-slate-700/60 bg-slate-800/50 hover:border-slate-600/80 hover:bg-slate-800/70' 
                   : 'border-slate-700/40 bg-slate-900/30 opacity-60 cursor-not-allowed'
               }`}>
                 <p className="text-2xl mb-2">{isSubscribed ? '⚡' : '🔒'}</p>
                 <h3 className="text-lg font-bold text-white mb-1">Field Mode</h3>
                 <p className="text-slate-400 text-xs mb-4 flex-1">Live settings & guidance in the field</p>
                 <p className={`font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all ${
-                  isSubscribed ? 'text-emerald-400' : 'text-slate-500'
+                  isSubscribed ? 'text-red-400' : 'text-slate-500'
                 }`}>
                   {isSubscribed ? 'Go live' : 'Upgrade'} <ChevronRight className="w-4 h-4" />
                 </p>
@@ -210,14 +210,14 @@ export default function Dashboard() {
             <Link to={isSubscribed ? createPageUrl('PlannerTool') : createPageUrl('PaymentGate')} className="group">
               <div className={`p-6 rounded-xl border transition-all h-full flex flex-col ${
                 isSubscribed 
-                  ? 'border-purple-600/30 bg-gradient-to-br from-purple-950/30 to-slate-900/30 hover:border-purple-500/50 hover:from-purple-950/50' 
+                  ? 'border-slate-700/60 bg-slate-800/50 hover:border-slate-600/80 hover:bg-slate-800/70' 
                   : 'border-slate-700/40 bg-slate-900/30 opacity-60 cursor-not-allowed'
               }`}>
                 <p className="text-2xl mb-2">{isSubscribed ? '📍' : '🔒'}</p>
                 <h3 className="text-lg font-bold text-white mb-1">Sky Planner</h3>
                 <p className="text-slate-400 text-xs mb-4 flex-1">Detailed planning & visibility windows</p>
                 <p className={`font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all ${
-                  isSubscribed ? 'text-purple-400' : 'text-slate-500'
+                  isSubscribed ? 'text-red-400' : 'text-slate-500'
                 }`}>
                   {isSubscribed ? 'Plan a shoot' : 'Upgrade'} <ChevronRight className="w-4 h-4" />
                 </p>
@@ -225,11 +225,11 @@ export default function Dashboard() {
             </Link>
 
             <Link to={createPageUrl('PlannerTool') + '?tab=events'} className="group">
-              <div className="p-6 rounded-xl border border-slate-700/40 bg-gradient-to-br from-slate-900/40 to-slate-900/20 hover:border-slate-600/60 hover:from-slate-900/60 transition-all h-full flex flex-col">
+              <div className="p-6 rounded-xl border border-slate-700/60 bg-slate-800/50 hover:border-slate-600/80 hover:bg-slate-800/70 transition-all h-full flex flex-col">
                 <p className="text-2xl mb-2">📅</p>
                 <h3 className="text-lg font-bold text-white mb-1">Cosmic Events</h3>
                 <p className="text-slate-400 text-xs mb-4 flex-1">Showers, eclipses, aurora, dark moons</p>
-                <p className="text-slate-400 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
+                <p className="text-red-400 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
                   See upcoming <ChevronRight className="w-4 h-4" />
                 </p>
               </div>
@@ -241,7 +241,7 @@ export default function Dashboard() {
 
           {/* ── FREE TIER UPSELL (if applicable) ── */}
           {!isSubscribed && (
-            <Card className="bg-gradient-to-br from-red-950/40 to-slate-900/40 border border-red-600/30 p-6">
+            <Card className="bg-slate-800/50 border border-slate-700/60 p-6">
               <div className="flex items-start gap-4">
                 <p className="text-3xl">🚀</p>
                 <div className="flex-1">
@@ -260,17 +260,17 @@ export default function Dashboard() {
           {/* ── FREE COURSE (if not subscribed) ── */}
           {!isSubscribed && (
             <Link to={createPageUrl('FreeCourse')}>
-              <Card className="bg-gradient-to-br from-emerald-950/30 to-slate-900/40 border border-emerald-600/30 hover:border-emerald-500/50 p-6 transition-all hover:shadow-emerald-600/10 hover:shadow-lg">
+              <Card className="bg-slate-800/50 border border-slate-700/60 hover:border-slate-600/80 p-6 transition-all">
                 <div className="flex items-start gap-4">
                   <p className="text-3xl">⭐</p>
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <Badge className="bg-emerald-600 text-white text-xs">FREE</Badge>
+                      <Badge className="bg-red-600 text-white text-xs">FREE</Badge>
                       <span className="text-slate-500 text-xs">5 lessons</span>
                     </div>
                     <h3 className="text-lg font-bold text-white mb-1">Your First Night Sky Adventure</h3>
                     <p className="text-slate-400 text-sm">Gear basics, magic camera settings, and your first shoot checklist.</p>
-                    <p className="text-emerald-400 text-sm font-semibold mt-2 flex items-center gap-1">
+                    <p className="text-red-400 text-sm font-semibold mt-2 flex items-center gap-1">
                       Start free course <ChevronRight className="w-4 h-4" />
                     </p>
                   </div>
@@ -297,9 +297,9 @@ export default function Dashboard() {
                 const IconComp = MODULE_ICONS[iconKeys[modules.indexOf(mod) % iconKeys.length]];
                 return (
                   <Link key={mod.id} to={isSubscribed ? createPageUrl('ModuleView') + `?id=${mod.id}` : createPageUrl('PaymentGate')}>
-                    <Card className={`bg-slate-900/40 border border-slate-700/40 hover:border-slate-600/60 p-5 transition-all h-full ${!isSubscribed ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-lg'}`}>
+                    <Card className={`bg-slate-800/50 border border-slate-700/60 hover:border-slate-600/80 p-5 transition-all h-full ${!isSubscribed ? 'opacity-50 cursor-not-allowed' : ''}`}>
                       {mod.is_free_preview && (
-                        <Badge className="inline-block bg-emerald-600 text-white text-xs mb-3">FREE</Badge>
+                        <Badge className="inline-block bg-red-600 text-white text-xs mb-3">FREE</Badge>
                       )}
                       <div className="flex items-start gap-2 mb-3">
                         <IconComp className="w-8 h-8 text-red-400 flex-shrink-0" />
