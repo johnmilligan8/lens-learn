@@ -640,62 +640,55 @@ export default function PlannerTool() {
   // ── Main UI ──────────────────────────────────────────────────────────────
   return (
     <PullToRefresh onRefresh={handleRefresh}>
-      <div className="max-w-6xl mx-auto px-4 py-8">
-      {/* Header */}
-      <div className="mb-6 flex items-center justify-between">
-        <div>
-          <h1 className="text-4xl font-black text-white mb-1 flex items-center gap-3">
-            <MapPin className="w-9 h-9 text-red-400" />
-            <span>Sky <span className="gradient-text">Planner</span></span>
-          </h1>
-          <p className="text-slate-400">Plan your expedition – see events, conditions, and best spots in one place.</p>
+      <div className="min-h-screen flex flex-col">
+        {/* HERO HEADER (sticky) */}
+        <div className="sticky top-0 z-40 bg-black/95 backdrop-blur-xl border-b border-white/10">
+          <div className="max-w-7xl mx-auto px-4 py-5">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-3xl md:text-4xl font-black text-white flex items-center gap-3">
+                  <MapPin className="w-8 h-8 text-red-400" />
+                  Sky <span className="gradient-text">Planner</span>
+                </h1>
+                <p className="text-slate-400 text-sm mt-1">Galactic core timing · Sky map · Conditions · Best windows</p>
+              </div>
+              <Link to={createPageUrl('SkyBrowser')} className="hidden sm:inline-flex">
+                <Button variant="outline" className="border-red-600/40 text-red-300 hover:bg-red-900/20 text-xs gap-2 font-bold">
+                  <Star className="w-4 h-4" /> Sky Browser
+                </Button>
+              </Link>
+            </div>
+          </div>
+
+          {/* Tab Navigation */}
+          <div className="flex gap-0 border-t border-white/5">
+            {[
+              { id: 'planner', label: '🔭 Plan a Shoot' },
+              { id: 'events', label: '📅 Events & Calendar' },
+            ].map(t => (
+              <button
+                key={t.id}
+                onClick={() => setMainTab(t.id)}
+                className={`flex-1 px-4 py-3 text-sm font-bold border-b-2 transition-colors ${
+                  mainTab === t.id ? 'border-red-500 text-white bg-white/5' : 'border-transparent text-slate-400 hover:text-slate-300'
+                }`}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
         </div>
-        <Link to={createPageUrl('SkyBrowser')} className="hidden sm:inline-flex">
-          <Button variant="outline" className="border-red-600/40 text-red-300 hover:bg-red-900/20 text-sm gap-2">
-            <Star className="w-4 h-4" /> Sky Browser
-          </Button>
-        </Link>
-      </div>
 
-      {/* Main Tabs */}
-      <div className="flex gap-1 border-b border-white/8 mb-6">
-        {[
-          { id: 'planner', label: '🔭 Plan a Shoot' },
-          { id: 'events', label: '📅 Events & Calendar' },
-        ].map(t => (
-          <button
-            key={t.id}
-            onClick={() => setMainTab(t.id)}
-            className={`px-4 py-2.5 text-sm font-semibold border-b-2 transition-colors ${
-              mainTab === t.id ? 'border-red-500 text-white' : 'border-transparent text-slate-400 hover:text-slate-300'
-            }`}
-          >
-            {t.label}
-          </button>
-        ))}
-      </div>
+        {/* MAIN CONTENT */}
+        <div className="flex-1 max-w-7xl mx-auto w-full px-4 py-8">
+          {/* Events Tab */}
+          {mainTab === 'events' && (
+            <EventsCalendarTab isSubscribed={isSubscribed} userProfile={userProfile} />
+          )}
 
-      {/* Events Tab */}
-      {mainTab === 'events' && (
-        <EventsCalendarTab isSubscribed={isSubscribed} userProfile={userProfile} />
-      )}
-
-      {/* Planner Tab */}
-      {mainTab !== 'events' && (<>
-
-      {/* Curriculum cross-link — Module 3 */}
-      <div className="mb-5 flex items-start gap-2 bg-[#0a1a0a]/60 border border-emerald-900/40 rounded-xl px-4 py-3">
-        <span className="text-emerald-400 text-sm leading-none mt-0.5 flex-shrink-0">📚</span>
-        <p className="text-slate-400 text-xs leading-relaxed">
-          <span className="text-emerald-300 font-semibold">Course tip (Module 3): </span>
-          After calculating your shoot window here, use <strong className="text-white">AR Scout</strong> (below) to preview the exact Milky Way arc in your scene. Scout your foreground in daylight — AR Scout shows the galaxy's position at any future date and time.
-        </p>
-        <Link to={createPageUrl('FreeCourse')} className="text-emerald-400 text-xs font-semibold hover:text-emerald-300 whitespace-nowrap ml-2">
-          Course →
-        </Link>
-      </div>
-
-      <div className="grid lg:grid-cols-5 gap-6">
+          {/* Planner Tab */}
+          {mainTab !== 'events' && (<>
+            <div className="grid lg:grid-cols-3 gap-6">
         {/* ── Left: Inputs ── */}
          <div className="lg:col-span-2 space-y-5">
           {/* Expedition Manager */}
