@@ -14,6 +14,7 @@ import CameraSettingsPanel from '../components/fieldmode/CameraSettingsPanel';
 import CompositionPanel from '../components/fieldmode/CompositionPanel';
 import LightingPanel from '../components/fieldmode/LightingPanel';
 import ConditionsBar from '../components/fieldmode/ConditionsBar';
+import GuidedWalkthrough from '../components/fieldmode/GuidedWalkthrough';
 
 export default function FieldMode() {
   const [user, setUser] = useState(null);
