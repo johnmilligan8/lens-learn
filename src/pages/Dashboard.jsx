@@ -199,18 +199,18 @@ export default function Dashboard() {
           <ActionCard
             icon={MapPin}
             title="Sky Planner"
-            description="Predict visibility, moon interference & optimal shoot windows."
+            description="Plan a shoot — visibility windows, moon phase, Astro Score & gear."
             label="Plan a shoot"
             href={createPageUrl('PlannerTool')}
             color="purple"
             disabled={!isSubscribed}
           />
           <ActionCard
-            icon={BookOpen}
-            title="Free Course"
-            description="Start your Milky Way journey with the free starter course."
-            label="Start learning"
-            href={createPageUrl('FreeCourse')}
+            icon={Calendar}
+            title="Cosmic Events"
+            description="Meteor showers, eclipses, aurora alerts & dark moon windows."
+            label="See events"
+            href={createPageUrl('PlannerTool') + '?tab=events'}
             color="yellow"
           />
         </div>
