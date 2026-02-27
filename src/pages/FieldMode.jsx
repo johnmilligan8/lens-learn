@@ -145,41 +145,49 @@ export default function FieldMode() {
     </div>
   );
 
-  return (
-    <div className="min-h-screen cosmic-bg flex flex-col">
-      {/* Top bar — dark-friendly red tint */}
-      <div className="sticky top-0 z-50 bg-[#0a0005]/95 backdrop-blur-md border-b border-red-900/30">
-        <div className="flex items-center justify-between px-4 py-2 max-w-2xl mx-auto">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-            <span className="text-red-400 text-xs font-black uppercase tracking-widest">Field Mode</span>
-            {event && <Badge className="bg-red-900/40 text-red-300 border border-red-700/40 text-[10px] ml-1">{event.title}</Badge>}
-          </div>
-          <div className="flex items-center gap-3">
-            <span className="text-slate-500 text-xs font-mono">{clockStr}</span>
-            {geoLoading
-              ? <RefreshCw className="w-3.5 h-3.5 text-slate-500 animate-spin" />
-              : <button onClick={detectLocation} title="Re-detect GPS">
-                  <MapPin className="w-3.5 h-3.5 text-slate-500 hover:text-red-400 transition-colors" />
-                </button>
-            }
-          </div>
-        </div>
+  const modeColors = {
+    photographer: { bg: '#0a0005', accent: 'red', icon: '📷' },
+    smartphone: { bg: '#050a0a', accent: 'blue', icon: '📱' },
+    experience: { bg: '#0a0a05', accent: 'amber', icon: '👁' },
+  };
+  const color = modeColors[mode];
 
-        {/* Conditions bar */}
-        <ConditionsBar coords={coords} mode={mode} />
+  return (
+    <div className={`min-h-screen cosmic-bg flex flex-col`} style={{ backgroundColor: color.bg }}>
+      {/* ── HERO TOP BAR (sticky, full-width, high contrast) ── */}
+      <div className="sticky top-0 z-50 bg-black/90 backdrop-blur-xl border-b border-white/10">
+        <div className="px-4 py-4 max-w-2xl mx-auto w-full">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-3 flex-1">
+              <div className={`w-3 h-3 rounded-full bg-${color.accent}-500 animate-pulse`} />
+              <div>
+                <p className={`text-${color.accent}-400 text-xs font-black uppercase tracking-widest`}>Field Mode</p>
+                {event && <p className={`text-${color.accent}-300 text-[10px] font-bold`}>{event.title}</p>}
+              </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="text-right">
+                <p className="text-white text-xl font-black font-mono">{clockStr}</p>
+                <p className="text-slate-500 text-[10px]">{coords?.label || 'Locating…'}</p>
+              </div>
+              <button 
+                onClick={detectLocation} 
+                disabled={geoLoading}
+                className={`w-10 h-10 rounded-full ${geoLoading ? 'bg-slate-700 animate-spin' : `bg-${color.accent}-600 hover:bg-${color.accent}-700`} flex items-center justify-center transition-all flex-shrink-0`}
+                title="Detect GPS"
+              >
+                <MapPin className="w-4 h-4 text-white" />
+              </button>
+            </div>
+          </div>
+          
+          {/* Live Conditions Strip */}
+          <ConditionsBar coords={coords} mode={mode} />
+        </div>
       </div>
 
-      {/* Location notice if no GPS */}
-      {!coords && !geoLoading && (
-        <div className="flex items-center gap-2 bg-yellow-900/20 border-b border-yellow-700/30 px-4 py-2 text-yellow-400 text-xs max-w-2xl mx-auto w-full">
-          <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0" />
-          <span>No GPS lock — <button onClick={detectLocation} className="underline font-bold">tap to detect location</button> for live sky conditions.</span>
-        </div>
-      )}
-
-      {/* Tab strip */}
-      <div className="sticky top-[calc(5.5rem)] z-40 bg-[#08000a]/90 backdrop-blur-sm border-b border-slate-800/60">
+      {/* ── FULL-WIDTH TAB NAVIGATION (gesture-friendly) ── */}
+      <div className="sticky top-20 z-40 bg-black/85 backdrop-blur-lg border-b border-white/5">
         <div className="flex max-w-2xl mx-auto">
           {(mode === 'experience'
             ? [{ id: 'compose', label: 'What to See', icon: Eye }, { id: 'light', label: 'Conditions', icon: Lightbulb }]
@@ -191,53 +199,53 @@ export default function FieldMode() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex-1 flex items-center justify-center gap-2 py-3 text-xs font-bold uppercase tracking-wider transition-all ${
-                  active ? 'text-red-400 border-b-2 border-red-500' : 'text-slate-500 hover:text-slate-300'
+                className={`flex-1 flex flex-col items-center justify-center gap-1.5 py-4 transition-all ${
+                  active 
+                    ? `text-${color.accent}-400 border-b-2 border-${color.accent}-500` 
+                    : 'text-slate-600 hover:text-slate-400'
                 }`}
               >
-                <Icon className="w-3.5 h-3.5" /> {tab.label}
+                <Icon className="w-5 h-5" />
+                <span className="text-[10px] font-bold uppercase tracking-wider">{tab.label}</span>
               </button>
             );
           })}
         </div>
       </div>
 
-      {/* Content */}
-      <div className="flex-1 max-w-2xl mx-auto w-full px-4 py-5 pb-24">
-        {/* Mode-Specific Guided Walkthrough — paid only, free gets basic nudge */}
-          {isSubscribed
-            ? <ModeSpecificWalkthrough mode={mode} onTabChange={setActiveTab} />
-            : <FreeWalkthroughTeaser />
-          }
+      {/* ── MAIN CONTENT (minimal clutter) ── */}
+      <div className="flex-1 max-w-2xl mx-auto w-full px-4 py-6 pb-32 overflow-y-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
+        {/* Guided walkthrough or teaser */}
+        {isSubscribed ? (
+          <ModeSpecificWalkthrough mode={mode} onTabChange={setActiveTab} />
+        ) : (
+          <FreeWalkthroughTeaser />
+        )}
 
-        {/* Mode-aware execution tip */}
-        <div className="mb-4 flex items-start gap-2 bg-[#1a0a00]/60 border border-red-900/30 rounded-xl px-4 py-3">
-          <span className="text-red-400 text-sm leading-none mt-0.5 flex-shrink-0">
-            {mode === 'photographer' ? '📷' : mode === 'smartphone' ? '📱' : '👁'}
-          </span>
-          <p className="text-slate-400 text-xs leading-relaxed">
-            <span className="text-red-300 font-semibold">
-              {mode === 'experience' ? 'Sky Watching tip: ' : mode === 'smartphone' ? 'Phone tip: ' : 'Field tip (Module 5): '}
-            </span>
-            {mode === 'experience' && activeTab === 'compose' && 'Give your eyes 20–30 min to fully dark-adapt. Avoid all white lights. Look slightly beside faint objects — your peripheral vision is more sensitive.'}
-            {mode === 'experience' && activeTab === 'light' && 'Best sky watching is 1–2 hrs after sunset. Check the moon phase — a bright moon washes out faint stars and Milky Way. Head out on new moon nights.'}
-            {mode === 'smartphone' && activeTab === 'camera' && 'Use a tripod and self-timer. Enable Pro/Expert mode for manual shutter and ISO. iPhone users: let Night Mode do its thing — just stay perfectly still.'}
-            {mode === 'smartphone' && activeTab === 'compose' && 'Shoot horizontally for more sky. Prop your phone against something stable. Self-timer or volume button = less shake than tapping the screen.'}
-            {mode === 'smartphone' && activeTab === 'light' && 'Shoot during the blue hour (just after sunset) for color. For Milky Way, wait until the sky is fully dark — 1.5+ hours after sunset.'}
-            {mode === 'photographer' && activeTab === 'camera' && 'Use the Camera Calculator below for NPF-precise shutter speed. Start at ISO 3200, widest aperture, then check your histogram after the first shot.'}
-            {mode === 'photographer' && activeTab === 'compose' && 'Place your foreground element on the lower-third. Use Star Pointer to locate the galactic core direction before full dark. AR Scout (Sky Planner) previews the exact arc.'}
-            {mode === 'photographer' && activeTab === 'light' && 'Blue Hour ends 30–45 min after sunset. LLL (Low Light Landscape) window follows. Avoid using phone screens — they destroy dark adaptation.'}
+        {/* Mode-specific quick tip (compact, one-liner) */}
+        <div className={`mb-6 rounded-2xl border border-${color.accent}-600/30 bg-${color.accent}-900/20 px-4 py-3 flex items-start gap-2`}>
+          <span className="text-lg leading-none flex-shrink-0">{color.icon}</span>
+          <p className={`text-${color.accent}-200 text-xs leading-relaxed font-medium`}>
+            {mode === 'experience' && activeTab === 'compose' && '👀 Dark adapt 20–30 min • Look beside faint objects'}
+            {mode === 'experience' && activeTab === 'light' && '🌙 Avoid bright moon • Best 1–2 hrs after sunset'}
+            {mode === 'smartphone' && activeTab === 'camera' && '📱 Use tripod + self-timer • Pro mode for manual control'}
+            {mode === 'smartphone' && activeTab === 'compose' && '🎬 Shoot horizontal • Self-timer to reduce shake'}
+            {mode === 'smartphone' && activeTab === 'light' && '🌅 Blue hour for color • Dark sky needs 1.5+ hrs post-sunset'}
+            {mode === 'photographer' && activeTab === 'camera' && '⚙️ Use NPF rule for shutter • Start ISO 3200, widest aperture'}
+            {mode === 'photographer' && activeTab === 'compose' && '🖼️ Lower-third foreground • Use Star Pointer for galactic core'}
+            {mode === 'photographer' && activeTab === 'light' && '⏰ Blue hour ends 30–45 min • Avoid phone screens'}
           </p>
         </div>
 
+        {/* Tab content */}
         {activeTab === 'camera' && mode !== 'experience' && (
           <CameraSettingsPanel mode={mode} event={event} coords={coords} />
         )}
         {activeTab === 'camera' && mode === 'experience' && (
-          <div className="rounded-xl bg-[#1a1a1a] border border-white/8 p-5 text-center">
-            <p className="text-4xl mb-3">👁</p>
-            <p className="text-white font-semibold mb-1">No Camera Needed</p>
-            <p className="text-slate-400 text-sm">You're in Sky Watching mode — switch to "What to See" for visibility tips.</p>
+          <div className="rounded-2xl bg-black/40 border border-white/8 p-8 text-center">
+            <p className="text-6xl mb-4">👁</p>
+            <p className="text-white text-lg font-bold mb-1">No Camera Needed</p>
+            <p className="text-slate-400 text-sm">Switch to "What to See" for dark-sky visibility tips.</p>
           </div>
         )}
         {activeTab === 'compose' && (
