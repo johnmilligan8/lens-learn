@@ -478,27 +478,56 @@ export default function MultiLocationPredictor({ isSubscribed, homeLocation, hom
 
         {/* Add Location Input (hide in map view) */}
         {!showAllMap && locations.length < limit && (
-          <div className="flex gap-2">
-            <div className="relative flex-1">
-              <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500" />
-              <input
-                type="text"
-                placeholder="Search a location (city, park, coordinates…)"
-                value={inputVal}
-                onChange={e => setInputVal(e.target.value)}
-                onKeyDown={e => e.key === 'Enter' && openMapPicker()}
-                className="w-full bg-slate-800 border border-slate-700 rounded-lg pl-9 pr-3 py-2 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-red-500"
-              />
+          <div className="space-y-2">
+            <div className="flex gap-2">
+              <div className="relative flex-1">
+                <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500" />
+                <input
+                  type="text"
+                  placeholder="Search city, park, or dark sky site…"
+                  value={inputVal}
+                  onChange={e => setInputVal(e.target.value)}
+                  onKeyDown={e => e.key === 'Enter' && openMapPicker()}
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg pl-9 pr-3 py-2 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-red-500"
+                />
+              </div>
+              <Button
+                size="sm"
+                onClick={openMapPicker}
+                disabled={addingLocation || !inputVal.trim()}
+                className="bg-slate-700 hover:bg-slate-600 text-white px-3"
+                title="Search & verify on map"
+              >
+                {addingLocation ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
+              </Button>
             </div>
-            <Button
-              size="sm"
-              onClick={openMapPicker}
-              disabled={addingLocation || !inputVal.trim()}
-              className="bg-slate-700 hover:bg-slate-600 text-white px-3"
-              title="Search & pin on map"
-            >
-              {addingLocation ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
-            </Button>
+            {/* Quick-add dark sky presets */}
+            <div>
+              <p className="text-slate-600 text-[10px] uppercase tracking-widest mb-1.5 font-semibold">Quick-add dark sky sites (Utah/West)</p>
+              <div className="flex flex-wrap gap-1.5">
+                {[
+                  { name: 'Goblin Valley SP', lat: 38.5676, lon: -110.7082 },
+                  { name: 'Natural Bridges NM', lat: 37.6011, lon: -110.0020 },
+                  { name: 'Capitol Reef NP', lat: 38.2972, lon: -111.2615 },
+                  { name: 'Great Basin NP', lat: 38.9833, lon: -114.2197 },
+                  { name: 'Bryce Canyon NP', lat: 37.5930, lon: -112.1871 },
+                ].map(preset => (
+                  <button
+                    key={preset.name}
+                    onClick={() => {
+                      const alreadyAdded = locations.some(l => l.name === preset.name);
+                      if (alreadyAdded || locations.length >= limit) return;
+                      setPendingLocation(preset);
+                      setShowMapPicker(true);
+                    }}
+                    disabled={locations.some(l => l.name === preset.name) || locations.length >= limit}
+                    className="text-[10px] px-2.5 py-1 rounded-full bg-slate-800 border border-slate-700 text-slate-400 hover:border-red-500/50 hover:text-slate-200 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                  >
+                    {preset.name}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
         )}
 
