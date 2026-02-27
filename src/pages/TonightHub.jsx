@@ -10,6 +10,7 @@ import AuroraTeaserCard from '../components/events/AuroraTeaserCard';
 import AuroraPredictionCard from '../components/events/AuroraPredictionCard';
 import MilkyWayARCard from '../components/tonight/MilkyWayARCard';
 import BestSpotsRanker from '../components/tonight/BestSpotsRanker';
+import AuroraIntensityMap from '../components/aurora/AuroraIntensityMap';
 import { Loader2, Lock, MapPin, ChevronRight, Telescope, Zap, Star, Trophy } from 'lucide-react';
 import MultiLocationPredictor from '../components/tonight/MultiLocationPredictor';
 
