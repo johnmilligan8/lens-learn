@@ -387,7 +387,7 @@ export default function Dashboard() {
           {/* ── FREE COURSE (if not subscribed) ── */}
           {!isSubscribed && (
             <Link to={createPageUrl('FreeCourse')}>
-              <Card className="bg-[#111111]/80 border border-white/10 hover:border-white/20 p-6 transition-all">
+              <Card className="bg-[#1a1a1a] border border-white/10 hover:border-white/20 p-6 transition-all">
                 <div className="flex items-start gap-4">
                   <p className="text-3xl">⭐</p>
                   <div className="flex-1">
