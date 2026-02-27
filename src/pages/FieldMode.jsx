@@ -168,6 +168,9 @@ export default function FieldMode() {
 
       {/* Content */}
       <div className="flex-1 max-w-2xl mx-auto w-full px-4 py-5 pb-24">
+        {/* Guided Walkthrough — paid only */}
+        <GuidedWalkthrough mode={mode} onTabChange={setActiveTab} />
+
         {/* Mode-aware execution tip */}
         <div className="mb-4 flex items-start gap-2 bg-[#1a0a00]/60 border border-red-900/30 rounded-xl px-4 py-3">
           <span className="text-red-400 text-sm leading-none mt-0.5 flex-shrink-0">
