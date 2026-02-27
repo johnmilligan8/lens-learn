@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PullToRefresh from '../components/ui/PullToRefresh';
+import EventsCalendarTab from '../components/planner/EventsCalendarTab';
 import SkyCanvas from '../components/planner/SkyCanvas';
 import EphemerisLookup from '../components/planner/EphemerisLookup';
 import GearSetup from '../components/planner/GearSetup';
