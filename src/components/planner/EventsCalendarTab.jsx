@@ -74,11 +74,15 @@ const SAMPLE_EVENTS = [
 const EVENT_TYPES = [
   { id: 'all', label: 'All' },
   { id: 'meteor_shower', label: '⭐ Meteors' },
+  { id: 'milky_way', label: '🌌 Milky Way' },
+  { id: 'lunar_eclipse', label: '🌕 Lunar Eclipse' },
+  { id: 'solar_eclipse', label: '☀️ Solar Eclipse' },
   { id: 'eclipse', label: '🌑 Eclipses' },
   { id: 'aurora', label: '🌠 Aurora' },
   { id: 'comet', label: '☄️ Comets' },
-  { id: 'supermoon', label: '🌕 Moon' },
+  { id: 'supermoon', label: '🔴 Supermoon' },
   { id: 'conjunction', label: '🪐 Planets' },
+  { id: 'dark_sky', label: '🌑 Dark Sky' },
 ];
 
 function CalendarGrid({ events, typeFilter, onSelectDate, selectedDate }) {
