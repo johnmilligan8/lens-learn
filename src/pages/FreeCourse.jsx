@@ -976,7 +976,7 @@ export default function FreeCourse() {
               <Button
                 variant="outline"
                 size="sm"
-                className={`border-slate-600 ${completedLessons.includes(activeLesson.id) ? 'text-emerald-400 border-emerald-600' : 'text-slate-300'}`}
+                className={`border-slate-600 ${completedLessons.includes(activeLesson.id) ? 'text-red-400 border-red-600' : 'text-slate-300'}`}
                 onClick={() => markComplete(activeLesson.id, activeModuleId)}
                 disabled={completedLessons.includes(activeLesson.id)}
               >
