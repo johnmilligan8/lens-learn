@@ -140,6 +140,16 @@ export default function AuroraView({ isSubscribed, userLocation = 'Utah', userLa
         ))}
       </div>
 
+      {/* Map View */}
+      {tab === 'map' && (
+        <AuroraForecastMap
+          isSubscribed={isSubscribed}
+          userLat={userLat}
+          userLon={userLon}
+          locationName={userLocation}
+        />
+      )}
+
       {/* Daily View */}
       {tab === 'daily' && (
         <div className="space-y-4">
