@@ -41,7 +41,7 @@ export default function AuroraView({ isSubscribed, userLocation = 'Utah', userLa
     try {
       // Fetch NOAA KP forecast + cloud cover in parallel (with cache)
       const [kpResult, weatherResult] = await Promise.all([
-        getAuroraWithCache(() => fetchNoaaKpForecast()),
+        getAuroraWithCache(fetchNoaaKpForecast),
         (userLat && userLon)
           ? getWeatherWithCache(userLat, userLon, () => fetchCloudCoverForecast(userLat, userLon, 7))
           : Promise.resolve({ data: [], fromCache: false }),
