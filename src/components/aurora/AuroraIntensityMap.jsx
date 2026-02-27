@@ -110,9 +110,10 @@ export default function AuroraIntensityMap({
     setCurrentKp(Math.round(baseKp * 10) / 10);
 
     // Simulate 7-day outlook (in production, fetch from NOAA 27-day)
-    const weekly = Array.from({ length: 7 }, (_, i) => 
-      Math.max(0, Math.min(9, baseKp + (Math.random() - 0.5) * 3))
-    );
+    const weekly = Array.from({ length: 7 }, (_, i) => {
+      const rawKp = Math.max(0, Math.min(9, baseKp + (Math.random() - 0.5) * 3));
+      return Math.round(rawKp * 10) / 10;
+    });
     setWeeklyKp(weekly);
 
     setLoading(false);
