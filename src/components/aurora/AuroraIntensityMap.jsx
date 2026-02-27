@@ -157,16 +157,17 @@ export default function AuroraIntensityMap({
         </div>
 
         {/* Current KP Display */}
-        <div className="flex items-end gap-3 mb-3">
-          <div>
-            <p className="text-xs text-slate-400 mb-1">Current KP Index</p>
-            <div className="flex items-end gap-2">
-              <span className="text-4xl font-black" style={{ color: currentColor.hex }}>
-                {currentKp.toFixed(1)}
-              </span>
-              <span className="text-sm text-slate-300 pb-1 font-semibold">{currentColor.label}</span>
-            </div>
-          </div>
+         <div className="flex items-end gap-3 mb-3">
+           <div>
+             <p className="text-xs text-slate-400 mb-1">Current KP Index</p>
+             <div className="flex items-end gap-2">
+               <span className="text-4xl font-black" style={{ color: currentColor.hex }}>
+                 {currentKp.toFixed(1)}
+               </span>
+               <span className="text-sm text-slate-300 pb-1 font-semibold">{currentColor.label}</span>
+             </div>
+           </div>
+           <Badge className="ml-auto mb-1 bg-slate-700 text-slate-100">{getAuroraChance(currentKp)}</Badge>
 
           {/* Legend */}
           <div className="flex gap-2 ml-auto flex-wrap justify-end">
