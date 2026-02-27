@@ -217,9 +217,12 @@ export default function LeafletLocationPicker({ initial, onConfirm, onCancel, co
       {/* Header (only in modal mode) */}
       {!inline && (
         <div className="flex items-center justify-between px-4 py-3 border-b border-slate-800">
-          <h3 className="text-white font-bold text-sm">Pin Your Location</h3>
+          <div>
+            <h3 className="text-white font-bold text-sm">Pin Your Location</h3>
+            <p className="text-slate-500 text-[11px]">Drag pin or tap map to set exact spot</p>
+          </div>
           {onCancel && (
-            <button onClick={onCancel} className="text-slate-500 hover:text-white transition-colors">
+            <button onClick={onCancel} className="text-slate-500 hover:text-white transition-colors p-1">
               <X className="w-5 h-5" />
             </button>
           )}
