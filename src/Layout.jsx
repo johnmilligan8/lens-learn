@@ -183,20 +183,24 @@ export default function Layout({ children, currentPageName }) {
       <aside className="hidden md:flex flex-col w-64 bg-[#111111]/95 backdrop-blur-md border-r border-white/5 sticky top-0 h-screen">
         {/* Logo */}
         <div className="p-6 border-b border-slate-800/40">
-          <Link to={createPageUrl('Dashboard')} className="flex items-center gap-3">
+          <Link to={createPageUrl('Dashboard')} className="flex flex-col gap-0.5">
             <img
               src="https://uncharted.net/wp-content/uploads/2022/09/Uncharted-Logo-Horizontal-White-e1664469570536.png"
               alt="UNCHARTED"
-              className="h-8 w-auto object-contain"
-              style={{ maxWidth: 160 }}
-              onError={e => { e.target.style.display='none'; e.target.nextSibling.style.display='flex'; }}
+              className="h-7 w-auto object-contain"
+              style={{ maxWidth: 150 }}
+              onError={e => { e.target.style.display='none'; }}
             />
-            <div style={{display:'none'}} className="items-center gap-2">
-              <div className="bg-red-600 rounded-lg w-7 h-7 flex items-center justify-center">
-                <Telescope className="w-4 h-4 text-white" />
-              </div>
-              <span className="font-black text-white text-lg tracking-tight">UNCHARTED</span>
-            </div>
+            <span className="text-white font-black text-base tracking-tight leading-none">UNCHARTED<sup>®</sup> GALAXY</span>
+            <a
+              href="https://www.uncharted.net"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={e => e.stopPropagation()}
+              className="text-slate-500 text-[10px] hover:text-slate-300 transition-colors"
+            >
+              www.uncharted.net
+            </a>
           </Link>
         </div>
 
