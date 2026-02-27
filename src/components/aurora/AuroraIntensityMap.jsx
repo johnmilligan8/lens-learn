@@ -101,9 +101,10 @@ export default function AuroraIntensityMap({
     const forecast = {};
     const baseKp = auroraForecast?.kp_index || 2;
     for (let h = 0; h < 24; h++) {
-      forecast[h] = Math.max(0, Math.min(9, 
+      const rawKp = Math.max(0, Math.min(9, 
         baseKp + (Math.sin(h / 4) * 1.5) + (Math.random() - 0.5) * 0.5
       ));
+      forecast[h] = Math.round(rawKp * 10) / 10;
     }
     setKpForecast(forecast);
     setCurrentKp(Math.round(baseKp * 10) / 10);
