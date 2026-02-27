@@ -988,7 +988,7 @@ export default function FreeCourse() {
                 </Button>
               )}
               {isLastLesson() && completedFreeCount === totalFree && (
-                <div className="text-emerald-400 text-sm font-semibold flex items-center gap-2">
+                <div className="text-red-400 text-sm font-semibold flex items-center gap-2">
                   <Check className="w-4 h-4" /> Free course complete! Unlock more below.
                 </div>
               )}
