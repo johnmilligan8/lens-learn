@@ -341,8 +341,8 @@ export default function LeafletLocationPicker({ initial, onConfirm, onCancel, co
   if (inline) return <div className="bg-[#0f0f1a] border border-slate-700 rounded-2xl overflow-hidden">{inner}</div>;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/70 backdrop-blur-sm p-0 sm:p-4">
-      <div className="bg-[#0f0f1a] border border-slate-700 rounded-t-2xl sm:rounded-2xl w-full sm:max-w-lg overflow-y-auto" style={{ maxHeight: '90vh' }}>
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/75 backdrop-blur-sm p-0 sm:p-4">
+      <div className="bg-[#0f0f1a] border border-slate-700 rounded-t-2xl sm:rounded-2xl w-full sm:max-w-lg overflow-y-auto" style={{ maxHeight: '95svh' }}>
         {inner}
       </div>
     </div>
