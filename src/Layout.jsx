@@ -86,7 +86,7 @@ export default function Layout({ children, currentPageName }) {
 
   // Pages that are "root" tabs — all others are child screens
   const rootPages = ['Dashboard', 'TonightHub', 'StarPointer', 'PlannerTool', 'CommunityGallery', 'Profile',
-    'FreeCourse', 'InstructorDashboard', 'PaymentGate', 'Onboarding', 'FieldMode'];
+    'FreeCourse', 'InstructorDashboard', 'PaymentGate', 'Onboarding', 'FieldMode', 'Journal'];
   const isChildScreen = !rootPages.includes(currentPageName);
 
   // Track last visited path per tab
