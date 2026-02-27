@@ -38,56 +38,64 @@ return 'bg-slate-600';
 };
 
 export default function AuroraPredictionCard({ userLat, userLon, locationName }) {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [fromCache, setFromCache] = useState(false);
+   const [data, setData] = useState(null);
+   const [loading, setLoading] = useState(true);
+   const [error, setError] = useState(null);
+   const [fromCache, setFromCache] = useState(false);
 
-  const today = new Date().toISOString().slice(0, 10);
-  const moon = getMoonPhase(new Date());
+   const today = new Date().toISOString().slice(0, 10);
+   const moon = getMoonPhase(new Date());
+   const hasLocation = userLat !== null && userLat !== undefined && userLon !== null && userLon !== undefined;
+   const displayLocation = locationName || 'Your Location';
 
-  const load = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const [auroraResult, weatherResult] = await Promise.all([
-        getAuroraWithCache(() => fetchNoaaKpForecast()),
-        (userLat && userLon)
-          ? getWeatherWithCache(userLat, userLon, () => fetchCloudCoverForecast(userLat, userLon, 3))
-          : Promise.resolve({ data: [], fromCache: false }),
-      ]);
+   const load = async () => {
+     setLoading(true);
+     setError(null);
+     try {
+       const [auroraResult, weatherResult] = await Promise.all([
+         getAuroraWithCache(() => fetchNoaaKpForecast()),
+         hasLocation
+           ? getWeatherWithCache(userLat, userLon, () => fetchCloudCoverForecast(userLat, userLon, 3))
+           : Promise.resolve({ data: [], fromCache: false }),
+       ]);
 
-      const todayForecast = (auroraResult.data || []).find(f => f.date === today)
-        || auroraResult.data?.[0]
-        || null;
+       const todayForecast = (auroraResult.data || []).find(f => f.date === today)
+         || auroraResult.data?.[0]
+         || null;
 
-      const todayWeather = (weatherResult.data || []).find(f => f.date === today)
-        || weatherResult.data?.[0]
-        || null;
+       const todayWeather = (weatherResult.data || []).find(f => f.date === today)
+         || weatherResult.data?.[0]
+         || null;
 
-      setFromCache(auroraResult.fromCache);
-      setData({
-        kp: todayForecast?.kp_index ?? null,
-        kp_min: todayForecast?.kp_min ?? null,
-        kp_max: todayForecast?.kp_max ?? null,
-        visibility: todayForecast?.visibility_rating ?? 'unlikely',
-        clouds: todayWeather?.clouds ?? null,
-        precipitation: todayWeather?.precipitation ?? null,
-        wind: todayWeather?.wind_speed ?? null,
-        temp: todayWeather?.temp_min ?? null,
-      });
-    } catch (e) {
-      setError('Could not load live data.');
-      // Fallback placeholders
-      setData({
-        kp: null, kp_min: null, kp_max: null,
-        visibility: 'unlikely', clouds: null, precipitation: null, wind: null, temp: null,
-      });
-    }
-    setLoading(false);
-  };
+       setFromCache(auroraResult.fromCache);
+       setData({
+         kp: todayForecast?.kp_index !== null && todayForecast?.kp_index !== undefined 
+           ? Math.round(todayForecast.kp_index * 10) / 10 
+           : null,
+         kp_min: todayForecast?.kp_min !== null && todayForecast?.kp_min !== undefined 
+           ? Math.round(todayForecast.kp_min * 10) / 10 
+           : null,
+         kp_max: todayForecast?.kp_max !== null && todayForecast?.kp_max !== undefined 
+           ? Math.round(todayForecast.kp_max * 10) / 10 
+           : null,
+         visibility: todayForecast?.visibility_rating ?? 'unlikely',
+         clouds: todayWeather?.clouds ?? null,
+         precipitation: todayWeather?.precipitation ?? null,
+         wind: todayWeather?.wind_speed ?? null,
+         temp: todayWeather?.temp_min ?? null,
+       });
+     } catch (e) {
+       setError('Could not load live data.');
+       // Fallback placeholders
+       setData({
+         kp: null, kp_min: null, kp_max: null,
+         visibility: 'unlikely', clouds: null, precipitation: null, wind: null, temp: null,
+       });
+     }
+     setLoading(false);
+   };
 
-  useEffect(() => { load(); }, [userLat, userLon]);
+   useEffect(() => { load(); }, [userLat, userLon, hasLocation]);
 
   const style = VISIBILITY_STYLES[data?.visibility || 'unlikely'];
 
