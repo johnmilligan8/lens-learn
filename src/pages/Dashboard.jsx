@@ -8,6 +8,7 @@ import PageHeader from '../components/ui/PageHeader';
 import NextUpEvents from '../components/dashboard/NextUpEvents';
 import QuickStats from '../components/ui/QuickStats';
 import ModeSelectorModal from '../components/dashboard/ModeSelectorModal';
+import ExplorationModeBanner from '../components/dashboard/ExplorationModeBanner';
 import { createPageUrl } from '@/utils';
 import { base44 } from '@/api/base44Client';
 import { Card } from '@/components/ui/card';
