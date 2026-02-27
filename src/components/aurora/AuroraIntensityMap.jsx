@@ -19,6 +19,13 @@ function getKpColor(kp) {
   return INTENSITY_COLORS.green;
 }
 
+function getAuroraChance(kp) {
+  if (kp >= 7) return 'Strong Chance';
+  if (kp >= 5) return 'Likely';
+  if (kp >= 3) return 'Possible';
+  return 'Unlikely';
+}
+
 function HourlyTrendChart({ kpForecast }) {
   const hours = Array.from({ length: 24 }, (_, i) => i);
   const maxKp = Math.max(...hours.map(h => kpForecast[h] || 0), 1);
