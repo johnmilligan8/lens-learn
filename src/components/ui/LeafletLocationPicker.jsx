@@ -104,7 +104,8 @@ export default function LeafletLocationPicker({ initial, onConfirm, onCancel, co
       const L = await ensureLeaflet();
       if (!active || !mapRef.current || leafletMapRef.current) return;
 
-      const map = L.map(mapRef.current, { zoomControl: true }).setView([pos.lat, pos.lon], pos.lat === defaultCenter.lat ? 4 : 11);
+      const initialZoom = isDefaultPos ? 4 : 11;
+      const map = L.map(mapRef.current, { zoomControl: true, tap: false }).setView([pos.lat, pos.lon], initialZoom);
       leafletMapRef.current = map;
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
