@@ -267,29 +267,34 @@ export default function LeafletLocationPicker({ initial, onConfirm, onCancel, co
       </div>
 
       {/* Map */}
-      <div className="relative mx-4 mt-2 rounded-xl overflow-hidden" style={{ height: 240, flexShrink: 0 }}>
+      <div className="relative mx-4 mt-2 rounded-xl overflow-hidden border border-slate-700" style={{ height: 260, flexShrink: 0 }}>
         {!mapReady && (
           <div className="absolute inset-0 flex items-center justify-center bg-slate-900 z-10 rounded-xl">
             <Loader2 className="w-6 h-6 text-slate-400 animate-spin" />
           </div>
         )}
         <div ref={mapRef} style={{ width: '100%', height: '100%' }} />
+        {/* coords overlay */}
+        <div className="absolute bottom-2 left-2 z-[800] bg-black/70 rounded-lg px-2 py-1">
+          <p className="text-slate-300 text-[10px] font-mono">{pos.lat.toFixed(5)}, {pos.lon.toFixed(5)}</p>
+        </div>
       </div>
 
-      <div className="px-4 pt-1.5 flex-shrink-0">
+      <div className="px-4 pt-2 flex-shrink-0">
         <p className="text-slate-500 text-[11px] text-center">
-          Verify spot on map – drag pin to adjust · {pos.lat.toFixed(4)}, {pos.lon.toFixed(4)}
+          Verify spot on map — drag pin or tap to reposition
         </p>
       </div>
 
-      {/* Manual lat/lon */}
-      <div className="px-4 pt-2 flex-shrink-0">
-        <details className="group">
-          <summary className="text-slate-600 text-xs cursor-pointer hover:text-slate-400 list-none flex items-center gap-1">
-            <span className="group-open:hidden">▶</span>
-            <span className="hidden group-open:inline">▼</span>
-            Enter coordinates manually
-          </summary>
+      {/* Manual lat/lon toggle */}
+      <div className="px-4 pt-1 flex-shrink-0">
+        <button
+          onClick={() => setShowManualCoords(v => !v)}
+          className="text-slate-600 text-xs hover:text-slate-400 transition-colors flex items-center gap-1"
+        >
+          {showManualCoords ? '▼' : '▶'} Enter coordinates manually
+        </button>
+        {showManualCoords && (
           <div className="grid grid-cols-2 gap-2 mt-2">
             <div>
               <label className="text-slate-500 text-[10px] block mb-1">Latitude</label>
@@ -316,7 +321,7 @@ export default function LeafletLocationPicker({ initial, onConfirm, onCancel, co
               />
             </div>
           </div>
-        </details>
+        )}
       </div>
 
       {/* Confirm */}
