@@ -406,11 +406,10 @@ export default function PlannerTool() {
         base44.entities.GearProfile.filter({ user_email: me.email }, '-created_date', 1),
         base44.entities.UserProfile.filter({ user_email: me.email }, '-created_date', 1)
       ]);
-      if (gearProfiles.length > 0) {
-        setGear(gearProfiles[0]);
-      }
-      if (profiles.length > 0 && profiles[0].shooter_mode) {
-        setShooterMode(profiles[0].shooter_mode);
+      if (gearProfiles.length > 0) setGear(gearProfiles[0]);
+      if (profiles.length > 0) {
+        if (profiles[0].shooter_mode) setShooterMode(profiles[0].shooter_mode);
+        setUserProfile(profiles[0]);
       }
     };
     check();
