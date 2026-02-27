@@ -121,26 +121,23 @@ export default function AuroraView({ isSubscribed, userLocation = 'Utah', userLa
 
       {/* Tabs */}
       <div className="flex gap-3 border-b border-slate-800">
-        <button
-          onClick={() => setTab('daily')}
-          className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors ${
-            tab === 'daily'
-              ? 'border-red-600 text-white'
-              : 'border-transparent text-slate-400 hover:text-slate-300'
-          }`}
-        >
-          24–48 Hours
-        </button>
-        <button
-          onClick={() => setTab('weekly')}
-          className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors ${
-            tab === 'weekly'
-              ? 'border-red-600 text-white'
-              : 'border-transparent text-slate-400 hover:text-slate-300'
-          }`}
-        >
-          7 Days
-        </button>
+        {[
+          { id: 'map', label: '🗺 Forecast Map' },
+          { id: 'daily', label: '24–48 Hours' },
+          { id: 'weekly', label: '7 Days' },
+        ].map(t => (
+          <button
+            key={t.id}
+            onClick={() => setTab(t.id)}
+            className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors ${
+              tab === t.id
+                ? 'border-red-600 text-white'
+                : 'border-transparent text-slate-400 hover:text-slate-300'
+            }`}
+          >
+            {t.label}
+          </button>
+        ))}
       </div>
 
       {/* Daily View */}
