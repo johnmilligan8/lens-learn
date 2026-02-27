@@ -29,7 +29,7 @@ const navItems = [
   { icon: Smartphone, label: 'Star Pointer', page: 'StarPointer' },
   { icon: Star, label: 'Free Starter Course', page: 'FreeCourse', freeTag: true },
   { icon: Zap, label: 'Field Mode', page: 'FieldMode', paidOnly: true },
-  { icon: MapPin, label: 'Sky Planner & Events', page: 'PlannerTool', paidOnly: true },
+  { icon: MapPin, label: 'Sky Planner', page: 'PlannerTool', paidOnly: true },
   { icon: Users, label: 'Explorer Gallery', page: 'CommunityGallery' },
   { icon: User, label: 'My Profile', page: 'Profile' },
 ];
