@@ -53,6 +53,7 @@ import EventsCalendar from './pages/EventsCalendar';
 import FieldMode from './pages/FieldMode';
 import FreeCourse from './pages/FreeCourse';
 import InstructorDashboard from './pages/InstructorDashboard';
+import Journal from './pages/Journal';
 import LessonView from './pages/LessonView';
 import ModuleView from './pages/ModuleView';
 import Onboarding from './pages/Onboarding';
@@ -62,7 +63,6 @@ import Profile from './pages/Profile';
 import SkyBrowser from './pages/SkyBrowser';
 import StarPointer from './pages/StarPointer';
 import TonightHub from './pages/TonightHub';
-import Journal from './pages/Journal';
 import __Layout from './Layout.jsx';
 
 
@@ -73,6 +73,7 @@ export const PAGES = {
     "FieldMode": FieldMode,
     "FreeCourse": FreeCourse,
     "InstructorDashboard": InstructorDashboard,
+    "Journal": Journal,
     "LessonView": LessonView,
     "ModuleView": ModuleView,
     "Onboarding": Onboarding,
@@ -82,7 +83,6 @@ export const PAGES = {
     "SkyBrowser": SkyBrowser,
     "StarPointer": StarPointer,
     "TonightHub": TonightHub,
-    "Journal": Journal,
 }
 
 export const pagesConfig = {
