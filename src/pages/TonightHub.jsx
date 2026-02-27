@@ -214,12 +214,6 @@ export default function TonightHub() {
     return computeEvents(coords.lat, coords.lon, today, astroEvents);
   }, [coords, today, astroEvents]);
 
-  // Compute moon phase on mount
-  useEffect(() => {
-    const phase = getMoonPhase();
-    setMoonPhase(phase);
-  }, []);
-
   const mode = profile?.shooter_mode || 'photographer';
   const modeLabel = { photographer: 'DSLR/Mirrorless', smartphone: 'Smartphone', experience: 'Sky Experience' }[mode];
 
