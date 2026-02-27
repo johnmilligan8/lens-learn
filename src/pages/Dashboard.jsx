@@ -217,6 +217,9 @@ export default function Dashboard() {
         </div>
       </div>
 
+      {/* Next Up — Celestial Events */}
+      <NextUpEvents isSubscribed={isSubscribed} locationName={profile?.home_location || null} />
+
       {/* Post-Processing Guide */}
       <div className="mb-12">
         <PostProcessingGuide />
