@@ -31,6 +31,7 @@ const navItems = [
   { icon: Star, label: 'Free Starter Course', page: 'FreeCourse', freeTag: true },
   { icon: Zap, label: 'Field Mode', page: 'FieldMode', paidOnly: true },
   { icon: MapPin, label: 'Sky Planner', page: 'PlannerTool', paidOnly: true },
+  { icon: BookOpen, label: 'Journal', page: 'Journal' },
   { icon: Users, label: 'Explorer Gallery', page: 'CommunityGallery' },
   { icon: User, label: 'My Profile', page: 'Profile' },
 ];
