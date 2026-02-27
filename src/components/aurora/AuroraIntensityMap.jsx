@@ -153,7 +153,7 @@ export default function AuroraIntensityMap({
             <p className="text-xs text-slate-400 mb-1">Current KP Index</p>
             <div className="flex items-end gap-2">
               <span className="text-4xl font-black" style={{ color: currentColor.hex }}>
-                {currentKp}
+                {currentKp.toFixed(1)}
               </span>
               <span className="text-sm text-slate-300 pb-1 font-semibold">{currentColor.label}</span>
             </div>
