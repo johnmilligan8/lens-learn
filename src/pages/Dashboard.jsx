@@ -307,6 +307,15 @@ export default function Dashboard() {
           })}
         </div>
       </div>
+
+      {/* Mode Selector Modal */}
+      <ModeSelectorModal
+        open={modeModalOpen}
+        onOpenChange={setModeModalOpen}
+        currentMode={profile?.shooter_mode}
+        onSave={handleSaveMode}
+        saving={savingMode}
+      />
       </div>
     </PullToRefresh>
   );
