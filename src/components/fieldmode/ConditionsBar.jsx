@@ -25,11 +25,19 @@ export default function ConditionsBar({ coords, mode }) {
 
   useEffect(() => {
     if (!coords) return;
-    import('@/functions/fetchWeatherForecast').then(m => {
-      m.fetchWeatherForecast(coords.lat, coords.lon).then(data => {
-        if (data && data.length > 0) setWeather(data[0]);
-      }).catch(() => {});
-    });
+    const today = new Date().toISOString().split('T')[0];
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&current=cloud_cover,temperature_2m&timezone=UTC`;
+    fetch(url)
+      .then(r => r.json())
+      .then(data => {
+        if (data?.current) {
+          setWeather({
+            cloud_cover: data.current.cloud_cover,
+            temp_c: data.current.temperature_2m,
+          });
+        }
+      })
+      .catch(() => {});
   }, [coords]);
 
   const items = [
