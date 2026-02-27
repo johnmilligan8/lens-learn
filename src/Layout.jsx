@@ -41,7 +41,11 @@ export default function Layout({ children, currentPageName }) {
   const [user, setUser] = useState(null);
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [nightMode, setNightMode] = useState(() => localStorage.getItem('ug_night_mode') === 'true');
+  const [nightMode, setNightMode] = useState(() => {
+    const saved = localStorage.getItem('ug_night_mode') === 'true';
+    if (saved) document.body.classList.add('night-vision-active');
+    return saved;
+  });
   const navigate = useNavigate();
   const location = useLocation();
 
