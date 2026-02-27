@@ -84,6 +84,7 @@ export default function LeafletLocationPicker({ initial, onConfirm, onCancel, co
   const markerRef = useRef(null);
 
   const defaultCenter = { lat: 39.5, lon: -98.35 };
+  const isDefaultPos = !initial?.lat;
   const [pos, setPos] = useState(initial || defaultCenter);
   const [name, setName] = useState(initial?.name || '');
   const [manualLat, setManualLat] = useState(initial?.lat?.toFixed(5) || '');
@@ -93,6 +94,7 @@ export default function LeafletLocationPicker({ initial, onConfirm, onCancel, co
   const [searchLoading, setSearchLoading] = useState(false);
   const [gpsLoading, setGpsLoading] = useState(false);
   const [mapReady, setMapReady] = useState(false);
+  const [showManualCoords, setShowManualCoords] = useState(false);
   const debounceRef = useRef(null);
 
   // Init map
