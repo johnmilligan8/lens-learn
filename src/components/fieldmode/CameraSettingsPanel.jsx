@@ -125,6 +125,7 @@ export default function CameraSettingsPanel({ mode, event, coords }) {
   const settings = getSettings(mode, event);
   const [expanded, setExpanded] = useState(true);
   const [tipExpanded, setTipExpanded] = useState(false);
+  const eventType = event?.event_type || 'milky_way';
 
   const fields = [
     { icon: '⏱', label: 'Shutter', value: settings.shutter },
@@ -147,6 +148,9 @@ export default function CameraSettingsPanel({ mode, event, coords }) {
           </div>
         ))}
       </div>
+
+      {/* ISO Strategy Card */}
+      <ISOStrategyCard mode={mode} eventType={eventType} />
 
       {/* Tips */}
       <Card className="bg-[#1a1a1a] border border-white/8">
