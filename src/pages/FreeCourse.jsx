@@ -781,7 +781,7 @@ export default function FreeCourse() {
                           }`}
                         >
                           <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold ${
-                            done ? 'bg-emerald-600 text-white' : active ? 'bg-red-600 text-white' : 'bg-slate-800 text-slate-400'
+                            done ? 'bg-red-600 text-white' : active ? 'bg-red-600 text-white' : 'bg-slate-800 text-slate-400'
                           }`}>
                             {done ? <Check className="w-3 h-3" /> : idx + 1}
                           </div>
