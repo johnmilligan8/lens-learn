@@ -189,10 +189,12 @@ function CalendarGrid({ events, typeFilter, onSelectDate, selectedDate }) {
 
       {/* Legend */}
       <div className="mt-3 pt-3 border-t border-white/5 flex flex-wrap gap-3 text-[10px] text-slate-500">
-        <span className="flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-indigo-400" /> Dark Moon window</span>
-        <span className="flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-yellow-400" /> Meteor shower</span>
+        <span className="flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-indigo-400" /> Dark Moon / Milky Way</span>
+        <span className="flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-yellow-400" /> Meteors</span>
         <span className="flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-green-400" /> Aurora</span>
-        <span className="flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-orange-400" /> Eclipse</span>
+        <span className="flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-orange-400" /> Lunar Eclipse</span>
+        <span className="flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-yellow-300" /> Solar Eclipse</span>
+        <span className="flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-red-400" /> Supermoon</span>
       </div>
     </div>
   );
