@@ -688,9 +688,23 @@ export default function PlannerTool() {
 
           {/* Planner Tab */}
           {mainTab !== 'events' && (<>
+            {/* Curriculum cross-link — Module 3 */}
+            <div className="lg:col-span-3 mb-6 flex items-start gap-2 bg-emerald-900/20 border border-emerald-500/40 rounded-2xl px-5 py-3">
+              <span className="text-emerald-400 text-lg leading-none mt-0.5 flex-shrink-0">📚</span>
+              <div className="flex-1">
+                <p className="text-slate-300 text-xs font-semibold uppercase tracking-widest mb-1">Free Course</p>
+                <p className="text-slate-300 text-sm leading-relaxed mb-2">
+                  After calculating your shoot window, use <strong>AR Scout</strong> below to preview the exact Milky Way arc before you go. Scout your foreground in daylight.
+                </p>
+                <Link to={createPageUrl('FreeCourse')} className="text-emerald-400 text-xs font-bold hover:text-emerald-300 inline-flex items-center gap-1">
+                  Continue Course <ChevronRight className="w-3 h-3" />
+                </Link>
+              </div>
+            </div>
+
             <div className="grid lg:grid-cols-3 gap-6">
-        {/* ── Left: Inputs ── */}
-         <div className="lg:col-span-2 space-y-5">
+        {/* ── Left: Inputs (sticky, compact) ── */}
+         <div className="lg:col-span-1 space-y-4 lg:sticky lg:top-40 lg:max-h-[calc(100vh-200px)] lg:overflow-y-auto">
           {/* Expedition Manager */}
           <ExpeditionManager userEmail={user?.email} currentState={currentState} onLoadExpedition={handleLoadExpedition} />
 
