@@ -190,6 +190,72 @@ export default function CameraSettingsPanel({ mode, event, coords }) {
   );
 }
 
+function ISOStrategyCard({ mode, eventType }) {
+  const [open, setOpen] = useState(false);
+
+  const isoRows = {
+    milky_way: [
+      { range: '800–1600', label: 'Clean & Detailed', when: 'Bortle 1–2, very dark skies. Max detail, least noise. Ideal for foreground blending.', color: 'emerald' },
+      { range: '3200', label: 'Balanced Sweet Spot', when: 'Bortle 3–4, moderate darkness. Most cameras handle this cleanly. Good starting point.', color: 'blue' },
+      { range: '6400', label: 'High Sensitivity', when: 'Bortle 4–5 or partial moon. Brighter core detail, more grain — still usable in RAW.', color: 'yellow' },
+      { range: '12800+', label: 'Modern Camera Territory', when: 'Newer sensors (Sony A7S, Z8, R5C) handle this well. Useful when chasing faint nebulosity.', color: 'orange' },
+    ],
+    meteor_shower: [
+      { range: '3200', label: 'Color-Rich Meteors', when: 'Best balance for capturing meteor color (magnesium = green, sodium = yellow). Less noise than 6400.', color: 'blue' },
+      { range: '6400', label: 'Bright Streak Priority', when: 'Maximizes chance of catching faint meteors. Some color loss but more detections per hour.', color: 'yellow' },
+      { range: '12800+', label: 'Modern Cameras Only', when: 'If your camera is newer (post-2020), try 12800 for faint showers like Lyrids. Watch for banding.', color: 'orange' },
+    ],
+  };
+
+  const foregroundNote = eventType === 'milky_way' || eventType === 'meteor_shower';
+  const rows = isoRows[eventType] || isoRows['milky_way'];
+
+  const colorClass = {
+    emerald: 'border-emerald-700/40 bg-emerald-900/10 text-emerald-300',
+    blue: 'border-blue-700/40 bg-blue-900/10 text-blue-300',
+    yellow: 'border-yellow-700/40 bg-yellow-900/10 text-yellow-300',
+    orange: 'border-orange-700/40 bg-orange-900/10 text-orange-300',
+  };
+
+  if (mode === 'smartphone') return null;
+
+  return (
+    <Card className="bg-[#1a1a1a] border border-white/8">
+      <button
+        onClick={() => setOpen(v => !v)}
+        className="w-full flex items-center justify-between px-4 py-3"
+      >
+        <span className="text-white text-sm font-bold flex items-center gap-2">
+          <span>🔆</span> ISO Strategy Guide
+        </span>
+        {open ? <ChevronUp className="w-4 h-4 text-slate-500" /> : <ChevronDown className="w-4 h-4 text-slate-500" />}
+      </button>
+      {open && (
+        <div className="px-4 pb-4 space-y-2.5">
+          <p className="text-slate-500 text-[10px] leading-relaxed">ISO is not "set once" — match it to your sky darkness, moon, and creative goal.</p>
+          {rows.map((r, i) => (
+            <div key={i} className={`rounded-lg border p-3 ${colorClass[r.color]}`}>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="font-black text-sm">{r.range}</span>
+                <span className="text-[10px] font-semibold uppercase tracking-wide opacity-80">— {r.label}</span>
+              </div>
+              <p className="text-slate-400 text-[11px] leading-relaxed">{r.when}</p>
+            </div>
+          ))}
+          {foregroundNote && (
+            <div className="rounded-lg border border-purple-700/40 bg-purple-900/10 p-3 mt-1">
+              <p className="text-purple-300 text-xs font-bold mb-1">🌄 Foreground Blend Strategy</p>
+              <p className="text-slate-400 text-[11px] leading-relaxed">
+                High ISO skies lose foreground detail. Take a <span className="text-white font-semibold">separate foreground exposure</span> at ISO 400–800 during blue hour or with a 60–120s shutter. Blend the two in Lightroom or Photoshop for a clean composite.
+              </p>
+            </div>
+          )}
+        </div>
+      )}
+    </Card>
+  );
+}
+
 function WhiteBalanceTipCard({ mode }) {
   const [open, setOpen] = useState(false);
   return (
