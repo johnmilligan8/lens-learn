@@ -705,52 +705,14 @@ export default function PlannerTool() {
             <div className="grid lg:grid-cols-3 gap-6">
         {/* ── Left: Inputs (sticky, compact) ── */}
          <div className="lg:col-span-1 space-y-4 lg:sticky lg:top-40 lg:max-h-[calc(100vh-200px)] lg:overflow-y-auto">
-          {/* Expedition Manager */}
-          <ExpeditionManager userEmail={user?.email} currentState={currentState} onLoadExpedition={handleLoadExpedition} />
-
-          {/* AR Scout */}
-          {results && (
-            <Card className="bg-[#1a1a1a] border-white/8 p-0 overflow-hidden">
-              <MilkyWayARPreview
-                lat={results.coords?.lat}
-                lon={results.coords?.lon}
-                dateStr={date}
-                isSubscribed={isSubscribed}
-                shooterMode={shooterMode}
-              />
-            </Card>
-          )}
-
-          {/* Expedition Kit Checklist */}
-          <GearChecklist userEmail={user?.email} shooterMode={shooterMode} isPaid={isSubscribed} />
-
-          {/* Client Email Generator (Photographer mode + Paid) */}
-          {shooterMode === 'photographer' && isSubscribed && (
-            <ClientEmailGenerator onSave={(clientInfo) => {
-              // Save client info to active kit if needed
-            }} />
-          )}
-
-          {/* 14-Day Forecast */}
-          {coords && (
-            <AdvancedForecast
-              lat={coords.lat}
-              lon={coords.lon}
-              location={coords.name || location}
-              onSelectDate={handleSelectDateFromForecast}
-            />
-          )}
-
-          {/* Gear Setup */}
-          <GearSetup userEmail={user?.email} onGearUpdate={handleGearUpdate} loading={gearLoading} />
-
-          <Card className="bg-[#1a1a1a] border-white/8 p-6">
-            <h2 className="text-lg font-bold text-white mb-5 flex items-center gap-2">
+          {/* COMPACT INPUT SECTION */}
+          <Card className="bg-[#1a1a1a] border-white/8 p-5 rounded-2xl">
+            <h2 className="text-sm font-bold text-white uppercase tracking-widest mb-4 flex items-center gap-2">
               <Navigation className="w-4 h-4 text-red-400" /> Shoot Details
             </h2>
-            <div className="space-y-4">
+            <div className="space-y-3">
               <div>
-                <Label className="text-slate-300 mb-2 block text-sm">Location</Label>
+                <Label className="text-slate-400 text-xs mb-1.5 block uppercase font-bold">Location</Label>
                 <LocationPicker
                   value={location}
                   lat={coords?.lat}
@@ -761,53 +723,68 @@ export default function PlannerTool() {
                     else setCoords(null);
                   }}
                 />
-
               </div>
               <div>
-                <Label className="text-slate-300 mb-2 block text-sm">Date</Label>
+                <Label className="text-slate-400 text-xs mb-1.5 block uppercase font-bold">Date</Label>
                 <Input
                   type="date"
                   value={date}
                   onChange={e => setDate(e.target.value)}
-                  className="bg-slate-800 border-slate-700 text-white"
+                  className="bg-slate-800 border-slate-700 text-white text-sm"
                 />
               </div>
               <Button
                 onClick={calculate}
                 disabled={!location.trim() || calcLoading || geoLoading}
-                className="w-full bg-red-600 hover:bg-red-700 h-11 font-bold"
+                className="w-full bg-red-600 hover:bg-red-700 h-10 font-bold text-sm"
               >
                 {calcLoading || geoLoading
                   ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Calculating...</>
-                  : <><Star className="w-4 h-4 mr-2" /> Calculate Visibility</>}
+                  : <><Star className="w-4 h-4 mr-2" /> Calculate</>}
               </Button>
             </div>
           </Card>
 
-          {/* Bortle Guide */}
-          <Card className="bg-[#1a1a1a] border-white/8 p-5">
-            <h3 className="text-white font-semibold mb-4 text-sm flex items-center gap-2">
-              <Eye className="w-4 h-4 text-red-400" /> Bortle Scale Reference
-            </h3>
-            <div className="space-y-2.5">
-              {[
-                { range: '1–2', label: 'Pristine Dark', color: 'text-emerald-400', bar: 'bg-emerald-500' },
-                { range: '3–4', label: 'Rural Dark', color: 'text-blue-400', bar: 'bg-blue-500' },
-                { range: '5–6', label: 'Suburban', color: 'text-yellow-400', bar: 'bg-yellow-500' },
-                { range: '7–9', label: 'Urban', color: 'text-red-400', bar: 'bg-red-500' },
-              ].map(b => (
-                <div key={b.range} className="flex items-center gap-3">
-                  <span className={`text-xs font-bold w-8 flex-shrink-0 ${b.color}`}>{b.range}</span>
-                  <div className={`h-2 rounded flex-1 ${b.bar} opacity-60`} />
-                  <span className="text-slate-400 text-xs w-24 text-right">{b.label}</span>
-                </div>
-              ))}
-            </div>
-          </Card>
-        </div>
+          {/* AR Scout (top priority for paid) */}
+          {results && (
+            <Card className="bg-[#1a1a1a] border-white/8 p-0 overflow-hidden rounded-2xl">
+              <MilkyWayARPreview
+                lat={results.coords?.lat}
+                lon={results.coords?.lon}
+                dateStr={date}
+                isSubscribed={isSubscribed}
+                shooterMode={shooterMode}
+              />
+            </Card>
+          )}
 
-        {/* ── Right: Results ── */}
-        <div className="lg:col-span-3 space-y-5">
+          {/* Quick Tools */}
+          {results && (
+            <div className="space-y-4">
+              <AdvancedForecast
+                lat={coords.lat}
+                lon={coords.lon}
+                location={coords.name || location}
+                onSelectDate={handleSelectDateFromForecast}
+              />
+              <ExpeditionManager userEmail={user?.email} currentState={currentState} onLoadExpedition={handleLoadExpedition} />
+            </div>
+          )}
+
+          {/* Secondary Tools (collapsible) */}
+          {results && (
+            <div className="space-y-3 text-xs">
+              <GearChecklist userEmail={user?.email} shooterMode={shooterMode} isPaid={isSubscribed} />
+              <GearSetup userEmail={user?.email} onGearUpdate={handleGearUpdate} loading={gearLoading} />
+              {shooterMode === 'photographer' && isSubscribed && (
+                <ClientEmailGenerator onSave={() => {}} />
+              )}
+            </div>
+          )}
+          </div>
+
+          {/* ── Right: Results (full-width, 2-column grid) ── */}
+          <div className="lg:col-span-2 space-y-5">
           {results ? (
             <>
               {/* Overall Score */}
