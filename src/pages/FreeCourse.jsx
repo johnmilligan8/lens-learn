@@ -247,6 +247,39 @@ The app calculates your ideal ISO, aperture, and shutter speed using the NPF rul
 `,
       },
       {
+        id: 'm2-l2b',
+        title: 'White Balance — Shaping the Sky\'s Color',
+        type: 'article',
+        duration: '5 min read',
+        description: 'White balance controls how blue or warm your sky appears — and it\'s one of the most creative choices you\'ll make in post.',
+        content: `## White Balance — Shaping the Sky's Color
+
+Most people overlook white balance until they're stuck with an image that looks wrong. Here's how to master it.
+
+### What White Balance Actually Does
+The night sky is mostly neutral — it's not inherently blue or black. White balance (WB) determines **how warm or cool the overall image appears**, especially the sky background and foreground colors.
+
+### The Two Classic Milky Way Looks
+
+**Deep Blue Sky (classic):** Set WB to **3500–4000K**. Start at **3800K** as your baseline. This produces the rich, inky blue background you see in most iconic Milky Way shots. The blue is real — it's what the sky actually looks like at that color temperature.
+
+**Neutral/Black Sky (modern look):** Set WB to **4200–5000K**. Try **4500K** as a starting point. The sky renders closer to black or dark gray, the galactic core pops with more warm contrast, and foreground elements look more natural.
+
+### Starting Points by Goal
+
+| Look | WB Setting | Feel |
+|------|-----------|------|
+| Classic blue sky | 3500–3800K | Deep, moody, cinematic |
+| Neutral/dark sky | 4200–4500K | Modern, contrasty |
+| Warmer foreground | 4500–5000K | Natural colors, less blue |
+
+### The Golden Rule: Shoot RAW
+Always shoot RAW — WB can be **changed freely in post with zero quality loss**. In JPEG, the WB is baked in forever.
+
+**Your action:** In the field, set your camera to 3800K as a starting point. Take a shot. Then try 4500K. Compare both — then decide which matches your creative vision.
+`,
+      },
+      {
         id: 'm2-l3',
         title: 'Reading the Histogram',
         type: 'article',

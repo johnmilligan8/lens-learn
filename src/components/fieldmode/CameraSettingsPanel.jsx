@@ -172,6 +172,9 @@ export default function CameraSettingsPanel({ mode, event, coords }) {
         )}
       </Card>
 
+      {/* White Balance Tip Card */}
+      <WhiteBalanceTipCard mode={mode} />
+
       {/* 500 rule calculator */}
       {mode !== 'smartphone' && (
         <FiveHundredRuleCard />
