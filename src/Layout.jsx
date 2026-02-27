@@ -68,7 +68,6 @@ export default function Layout({ children, currentPageName }) {
     setNightMode(prev => {
       const next = !prev;
       localStorage.setItem('ug_night_mode', String(next));
-      document.body.classList.toggle('night-vision-active', next);
       return next;
     });
   };
