@@ -325,10 +325,15 @@ export default function LeafletLocationPicker({ initial, onConfirm, onCancel, co
       </div>
 
       {/* Confirm */}
-      <div className="px-4 py-3 flex-shrink-0">
-        <Button onClick={handleConfirm} className="w-full bg-red-600 hover:bg-red-700 font-bold h-11 text-base gap-2">
-          <Check className="w-4 h-4" /> {confirmLabel || 'Confirm Location'}
+      <div className="px-4 py-3 flex-shrink-0 space-y-2">
+        <Button onClick={handleConfirm} className="w-full bg-red-600 hover:bg-red-700 font-bold h-12 text-base gap-2">
+          <Check className="w-5 h-5" /> {confirmLabel || 'Confirm to save exact location'}
         </Button>
+        {onCancel && (
+          <button onClick={onCancel} className="w-full text-slate-500 text-sm hover:text-slate-300 transition-colors py-1">
+            Cancel
+          </button>
+        )}
       </div>
     </div>
   );
