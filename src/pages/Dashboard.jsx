@@ -41,6 +41,8 @@ export default function Dashboard() {
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState(null);
+  const [modeModalOpen, setModeModalOpen] = useState(false);
+  const [savingMode, setSavingMode] = useState(false);
   const navigate = useNavigate();
 
   const loadData = useCallback(async () => {
