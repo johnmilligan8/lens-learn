@@ -5,6 +5,7 @@ import { Zap, Cloud, Moon, Eye, RefreshCw, MapPin, Loader, WifiOff } from 'lucid
 import { fetchNoaaKpForecast } from '@/functions/fetchAuroraForecast';
 import { fetchCloudCoverForecast } from '@/functions/fetchWeatherForecast';
 import { getAuroraWithCache, getWeatherWithCache } from '@/functions/offlineCache';
+import { createPageUrl } from '@/utils';
 
 function getMoonPhase(date) {
   const known = new Date('2000-01-06');
