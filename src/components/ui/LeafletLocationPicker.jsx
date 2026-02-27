@@ -116,22 +116,24 @@ export default function LeafletLocationPicker({ initial, onConfirm, onCancel, co
       const marker = L.marker([pos.lat, pos.lon], { draggable: true, icon: makeIcon(L) }).addTo(map);
       markerRef.current = marker;
 
-      marker.on('dragend', () => {
-        const latlng = marker.getLatLng();
-        const newLat = parseFloat(latlng.lat.toFixed(5));
-        const newLon = parseFloat(latlng.lng.toFixed(5));
+      marker.bindTooltip('Drag to adjust', { permanent: false, direction: 'top', offset: [0, -38] });
+
+      const updateFromLatLng = (lat, lng) => {
+        const newLat = parseFloat(lat.toFixed(5));
+        const newLon = parseFloat(lng.toFixed(5));
         setPos({ lat: newLat, lon: newLon });
         setManualLat(newLat.toFixed(5));
         setManualLon(newLon.toFixed(5));
+      };
+
+      marker.on('dragend', () => {
+        const latlng = marker.getLatLng();
+        updateFromLatLng(latlng.lat, latlng.lng);
       });
 
       map.on('click', (e) => {
-        const newLat = parseFloat(e.latlng.lat.toFixed(5));
-        const newLon = parseFloat(e.latlng.lng.toFixed(5));
-        marker.setLatLng([newLat, newLon]);
-        setPos({ lat: newLat, lon: newLon });
-        setManualLat(newLat.toFixed(5));
-        setManualLon(newLon.toFixed(5));
+        marker.setLatLng(e.latlng);
+        updateFromLatLng(e.latlng.lat, e.latlng.lng);
       });
 
       setMapReady(true);
