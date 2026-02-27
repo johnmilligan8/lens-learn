@@ -296,22 +296,25 @@ export default function EventsCalendarTab({ isSubscribed, userProfile }) {
         ))}
       </div>
 
-      {/* Event type filters */}
+      {/* Event type filter strip */}
       {tab !== 'aurora' && (
-        <div className="flex flex-wrap gap-1.5">
-          {EVENT_TYPES.map(et => (
-            <button
-              key={et.id}
-              onClick={() => setTypeFilter(et.id)}
-              className={`px-2.5 py-1 rounded-full text-xs font-semibold border transition-all ${
-                typeFilter === et.id
-                  ? 'bg-red-600/30 border-red-500 text-white'
-                  : 'bg-slate-800/60 border-slate-700 text-slate-400 hover:border-slate-500'
-              }`}
-            >
-              {et.label}
-            </button>
-          ))}
+        <div>
+          <p className="text-slate-600 text-[10px] uppercase tracking-widest mb-2 font-semibold">Filter events to plan your perfect night</p>
+          <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none -mx-1 px-1">
+            {EVENT_TYPES.map(et => (
+              <button
+                key={et.id}
+                onClick={() => setTypeFilter(et.id)}
+                className={`flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-bold border transition-all ${
+                  typeFilter === et.id
+                    ? 'bg-red-600 border-red-500 text-white shadow-lg shadow-red-900/30'
+                    : 'bg-slate-800/80 border-slate-700/60 text-slate-400 hover:border-slate-500 hover:text-slate-200'
+                }`}
+              >
+                {et.label}
+              </button>
+            ))}
+          </div>
         </div>
       )}
 
