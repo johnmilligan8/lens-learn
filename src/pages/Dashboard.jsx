@@ -127,6 +127,15 @@ export default function Dashboard() {
         />
       )}
 
+      {/* Mode Selector Modal */}
+      <ModeSelectorModal
+        open={modeModalOpen}
+        onOpenChange={setModeModalOpen}
+        currentMode={profile?.shooter_mode}
+        onSave={handleSaveMode}
+        saving={savingMode}
+      />
+
       {/* Free tier upsell banner */}
       {!isSubscribed && (
         <div className="mb-8 p-5 rounded-2xl border border-red-600/30 bg-[#1a1a1a] flex flex-col md:flex-row items-start md:items-center gap-4">
