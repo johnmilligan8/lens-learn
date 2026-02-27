@@ -73,7 +73,7 @@ function WeeklyOutlook({ weeklyKp }) {
                 className="h-8 rounded-lg flex items-center justify-center text-xs font-bold text-white transition-all"
                 style={{ backgroundColor: color.hex }}
               >
-                {kp}
+                {kp.toFixed(1)}
               </div>
               <p className="text-xs text-slate-500 mt-1">{day}</p>
             </div>
