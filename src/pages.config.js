@@ -62,6 +62,7 @@ import Profile from './pages/Profile';
 import SkyBrowser from './pages/SkyBrowser';
 import StarPointer from './pages/StarPointer';
 import TonightHub from './pages/TonightHub';
+import Journal from './pages/Journal';
 import __Layout from './Layout.jsx';
 
 
@@ -81,6 +82,7 @@ export const PAGES = {
     "SkyBrowser": SkyBrowser,
     "StarPointer": StarPointer,
     "TonightHub": TonightHub,
+    "Journal": Journal,
 }
 
 export const pagesConfig = {
