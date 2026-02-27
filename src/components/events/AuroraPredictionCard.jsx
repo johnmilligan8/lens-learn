@@ -138,10 +138,16 @@ export default function AuroraPredictionCard({ userLat, userLon, locationName })
           <Loader className="w-4 h-4 animate-spin" />
           <span className="text-sm">Fetching live NOAA data…</span>
         </div>
-      ) : error && !data ? (
+      ) : error ? (
         <div className="flex items-center gap-2 text-red-400 py-2">
           <WifiOff className="w-4 h-4" />
           <span className="text-sm">{error}</span>
+        </div>
+      ) : !hasLocation ? (
+        <div className="p-4 bg-blue-900/20 border border-blue-600/30 rounded-lg">
+          <p className="text-xs text-blue-200 leading-relaxed">
+            Aurora forecast requires a location. <a href={createPageUrl('Profile')} className="underline hover:text-blue-100">Set your home location in profile</a> for personalized visibility predictions and local weather data.
+          </p>
         </div>
       ) : (
         <>
