@@ -318,13 +318,14 @@ export default function Profile() {
         )}
         </Card>
 
-        {/* Aurora Alerts (Plus only) */}
+        {/* Aurora Alert Settings (Plus only) */}
         {isSubscribed && (
-          <AuroraAlertManager
-            alertLocations={userProfile?.alert_locations || []}
-            alertsEnabled={userProfile?.alert_prefs?.aurora_alerts_enabled !== false}
-            onUpdate={handleAuroraAlertUpdate}
-          />
+          <div className="mb-6">
+            <AuroraAlertSettings
+              profile={userProfile}
+              onSave={handleAuroraAlertUpdate}
+            />
+          </div>
         )}
 
         {/* Tier Comparison */}
