@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
 
 @tailwind base;
@@ -194,22 +195,14 @@ label, input, select, textarea {
 
 /* ── Night Vision Mode ── */
 
-#night-vision-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(200, 0, 0, 0.35);
-  pointer-events: none;
-  z-index: 99999;
-}
-
 body.night-vision-active {
-  filter: brightness(0.7) saturate(0.3);
+  filter: brightness(0.75) saturate(0.2);
 }
 
 .night-vision-exempt {
   filter: none !important;
   position: relative;
-  z-index: 100000 !important;
+  z-index: 2147483647 !important;
 }
 
 /* Legacy class — no-op, kept for safety */
