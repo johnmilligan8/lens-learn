@@ -642,20 +642,46 @@ export default function PlannerTool() {
     <PullToRefresh onRefresh={handleRefresh}>
       <div className="max-w-6xl mx-auto px-4 py-8">
       {/* Header */}
-      <div className="mb-8 flex items-center justify-between">
+      <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-4xl font-black text-white mb-2 flex items-center gap-3">
+          <h1 className="text-4xl font-black text-white mb-1 flex items-center gap-3">
             <MapPin className="w-9 h-9 text-red-400" />
             <span>Sky <span className="gradient-text">Planner</span></span>
           </h1>
-          <p className="text-slate-400 text-lg">Plan the perfect Milky Way shoot with precision astronomy data.</p>
+          <p className="text-slate-400">Plan your expedition – see events, conditions, and best spots in one place.</p>
         </div>
-        <Link to={createPageUrl('SkyBrowser')} className="inline-flex">
+        <Link to={createPageUrl('SkyBrowser')} className="hidden sm:inline-flex">
           <Button variant="outline" className="border-red-600/40 text-red-300 hover:bg-red-900/20 text-sm gap-2">
             <Star className="w-4 h-4" /> Sky Browser
           </Button>
         </Link>
       </div>
+
+      {/* Main Tabs */}
+      <div className="flex gap-1 border-b border-white/8 mb-6">
+        {[
+          { id: 'planner', label: '🔭 Plan a Shoot' },
+          { id: 'events', label: '📅 Cosmic Events' },
+        ].map(t => (
+          <button
+            key={t.id}
+            onClick={() => setMainTab(t.id)}
+            className={`px-4 py-2.5 text-sm font-semibold border-b-2 transition-colors ${
+              mainTab === t.id ? 'border-red-500 text-white' : 'border-transparent text-slate-400 hover:text-slate-300'
+            }`}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Events Tab */}
+      {mainTab === 'events' && (
+        <EventsCalendarTab isSubscribed={isSubscribed} userProfile={userProfile} />
+      )}
+
+      {/* Planner Tab */}
+      {mainTab !== 'events' && (
 
       {/* Curriculum cross-link — Module 3 */}
       <div className="mb-5 flex items-start gap-2 bg-[#0a1a0a]/60 border border-emerald-900/40 rounded-xl px-4 py-3">
