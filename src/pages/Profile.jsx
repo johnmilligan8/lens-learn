@@ -329,14 +329,14 @@ export default function Profile() {
 
       {/* My Photos */}
       {photos.length > 0 && (
-        <Card className="bg-[#1a1a1a] border-white/8 p-6">
-          <h3 className="text-white font-semibold mb-5 flex items-center gap-2">
-            <Camera className="w-5 h-5 text-blue-400" /> My Gallery Photos
+        <Card className="bg-[#1a1a1a] border-white/8 p-8">
+          <h3 className="text-white font-black text-lg mb-6 flex items-center gap-2">
+            <Camera className="w-5 h-5 text-red-400" /> Gallery ({photos.length})
           </h3>
-          <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
             {photos.map(p => (
-              <div key={p.id} className="aspect-square rounded-lg overflow-hidden">
-                <img src={p.photo_url} alt="" className="w-full h-full object-cover hover:scale-110 transition-transform duration-200" />
+              <div key={p.id} className="aspect-square rounded-lg overflow-hidden border border-white/5 hover:border-red-500/30 hover:shadow-lg hover:shadow-red-500/10 transition-all duration-200 group cursor-pointer">
+                <img src={p.photo_url} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
               </div>
             ))}
           </div>
