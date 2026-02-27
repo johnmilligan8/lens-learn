@@ -8,7 +8,6 @@ import {
   Telescope,
   Home,
   MapPin,
-  Calendar,
   Users,
   User,
   Settings,
