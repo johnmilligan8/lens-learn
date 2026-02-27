@@ -320,17 +320,12 @@ export default function TonightHub() {
              />
            )}
 
-           {/* Aurora Teaser */}
-          {auroraForecast && auroraForecast.kp_index > 2 && (
-            <Link to={createPageUrl('EventsCalendar')}>
-              <AuroraTeaserCard
-                kpIndex={auroraForecast.kp_min || auroraForecast.kp_index}
-                cloudCover={auroraForecast.cloud_cover_percent || 50}
-                visibilityRating={auroraForecast.visibility_rating}
-                onClick={() => {}}
-              />
-            </Link>
-          )}
+           {/* Aurora Tonight — real NOAA + weather data */}
+           <AuroraPredictionCard
+             userLat={coords?.lat ?? null}
+             userLon={coords?.lon ?? null}
+             locationName={location || 'Salt Lake City, UT'}
+           />
 
           {events.map((event, i) => (
             <EventRankCard
