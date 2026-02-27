@@ -204,11 +204,11 @@ export default function FieldMode() {
 
       {/* Content */}
       <div className="flex-1 max-w-2xl mx-auto w-full px-4 py-5 pb-24">
-        {/* Guided Walkthrough — paid only, free gets basic nudge */}
-        {isSubscribed
-          ? <GuidedWalkthrough mode={mode} onTabChange={setActiveTab} />
-          : <FreeWalkthroughTeaser />
-        }
+        {/* Mode-Specific Guided Walkthrough — paid only, free gets basic nudge */}
+          {isSubscribed
+            ? <ModeSpecificWalkthrough mode={mode} onTabChange={setActiveTab} />
+            : <FreeWalkthroughTeaser />
+          }
 
         {/* Mode-aware execution tip */}
         <div className="mb-4 flex items-start gap-2 bg-[#1a0a00]/60 border border-red-900/30 rounded-xl px-4 py-3">
