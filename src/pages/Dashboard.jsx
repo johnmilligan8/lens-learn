@@ -7,7 +7,6 @@ import ActionCard from '../components/ui/ActionCard';
 import PageHeader from '../components/ui/PageHeader';
 import NextUpEvents from '../components/dashboard/NextUpEvents';
 import QuickStats from '../components/ui/QuickStats';
-import ExplorationModeSelector from '../components/dashboard/ExplorationModeSelector';
 import { createPageUrl } from '@/utils';
 import { base44 } from '@/api/base44Client';
 import { Card } from '@/components/ui/card';
@@ -41,8 +40,6 @@ export default function Dashboard() {
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState(null);
-  const [modeModalOpen, setModeModalOpen] = useState(false);
-  const [savingMode, setSavingMode] = useState(false);
   const navigate = useNavigate();
 
   const loadData = useCallback(async () => {

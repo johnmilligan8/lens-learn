@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Loader, Zap, Eye, TrendingUp } from 'lucide-react';
 import { MapContainer, TileLayer, ImageOverlay } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -17,13 +16,6 @@ function getKpColor(kp) {
   if (kp >= 5) return INTENSITY_COLORS.orange;
   if (kp >= 3) return INTENSITY_COLORS.yellow;
   return INTENSITY_COLORS.green;
-}
-
-function getAuroraChance(kp) {
-  if (kp >= 7) return 'Strong Chance';
-  if (kp >= 5) return 'Likely';
-  if (kp >= 3) return 'Possible';
-  return 'Unlikely';
 }
 
 function HourlyTrendChart({ kpForecast }) {
@@ -157,17 +149,16 @@ export default function AuroraIntensityMap({
         </div>
 
         {/* Current KP Display */}
-         <div className="flex items-end gap-3 mb-3">
-           <div>
-             <p className="text-xs text-slate-400 mb-1">Current KP Index</p>
-             <div className="flex items-end gap-2">
-               <span className="text-4xl font-black" style={{ color: currentColor.hex }}>
-                 {currentKp.toFixed(1)}
-               </span>
-               <span className="text-sm text-slate-300 pb-1 font-semibold">{currentColor.label}</span>
-             </div>
-           </div>
-           <Badge className="ml-auto mb-1 bg-slate-700 text-slate-100">{getAuroraChance(currentKp)}</Badge>
+        <div className="flex items-end gap-3 mb-3">
+          <div>
+            <p className="text-xs text-slate-400 mb-1">Current KP Index</p>
+            <div className="flex items-end gap-2">
+              <span className="text-4xl font-black" style={{ color: currentColor.hex }}>
+                {currentKp.toFixed(1)}
+              </span>
+              <span className="text-sm text-slate-300 pb-1 font-semibold">{currentColor.label}</span>
+            </div>
+          </div>
 
           {/* Legend */}
           <div className="flex gap-2 ml-auto flex-wrap justify-end">
