@@ -42,10 +42,25 @@ export default function Layout({ children, currentPageName }) {
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [loading, setLoading] = useState(true);
   const [nightMode, setNightMode] = useState(() => {
-    const saved = localStorage.getItem('ug_night_mode') === 'true';
-    if (saved) document.body.classList.add('night-vision-active');
-    return saved;
+    return localStorage.getItem('ug_night_mode') === 'true';
   });
+
+  // Inject/remove a real DOM overlay element — pseudo-elements on body don't pierce stacking contexts
+  useEffect(() => {
+    let overlay = document.getElementById('night-vision-overlay');
+    if (nightMode) {
+      document.body.classList.add('night-vision-active');
+      if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'night-vision-overlay';
+        document.body.appendChild(overlay);
+      }
+    } else {
+      document.body.classList.remove('night-vision-active');
+      if (overlay) overlay.remove();
+    }
+    return () => {}; // keep overlay alive across re-renders
+  }, [nightMode]);
   const navigate = useNavigate();
   const location = useLocation();
 
