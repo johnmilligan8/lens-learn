@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
-import { Loader, MapPin, Zap, Eye } from 'lucide-react';
+import { Loader, Zap, Eye } from 'lucide-react';
 
 const INTENSITY_COLORS = {
   green: { label: 'Low', hex: '#22c55e', rgb: 'rgba(34, 197, 94, 0.3)' },
