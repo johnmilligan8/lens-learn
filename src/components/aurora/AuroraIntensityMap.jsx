@@ -1,21 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
-import { Loader, Zap, Eye } from 'lucide-react';
+import { Loader, Zap, Eye, TrendingUp } from 'lucide-react';
+import { MapContainer, TileLayer, ImageOverlay } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
 
 const INTENSITY_COLORS = {
-  green: { label: 'Low', hex: '#22c55e', rgb: 'rgba(34, 197, 94, 0.3)' },
-  yellow: { label: 'Moderate', hex: '#eab308', rgb: 'rgba(234, 179, 8, 0.3)' },
-  orange: { label: 'Strong', hex: '#f97316', rgb: 'rgba(249, 115, 22, 0.3)' },
-  red: { label: 'Very Strong', hex: '#ef4444', rgb: 'rgba(239, 68, 68, 0.3)' },
+  green: { label: 'Low', hex: '#22c55e' },
+  yellow: { label: 'Moderate', hex: '#eab308' },
+  orange: { label: 'Strong', hex: '#f97316' },
+  red: { label: 'Very Strong', hex: '#ef4444' },
 };
-
-const AURORA_ZONES = [
-  { name: 'Northern Alaska', lat: 68.5, lon: -155, intensity: 'red', likelihood: 'High' },
-  { name: 'Northern Canada', lat: 64, lon: -110, intensity: 'orange', likelihood: 'Moderate-High' },
-  { name: 'Alaska Panhandle', lat: 57, lon: -136, intensity: 'yellow', likelihood: 'Moderate' },
-  { name: 'Northern US Border', lat: 48, lon: -110, intensity: 'green', likelihood: 'Low' },
-  { name: 'Montana/Wyoming', lat: 45, lon: -110, intensity: 'green', likelihood: 'Low' },
-];
 
 function getKpColor(kp) {
   if (kp >= 7) return INTENSITY_COLORS.red;
@@ -24,26 +18,67 @@ function getKpColor(kp) {
   return INTENSITY_COLORS.green;
 }
 
-function HourlyTrendMini({ kpForecast }) {
-  const hours = [0, 3, 6, 9, 12, 15, 18, 21];
-  const maxKp = Math.max(...hours.map(h => kpForecast[h] || 0));
+function HourlyTrendChart({ kpForecast }) {
+  const hours = Array.from({ length: 24 }, (_, i) => i);
+  const maxKp = Math.max(...hours.map(h => kpForecast[h] || 0), 1);
+
+  return (
+    <div className="space-y-2">
+      <p className="text-xs font-semibold text-slate-400">24-Hour KP Trend</p>
+      <div className="flex items-end gap-0.5 h-16 bg-black/20 rounded-lg p-2">
+        {hours.map((h) => {
+          const kp = kpForecast[h] || 0;
+          const color = getKpColor(kp);
+          const height = (kp / maxKp) * 100;
+          const isNow = h === new Date().getHours();
+          
+          return (
+            <div
+              key={h}
+              className="flex-1 flex flex-col items-center justify-end relative group"
+              style={{ minHeight: '2px' }}
+            >
+              <div
+                className={`w-full rounded-t transition-all ${isNow ? 'ring-2 ring-white' : ''}`}
+                style={{
+                  height: `${Math.max(height, 3)}%`,
+                  backgroundColor: color.hex,
+                }}
+              />
+              {h % 3 === 0 && (
+                <span className="text-xs text-slate-500 mt-1">{h}h</span>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function WeeklyOutlook({ weeklyKp }) {
+  const days = ['Today', 'Tomorrow', '+2d', '+3d', '+4d', '+5d', '+6d'];
   
   return (
-    <div className="flex items-end gap-1 h-12">
-      {hours.map((h, i) => {
-        const kp = kpForecast[h] || 0;
-        const color = getKpColor(kp);
-        const height = maxKp > 0 ? (kp / maxKp) * 100 : 10;
-        return (
-          <div key={i} className="flex-1 flex flex-col items-center gap-1">
-            <div
-              className="w-full rounded-t transition-all"
-              style={{ height: `${height}%`, backgroundColor: color.hex, minHeight: '4px' }}
-            />
-            <span className="text-xs text-slate-500">{h}h</span>
-          </div>
-        );
-      })}
+    <div className="space-y-2">
+      <p className="text-xs font-semibold text-slate-400">7-Day KP Forecast</p>
+      <div className="grid grid-cols-7 gap-1">
+        {days.map((day, i) => {
+          const kp = weeklyKp[i] || 2;
+          const color = getKpColor(kp);
+          return (
+            <div key={i} className="text-center">
+              <div
+                className="h-8 rounded-lg flex items-center justify-center text-xs font-bold text-white transition-all"
+                style={{ backgroundColor: color.hex }}
+              >
+                {kp}
+              </div>
+              <p className="text-xs text-slate-500 mt-1">{day}</p>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -57,18 +92,28 @@ export default function AuroraIntensityMap({
 }) {
   const [loading, setLoading] = useState(true);
   const [kpForecast, setKpForecast] = useState({});
+  const [weeklyKp, setWeeklyKp] = useState([]);
   const [currentKp, setCurrentKp] = useState(null);
+  const [noaaImageUrl, setNoaaImageUrl] = useState('https://services.swpc.noaa.gov/images/aurora-30-minute-forecast-north.png');
 
   useEffect(() => {
-    // Simulate hourly KP forecast
+    // Simulate hourly KP forecast (in production, parse from NOAA 3-day text)
     const forecast = {};
+    const baseKp = auroraForecast?.kp_index || 2;
     for (let h = 0; h < 24; h++) {
       forecast[h] = Math.max(0, Math.min(9, 
-        (auroraForecast?.kp_index || 2) + (Math.sin(h / 4) * 1.5)
+        baseKp + (Math.sin(h / 4) * 1.5) + (Math.random() - 0.5) * 0.5
       ));
     }
     setKpForecast(forecast);
-    setCurrentKp(auroraForecast?.kp_index || null);
+    setCurrentKp(Math.round(baseKp * 10) / 10);
+
+    // Simulate 7-day outlook (in production, fetch from NOAA 27-day)
+    const weekly = Array.from({ length: 7 }, (_, i) => 
+      Math.max(0, Math.min(9, baseKp + (Math.random() - 0.5) * 3))
+    );
+    setWeeklyKp(weekly);
+
     setLoading(false);
   }, [auroraForecast]);
 
@@ -77,130 +122,127 @@ export default function AuroraIntensityMap({
       <Card className="bg-[#1a1a1a] border border-white/8 p-6">
         <div className="flex items-center justify-center gap-2 py-12">
           <Loader className="w-5 h-5 animate-spin text-red-400" />
-          <span className="text-slate-400 text-sm">Loading aurora map…</span>
+          <span className="text-slate-400 text-sm">Loading aurora forecast…</span>
         </div>
       </Card>
     );
   }
 
   const currentColor = getKpColor(currentKp);
+  const aurAuroraLikelyFromUser = currentKp >= 5;
 
   return (
     <Card className="bg-[#1a1a1a] border border-white/8 p-0 overflow-hidden mb-6">
       {/* Header */}
       <div className="p-5 border-b border-white/8">
-        <div className="flex items-center gap-3 mb-3">
+        <div className="flex items-center gap-3 mb-4">
           <div className="p-2.5 rounded-xl bg-red-600/15 border border-red-600/20">
             <Zap className="w-5 h-5 text-red-400" />
           </div>
-          <div>
-            <h3 className="text-white font-bold text-lg">Aurora Intensity Map</h3>
-            <p className="text-slate-400 text-xs">Color-coded forecast · US/Canada coverage</p>
+          <div className="flex-1">
+            <h3 className="text-white font-bold text-lg">Aurora Forecast</h3>
+            <p className="text-slate-400 text-xs">Color-coded intensity over US/Canada</p>
           </div>
         </div>
 
-        {/* Current KP + Legend */}
-        <div className="flex flex-wrap gap-4">
+        {/* Current KP Display */}
+        <div className="flex items-end gap-3 mb-3">
           <div>
             <p className="text-xs text-slate-400 mb-1">Current KP Index</p>
             <div className="flex items-end gap-2">
-              <span className="text-3xl font-black" style={{ color: currentColor.hex }}>
+              <span className="text-4xl font-black" style={{ color: currentColor.hex }}>
                 {currentKp}
               </span>
-              <span className="text-sm text-slate-400 pb-1">{currentColor.label}</span>
+              <span className="text-sm text-slate-300 pb-1 font-semibold">{currentColor.label}</span>
             </div>
           </div>
 
           {/* Legend */}
-          <div className="flex gap-3 flex-wrap ml-auto items-end">
+          <div className="flex gap-2 ml-auto flex-wrap justify-end">
             {Object.entries(INTENSITY_COLORS).map(([key, color]) => (
-              <div key={key} className="flex items-center gap-1.5">
-                <div
-                  className="w-3 h-3 rounded"
-                  style={{ backgroundColor: color.hex }}
-                />
+              <div key={key} className="flex items-center gap-1">
+                <div className="w-3 h-3 rounded" style={{ backgroundColor: color.hex }} />
                 <span className="text-xs text-slate-400">{color.label}</span>
               </div>
             ))}
           </div>
         </div>
+
+        {/* Quick insight */}
+        <div className={`text-xs p-2 rounded-lg ${aurAuroraLikelyFromUser ? 'bg-red-900/20 border border-red-600/30 text-red-200' : 'bg-slate-900/30 border border-slate-600/20 text-slate-300'}`}>
+          {aurAuroraLikelyFromUser 
+            ? `🎯 Aurora likely tonight from dark skies! Best odds if you head north of ${userLocation}.`
+            : `Aurora unlikely from ${userLocation} tonight. Peak activity expected in northern Canada/Alaska.`
+          }
+        </div>
       </div>
 
-      {/* Aurora Zones Grid */}
+      {/* Map Section */}
       {isSubscribed ? (
-        <div className="p-5 space-y-3">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {AURORA_ZONES.map((zone, idx) => {
-              const color = INTENSITY_COLORS[zone.intensity];
-              return (
-                <div
-                  key={idx}
-                  className="rounded-lg border p-3 transition-all"
-                  style={{
-                    backgroundColor: color.rgb,
-                    borderColor: color.hex,
-                  }}
-                >
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <p className="text-white font-semibold text-sm">{zone.name}</p>
-                      <p className="text-xs text-slate-300 mt-0.5">
-                        <span style={{ color: color.hex }} className="font-bold">{color.label}</span> intensity
-                      </p>
-                    </div>
-                    <div className="text-right text-xs text-slate-400">
-                      <p>{zone.likelihood}</p>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+        <div className="border-b border-white/8 bg-black/30">
+          <div className="h-80 relative">
+            <MapContainer
+              center={[50, -100]}
+              zoom={4}
+              style={{ height: '100%', width: '100%' }}
+              attributionControl={true}
+            >
+              <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution='&copy; OpenStreetMap contributors'
+                opacity={0.5}
+              />
+              {/* NOAA Aurora Forecast Overlay */}
+              <ImageOverlay
+                url={noaaImageUrl}
+                bounds={[[25, -180], [85, 0]]}
+                opacity={0.6}
+              />
+            </MapContainer>
           </div>
         </div>
       ) : (
-        <div className="h-48 bg-black/40 flex items-center justify-center border-t border-white/8 p-5">
+        <div className="border-b border-white/8 h-48 bg-black/40 flex items-center justify-center p-5">
           <div className="text-center">
             <Eye className="w-8 h-8 text-slate-500 mx-auto mb-2" />
-            <p className="text-slate-400 text-sm">Unlock map to see aurora zones</p>
+            <p className="text-slate-400 text-sm">Unlock detailed map view</p>
             <p className="text-xs text-slate-600 mt-1">Available for Plus members</p>
           </div>
         </div>
       )}
 
-      {/* Hourly Trend + Weekly */}
-      <div className="p-5 border-t border-white/8 space-y-5">
+      {/* Details Section */}
+      <div className="p-5 space-y-5">
         {isSubscribed ? (
           <>
             {/* Hourly Trend */}
-            <div>
-              <p className="text-xs font-semibold text-slate-400 mb-3">24-Hour KP Trend</p>
-              <HourlyTrendMini kpForecast={kpForecast} />
-            </div>
+            <HourlyTrendChart kpForecast={kpForecast} />
 
-            {/* Weekly Summary */}
-            <div className="bg-black/20 rounded-lg p-3 border border-white/8">
-              <p className="text-xs font-semibold text-slate-400 mb-2">7-Day Outlook</p>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                Peak activity expected in next 2–3 days. Best visibility from high-latitude sites (northern Canada, Alaska). 
-                From your location, watch for green-to-yellow displays on clear nights KP 5+.
+            {/* Weekly Outlook */}
+            <WeeklyOutlook weeklyKp={weeklyKp} />
+
+            {/* Location-aware tip */}
+            <div className="bg-blue-900/20 rounded-lg p-3 border border-blue-600/30 space-y-1">
+              <p className="text-xs font-semibold text-blue-200 flex items-center gap-1">
+                <TrendingUp className="w-3 h-3" /> Location Visibility
               </p>
-            </div>
-
-            {/* Tip */}
-            <div className="bg-red-900/20 rounded-lg p-3 border border-red-600/30">
-              <p className="text-xs text-red-200">
-                🎯 <strong>Tonight:</strong> {currentColor.label} intensity. {
-                  currentKp >= 5 ? 'Head north for best views!' 
-                  : currentKp >= 3 ? 'Check horizon from dark skies.' 
-                  : 'Low activity; check forecast updates.'
+              <p className="text-xs text-blue-100 leading-relaxed">
+                {currentKp >= 7 
+                  ? `Excellent chance to see aurora from ${userLocation}. Look north after midnight.`
+                  : currentKp >= 5
+                  ? `Good odds from dark skies north of ${userLocation}. Expect green glow on horizon.`
+                  : currentKp >= 3
+                  ? `Faint possibility from far-north locations (northern Canada, Alaska).`
+                  : `Low activity. Check forecast updates in 6–12 hours.`
                 }
               </p>
             </div>
           </>
         ) : (
-          <div className="bg-red-900/20 rounded-lg p-3 border border-red-600/30">
-            <p className="text-xs text-red-200">
-              ✨ <strong>Plus members</strong> unlock hourly trends, 7-day outlook, and location-based visibility alerts.
+          <div className="bg-red-900/20 rounded-lg p-3 border border-red-600/30 space-y-1">
+            <p className="text-xs font-semibold text-red-200">✨ Unlock Full Aurora Forecast</p>
+            <p className="text-xs text-red-100 leading-relaxed">
+              Plus members get detailed hourly trends, 7-day outlook, color overlay map, and location-based visibility alerts.
             </p>
           </div>
         )}
