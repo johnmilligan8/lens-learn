@@ -829,8 +829,8 @@ export default function PlannerTool() {
                 </div>
               </Card>
 
-              {/* Sky Map + Moon side by side */}
-              <div className="grid md:grid-cols-2 gap-5">
+              {/* Sky Map + Moon (side by side on desktop) */}
+              <div className="grid md:grid-cols-2 gap-5 lg:col-span-2">
                 {/* Sky Map */}
                 <Card className="bg-[#1a1a1a] border-white/8 p-5">
                   <h3 className="text-white font-semibold mb-3 flex items-center gap-2 text-sm">
