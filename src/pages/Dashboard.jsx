@@ -220,6 +220,22 @@ export default function Dashboard() {
       {/* Next Up — Celestial Events */}
       <NextUpEvents isSubscribed={isSubscribed} locationName={profile?.home_location || null} />
 
+      {/* About the App — JTBD card */}
+      <div className="mb-12">
+        <Card className="bg-[#1a1a1a] border border-white/8 p-6 relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-red-600 to-red-900 rounded-l-xl" />
+          <div className="pl-4">
+            <p className="text-xs font-bold uppercase tracking-widest text-red-400 mb-2">What Uncharted Galaxy Is For</p>
+            <p className="text-slate-300 text-sm leading-relaxed">
+              Uncharted Galaxy helps you decide the <strong className="text-white">best time and place</strong> to experience or photograph the night sky, guides you calmly in the field, and helps you improve through reflection and learning — all in one calm, trustworthy app — while providing structured courses and meaningful interaction with instructors and the community.
+            </p>
+            <p className="text-slate-400 text-sm leading-relaxed mt-3">
+              It preserves strategic optionality by offloading thinking in pressure situations, giving you the best sensing capabilities — <strong className="text-white">real-time KP, clouds, Bortle, moon, weather</strong> — in an easy management layer so you never lose options or miss moments.
+            </p>
+          </div>
+        </Card>
+      </div>
+
       {/* Post-Processing Guide */}
       <div className="mb-12">
         <PostProcessingGuide />
