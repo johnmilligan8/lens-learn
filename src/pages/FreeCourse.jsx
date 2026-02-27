@@ -882,10 +882,14 @@ export default function FreeCourse() {
               <p className="text-slate-400 text-sm mt-1">{activeLesson.description}</p>
             </div>
 
-            {/* Article Content */}
-            {activeLesson.type === 'article' && activeLesson.content && (
+            {/* Article Content — Mode-aware */}
+            {activeLesson.type === 'article' && (
               <div className="p-6">
-                <ArticleRenderer content={activeLesson.content} />
+                {activeLesson.modeVariant && activeLesson.modeVariant[shooterMode] ? (
+                  <ArticleRenderer content={activeLesson.modeVariant[shooterMode]} />
+                ) : activeLesson.content ? (
+                  <ArticleRenderer content={activeLesson.content} />
+                ) : null}
               </div>
             )}
 
