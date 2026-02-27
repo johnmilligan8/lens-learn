@@ -943,7 +943,7 @@ export default function FreeCourse() {
                   </>
                 ) : (
                   <div className="text-center py-8">
-                    <div className={`text-6xl font-black mb-4 ${quizScore >= 3 ? 'text-emerald-400' : 'text-yellow-400'}`}>
+                    <div className={`text-6xl font-black mb-4 ${quizScore >= 3 ? 'text-red-400' : 'text-yellow-400'}`}>
                       {quizScore}/{quizData.length}
                     </div>
                     <p className="text-white text-xl font-bold mb-2">
