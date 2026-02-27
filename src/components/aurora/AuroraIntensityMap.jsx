@@ -201,7 +201,6 @@ export default function AuroraIntensityMap({
                 opacity={0.6}
               />
             </MapContainer>
-          </div>
         </div>
       ) : (
         <div className="border-b border-white/8 h-48 bg-black/40 flex items-center justify-center p-5">
