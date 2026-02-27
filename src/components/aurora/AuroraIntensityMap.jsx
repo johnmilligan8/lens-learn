@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Loader, MapPin, Zap, Eye } from 'lucide-react';
-import dynamic from 'next/dynamic';
 
 const INTENSITY_COLORS = {
   green: { label: 'Low', hex: '#22c55e', rgb: 'rgba(34, 197, 94, 0.3)' },
@@ -11,10 +10,11 @@ const INTENSITY_COLORS = {
 };
 
 const AURORA_ZONES = [
-  { name: 'Northern Alaska', bounds: [[66, -170], [71, -141]], intensity: 'red' },
-  { name: 'Northern Canada', bounds: [[60, -130], [68, -95]], intensity: 'orange' },
-  { name: 'Alaska Panhandle', bounds: [[54, -142], [60, -130]], intensity: 'yellow' },
-  { name: 'Northern US Border', bounds: [[47, -125], [50, -95]], intensity: 'green' },
+  { name: 'Northern Alaska', lat: 68.5, lon: -155, intensity: 'red', likelihood: 'High' },
+  { name: 'Northern Canada', lat: 64, lon: -110, intensity: 'orange', likelihood: 'Moderate-High' },
+  { name: 'Alaska Panhandle', lat: 57, lon: -136, intensity: 'yellow', likelihood: 'Moderate' },
+  { name: 'Northern US Border', lat: 48, lon: -110, intensity: 'green', likelihood: 'Low' },
+  { name: 'Montana/Wyoming', lat: 45, lon: -110, intensity: 'green', likelihood: 'Low' },
 ];
 
 function getKpColor(kp) {
@@ -60,7 +60,7 @@ export default function AuroraIntensityMap({
   const [currentKp, setCurrentKp] = useState(null);
 
   useEffect(() => {
-    // Simulate hourly KP forecast (in production, fetch from NOAA)
+    // Simulate hourly KP forecast
     const forecast = {};
     for (let h = 0; h < 24; h++) {
       forecast[h] = Math.max(0, Math.min(9, 
@@ -126,61 +126,39 @@ export default function AuroraIntensityMap({
         </div>
       </div>
 
-      {/* Map */}
+      {/* Aurora Zones Grid */}
       {isSubscribed ? (
-        <div className="h-64 bg-black/20 relative">
-          <MapContainer
-            center={[userLat, userLon]}
-            zoom={4}
-            style={{ height: '100%', width: '100%' }}
-            attributionControl={false}
-          >
-            <TileLayer
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              opacity={0.4}
-            />
-
-            {/* Aurora Zones Overlay */}
+        <div className="p-5 space-y-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {AURORA_ZONES.map((zone, idx) => {
               const color = INTENSITY_COLORS[zone.intensity];
               return (
-                <Marker
+                <div
                   key={idx}
-                  position={[
-                    (zone.bounds[0][0] + zone.bounds[1][0]) / 2,
-                    (zone.bounds[0][1] + zone.bounds[1][1]) / 2,
-                  ]}
-                  icon={L.divIcon({
-                    html: `<div style="background: ${color.rgb}; border: 2px solid ${color.hex}; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center;"><span style="color: white; font-weight: bold; font-size: 12px; text-align: center;">${zone.intensity}</span></div>`,
-                    iconSize: [60, 60],
-                    iconAnchor: [30, 30],
-                  })}
+                  className="rounded-lg border p-3 transition-all"
+                  style={{
+                    backgroundColor: color.rgb,
+                    borderColor: color.hex,
+                  }}
                 >
-                  <Popup>
-                    <div className="text-xs">
-                      <p className="font-bold">{zone.name}</p>
-                      <p style={{ color: color.hex }}>
-                        {color.label} intensity
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className="text-white font-semibold text-sm">{zone.name}</p>
+                      <p className="text-xs text-slate-300 mt-0.5">
+                        <span style={{ color: color.hex }} className="font-bold">{color.label}</span> intensity
                       </p>
                     </div>
-                  </Popup>
-                </Marker>
+                    <div className="text-right text-xs text-slate-400">
+                      <p>{zone.likelihood}</p>
+                    </div>
+                  </div>
+                </div>
               );
             })}
-
-            {/* User Location */}
-            <Marker position={[userLat, userLon]}>
-              <Popup>
-                <div className="text-xs">
-                  <p className="font-bold">{userLocation}</p>
-                  <p className="text-slate-600">Your location</p>
-                </div>
-              </Popup>
-            </Marker>
-          </MapContainer>
+          </div>
         </div>
       ) : (
-        <div className="h-48 bg-black/40 flex items-center justify-center border-t border-white/8">
+        <div className="h-48 bg-black/40 flex items-center justify-center border-t border-white/8 p-5">
           <div className="text-center">
             <Eye className="w-8 h-8 text-slate-500 mx-auto mb-2" />
             <p className="text-slate-400 text-sm">Unlock map to see aurora zones</p>
