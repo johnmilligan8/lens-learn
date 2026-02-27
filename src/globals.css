@@ -193,12 +193,35 @@ label, input, select, textarea {
 ::-webkit-scrollbar-thumb:hover { background: #e60000; }
 
 /* ── Night Vision Mode ── */
+/*
+  Strategy: overlay a translucent red layer on top of the entire page.
+  This tints light/white areas red while leaving dark backgrounds nearly unchanged.
+  We use a ::before pseudo-element on a wrapper div via the .night-vision-mode class.
+*/
 .night-vision-mode {
-  filter: brightness(0.45) saturate(0) sepia(1) hue-rotate(300deg) saturate(4);
-  transition: filter 0.4s ease;
+  position: relative;
 }
 
-/* Night-vision toggle button should always be readable */
+.night-vision-mode::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(180, 0, 0, 0.28);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: 9998;
+  transition: opacity 0.35s ease;
+}
+
+/* Desaturate non-red colors subtly so red tones stand out */
+.night-vision-mode > * {
+  filter: saturate(0.15) brightness(0.82);
+  transition: filter 0.35s ease;
+}
+
+/* Night-vision exempt elements stay fully visible and interactive above the overlay */
 .night-vision-exempt {
   filter: none !important;
+  position: relative;
+  z-index: 9999;
 }
