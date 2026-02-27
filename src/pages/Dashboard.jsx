@@ -119,14 +119,6 @@ export default function Dashboard() {
         { label: 'Streak', value: '7d', change: { positive: true, text: 'Keep it up!' } },
       ]} />
 
-      {/* Exploration Mode Banner */}
-      {profile?.shooter_mode && (
-        <ExplorationModeBanner 
-          mode={profile.shooter_mode} 
-          onEdit={() => setModeModalOpen(true)}
-        />
-      )}
-
       {/* Mode Selector Modal */}
       <ModeSelectorModal
         open={modeModalOpen}
