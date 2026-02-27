@@ -343,6 +343,17 @@ export default function TonightHub() {
              locationName={location || 'Salt Lake City, UT'}
            />
 
+           {/* Aurora Intensity Map — color-coded forecast */}
+           {coords && (
+             <AuroraIntensityMap
+               isSubscribed={isSubscribed}
+               userLat={coords.lat}
+               userLon={coords.lon}
+               userLocation={location || 'Your Location'}
+               auroraForecast={auroraForecast}
+             />
+           )}
+
           {events.map((event, i) => (
             <EventRankCard
               key={event.id}
