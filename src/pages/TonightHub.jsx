@@ -290,6 +290,19 @@ export default function TonightHub() {
         />
       </Card>
 
+      {/* ── Best Spots Ranker (with event type tabs) ── */}
+      {coords && isSubscribed && profile?.alert_locations && profile.alert_locations.length > 0 && moonPhase && (
+        <Card className="bg-[#1a1a1a] border border-white/8 p-0 mb-6 overflow-hidden">
+          <BestSpotsRanker
+            alertLocations={profile.alert_locations}
+            userLat={coords.lat}
+            userLon={coords.lon}
+            auroraForecast={auroraForecast}
+            moonPhase={{ illum: moonPhase.illum }}
+          />
+        </Card>
+      )}
+
       {/* Events */}
       {!coords ? (
         <div className="text-center py-20">
