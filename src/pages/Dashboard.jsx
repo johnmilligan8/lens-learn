@@ -219,14 +219,15 @@ export default function Dashboard() {
         >
           ⚙️ Change Mode
         </button>
-      <ModeSelectorModal
+        </div>
+
+        <ModeSelectorModal
         open={modeModalOpen}
         onOpenChange={setModeModalOpen}
         currentMode={profile?.shooter_mode}
         onSave={handleSaveMode}
         saving={savingMode}
-      />
-      </div>
-      </PullToRefresh>
-      );
-      }
+        />
+        </PullToRefresh>
+        );
+        }
