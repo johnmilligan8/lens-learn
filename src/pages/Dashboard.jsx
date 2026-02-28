@@ -281,12 +281,6 @@ export default function Dashboard() {
             </Link>
           )}
 
-          {/* ── POST-PROCESSING GUIDE ── */}
-          <PostProcessingGuide />
-
-          {/* ── SKY PLANNER PREVIEW (free only) ── */}
-          {!isSubscribed && <SkyPlannerPreview />}
-
           {/* ── COURSES SECTION ── */}
           <div>
             <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
