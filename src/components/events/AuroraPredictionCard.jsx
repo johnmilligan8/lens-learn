@@ -182,6 +182,8 @@ export default function AuroraPredictionCard({ userLat, userLon, locationName })
   const [currentKp, setCurrentKp] = useState(null);
   const [trend, setTrend] = useState([]);
   const [viewingWindows, setViewingWindows] = useState([]);
+  const [hourlyCloud, setHourlyCloud] = useState([]);
+  const [bortle, setBortle] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [usingDefault, setUsingDefault] = useState(false);
