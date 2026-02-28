@@ -5,6 +5,7 @@ import { Zap, Cloud, Moon, Eye, RefreshCw, MapPin, Loader, WifiOff, TrendingUp, 
 import { fetchNoaaKpForecast, fetchCurrentKp, fetchNoaaHourlyKp, fetchHourlyCloudCover } from '@/functions/fetchAuroraForecast';
 import { fetchCloudCoverForecast } from '@/functions/fetchWeatherForecast';
 import { createPageUrl } from '@/utils';
+import { base44 } from '@/api/base44Client';
 
 // Default fallback location: Salt Lake City, UT
 const DEFAULT_LAT = 40.76;
