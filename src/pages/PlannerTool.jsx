@@ -22,6 +22,7 @@ import ExpeditionManager from '../components/planner/ExpeditionManager';
 import MilkyWayARPreview from '../components/planner/MilkyWayARPreview';
 import MapOverlayLayers from '../components/planner/MapOverlayLayers';
 import SaveTripModal from '../components/planner/SaveTripModal';
+import BasicARScout from '../components/ar/BasicARScout';
 import SmartphoneShootingGuide from '../components/planner/SmartphoneShootingGuide';
 import SmartphoneSettingsPanel from '../components/planner/SmartphoneSettingsPanel';
 import LocationPicker from '../components/onboarding/LocationPicker';
@@ -384,6 +385,7 @@ export default function PlannerTool() {
   const [gear, setGear] = useState(null);
   const [gearLoading, setGearLoading] = useState(false);
   const [shooterMode, setShooterMode] = useState('photographer');
+  const [showARScout, setShowARScout] = useState(false);
   const ephemerisRef = React.useRef(null);
 
   const currentState = {
@@ -759,15 +761,26 @@ export default function PlannerTool() {
 
           {/* AR Scout (top priority for paid) */}
           {results && (
-            <Card className="bg-[#1a1a1a] border-white/8 p-0 overflow-hidden rounded-2xl">
-              <MilkyWayARPreview
-                lat={results.coords?.lat}
-                lon={results.coords?.lon}
-                dateStr={date}
-                isSubscribed={isSubscribed}
-                shooterMode={shooterMode}
-              />
-            </Card>
+            <>
+              <Card className="bg-[#1a1a1a] border-white/8 p-0 overflow-hidden rounded-2xl">
+                <MilkyWayARPreview
+                  lat={results.coords?.lat}
+                  lon={results.coords?.lon}
+                  dateStr={date}
+                  isSubscribed={isSubscribed}
+                  shooterMode={shooterMode}
+                />
+              </Card>
+
+              {/* Live AR Scout Button */}
+              <Button
+                onClick={() => setShowARScout(true)}
+                size="sm"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-xs gap-2 h-9 font-bold"
+              >
+                📱 Launch AR Scout (Live)
+              </Button>
+            </>
           )}
 
           {/* Quick Tools */}
@@ -1107,6 +1120,16 @@ export default function PlannerTool() {
           currentState={currentState}
           onLoadTrip={handleLoadExpedition}
           onClose={() => setShowSaveTripModal(false)}
+        />
+      )}
+
+      {/* AR Scout */}
+      {showARScout && (
+        <BasicARScout
+          lat={results?.coords?.lat}
+          lon={results?.coords?.lon}
+          dateStr={date}
+          onClose={() => setShowARScout(false)}
         />
       )}
     </PullToRefresh>
