@@ -35,7 +35,6 @@ export default function Dashboard() {
    const [profile, setProfile] = useState(null);
    const [modeModalOpen, setModeModalOpen] = useState(false);
    const [savingMode, setSavingMode] = useState(false);
-   const [skyInterest, setSkyInterest] = useState('milky_way'); // 'milky_way' | 'aurora' | 'meteor_shower' | 'eclipse'
    const navigate = useNavigate();
 
   const loadData = useCallback(async () => {
