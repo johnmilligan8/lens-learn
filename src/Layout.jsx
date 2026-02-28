@@ -298,9 +298,9 @@ export default function Layout({ children, currentPageName }) {
         </div>
       </div>
 
-      {/* Mobile Bottom Tab Bar */}
+      {/* Bottom Tab Bar (Primary Navigation - 5 tabs) */}
       <nav
-        className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#111111]/98 backdrop-blur-md border-t border-white/5 flex items-start select-none"
+        className="fixed bottom-0 left-0 right-0 z-40 bg-[#111111]/98 backdrop-blur-md border-t border-white/5 flex select-none md:hidden"
         style={{
           paddingBottom: 'env(safe-area-inset-bottom)',
           paddingLeft: 'env(safe-area-inset-left)',
@@ -309,31 +309,7 @@ export default function Layout({ children, currentPageName }) {
           userSelect: 'none',
         }}
       >
-        {[
-          { icon: Home, label: 'Home', page: 'Dashboard' },
-          { icon: Rocket, label: 'Tonight', page: 'TonightHub' },
-          { icon: Smartphone, label: 'Sky', page: 'StarPointer' },
-          { icon: MapPin, label: 'Planner', page: 'PlannerTool', paidOnly: true },
-          { icon: Users, label: 'Gallery', page: 'CommunityGallery' },
-        ].map(item => {
-          const locked = item.paidOnly && !isSubscribed;
-          const active = currentPageName === item.page;
-          return (
-            <Link
-              key={item.page}
-              to={locked ? createPageUrl('PaymentGate') : (tabHistory.current[item.page] || createPageUrl(item.page))}
-              draggable={false}
-              onClick={active ? (e) => { e.preventDefault(); navigate(tabHistory.current[item.page] || createPageUrl(item.page)); } : undefined}
-                  className={`flex-1 flex flex-col items-center justify-center pt-2 pb-1 gap-1 transition-colors relative ${active ? 'text-red-400' : 'text-slate-500'}`}
-                  style={{ WebkitTapHighlightColor: 'transparent', minHeight: 52 }}
-                >
-              <item.icon className="w-5 h-5 flex-shrink-0" />
-              <span className="text-[10px] font-medium leading-none">{item.label}</span>
-              {locked && <Sparkles className="w-2 h-2 text-yellow-500 absolute top-1 right-3" />}
-              {active && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 rounded-full bg-red-500" />}
-            </Link>
-          );
-        })}
+        {primaryNavItems.map(item => <NavLink key={item.page} item={item} variant="tab" />)}
       </nav>
 
       {/* Main Content */}
