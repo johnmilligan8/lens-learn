@@ -378,6 +378,7 @@ export default function PlannerTool() {
   const [weatherLoading, setWeatherLoading] = useState(false);
   const [weatherError, setWeatherError] = useState(null);
   const [ephemerisTarget, setEphemerisTarget] = useState(null);
+  const [showSaveTripModal, setShowSaveTripModal] = useState(false);
   const [gear, setGear] = useState(null);
   const [gearLoading, setGearLoading] = useState(false);
   const [shooterMode, setShooterMode] = useState('photographer');
