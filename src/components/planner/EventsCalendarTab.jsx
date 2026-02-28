@@ -282,6 +282,9 @@ function EventCard({ event, expanded, onToggle, userProfile }) {
 }
 
 export default function EventsCalendarTab({ isSubscribed, userProfile }) {
+  // expose userProfile to EventCard via closure ref
+  const userProfileRef = React.useRef(userProfile);
+  userProfileRef.current = userProfile;
   const [events, setEvents] = useState([]);
   const [expanded, setExpanded] = useState(null);
   const [typeFilter, setTypeFilter] = useState('all');
