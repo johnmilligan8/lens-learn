@@ -343,14 +343,13 @@ export default function TonightHub() {
              locationName={location || profile?.home_location || null}
            />
 
-           {/* Aurora Intensity Map — color-coded forecast */}
+           {/* Aurora Forecast Map — same as Sky Planner */}
            {coords && (
-             <AuroraIntensityMap
+             <AuroraForecastMap
                isSubscribed={isSubscribed}
                userLat={coords.lat}
                userLon={coords.lon}
-               userLocation={location || 'Your Location'}
-               auroraForecast={auroraForecast}
+               locationName={location || 'Your Location'}
              />
            )}
 
