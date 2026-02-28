@@ -218,6 +218,26 @@ export default function TonightHub() {
   const mode = profile?.shooter_mode || 'photographer';
   const modeLabel = { photographer: 'DSLR/Mirrorless', smartphone: 'Smartphone', experience: 'Sky Experience' }[mode];
 
+  const handleSaveAsTrip = async () => {
+    if (!user || !coords) return;
+    setSavingTrip(true);
+    try {
+      await base44.entities.ShootSession.create({
+        user_email: user.email,
+        date: today,
+        location: location || profile?.home_location || '',
+        shooter_mode: mode,
+        event_type: events[0]?.event_type || 'other',
+        pre_shoot_intent: `Tonight session — ${events.map(e => e.title).join(', ')}`,
+        status: 'planned',
+      });
+      setSavedTrip(true);
+    } catch (e) {
+      console.warn('Save trip failed:', e);
+    }
+    setSavingTrip(false);
+  };
+
   const handleSavePlan = async (plan, answers) => {
     const me = user;
     await base44.entities.ShootSession.create({
