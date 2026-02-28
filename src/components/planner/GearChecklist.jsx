@@ -454,14 +454,38 @@ _________________________________________________________________
             </div>
           </div>
 
-          {/* Mode-specific intro */}
-          <div className="mb-4 p-3 rounded-lg bg-slate-800/50 border border-slate-700/60">
-            <p className="text-slate-300 text-xs leading-relaxed">
-              {shooterMode === 'photographer' && '📷 Full camera expedition gear – pack for advanced shoots.'}
-              {shooterMode === 'smartphone' && '📱 Phone-friendly kit – focus on stability and power.'}
-              {shooterMode === 'experience' && '👁️ Light viewing essentials – enjoy the sky without gear.'}
-            </p>
-          </div>
+          {/* Mode badge + mode-switch notice */}
+          {(() => {
+            const modeInfo = MODE_LABELS[shooterMode] || MODE_LABELS.photographer;
+            const kitModeInfo = MODE_LABELS[activeKit.shooter_mode] || MODE_LABELS.photographer;
+            const mismatch = activeKit.shooter_mode !== shooterMode;
+            return (
+              <div className="mb-4 space-y-2">
+                <div className={`flex items-center gap-2 px-3 py-2 rounded-lg border text-xs font-semibold ${modeInfo.badge} ${modeInfo.color}`}>
+                  <span>{modeInfo.emoji}</span>
+                  <span>Active Mode: {modeInfo.label}</span>
+                </div>
+                {mismatch && (
+                  <div className="flex items-start gap-2 p-2.5 rounded-lg bg-yellow-900/20 border border-yellow-600/30">
+                    <AlertCircle className="w-3.5 h-3.5 text-yellow-400 flex-shrink-0 mt-0.5" />
+                    <div className="flex-1">
+                      <p className="text-xs text-yellow-200">This kit was built for <strong>{kitModeInfo.label}</strong> mode. You're now in <strong>{modeInfo.label}</strong> mode.</p>
+                      <button
+                        onClick={() => {
+                          setShowForm(true);
+                          setNewKitName(`${modeInfo.label} Kit`);
+                          setModeSwitchNotice(false);
+                        }}
+                        className="text-yellow-400 text-xs font-bold mt-1 hover:underline"
+                      >
+                        + Create a kit for {modeInfo.label}
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })()}
 
           {/* Search */}
           <div className="mb-4 relative">
