@@ -38,8 +38,32 @@ if (kp >= 3) return 'bg-slate-400';
 return 'bg-slate-600';
 };
 
+// Determine best aurora viewing windows (clear + KP >= 3, nighttime hours 20–5)
+function getBestViewingWindows(hourlyKp, hourlyCloud) {
+  if (!hourlyKp?.length || !hourlyCloud?.length) return [];
+  const cloudMap = {};
+  hourlyCloud.forEach(h => { cloudMap[h.time] = h.cloud_cover; });
+
+  // Find 3-hour blocks where kp >= 3 and clouds < 50 and nighttime
+  return hourlyKp
+    .filter(h => {
+      const hour = h.hour;
+      const isNight = hour >= 20 || hour <= 5;
+      const cloud = cloudMap[`${h.date}T${String(hour).padStart(2,'0')}:00`] ?? 80;
+      return isNight && h.kp >= 3 && cloud < 60;
+    })
+    .slice(0, 3)
+    .map(h => ({
+      time: `${h.date} ${String(h.hour).padStart(2,'0')}:00`,
+      kp: h.kp,
+      cloud: cloudMap[`${h.date}T${String(h.hour).padStart(2,'0')}:00`] ?? '—',
+    }));
+}
+
 export default function AuroraPredictionCard({ userLat, userLon, locationName }) {
    const [data, setData] = useState(null);
+   const [currentKp, setCurrentKp] = useState(null);
+   const [viewingWindows, setViewingWindows] = useState([]);
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState(null);
    const [fromCache, setFromCache] = useState(false);
@@ -53,11 +77,14 @@ export default function AuroraPredictionCard({ userLat, userLon, locationName })
      setLoading(true);
      setError(null);
      try {
-       const [auroraResult, weatherResult] = await Promise.all([
+       const [auroraResult, weatherResult, liveKp, hourlyKp, hourlyCloud] = await Promise.all([
          getAuroraWithCache(() => fetchNoaaKpForecast()),
          hasLocation
            ? getWeatherWithCache(userLat, userLon, () => fetchCloudCoverForecast(userLat, userLon, 3))
            : Promise.resolve({ data: [], fromCache: false }),
+         fetchCurrentKp().catch(() => null),
+         fetchNoaaHourlyKp().catch(() => []),
+         hasLocation ? fetchHourlyCloudCover(userLat, userLon).catch(() => []) : Promise.resolve([]),
        ]);
 
        const todayForecast = (auroraResult.data || []).find(f => f.date === today)
@@ -69,29 +96,22 @@ export default function AuroraPredictionCard({ userLat, userLon, locationName })
          || null;
 
        setFromCache(auroraResult.fromCache);
+       setCurrentKp(liveKp);
+       setViewingWindows(getBestViewingWindows(hourlyKp, hourlyCloud));
        setData({
-         kp: todayForecast?.kp_index !== null && todayForecast?.kp_index !== undefined 
-           ? Math.round(todayForecast.kp_index * 10) / 10 
-           : null,
-         kp_min: todayForecast?.kp_min !== null && todayForecast?.kp_min !== undefined 
-           ? Math.round(todayForecast.kp_min * 10) / 10 
-           : null,
-         kp_max: todayForecast?.kp_max !== null && todayForecast?.kp_max !== undefined 
-           ? Math.round(todayForecast.kp_max * 10) / 10 
-           : null,
+         kp: todayForecast?.kp_index ?? null,
+         kp_min: todayForecast?.kp_min ?? null,
+         kp_max: todayForecast?.kp_max ?? null,
          visibility: todayForecast?.visibility_rating ?? 'unlikely',
          clouds: todayWeather?.clouds ?? null,
          precipitation: todayWeather?.precipitation ?? null,
          wind: todayWeather?.wind_speed ?? null,
          temp: todayWeather?.temp_min ?? null,
+         forecast: auroraResult.data?.slice(0, 5) ?? [],
        });
      } catch (e) {
        setError('Could not load live data.');
-       // Fallback placeholders
-       setData({
-         kp: null, kp_min: null, kp_max: null,
-         visibility: 'unlikely', clouds: null, precipitation: null, wind: null, temp: null,
-       });
+       setData({ kp: null, kp_min: null, kp_max: null, visibility: 'unlikely', clouds: null, precipitation: null, wind: null, temp: null, forecast: [] });
      }
      setLoading(false);
    };
