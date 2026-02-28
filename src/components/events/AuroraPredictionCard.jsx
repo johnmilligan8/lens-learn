@@ -203,13 +203,15 @@ export default function AuroraPredictionCard({ userLat, userLon, locationName })
     setUsingDefault(!hasUserLocation);
 
     try {
-      const [forecastData, liveKp, hourlyKp, weatherData, hourlyCloud] = await Promise.all([
+      const [forecastData, liveKp, hourlyKp, weatherData, hourlyCloudData, bortleData] = await Promise.all([
         fetchNoaaKpForecast(),
         fetchCurrentKp().catch(() => null),
         fetchNoaaHourlyKp().catch(() => []),
         fetchCloudCoverForecast(lat, lon, 7).catch(() => []),
         fetchHourlyCloudCover(lat, lon).catch(() => []),
+        base44.functions.invoke('fetchBortle', { lat, lon }).catch(() => null),
       ]);
+      const hourlyCloud = hourlyCloudData;
 
       const todayForecast = forecastData.find(f => f.date === today) || forecastData[0] || null;
       const todayWeather = weatherData.find(f => f.date === today) || weatherData[0] || null;
