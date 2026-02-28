@@ -223,6 +223,8 @@ export default function AuroraPredictionCard({ userLat, userLon, locationName })
       setCurrentKp(liveKp);
       setTrend(buildTrend(hourlyKp));
       setViewingWindows(getBestViewingWindows(hourlyKp, hourlyCloud));
+      setHourlyCloud(hourlyCloud);
+      if (bortleData?.data?.bortle) setBortle(bortleData.data.bortle);
       setData({
         kp: kpVal,
         kp_min: todayForecast?.kp_min != null ? Math.round(todayForecast.kp_min * 10) / 10 : null,
