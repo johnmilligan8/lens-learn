@@ -184,6 +184,16 @@ export default function SessionCard({ session, isSubscribed, userEmail }) {
           )}
         </div>
       )}
+
+      {/* Feedback Modal */}
+      {showFeedbackModal && (
+        <FeedbackRequestModal
+          session={session}
+          userEmail={userEmail}
+          onClose={() => setShowFeedbackModal(false)}
+          onSent={() => {}}
+        />
+      )}
     </div>
   );
 }
