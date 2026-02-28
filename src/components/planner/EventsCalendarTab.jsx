@@ -148,7 +148,7 @@ function CalendarGrid({ events, typeFilter, onSelectDate, selectedDate }) {
       </div>
 
       {/* Day cells */}
-      <div className="grid grid-cols-7 gap-px">
+      <div className="grid grid-cols-7 gap-0.5">
         {Array.from({ length: firstDay }).map((_, i) => <div key={`e${i}`} />)}
         {Array.from({ length: daysInMonth }, (_, i) => {
           const day = i + 1;
@@ -163,23 +163,44 @@ function CalendarGrid({ events, typeFilter, onSelectDate, selectedDate }) {
             <button
               key={day}
               onClick={() => onSelectDate(isSelected ? null : dateStr)}
-              className={`relative flex flex-col items-center py-1 rounded-lg transition-all min-h-[2.5rem] ${
+              style={{ minHeight: 44, minWidth: 44 }}
+              className={`relative flex flex-col items-center justify-start pt-1 rounded-lg transition-all w-full ${
                 isSelected ? 'bg-red-600/30 border border-red-500' :
                 isToday ? 'bg-white/5 border border-white/10' :
                 dayEvents.length > 0 ? 'hover:bg-white/5' : 'hover:bg-white/3'
               }`}
             >
-              <span className={`text-xs font-semibold leading-none mt-1 ${
+              <span className={`text-xs font-semibold leading-none ${
                 isToday ? 'text-red-400' : isSelected ? 'text-white' : 'text-slate-300'
               }`}>{day}</span>
               {/* Moon dark window indicator */}
               {isDarkMoon && (
-                <div className="w-1 h-1 rounded-full bg-indigo-400 mt-0.5 opacity-60" title={`Moon ${moonIllum}%`} />
+                <div
+                  className="rounded-full bg-indigo-400 mt-0.5"
+                  style={{ width: 7, height: 7, opacity: 0.85, boxShadow: '0 0 4px 1px rgba(129,140,248,0.7)' }}
+                  title={`Moon ${moonIllum}%`}
+                />
               )}
               {/* Event dots */}
-              <div className="flex flex-wrap justify-center gap-px mt-0.5 max-w-[28px]">
+              <div className="flex flex-wrap justify-center gap-0.5 mt-0.5" style={{ maxWidth: 36 }}>
                 {dayEvents.slice(0, 3).map((ev, ei) => (
-                  <div key={ei} className={`w-1.5 h-1.5 rounded-full ${DOT_COLORS[ev.type] || 'bg-slate-400'}`} />
+                  <div
+                    key={ei}
+                    className={`rounded-full ${DOT_COLORS[ev.type] || 'bg-slate-400'}`}
+                    style={{
+                      width: 8,
+                      height: 8,
+                      opacity: 1,
+                      boxShadow: ev.type === 'meteor_shower' ? '0 0 5px 1px rgba(250,204,21,0.8)' :
+                                 ev.type === 'aurora'         ? '0 0 5px 1px rgba(74,222,128,0.8)' :
+                                 ev.type === 'lunar_eclipse'  ? '0 0 5px 1px rgba(251,146,60,0.8)' :
+                                 ev.type === 'solar_eclipse'  ? '0 0 5px 1px rgba(253,224,71,0.8)' :
+                                 ev.type === 'supermoon'      ? '0 0 5px 1px rgba(248,113,113,0.8)' :
+                                 ev.type === 'milky_way'      ? '0 0 5px 1px rgba(129,140,248,0.8)' :
+                                 ev.type === 'comet'          ? '0 0 5px 1px rgba(192,132,252,0.8)' :
+                                 '0 0 4px 1px rgba(148,163,184,0.5)',
+                    }}
+                  />
                 ))}
               </div>
             </button>
@@ -189,12 +210,12 @@ function CalendarGrid({ events, typeFilter, onSelectDate, selectedDate }) {
 
       {/* Legend */}
       <div className="mt-3 pt-3 border-t border-white/5 flex flex-wrap gap-3 text-[10px] text-slate-500">
-        <span className="flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-indigo-400" /> Dark Moon / Milky Way</span>
-        <span className="flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-yellow-400" /> Meteors</span>
-        <span className="flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-green-400" /> Aurora</span>
-        <span className="flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-orange-400" /> Lunar Eclipse</span>
-        <span className="flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-yellow-300" /> Solar Eclipse</span>
-        <span className="flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-red-400" /> Supermoon</span>
+        <span className="flex items-center gap-1"><div className="rounded-full bg-indigo-400" style={{width:9,height:9}} /> Dark Moon</span>
+        <span className="flex items-center gap-1"><div className="rounded-full bg-yellow-400" style={{width:9,height:9}} /> Meteors</span>
+        <span className="flex items-center gap-1"><div className="rounded-full bg-green-400" style={{width:9,height:9}} /> Aurora</span>
+        <span className="flex items-center gap-1"><div className="rounded-full bg-orange-400" style={{width:9,height:9}} /> Lunar Eclipse</span>
+        <span className="flex items-center gap-1"><div className="rounded-full bg-yellow-300" style={{width:9,height:9}} /> Solar Eclipse</span>
+        <span className="flex items-center gap-1"><div className="rounded-full bg-red-400" style={{width:9,height:9}} /> Supermoon</span>
       </div>
     </div>
   );
