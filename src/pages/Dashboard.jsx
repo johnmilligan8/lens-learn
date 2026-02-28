@@ -201,52 +201,54 @@ export default function Dashboard() {
             </Card>
           </Link>
 
-          {/* ── SECONDARY ACTIONS (3-column grid) ── */}
-          <div className="grid sm:grid-cols-3 gap-4">
-            <Link to={isSubscribed ? createPageUrl('FieldMode') : createPageUrl('PaymentGate')} className="group">
-              <div className={`p-6 rounded-xl border transition-all h-full flex flex-col ${
-                isSubscribed 
-                  ? 'border-white/10 bg-[#111111]/80 hover:border-white/20 hover:bg-[#111111]/95' 
-                  : 'border-white/5 bg-[#111111]/50 opacity-60 cursor-not-allowed'
-              }`}>
-                <p className="text-2xl mb-2">{isSubscribed ? '⚡' : '🔒'}</p>
-                <h3 className="text-lg font-bold text-white mb-1">Field Mode</h3>
-                <p className="text-slate-400 text-xs mb-4 flex-1">Live settings & guidance in the field</p>
-                <p className={`font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all ${
-                  isSubscribed ? 'text-red-400' : 'text-slate-500'
+          {/* ── QUICK ACTIONS (4 focused cards) ── */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {[
+              {
+                emoji: isSubscribed ? '⚡' : '🔒',
+                label: 'Field Mode',
+                sub: 'Live execution',
+                page: isSubscribed ? 'FieldMode' : 'PaymentGate',
+                locked: !isSubscribed,
+              },
+              {
+                emoji: isSubscribed ? '📍' : '🔒',
+                label: 'Sky Planner',
+                sub: 'Plan future shoots',
+                page: isSubscribed ? 'PlannerTool' : 'PaymentGate',
+                locked: !isSubscribed,
+              },
+              {
+                emoji: '📅',
+                label: 'Events',
+                sub: 'Showers & eclipses',
+                page: 'PlannerTool',
+                params: '?tab=events',
+                locked: false,
+              },
+              {
+                emoji: '📔',
+                label: 'Journal',
+                sub: 'Reflect & improve',
+                page: 'Journal',
+                locked: false,
+              },
+            ].map(item => (
+              <Link key={item.label} to={createPageUrl(item.page) + (item.params || '')} className="group">
+                <div className={`p-4 rounded-xl border transition-all h-full flex flex-col ${
+                  item.locked
+                    ? 'border-white/5 bg-[#111111]/50'
+                    : 'border-white/10 bg-[#111111]/80 hover:border-red-600/30 hover:bg-[#111111]/95'
                 }`}>
-                  {isSubscribed ? 'Go live' : 'Upgrade'} <ChevronRight className="w-4 h-4" />
-                </p>
-              </div>
-            </Link>
-
-            <Link to={isSubscribed ? createPageUrl('PlannerTool') : createPageUrl('PaymentGate')} className="group">
-              <div className={`p-6 rounded-xl border transition-all h-full flex flex-col ${
-                isSubscribed 
-                  ? 'border-white/10 bg-[#111111]/80 hover:border-white/20 hover:bg-[#111111]/95' 
-                  : 'border-white/5 bg-[#111111]/50 opacity-60 cursor-not-allowed'
-              }`}>
-                <p className="text-2xl mb-2">{isSubscribed ? '📍' : '🔒'}</p>
-                <h3 className="text-lg font-bold text-white mb-1">Sky Planner</h3>
-                <p className="text-slate-400 text-xs mb-4 flex-1">Detailed planning & visibility windows</p>
-                <p className={`font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all ${
-                  isSubscribed ? 'text-red-400' : 'text-slate-500'
-                }`}>
-                  {isSubscribed ? 'Plan a shoot' : 'Upgrade'} <ChevronRight className="w-4 h-4" />
-                </p>
-              </div>
-            </Link>
-
-            <Link to={createPageUrl('PlannerTool') + '?tab=events'} className="group">
-              <div className="p-6 rounded-xl border border-white/10 bg-[#111111]/80 hover:border-white/20 hover:bg-[#111111]/95 transition-all h-full flex flex-col">
-                <p className="text-2xl mb-2">📅</p>
-                <h3 className="text-lg font-bold text-white mb-1">Cosmic Events</h3>
-                <p className="text-slate-400 text-xs mb-4 flex-1">Showers, eclipses, aurora, dark moons</p>
-                <p className="text-red-400 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
-                  See upcoming <ChevronRight className="w-4 h-4" />
-                </p>
-              </div>
-            </Link>
+                  <p className="text-2xl mb-2">{item.emoji}</p>
+                  <h3 className="text-sm font-bold text-white mb-0.5">{item.label}</h3>
+                  <p className="text-slate-500 text-xs flex-1">{item.sub}</p>
+                  <p className={`text-xs font-semibold flex items-center gap-0.5 mt-2 group-hover:gap-1 transition-all ${item.locked ? 'text-slate-600' : 'text-red-400'}`}>
+                    {item.locked ? 'Upgrade' : 'Open'} <ChevronRight className="w-3 h-3" />
+                  </p>
+                </div>
+              </Link>
+            ))}
           </div>
 
           {/* ── FREE TIER UPSELL (if applicable) ── */}
