@@ -20,7 +20,8 @@ import {
   Rocket,
   Smartphone,
   Zap,
-  BookOpen
+  BookOpen,
+  Menu
 } from 'lucide-react';
 import NightModeToggle from '@/components/ui/NightModeToggle';
 
