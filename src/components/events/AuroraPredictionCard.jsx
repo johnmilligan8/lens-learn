@@ -92,6 +92,82 @@ function getBestViewingWindows(hourlyKp, hourlyCloud) {
     });
 }
 
+// ── Viewing Probability Timeline ─────────────────────────────────────────────
+// Computes a 0–100 aurora viewing probability for each 30-min slot
+function calcSlotProb({ kp, clouds, moonIllum, bortle }) {
+  if (kp === null || kp === undefined) return 0;
+  // Base from KP (0–9 → 0–100 before modifiers)
+  let score = Math.min(100, (kp / 9) * 100);
+  // Cloud cover penalty: clear (0%) = 0 penalty, overcast (100%) = -70
+  score *= (1 - (clouds / 100) * 0.75);
+  // Moon penalty: new (0%) = no penalty, full (100%) = -40
+  score *= (1 - (moonIllum / 100) * 0.40);
+  // Bortle penalty: dark sky (1) = no penalty, inner city (9) = -50
+  score *= (1 - ((bortle - 1) / 8) * 0.50);
+  return Math.round(Math.max(0, Math.min(100, score)));
+}
+
+function probColor(p) {
+  if (p >= 65) return '#22c55e';
+  if (p >= 40) return '#eab308';
+  if (p >= 15) return '#f97316';
+  return '#334155';
+}
+
+function ViewingProbabilityTimeline({ hourlyCloud, kpBlocks, moonIllum, bortle }) {
+  // Build 30-min slots for the next 12 hours
+  const now = new Date();
+  const slots = [];
+  for (let i = 0; i < 24; i++) {
+    const t = new Date(now.getTime() + i * 30 * 60000);
+    // Match to nearest kp block (3-hr)
+    const kpEntry = kpBlocks?.find(b => {
+      const bt = new Date(b.time.replace(' ', 'T') + 'Z');
+      return Math.abs(bt - t) <= 1.5 * 3600000;
+    }) || kpBlocks?.[0];
+    // Match hourly cloud (Open-Meteo gives hourly)
+    const tKey = `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}T${String(t.getHours()).padStart(2,'0')}:00`;
+    const cloudEntry = hourlyCloud?.find(h => h.time === tKey);
+    const clouds = cloudEntry?.cloud_cover ?? 50;
+    const kp = kpEntry?.kp ?? 0;
+    const prob = calcSlotProb({ kp, clouds, moonIllum, bortle: bortle ?? 5 });
+    const label = t.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
+    slots.push({ t, label, prob, clouds, kp });
+  }
+
+  return (
+    <div className="mb-4">
+      <p className="text-xs text-slate-400 font-semibold flex items-center gap-1.5 mb-2">
+        <Eye className="w-3.5 h-3.5 text-slate-500" /> Viewing Probability — Next 12 Hours (30-min)
+      </p>
+      <div className="flex items-end gap-px h-14 bg-black/20 rounded-lg p-2">
+        {slots.map((s, i) => {
+          const h = Math.max(4, (s.prob / 100) * 100);
+          return (
+            <div key={i} className="flex-1 flex flex-col items-center justify-end group relative" title={`${s.label}: ${s.prob}% (KP ${s.kp.toFixed(1)}, ☁️ ${s.clouds}%)`}>
+              <div
+                className="w-full rounded-t transition-all"
+                style={{ height: `${h}%`, backgroundColor: probColor(s.prob) }}
+              />
+              <span className="text-[8px] text-slate-700 group-hover:text-white absolute -bottom-3 whitespace-nowrap">
+                {i % 4 === 0 ? s.label : ''}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+      <div className="flex gap-3 mt-5 flex-wrap">
+        {[{ c: '#22c55e', l: '65%+ Good' }, { c: '#eab308', l: '40%+ Possible' }, { c: '#f97316', l: '15%+ Low' }, { c: '#334155', l: 'Unlikely' }].map(x => (
+          <div key={x.l} className="flex items-center gap-1">
+            <div style={{ background: x.c }} className="w-2.5 h-2.5 rounded-sm" />
+            <span className="text-[10px] text-slate-500">{x.l}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 const VISIBILITY_STYLES = {
   good:     { card: 'border-green-600/30',  badge: 'bg-green-700',   label: 'Good Chance', icon: '🟢' },
   possible: { card: 'border-yellow-600/20', badge: 'bg-yellow-700',  label: 'Possible',    icon: '🟡' },
