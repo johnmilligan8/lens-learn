@@ -652,11 +652,18 @@ export default function PlannerTool() {
                 </h1>
                 <p className="text-slate-400 text-sm mt-1">Galactic core timing · Sky map · Conditions · Best windows</p>
               </div>
-              <Link to={createPageUrl('SkyBrowser')} className="hidden sm:inline-flex">
-                <Button variant="outline" className="border-red-600/40 text-red-300 hover:bg-red-900/20 text-xs gap-2 font-bold">
-                  <Star className="w-4 h-4" /> Sky Browser
-                </Button>
-              </Link>
+              <div className="hidden sm:flex items-center gap-2">
+                <Link to={createPageUrl('TonightHub')}>
+                  <Button variant="outline" className="border-white/10 text-slate-400 hover:bg-white/5 text-xs gap-2 font-semibold">
+                    🌙 Tonight's Ranking
+                  </Button>
+                </Link>
+                <Link to={createPageUrl('SkyBrowser')}>
+                  <Button variant="outline" className="border-red-600/40 text-red-300 hover:bg-red-900/20 text-xs gap-2 font-bold">
+                    <Star className="w-4 h-4" /> Sky Browser
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
 
