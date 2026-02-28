@@ -200,10 +200,24 @@ function CalendarGrid({ events, typeFilter, onSelectDate, selectedDate }) {
   );
 }
 
-function EventCard({ event, expanded, onToggle }) {
+function getLocationNote(event, userProfile) {
+  if (!event.location_note) return null;
+  const loc = (userProfile?.home_location || '').toLowerCase();
+  const isUtahArea = loc.includes('utah') || loc.includes('salt lake') || loc.includes('provo') || loc.includes('ogden');
+  if (event.location_note === 'utah') {
+    if (isUtahArea) {
+      return 'From your location (Utah): Partial phases visible as the Moon rises in early evening. Totality peaks at 4:30 PM MST — the Moon may be low on the horizon or not yet risen. Head to an elevated spot with a clear eastern horizon for best views.';
+    }
+    return 'From Mountain Time (MST): Totality peaks at 4:30 PM MST. The Moon rises low in the east — find an open eastern horizon for the best view of totality.';
+  }
+  return null;
+}
+
+function EventCard({ event, expanded, onToggle, userProfile }) {
   const Icon = EVENT_ICONS[event.type] || Calendar;
   const isOpen = expanded === event.id;
   const past = isPast(new Date(event.date + 'T23:59:59'));
+  const locationNote = getLocationNote(event, userProfile);
 
   return (
     <Card className={`bg-[#1a1a1a] border-white/8 p-4 transition-all ${past ? 'opacity-60' : ''}`}>
