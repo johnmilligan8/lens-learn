@@ -56,8 +56,9 @@ function exportSession(session) {
   URL.revokeObjectURL(url);
 }
 
-export default function SessionCard({ session, isSubscribed }) {
+export default function SessionCard({ session, isSubscribed, userEmail }) {
   const [expanded, setExpanded] = useState(false);
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
 
   return (
     <div className="rounded-xl border border-slate-800/60 bg-[#111111]/80 overflow-hidden">
