@@ -365,10 +365,7 @@ export default function PlannerTool() {
   const [isSubscribed, setIsSubscribed] = useState(null);
   const [user, setUser] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
-  const [mainTab, setMainTab] = useState(() => {
-    const params = new URLSearchParams(window.location.search);
-    return params.get('tab') === 'events' ? 'events' : 'planner';
-  });
+  const [mainTab, setMainTab] = useState('calendar');
   const [location, setLocation] = useState('');
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [coords, setCoords] = useState(null);
