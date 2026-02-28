@@ -233,35 +233,64 @@ export default function AuroraPredictionCard({ userLat, userLon, locationName })
     setUsingDefault(!hasUserLocation);
 
     try {
-      const [forecastRes, liveKpRes, hourlyKpRes, hourlyCloudRes, bortleData] = await Promise.all([
-        base44.functions.invoke('fetchNoaaKpForecast', { type: 'forecast' }).catch(() => null),
-        base44.functions.invoke('fetchNoaaKpForecast', { type: 'current' }).catch(() => null),
-        base44.functions.invoke('fetchNoaaKpForecast', { type: 'hourly' }).catch(() => null),
-        base44.functions.invoke('fetchNoaaKpForecast', { type: 'hourlyCloud', lat, lon }).catch(() => null),
+      // All public APIs called directly from the browser (CORS-enabled)
+      const [noaaForecastRes, noaaCurrentRes, noaaHourlyRes, openMeteoHourlyRes, openMeteoDailyRes, bortleData] = await Promise.all([
+        fetch('https://api.swpc.noaa.gov/products/noaa-planetary-k-index-forecast.json').then(r => r.ok ? r.json() : null).catch(() => null),
+        fetch('https://api.swpc.noaa.gov/json/planetary_k_index_1m.json').then(r => r.ok ? r.json() : null).catch(() => null),
+        fetch('https://api.swpc.noaa.gov/products/noaa-planetary-k-index-forecast.json').then(r => r.ok ? r.json() : null).catch(() => null),
+        fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=cloud_cover&timezone=auto&forecast_days=3`).then(r => r.ok ? r.json() : null).catch(() => null),
+        fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=precipitation_sum,wind_speed_10m_max,temperature_2m_min,cloud_cover_mean&timezone=auto&forecast_days=7`).then(r => r.ok ? r.json() : null).catch(() => null),
         base44.functions.invoke('fetchBortle', { lat, lon }).catch(() => null),
       ]);
 
-      const forecastData = forecastRes?.data || [];
-      const liveKp = liveKpRes?.data || null;
-      const hourlyKp = hourlyKpRes?.data || [];
+      // Parse NOAA daily forecast
+      let forecastData = [];
+      if (noaaForecastRes) {
+        const rows = noaaForecastRes.slice(1);
+        const byDay = {};
+        rows.forEach(([timeTag, kp]) => {
+          const date = String(timeTag).split(' ')[0];
+          const kpVal = parseFloat(kp) || 0;
+          if (!byDay[date] || kpVal > byDay[date]) byDay[date] = kpVal;
+        });
+        forecastData = Object.entries(byDay).slice(0, 7).map(([date, kpMax]) => ({
+          date, kp_index: Math.round(kpMax * 10) / 10,
+          kp_min: Math.max(0, Math.round((kpMax - 0.5) * 10) / 10),
+          kp_max: Math.round((kpMax + 0.5) * 10) / 10,
+          visibility_rating: kpMax >= 5 ? 'good' : kpMax >= 3 ? 'possible' : 'unlikely', source: 'NOAA',
+        }));
+      }
 
-      // Fetch cloud cover directly from Open-Meteo (no backend needed — public API)
+      // Parse current KP
+      let liveKp = null;
+      if (noaaCurrentRes?.length) {
+        const last = noaaCurrentRes[noaaCurrentRes.length - 1];
+        liveKp = { time_tag: last[0], kp: parseFloat(last[1]) || 0 };
+      }
+
+      // Parse 3-hourly KP
+      let hourlyKp = [];
+      if (noaaHourlyRes) {
+        hourlyKp = noaaHourlyRes.slice(1).slice(0, 24).map(row => {
+          const timeTag = String(row[0]);
+          const [date, time] = timeTag.split(' ');
+          const hour = time ? parseInt(time.split(':')[0], 10) : 0;
+          return { time: timeTag, date, hour, kp: parseFloat(row[1]) || 0 };
+        });
+      }
+
+      // Parse Open-Meteo hourly cloud
       let hourlyCloudData = [];
+      if (openMeteoHourlyRes?.hourly) {
+        hourlyCloudData = openMeteoHourlyRes.hourly.time.map((t, i) => ({ time: t, cloud_cover: openMeteoHourlyRes.hourly.cloud_cover?.[i] ?? 50 }));
+      }
+
+      // Parse Open-Meteo daily weather
       let weatherData = [];
-      try {
-        const params = new URLSearchParams({ latitude: lat, longitude: lon, hourly: 'cloud_cover,visibility', timezone: 'auto', forecast_days: 3 });
-        const cloudRes = await fetch(`https://api.open-meteo.com/v1/forecast?${params}`);
-        if (cloudRes.ok) {
-          const d = await cloudRes.json();
-          hourlyCloudData = d.hourly.time.map((t, i) => ({ time: t, cloud_cover: d.hourly.cloud_cover?.[i] ?? 50 }));
-        }
-        const dailyParams = new URLSearchParams({ latitude: lat, longitude: lon, daily: 'precipitation_sum,wind_speed_10m_max,temperature_2m_min,cloud_cover_mean', timezone: 'auto', forecast_days: 7 });
-        const dailyRes = await fetch(`https://api.open-meteo.com/v1/forecast?${dailyParams}`);
-        if (dailyRes.ok) {
-          const d = await dailyRes.json();
-          weatherData = d.daily.time.map((date, i) => ({ date, clouds: d.daily.cloud_cover_mean?.[i] ?? null, precipitation: d.daily.precipitation_sum?.[i] ?? null, wind_speed: d.daily.wind_speed_10m_max?.[i] ?? null, temp_min: d.daily.temperature_2m_min?.[i] ?? null }));
-        }
-      } catch (_) { /* ignore */ }
+      if (openMeteoDailyRes?.daily) {
+        const d = openMeteoDailyRes.daily;
+        weatherData = d.time.map((date, i) => ({ date, clouds: d.cloud_cover_mean?.[i] ?? null, precipitation: d.precipitation_sum?.[i] ?? null, wind_speed: d.wind_speed_10m_max?.[i] ?? null, temp_min: d.temperature_2m_min?.[i] ?? null }));
+      }
       const hourlyCloud = hourlyCloudData;
 
 
