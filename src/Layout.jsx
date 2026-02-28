@@ -157,7 +157,7 @@ export default function Layout({ children, currentPageName }) {
               style={{ maxWidth: 120 }}
               onError={e => { e.target.style.display='none'; e.target.nextSibling.style.display='flex'; }}
             />
-            <span style={{display:'none'}} className="font-black text-white text-sm tracking-tight">UNCHARTED</span>
+            <span style={{display:'none'}} className="font-black text-white text-xs tracking-tight">UNCHARTED®<br/>Galaxy</span>
           </Link>
         </div>
         
@@ -200,19 +200,18 @@ export default function Layout({ children, currentPageName }) {
       {/* Mobile Header */}
       <header className="md:hidden fixed top-0 left-0 right-0 z-40 bg-[#111111]/98 backdrop-blur-md border-b border-white/5 flex items-center px-4 justify-between select-none"
         style={{ height: 'calc(3.5rem + env(safe-area-inset-top))', paddingTop: 'env(safe-area-inset-top)', paddingLeft: 'max(1rem, env(safe-area-inset-left))', paddingRight: 'max(1rem, env(safe-area-inset-right))' }}>
-        <Link to={createPageUrl('Dashboard')} className="flex items-center gap-2">
+        <Link to={createPageUrl('Dashboard')} className="flex items-center gap-1">
           <img
             src="https://uncharted.net/wp-content/uploads/2022/09/Uncharted-Logo-Horizontal-White-e1664469570536.png"
             alt="UNCHARTED"
             className="h-7 w-auto object-contain"
-            style={{ maxWidth: 130 }}
+            style={{ maxWidth: 80 }}
             onError={e => { e.target.style.display='none'; e.target.nextSibling.style.display='flex'; }}
           />
-          <span style={{display:'none'}} className="font-black text-white text-lg tracking-tight">UNCHARTED</span>
+          <span style={{display:'none'}} className="font-black text-white text-xs tracking-tight leading-tight">UNCHARTED®<br/>Galaxy</span>
         </Link>
-        <div className="flex items-center gap-2">
-          <NightModeToggle nightMode={nightMode} onToggle={toggleNightMode} compact />
-          <Button variant="ghost" size="icon" className="text-slate-300 hover:text-red-400" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+        <div className="flex items-center gap-1">
+          <Button variant="ghost" size="icon" className="text-slate-300 hover:text-red-400 md:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
             <Menu className="w-5 h-5" />
           </Button>
         </div>

@@ -215,7 +215,7 @@ export default function Dashboard() {
         {/* Change Mode Modal (triggered from greeting) */}
         <button
           onClick={() => setModeModalOpen(true)}
-          className="fixed bottom-20 left-4 right-4 p-4 rounded-xl bg-white/5 border border-white/10 hover:border-white/20 transition-all text-sm text-slate-300"
+          className="fixed md:hidden bottom-20 left-4 right-4 p-4 rounded-xl bg-white/5 border border-white/10 hover:border-white/20 transition-all text-sm text-slate-300"
         >
           ⚙️ Change Mode
         </button>
