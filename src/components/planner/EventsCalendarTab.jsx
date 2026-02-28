@@ -209,13 +209,20 @@ function CalendarGrid({ events, typeFilter, onSelectDate, selectedDate }) {
       </div>
 
       {/* Legend */}
-      <div className="mt-3 pt-3 border-t border-white/5 flex flex-wrap gap-3 text-[10px] text-slate-500">
-        <span className="flex items-center gap-1"><div className="rounded-full bg-indigo-400" style={{width:9,height:9}} /> Dark Moon</span>
-        <span className="flex items-center gap-1"><div className="rounded-full bg-yellow-400" style={{width:9,height:9}} /> Meteors</span>
-        <span className="flex items-center gap-1"><div className="rounded-full bg-green-400" style={{width:9,height:9}} /> Aurora</span>
-        <span className="flex items-center gap-1"><div className="rounded-full bg-orange-400" style={{width:9,height:9}} /> Lunar Eclipse</span>
-        <span className="flex items-center gap-1"><div className="rounded-full bg-yellow-300" style={{width:9,height:9}} /> Solar Eclipse</span>
-        <span className="flex items-center gap-1"><div className="rounded-full bg-red-400" style={{width:9,height:9}} /> Supermoon</span>
+      <div className="mt-3 pt-3 border-t border-white/5 flex flex-wrap gap-x-4 gap-y-2">
+        {[
+          { color: 'bg-indigo-400', label: 'Dark Moon' },
+          { color: 'bg-yellow-400', label: 'Meteors' },
+          { color: 'bg-green-400', label: 'Aurora' },
+          { color: 'bg-orange-400', label: 'Lunar Eclipse' },
+          { color: 'bg-yellow-300', label: 'Solar Eclipse' },
+          { color: 'bg-red-400', label: 'Supermoon' },
+        ].map(({ color, label }) => (
+          <span key={label} className="flex items-center gap-1.5">
+            <div className={`rounded-full flex-shrink-0 ${color}`} style={{ width: 9, height: 9 }} />
+            <span className="text-xs text-slate-300 font-medium">{label}</span>
+          </span>
+        ))}
       </div>
     </div>
   );
