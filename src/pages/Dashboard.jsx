@@ -1,14 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import PullToRefresh from '../components/ui/PullToRefresh';
-import SkyPlannerPreview from '../components/dashboard/SkyPlannerPreview';
-import PostProcessingGuide from '../components/postprocessing/PostProcessingGuide';
-import ActionCard from '../components/ui/ActionCard';
-import PageHeader from '../components/ui/PageHeader';
-import NextUpEvents from '../components/dashboard/NextUpEvents';
-import QuickStats from '../components/ui/QuickStats';
 import ModeSelectorModal from '../components/dashboard/ModeSelectorModal';
-import ExplorationModeBanner from '../components/dashboard/ExplorationModeBanner';
 import { createPageUrl } from '@/utils';
 import { base44 } from '@/api/base44Client';
 import { Card } from '@/components/ui/card';
@@ -16,10 +9,8 @@ import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import {
   Telescope, Settings, Eye, MapPin, Palette, Sparkles,
-  ChevronRight, Trophy, Clock, TrendingUp, BookOpen,
-  Star, Rocket, Camera, Zap, Lock, Smartphone, Calendar
+  ChevronRight, Rocket, Lock
 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 
 const MODULE_ICONS = { Telescope, Settings, Eye, MapPin, Palette, Sparkles };
