@@ -178,145 +178,28 @@ export default function Dashboard() {
             </Card>
           </div>
 
-          {/* ── HERO TONIGHT? CARD (full width, premium UX) ── */}
+          {/* ── HERO TONIGHT? CARD ── */}
           <Link to={createPageUrl('TonightHub')} className="group">
             <Card className="bg-gradient-to-r from-red-950/40 via-[#111111]/80 to-[#111111]/80 border border-red-600/40 hover:border-red-500/60 p-8 md:p-10 transition-all relative overflow-hidden">
               <div className="absolute top-0 right-0 w-64 h-64 bg-red-600/10 rounded-full blur-3xl -mr-32 -mt-32" />
               <div className="relative z-10">
                 <div className="flex items-center justify-between mb-4">
                   <div>
-                    <p className="text-xs text-red-400 uppercase tracking-widest font-bold mb-2">Decision Time</p>
-                    <h2 className="text-3xl md:text-4xl font-black text-white">Tonight?</h2>
+                    <p className="text-xs text-red-400 uppercase tracking-widest font-bold mb-2">Real-Time Decision</p>
+                    <h2 className="text-3xl md:text-4xl font-black text-white">Should You Go Tonight?</h2>
                   </div>
                   <p className="text-5xl md:text-6xl">🌙</p>
                 </div>
-                <p className="text-slate-300 text-base md:text-lg max-w-2xl mb-6">Ranked sky events, live conditions, visibility scores & your personal viability forecast. Everything you need to decide if tonight's the night.</p>
+                <p className="text-slate-300 text-base md:text-lg max-w-2xl mb-6">
+                  Live conditions, ranked sky events, visibility scores. One answer, right now.
+                  {profile?.home_location && <span className="block text-slate-500 text-sm mt-1"><MapPin className="w-3 h-3 inline mr-1" />{profile.home_location}</span>}
+                </p>
                 <p className="text-red-400 font-bold text-base flex items-center gap-2 group-hover:gap-3 transition-all">
                   Decide now <ChevronRight className="w-5 h-5" />
                 </p>
               </div>
             </Card>
           </Link>
-
-          {/* ── LOCATION FOOTER (location display) ── */}
-          {profile?.home_location && (
-            <div className="text-xs text-slate-500 flex items-center gap-1">
-              <MapPin className="w-3 h-3" /> {profile.home_location}
-            </div>
-          )}
-
-          {/* ── BEST SPOTS TONIGHT (from TonightHub integration or placeholder) ── */}
-          <Card className="bg-[#111111]/80 border border-white/10 p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-bold text-white">Best Spots Tonight</h3>
-              <div className="flex gap-2">
-                {['milky_way', 'aurora', 'meteor_shower', 'eclipse'].map(interest => (
-                  <button
-                    key={interest}
-                    onClick={() => setSkyInterest(interest)}
-                    className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all ${
-                      skyInterest === interest
-                        ? 'bg-red-600 text-white'
-                        : 'bg-white/5 text-slate-400 hover:bg-white/10'
-                    }`}
-                  >
-                    {interest === 'milky_way' && '🌌 Milky Way'}
-                    {interest === 'aurora' && '🌌 Aurora'}
-                    {interest === 'meteor_shower' && '☄️ Meteor'}
-                    {interest === 'eclipse' && '🌑 Eclipse'}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <p className="text-slate-400 text-sm">Visit TonightHub for real-time rankings based on your location.</p>
-            <Link to={createPageUrl('TonightHub')}>
-              <Button className="bg-red-600 hover:bg-red-700 text-white mt-4 w-full font-bold">
-                View Best Spots Now
-              </Button>
-            </Link>
-          </Card>
-
-          {/* ── RANK BEST SPOTS ── */}
-          <Card className="bg-[#111111]/80 border border-white/10 p-6">
-            <h3 className="text-lg font-bold text-white mb-2">Ranked Visibility</h3>
-            <p className="text-slate-400 text-sm">Check real-time conditions, moon phase, and forecast for your saved locations.</p>
-            <Link to={createPageUrl('TonightHub')}>
-              <Button variant="outline" className="border-white/10 text-slate-300 mt-4 w-full hover:border-white/20">
-                Rank My Spots
-              </Button>
-            </Link>
-          </Card>
-
-          {/* ── CONDITIONAL CONTENT BASED ON INTEREST ── */}
-          {skyInterest === 'milky_way' && (
-            <>
-              {/* AR Scout */}
-              <Card className="bg-gradient-to-r from-purple-900/20 via-[#111111]/80 to-[#111111]/80 border border-purple-500/30 p-6">
-                <div className="flex items-start gap-4">
-                  <p className="text-3xl">🔭</p>
-                  <div className="flex-1">
-                    <p className="text-xs text-purple-400 uppercase tracking-widest font-bold mb-1">Composition Tool</p>
-                    <h3 className="text-lg font-bold text-white mb-2">AR Scout — Milky Way</h3>
-                    <p className="text-slate-400 text-sm mb-4">Visualize the Galactic Core position in real-time before you shoot. Plan foreground composition.</p>
-                    {isSubscribed ? (
-                      <Link to={createPageUrl('PlannerTool') + '?tab=ar'}>
-                        <Button className="bg-purple-600 hover:bg-purple-700 text-white font-bold text-sm">
-                          Launch AR Scout
-                        </Button>
-                      </Link>
-                    ) : (
-                      <Link to={createPageUrl('PaymentGate')}>
-                        <Button className="bg-purple-600 hover:bg-purple-700 text-white font-bold text-sm">
-                          Unlock AR Scout
-                        </Button>
-                      </Link>
-                    )}
-                  </div>
-                </div>
-              </Card>
-
-              {/* Milky Way Content */}
-              <Card className="bg-[#111111]/80 border border-white/10 p-6">
-                <p className="text-xs text-slate-500 uppercase tracking-widest font-bold mb-2">Featured</p>
-                <h3 className="text-lg font-bold text-white mb-2">Milky Way Essentials</h3>
-                <p className="text-slate-400 text-sm mb-4">Master the gear, settings, and composition to capture the Galactic Core.</p>
-                <Link to={createPageUrl('FreeCourse')}>
-                  <Button variant="outline" className="border-white/10 text-slate-300 w-full hover:border-white/20 font-bold">
-                    View Free Course Modules
-                  </Button>
-                </Link>
-              </Card>
-            </>
-          )}
-
-          {skyInterest === 'aurora' && (
-            <>
-              {/* Aurora Forecast */}
-              <Card className="bg-gradient-to-r from-green-900/20 via-[#111111]/80 to-[#111111]/80 border border-green-500/30 p-6">
-                <div className="flex items-start gap-4">
-                  <p className="text-3xl">🌌</p>
-                  <div className="flex-1">
-                    <p className="text-xs text-green-400 uppercase tracking-widest font-bold mb-1">Live Forecast</p>
-                    <h3 className="text-lg font-bold text-white mb-2">Aurora Forecast</h3>
-                    <p className="text-slate-400 text-sm mb-4">Real-time KP index, cloud cover, and visibility rating for your location.</p>
-                    {isSubscribed ? (
-                      <Link to={createPageUrl('PlannerTool') + '?tab=aurora'}>
-                        <Button className="bg-green-600 hover:bg-green-700 text-white font-bold text-sm">
-                          Check Aurora Alerts
-                        </Button>
-                      </Link>
-                    ) : (
-                      <Link to={createPageUrl('PaymentGate')}>
-                        <Button className="bg-green-600 hover:bg-green-700 text-white font-bold text-sm">
-                          Unlock Aurora Alerts
-                        </Button>
-                      </Link>
-                    )}
-                  </div>
-                </div>
-              </Card>
-            </>
-          )}
 
           {/* ── SECONDARY ACTIONS (3-column grid) ── */}
           <div className="grid sm:grid-cols-3 gap-4">
