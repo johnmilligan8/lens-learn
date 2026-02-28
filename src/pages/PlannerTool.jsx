@@ -872,6 +872,7 @@ export default function PlannerTool() {
                       setTimeout(() => ephemerisRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
                     }}
                   />
+                  <MapOverlayLayers lat={results.coords?.lat} lon={results.coords?.lon} dateStr={date} />
                 </Card>
 
                 {/* Moon */}
