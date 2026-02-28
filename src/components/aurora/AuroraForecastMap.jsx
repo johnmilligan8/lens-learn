@@ -79,16 +79,19 @@ function KpBar({ entry }) {
   );
 }
 
-// ── Leaflet Map with canvas aurora overlay ────────────────────────────────
-function AuroraLeafletMap({ ovationData, userLat, userLon, locationName }) {
+// ── Leaflet Map with NOAA OVATION image overlay ──────────────────────────
+const OVATION_IMG_URL = 'https://services.swpc.noaa.gov/images/aurora-forecast-north.png';
+// The north polar image covers roughly the northern hemisphere
+// We use a square bounds centered on the north pole region visible for N. America
+const OVATION_BOUNDS = [[20, -170], [90, -50]]; // SW, NE covering N. America + Canada
+
+function AuroraLeafletMap({ userLat, userLon, locationName }) {
   const mapRef = useRef(null);
   const leafletRef = useRef(null);
-  const overlayRef = useRef(null);
 
   useEffect(() => {
-    if (leafletRef.current) return; // already init
+    if (leafletRef.current) return;
 
-    // Dynamically load Leaflet CSS
     if (!document.getElementById('leaflet-css')) {
       const link = document.createElement('link');
       link.id = 'leaflet-css';
@@ -97,11 +100,54 @@ function AuroraLeafletMap({ ovationData, userLat, userLon, locationName }) {
       document.head.appendChild(link);
     }
 
-    // Dynamically load Leaflet JS
-    const script = document.createElement('script');
-    script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
-    script.onload = () => initMap();
-    document.head.appendChild(script);
+    const initMap = () => {
+      if (!mapRef.current || leafletRef.current) return;
+      const L = window.L;
+
+      const map = L.map(mapRef.current, {
+        center: [58, -100],
+        zoom: 3,
+        zoomControl: true,
+        scrollWheelZoom: false,
+      });
+
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '© OpenStreetMap © CARTO',
+        maxZoom: 8,
+      }).addTo(map);
+
+      // NOAA OVATION 30-min forecast image overlay
+      const cacheBust = Math.floor(Date.now() / (1000 * 60 * 10)); // refresh every 10 min
+      L.imageOverlay(
+        `${OVATION_IMG_URL}?t=${cacheBust}`,
+        OVATION_BOUNDS,
+        { opacity: 0.72, interactive: false }
+      ).addTo(map);
+
+      // User location marker
+      if (userLat && userLon) {
+        const icon = L.divIcon({
+          html: `<div style="width:12px;height:12px;background:#ef4444;border:2px solid white;border-radius:50%;box-shadow:0 0 6px rgba(239,68,68,0.8);"></div>`,
+          className: '',
+          iconSize: [12, 12],
+          iconAnchor: [6, 6],
+        });
+        L.marker([userLat, userLon], { icon })
+          .addTo(map)
+          .bindPopup(`<b>${locationName || 'Your location'}</b><br>Home base`);
+      }
+
+      leafletRef.current = map;
+    };
+
+    if (window.L) {
+      initMap();
+    } else {
+      const script = document.createElement('script');
+      script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+      script.onload = initMap;
+      document.head.appendChild(script);
+    }
 
     return () => {
       if (leafletRef.current) {
@@ -109,109 +155,12 @@ function AuroraLeafletMap({ ovationData, userLat, userLon, locationName }) {
         leafletRef.current = null;
       }
     };
-  }, []);
-
-  const initMap = () => {
-    if (!mapRef.current || leafletRef.current) return;
-    const L = window.L;
-
-    const map = L.map(mapRef.current, {
-      center: [60, -100],
-      zoom: 3,
-      zoomControl: true,
-      scrollWheelZoom: false,
-    });
-
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      attribution: '© OpenStreetMap © CARTO',
-      maxZoom: 8,
-    }).addTo(map);
-
-    leafletRef.current = map;
-
-    // Draw overlay once map is ready
-    drawOverlay(map);
-
-    // User location marker
-    if (userLat && userLon) {
-      const icon = L.divIcon({
-        html: `<div style="width:10px;height:10px;background:#ef4444;border:2px solid white;border-radius:50%;"></div>`,
-        className: '',
-        iconSize: [10, 10],
-        iconAnchor: [5, 5],
-      });
-      L.marker([userLat, userLon], { icon })
-        .addTo(map)
-        .bindPopup(`<b>${locationName || 'Your location'}</b><br>Saved home base`);
-    }
-  };
-
-  const drawOverlay = (map) => {
-    if (!ovationData || !window.L) return;
-
-    const L = window.L;
-    const coords = ovationData.coordinates;
-    if (!coords || !Array.isArray(coords)) return;
-
-    // Remove existing overlay layer
-    if (overlayRef.current) {
-      map.removeLayer(overlayRef.current);
-    }
-
-    // Build canvas layer
-    const CanvasLayer = L.Layer.extend({
-      onAdd(map) {
-        this._map = map;
-        const canvas = document.createElement('canvas');
-        canvas.style.cssText = 'position:absolute;top:0;left:0;pointer-events:none;';
-        map.getPanes().overlayPane.appendChild(canvas);
-        this._canvas = canvas;
-        map.on('moveend zoomend resize', this._redraw, this);
-        this._redraw();
-      },
-      onRemove(map) {
-        this._canvas?.parentNode?.removeChild(this._canvas);
-        map.off('moveend zoomend resize', this._redraw, this);
-      },
-      _redraw() {
-        const size = this._map.getSize();
-        this._canvas.width = size.x;
-        this._canvas.height = size.y;
-        const ctx = this._canvas.getContext('2d');
-        ctx.clearRect(0, 0, size.x, size.y);
-
-        coords.forEach(([lon, lat, prob]) => {
-          const p = prob ?? 0;
-          const color = auroraColor(p);
-          if (!color) return;
-          try {
-            const pt = this._map.latLngToContainerPoint([lat, lon]);
-            // Scale opacity and radius with probability for better visibility
-            const opacity = Math.min(0.85, 0.3 + (p / 50) * 0.55);
-            const radius = Math.max(5, Math.min(10, 4 + (p / 20)));
-            ctx.fillStyle = color.hex + Math.round(opacity * 255).toString(16).padStart(2, '0');
-            ctx.beginPath();
-            ctx.arc(pt.x, pt.y, radius, 0, Math.PI * 2);
-            ctx.fill();
-          } catch (_) {}
-        });
-      },
-    });
-
-    overlayRef.current = new CanvasLayer().addTo(map);
-  };
-
-  // Re-draw when data changes
-  useEffect(() => {
-    if (leafletRef.current && ovationData) {
-      drawOverlay(leafletRef.current);
-    }
-  }, [ovationData]);
+  }, [userLat, userLon, locationName]);
 
   return (
     <div
       ref={mapRef}
-      style={{ height: 280, width: '100%', borderRadius: 12, overflow: 'hidden', background: '#111' }}
+      style={{ height: 300, width: '100%', borderRadius: 12, overflow: 'hidden', background: '#111' }}
     />
   );
 }
