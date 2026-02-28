@@ -47,3 +47,42 @@ export async function fetchCurrentKp() {
     source: 'NOAA',
   };
 }
+
+/**
+ * Fetches 3-day hourly KP forecast from NOAA (3-hour blocks)
+ * Returns array of { time, kp, date, hour } for next ~72 hours
+ */
+export async function fetchNoaaHourlyKp() {
+  const response = await fetch(
+    'https://api.swpc.noaa.gov/products/noaa-planetary-k-index-forecast.json'
+  );
+  if (!response.ok) throw new Error(`NOAA hourly API error: ${response.status}`);
+  const raw = await response.json();
+  const rows = raw.slice(1);
+  return rows.slice(0, 24).map(([timeTag, kp]) => {
+    const [date, time] = String(timeTag).split(' ');
+    const hour = time ? parseInt(time.split(':')[0]) : 0;
+    return { time: timeTag, date, hour, kp: parseFloat(kp) || 0 };
+  });
+}
+
+/**
+ * Fetches hourly cloud cover from Open-Meteo for aurora viewing windows
+ */
+export async function fetchHourlyCloudCover(lat, lon) {
+  const params = new URLSearchParams({
+    latitude: lat,
+    longitude: lon,
+    hourly: 'cloud_cover,visibility',
+    timezone: 'auto',
+    forecast_days: 3,
+  });
+  const response = await fetch(`https://api.open-meteo.com/v1/forecast?${params}`);
+  if (!response.ok) throw new Error(`Open-Meteo hourly error: ${response.status}`);
+  const data = await response.json();
+  return data.hourly.time.map((t, i) => ({
+    time: t,
+    cloud_cover: data.hourly.cloud_cover?.[i] ?? 50,
+    visibility: data.hourly.visibility?.[i] ?? 10000,
+  }));
+}
