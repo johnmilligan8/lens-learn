@@ -202,7 +202,7 @@ export default function Layout({ children, currentPageName }) {
   };
 
   return (
-    <div className="min-h-screen cosmic-bg flex flex-col">
+    <div className="min-h-screen cosmic-bg flex md:flex-row flex-col">
       {/* Sidebar — mobile overlay */}
       {sidebarOpen && (
         <div
@@ -213,7 +213,7 @@ export default function Layout({ children, currentPageName }) {
       
       <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#111111]/98 backdrop-blur-md border-r border-white/5 flex flex-col transition-transform duration-300 ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-      } md:relative md:translate-x-0 md:sticky md:top-0 md:h-screen md:w-64`}>
+      } md:relative md:translate-x-0 md:sticky md:top-0 md:h-screen md:w-64 md:flex-shrink-0`}>
         {/* Logo */}
         <div className="p-6 border-b border-slate-800/40">
           <Link to={createPageUrl('Dashboard')} onClick={() => setSidebarOpen(false)} className="flex flex-col gap-0.5">
@@ -313,7 +313,7 @@ export default function Layout({ children, currentPageName }) {
       </nav>
 
       {/* Main Content */}
-      <main className="flex-1 md:overflow-auto overflow-y-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
+      <main className="flex-1 w-full md:overflow-auto overflow-y-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
         <div className="md:hidden" style={{ height: 'calc(3.5rem + env(safe-area-inset-top))' }} />
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
