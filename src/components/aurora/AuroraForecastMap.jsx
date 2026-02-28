@@ -185,9 +185,12 @@ function AuroraLeafletMap({ ovationData, userLat, userLon, locationName }) {
           if (!color) return;
           try {
             const pt = this._map.latLngToContainerPoint([lat, lon]);
-            ctx.fillStyle = color.hex + '66'; // 40% opacity
+            // Scale opacity and radius with probability for better visibility
+            const opacity = Math.min(0.85, 0.3 + (p / 50) * 0.55);
+            const radius = Math.max(5, Math.min(10, 4 + (p / 20)));
+            ctx.fillStyle = color.hex + Math.round(opacity * 255).toString(16).padStart(2, '0');
             ctx.beginPath();
-            ctx.arc(pt.x, pt.y, 4, 0, Math.PI * 2);
+            ctx.arc(pt.x, pt.y, radius, 0, Math.PI * 2);
             ctx.fill();
           } catch (_) {}
         });
