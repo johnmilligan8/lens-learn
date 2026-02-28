@@ -273,31 +273,28 @@ export default function Layout({ children, currentPageName }) {
         </div>
       </aside>
 
-      {/* Mobile Top Bar */}
-      <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-[#111111]/98 backdrop-blur-md border-b border-white/5 flex items-center px-4 justify-between select-none"
+      {/* Mobile Top Bar with Hamburger */}
+      <div className="md:hidden fixed top-0 left-0 right-0 z-40 bg-[#111111]/98 backdrop-blur-md border-b border-white/5 flex items-center px-4 justify-between select-none"
         style={{ height: 'calc(3.5rem + env(safe-area-inset-top))', paddingTop: 'env(safe-area-inset-top)', paddingLeft: 'max(1rem, env(safe-area-inset-left))', paddingRight: 'max(1rem, env(safe-area-inset-right))' }}>
-        {isChildScreen ? (
-          <Button variant="ghost" size="sm" className="text-slate-300 -ml-2 gap-1" onClick={() => navigate(-1)}>
-            <ChevronLeft className="w-5 h-5" />
-            <span className="text-sm font-medium">Back</span>
-          </Button>
-        ) : (
-          <Link to={createPageUrl('Dashboard')} className="flex items-center gap-2">
-              <img
-                src="https://uncharted.net/wp-content/uploads/2022/09/Uncharted-Logo-Horizontal-White-e1664469570536.png"
-                alt="UNCHARTED"
-                className="h-7 w-auto object-contain"
-                style={{ maxWidth: 130 }}
-                onError={e => { e.target.style.display='none'; e.target.nextSibling.style.display='flex'; }}
-              />
-              <span style={{display:'none'}} className="font-black text-white text-lg tracking-tight">UNCHARTED</span>
-            </Link>
-        )}
+        <Button
+          variant="ghost"
+          size="icon"
+          className="text-slate-300 -ml-2"
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+        >
+          {sidebarOpen ? <X className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
+        </Button>
+        <Link to={createPageUrl('Dashboard')} className="flex items-center gap-2" onClick={() => setSidebarOpen(false)}>
+          <img
+            src="https://uncharted.net/wp-content/uploads/2022/09/Uncharted-Logo-Horizontal-White-e1664469570536.png"
+            alt="UNCHARTED"
+            className="h-7 w-auto object-contain"
+            style={{ maxWidth: 130 }}
+            onError={e => { e.target.style.display='none'; }}
+          />
+        </Link>
         <div className="flex items-center gap-2">
           <NightModeToggle nightMode={nightMode} onToggle={toggleNightMode} compact />
-          <Button variant="ghost" size="icon" className="text-slate-300" onClick={handleLogout}>
-            <LogOut className="w-5 h-5" />
-          </Button>
         </div>
       </div>
 
