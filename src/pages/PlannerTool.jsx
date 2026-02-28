@@ -185,7 +185,7 @@ function WeatherCard({ weather, weatherLoading, weatherError, onFetch, hasResult
   if (!hasResults) return null;
 
   if (weatherLoading) return (
-    <Card className="bg-slate-900/60 border-slate-800 p-5">
+    <Card className="bg-[#1a1a1a] border-white/8 p-5">
       <div className="flex items-center gap-3">
         <Loader2 className="w-5 h-5 text-blue-400 animate-spin" />
         <span className="text-slate-400 text-sm">Fetching weather forecast...</span>
@@ -194,7 +194,7 @@ function WeatherCard({ weather, weatherLoading, weatherError, onFetch, hasResult
   );
 
   if (weatherError) return (
-    <Card className="bg-slate-900/60 border-slate-800 p-5">
+    <Card className="bg-[#1a1a1a] border-white/8 p-5">
       <div className="flex items-start justify-between">
         <div>
           <h3 className="text-white font-semibold text-sm flex items-center gap-2 mb-1">
@@ -210,7 +210,7 @@ function WeatherCard({ weather, weatherLoading, weatherError, onFetch, hasResult
   );
 
   if (!weather) return (
-    <Card className="bg-slate-900/60 border-slate-800 p-5">
+    <Card className="bg-[#1a1a1a] border-white/8 p-5">
       <div className="flex items-center justify-between">
         <h3 className="text-white font-semibold text-sm flex items-center gap-2">
           <Cloud className="w-4 h-4 text-blue-400" /> Weather Forecast
@@ -229,10 +229,10 @@ function WeatherCard({ weather, weatherLoading, weatherError, onFetch, hasResult
   const cloud = cloudCoverRating(weather.current.cloud);
 
   return (
-    <Card className="bg-slate-900/60 border-slate-800 p-5">
+    <Card className="bg-[#1a1a1a] border-white/8 p-5">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-white font-semibold text-sm flex items-center gap-2">
-          <Cloud className="w-4 h-4 text-blue-400" /> Weather Conditions
+          <Cloud className="w-4 h-4 text-slate-400" /> Weather Conditions
         </h3>
         <div className={`px-3 py-1 rounded-full border text-xs font-bold ${scoreBg} ${scoreColor}`}>
           Astro Score: {score}/10

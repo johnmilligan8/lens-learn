@@ -77,7 +77,7 @@ export default function CommunityGallery() {
 
   if (loading) return (
     <div className="flex items-center justify-center min-h-screen">
-      <Camera className="w-10 h-10 text-purple-400 star-pulse" />
+      <Camera className="w-10 h-10 text-red-400 star-pulse" />
     </div>
   );
 
@@ -105,7 +105,7 @@ export default function CommunityGallery() {
 
       {/* Gallery Grid */}
       {posts.length === 0 ? (
-        <Card className="bg-slate-900/60 border-slate-800 p-16 text-center">
+        <Card className="bg-[#1a1a1a] border-white/8 p-16 text-center">
           <Camera className="w-16 h-16 text-slate-700 mx-auto mb-4" />
           <h3 className="text-xl font-semibold text-slate-500 mb-2">No photos yet</h3>
           <p className="text-slate-600 mb-6">Be the first to share a Milky Way photo!</p>
@@ -119,7 +119,7 @@ export default function CommunityGallery() {
             const isLiked = post.liked_by?.includes(user?.email);
             return (
               <div key={post.id} className="break-inside-avoid">
-                <Card className="bg-slate-900/60 border-slate-800 overflow-hidden card-glow group">
+                <Card className="bg-[#1a1a1a] border-white/8 overflow-hidden card-glow group">
                   <div className="relative cursor-pointer" onClick={() => setSelectedPost(post)}>
                     <img
                       src={post.photo_url}
@@ -173,7 +173,7 @@ export default function CommunityGallery() {
 
       {/* Upload Dialog */}
       <Dialog open={showUpload} onOpenChange={setShowUpload}>
-        <DialogContent className="bg-slate-900 border-slate-700 max-w-lg">
+        <DialogContent className="bg-[#1a1a1a] border-white/8 max-w-lg">
           <DialogHeader>
             <DialogTitle className="text-white text-xl">Share Your Photo</DialogTitle>
           </DialogHeader>
@@ -242,7 +242,7 @@ export default function CommunityGallery() {
       {/* Lightbox with Feedback */}
       {selectedPost && (
         <Dialog open={!!selectedPost} onOpenChange={() => setSelectedPost(null)}>
-          <DialogContent className="bg-slate-900 border-slate-700 max-w-4xl max-h-[90vh] overflow-y-auto p-0">
+          <DialogContent className="bg-[#1a1a1a] border-white/8 max-w-4xl max-h-[90vh] overflow-y-auto p-0">
             {/* Image */}
             <img src={selectedPost.photo_url} alt={selectedPost.caption} className="w-full max-h-[50vh] object-contain bg-black" />
 

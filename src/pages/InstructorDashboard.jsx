@@ -86,7 +86,7 @@ export default function InstructorDashboard() {
 
   if (loading) return (
     <div className="flex items-center justify-center min-h-screen">
-      <Camera className="w-10 h-10 text-purple-400 star-pulse" />
+      <Camera className="w-10 h-10 text-red-400 star-pulse" />
     </div>
   );
 
@@ -103,12 +103,12 @@ export default function InstructorDashboard() {
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         {[
-          { label: 'Modules', value: modules.length, icon: BookOpen, color: 'text-purple-400' },
-          { label: 'Lessons', value: lessons.length, icon: Eye, color: 'text-blue-400' },
-          { label: 'Active Students', value: subscribers.length, icon: Users, color: 'text-emerald-400' },
-          { label: 'Pending Reviews', value: pendingSubs.length, icon: Clock, color: 'text-yellow-400' },
+          { label: 'Modules', value: modules.length, icon: BookOpen, color: 'text-red-400' },
+          { label: 'Lessons', value: lessons.length, icon: Eye, color: 'text-slate-300' },
+          { label: 'Active Students', value: subscribers.length, icon: Users, color: 'text-slate-200' },
+          { label: 'Pending Reviews', value: pendingSubs.length, icon: Clock, color: 'text-red-300' },
         ].map(s => (
-          <Card key={s.label} className="bg-slate-900/60 border-slate-800 p-5">
+          <Card key={s.label} className="bg-[#1a1a1a] border-white/8 p-5">
             <s.icon className={`w-7 h-7 ${s.color} mb-2`} />
             <p className="text-3xl font-bold text-white">{s.value}</p>
             <p className="text-slate-400 text-sm mt-1">{s.label}</p>
@@ -117,7 +117,7 @@ export default function InstructorDashboard() {
       </div>
 
       <Tabs defaultValue="content">
-        <TabsList className="bg-slate-900 border-slate-700 mb-6">
+        <TabsList className="bg-[#0a0a0f] border-white/8 mb-6">
           <TabsTrigger value="content" className="data-[state=active]:bg-red-600">Course Content</TabsTrigger>
           <TabsTrigger value="submissions" className="data-[state=active]:bg-red-600">
             Submissions
@@ -140,7 +140,7 @@ export default function InstructorDashboard() {
             {modules.map(mod => {
               const modLessons = lessons.filter(l => l.module_id === mod.id);
               return (
-                <Card key={mod.id} className="bg-slate-900/60 border-slate-800 p-6">
+                <Card key={mod.id} className="bg-[#1a1a1a] border-white/8 p-6">
                   <div className="flex items-start justify-between gap-4 mb-3">
                     <div>
                       <div className="flex items-center gap-2 mb-1">
@@ -173,7 +173,7 @@ export default function InstructorDashboard() {
         <TabsContent value="submissions">
           <div className="space-y-4">
             {pendingSubs.length === 0 && reviewedSubs.length === 0 && (
-              <Card className="bg-slate-900/60 border-slate-800 p-12 text-center">
+              <Card className="bg-[#1a1a1a] border-white/8 p-12 text-center">
                 <Image className="w-12 h-12 text-slate-700 mx-auto mb-3" />
                 <p className="text-slate-500">No student submissions yet.</p>
               </Card>
@@ -185,7 +185,7 @@ export default function InstructorDashboard() {
                   <Clock className="w-4 h-4" /> Pending Review ({pendingSubs.length})
                 </h3>
                 {pendingSubs.map(sub => (
-                  <Card key={sub.id} className="bg-yellow-900/10 border-yellow-500/30 p-5">
+                  <Card key={sub.id} className="bg-[#1a1a1a] border-white/8 p-5">
                     <div className="flex items-center gap-4">
                       {sub.photo_url && <img src={sub.photo_url} alt="" className="w-16 h-16 rounded-lg object-cover flex-shrink-0" />}
                       <div className="flex-1">
@@ -209,7 +209,7 @@ export default function InstructorDashboard() {
                   <CheckCircle2 className="w-4 h-4" /> Reviewed ({reviewedSubs.length})
                 </h3>
                 {reviewedSubs.map(sub => (
-                  <Card key={sub.id} className="bg-emerald-900/10 border-emerald-500/20 p-5 opacity-80">
+                  <Card key={sub.id} className="bg-[#1a1a1a] border-white/8 p-5 opacity-80">
                     <div className="flex items-center gap-4">
                       {sub.photo_url && <img src={sub.photo_url} alt="" className="w-14 h-14 rounded-lg object-cover flex-shrink-0" />}
                       <div className="flex-1">

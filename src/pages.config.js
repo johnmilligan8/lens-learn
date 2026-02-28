@@ -48,6 +48,7 @@
  * The mainPage value must match a key in the PAGES object exactly.
  */
 import CommunityGallery from './pages/CommunityGallery';
+import Dashboard from './pages/Dashboard';
 import EventsCalendar from './pages/EventsCalendar';
 import FieldMode from './pages/FieldMode';
 import FreeCourse from './pages/FreeCourse';
@@ -62,12 +63,12 @@ import Profile from './pages/Profile';
 import SkyBrowser from './pages/SkyBrowser';
 import StarPointer from './pages/StarPointer';
 import TonightHub from './pages/TonightHub';
-import Dashboard from './pages/Dashboard';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
     "CommunityGallery": CommunityGallery,
+    "Dashboard": Dashboard,
     "EventsCalendar": EventsCalendar,
     "FieldMode": FieldMode,
     "FreeCourse": FreeCourse,
@@ -82,7 +83,6 @@ export const PAGES = {
     "SkyBrowser": SkyBrowser,
     "StarPointer": StarPointer,
     "TonightHub": TonightHub,
-    "Dashboard": Dashboard,
 }
 
 export const pagesConfig = {
