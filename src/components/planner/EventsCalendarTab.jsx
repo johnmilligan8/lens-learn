@@ -396,7 +396,7 @@ export default function EventsCalendarTab({ isSubscribed, userProfile }) {
               {selectedDayEvents.length > 0 ? (
                 <div className="space-y-2">
                   {selectedDayEvents.map(ev => (
-                    <EventCard key={ev.id} event={ev} expanded={expanded} onToggle={id => setExpanded(expanded === id ? null : id)} />
+                    <EventCard key={ev.id} event={ev} expanded={expanded} onToggle={id => setExpanded(expanded === id ? null : id)} userProfile={userProfileRef.current} />
                   ))}
                 </div>
               ) : (
