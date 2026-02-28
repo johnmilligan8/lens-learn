@@ -6,12 +6,10 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import EventRankCard from '../components/tonight/EventRankCard';
 import GuidedPlanModal from '../components/tonight/GuidedPlanModal';
-import AuroraTeaserCard from '../components/events/AuroraTeaserCard';
 import AuroraPredictionCard from '../components/events/AuroraPredictionCard';
 import MilkyWayARCard from '../components/tonight/MilkyWayARCard';
 import BestSpotsRanker from '../components/tonight/BestSpotsRanker';
-import AuroraForecastMap from '../components/aurora/AuroraForecastMap';
-import { Loader2, Lock, MapPin, ChevronRight, Telescope, Zap, Star, Trophy } from 'lucide-react';
+import { Loader2, Lock, MapPin, ChevronRight, Telescope, Zap, Star } from 'lucide-react';
 import MultiLocationPredictor from '../components/tonight/MultiLocationPredictor';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
