@@ -22,6 +22,8 @@ import ExpeditionManager from '../components/planner/ExpeditionManager';
 import MilkyWayARPreview from '../components/planner/MilkyWayARPreview';
 import MapOverlayLayers from '../components/planner/MapOverlayLayers';
 import SaveTripModal from '../components/planner/SaveTripModal';
+import SmartphoneShootingGuide from '../components/planner/SmartphoneShootingGuide';
+import SmartphoneSettingsPanel from '../components/planner/SmartphoneSettingsPanel';
 import LocationPicker from '../components/onboarding/LocationPicker';
 import RealtimeConditionsMonitor from '../components/planner/RealtimeConditionsMonitor';
 import ConditionAlertManager from '../components/planner/ConditionAlertManager';
@@ -899,10 +901,20 @@ export default function PlannerTool() {
                 </Card>
               </div>
 
-              {/* Exposure Calculator */}
-              <ExposureCalculator gear={gear} results={results} date={date} />
+              {/* Smartphone Mode: Show phone-specific guide instead of DSLR techniques */}
+              {shooterMode === 'smartphone' && results && (
+                <>
+                  <SmartphoneSettingsPanel results={results} gear={gear} date={date} />
+                  <SmartphoneShootingGuide />
+                </>
+              )}
 
-              {/* Foreground Composition Guide */}
+              {/* Exposure Calculator - DSLR only */}
+              {shooterMode !== 'smartphone' && (
+                <ExposureCalculator gear={gear} results={results} date={date} />
+              )}
+
+              {/* Foreground Composition Guide - Universal but labeled differently for smartphone */}
               {results && (
                 <ForegroundCompositionGuide 
                   location={location} 
@@ -910,6 +922,7 @@ export default function PlannerTool() {
                   gear={gear}
                   lat={results.coords?.lat}
                   lon={results.coords?.lon}
+                  shooterMode={shooterMode}
                 />
               )}
 
@@ -923,8 +936,10 @@ export default function PlannerTool() {
                 />
               )}
 
-              {/* Advanced Stacking Techniques */}
-              <StackingTechniquesGuide />
+              {/* Advanced Stacking Techniques - DSLR only */}
+              {shooterMode !== 'smartphone' && (
+                <StackingTechniquesGuide />
+              )}
 
               {/* Aurora Visibility Forecast (correlated with location) */}
               {results && (
@@ -949,8 +964,10 @@ export default function PlannerTool() {
               {/* Best Shot Suggestions */}
               <BestShotSuggestions gear={gear} results={results} weather={weather} date={date} />
 
-              {/* Post-Processing Guide */}
-              <PostProcessingGuide gear={gear} shooterMode={shooterMode} />
+              {/* Post-Processing Guide - DSLR focused; phones have limited editing */}
+              {shooterMode !== 'smartphone' && (
+                <PostProcessingGuide gear={gear} shooterMode={shooterMode} />
+              )}
 
               {/* Real-Time Conditions (moon, sun, aurora KP) */}
                {results && (
