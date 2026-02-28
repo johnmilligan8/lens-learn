@@ -146,52 +146,115 @@ export default function BasicARScout({ lat, lon, dateStr, onClose }) {
     const gcX = w / 2 + relativeAz * pixelsPerDegree;
     const gcY = h / 2 - (gcPosition.alt * pixelsPerDegree * 0.7); // altitude affects vertical
 
-    // Draw compass indicator (top)
-    ctx.fillStyle = 'rgba(100, 200, 255, 0.3)';
-    ctx.font = '12px sans-serif';
-    ctx.fillText(`Heading: ${Math.round(deviceHeading)}°`, 10, 20);
-
-    // Draw Milky Way arc (simple parabola)
     if (gcPosition.visible) {
-      ctx.strokeStyle = 'rgba(255, 200, 100, 0.6)';
-      ctx.lineWidth = 3;
-      ctx.beginPath();
-      for (let x = Math.max(0, gcX - 80); x < Math.min(w, gcX + 80); x += 5) {
-        const dx = x - gcX;
-        const y = gcY + (dx * dx) / 150;
-        if (x === Math.max(0, gcX - 80)) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
+      // ─── REALISTIC MILKY WAY BAND ───
+      const bandWidth = 120;
+      const bandExtentX = 200;
+
+      // Draw starfield first (background)
+      const seed = Math.floor(relativeAz * 10) ^ Math.floor(gcPosition.alt * 10);
+      for (let i = 0; i < 80; i++) {
+        const starX = (seed * 73856093 ^ (i * 19349663)) % w;
+        const starY = (seed * 19349663 ^ (i * 83492791)) % h;
+        const starBrightness = ((seed * 42299591 ^ (i * 1234567)) % 100) / 100;
+        ctx.fillStyle = `rgba(255, 255, 255, ${0.3 + starBrightness * 0.5})`;
+        ctx.beginPath();
+        ctx.arc(starX, starY, 0.5 + starBrightness * 0.8, 0, Math.PI * 2);
+        ctx.fill();
       }
-      ctx.stroke();
 
-      // Draw core dot
-      ctx.fillStyle = '#FFD700';
+      // Main Milky Way band (gradient)
+      for (let x = Math.max(0, gcX - bandExtentX); x < Math.min(w, gcX + bandExtentX); x += 2) {
+        const dx = x - gcX;
+        const normalizedDx = Math.abs(dx) / bandExtentX;
+        const bandY = gcY + (dx * dx) / 200; // parabolic arc
+
+        // Width varies (narrower at ends, wider at core)
+        const currentBandWidth = bandWidth * (1 - normalizedDx * 0.6);
+
+        // Color gradient: core is golden-orange, edges fade to white-blue
+        let hue = 35; // golden
+        let saturation = 70;
+        let lightness = 55;
+        if (normalizedDx > 0.5) {
+          const fade = (normalizedDx - 0.5) * 2; // 0 to 1
+          hue = 35 + fade * 200; // shift toward blue
+          saturation = 70 - fade * 40;
+          lightness = 55 + fade * 15;
+        }
+
+        for (let dy = -currentBandWidth / 2; dy < currentBandWidth / 2; dy += 3) {
+          const distFromCenter = Math.abs(dy) / (currentBandWidth / 2);
+          const alpha = (1 - Math.pow(distFromCenter, 1.5)) * (0.7 - normalizedDx * 0.5);
+
+          ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness}%, ${alpha})`;
+          ctx.fillRect(x, bandY + dy, 2, 3);
+        }
+      }
+
+      // Add cloud texture (nebula wisps)
+      ctx.globalCompositeOperation = 'lighten';
+      for (let pass = 0; pass < 3; pass++) {
+        for (let x = Math.max(0, gcX - bandExtentX); x < Math.min(w, gcX + bandExtentX); x += 15) {
+          const dx = x - gcX;
+          const bandY = gcY + (dx * dx) / 200;
+          const seed2 = Math.sin(x * 0.01 + pass * 123) * 10000;
+
+          const cloudWidth = bandWidth * (1 - Math.abs(dx) / bandExtentX * 0.6) * (0.5 + Math.sin(seed2) * 0.3);
+          const gradient = ctx.createLinearGradient(x - cloudWidth / 2, bandY - cloudWidth / 2, x + cloudWidth / 2, bandY + cloudWidth / 2);
+          gradient.addColorStop(0, 'rgba(255, 200, 100, 0)');
+          gradient.addColorStop(0.5, `rgba(255, ${180 - pass * 20}, ${100 - pass * 15}, ${0.2 - pass * 0.05})`);
+          gradient.addColorStop(1, 'rgba(255, 200, 100, 0)');
+
+          ctx.fillStyle = gradient;
+          ctx.beginPath();
+          ctx.ellipse(x, bandY, cloudWidth, cloudWidth * 0.5, 0, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+      ctx.globalCompositeOperation = 'source-over';
+
+      // Draw galactic core highlight
+      const coreGrad = ctx.createRadialGradient(gcX, gcY, 5, gcX, gcY, 40);
+      coreGrad.addColorStop(0, 'rgba(255, 240, 100, 0.9)');
+      coreGrad.addColorStop(0.5, 'rgba(255, 180, 50, 0.4)');
+      coreGrad.addColorStop(1, 'rgba(255, 150, 30, 0)');
+      ctx.fillStyle = coreGrad;
       ctx.beginPath();
-      ctx.arc(gcX, gcY, 8, 0, Math.PI * 2);
+      ctx.arc(gcX, gcY, 40, 0, Math.PI * 2);
       ctx.fill();
-      ctx.strokeStyle = 'rgba(255, 215, 0, 0.8)';
-      ctx.lineWidth = 2;
+
+      // Core dot
+      ctx.fillStyle = '#FFFF00';
+      ctx.beginPath();
+      ctx.arc(gcX, gcY, 6, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255, 255, 150, 0.8)';
+      ctx.lineWidth = 1;
       ctx.stroke();
 
-      // Label
-      ctx.fillStyle = 'rgba(255, 215, 0, 0.8)';
-      ctx.font = 'bold 14px sans-serif';
-      ctx.fillText('Core', gcX + 12, gcY - 8);
+      // Core label
+      ctx.fillStyle = 'rgba(255, 255, 200, 0.9)';
+      ctx.font = 'bold 12px sans-serif';
+      ctx.fillText('Sagittarius A*', gcX + 12, gcY - 10);
 
-      // Alt/Az
-      ctx.fillStyle = 'rgba(100, 200, 255, 0.7)';
-      ctx.font = '11px monospace';
-      ctx.fillText(`Alt: ${Math.round(gcPosition.alt)}° Az: ${Math.round(gcAz)}°`, 10, h - 10);
+      // Alt/Az info
+      ctx.fillStyle = 'rgba(100, 200, 255, 0.8)';
+      ctx.font = '10px monospace';
+      ctx.fillText(`Alt: ${Math.round(gcPosition.alt)}° | Az: ${Math.round(gcAz)}°`, 10, h - 10);
     } else {
       ctx.fillStyle = 'rgba(200, 100, 100, 0.7)';
-      ctx.font = 'bold 16px sans-serif';
-      ctx.fillText('Milky Way below horizon', w / 2 - 80, h / 2);
+      ctx.font = 'bold 18px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('Milky Way below horizon', w / 2, h / 2);
+      ctx.textAlign = 'left';
     }
 
-    // Time label
-    ctx.fillStyle = 'rgba(100, 200, 255, 0.7)';
-    ctx.font = '12px monospace';
-    ctx.fillText(`Time: +${timeOffset}h`, 10, 40);
+    // HUD overlay
+    ctx.fillStyle = 'rgba(100, 200, 255, 0.5)';
+    ctx.font = '11px monospace';
+    ctx.fillText(`Heading: ${Math.round(deviceHeading)}°`, 10, 20);
+    ctx.fillText(`Time: +${timeOffset}h`, 10, 35);
   }, [cameraActive, gcPosition, deviceOrientation, timeOffset]);
 
   if (cameraError) {
