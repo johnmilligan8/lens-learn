@@ -154,17 +154,37 @@ export default function Layout({ children, currentPageName }) {
     );
   }
 
-  const NavLink = ({ item }) => {
+  const NavLink = ({ item, variant = 'sidebar' }) => {
     const locked = item.paidOnly && !isSubscribed;
+    const isActive = currentPageName === item.page;
+    
+    if (variant === 'tab') {
+      // Bottom tab bar style
+      return (
+        <Link
+          to={locked ? createPageUrl('PaymentGate') : createPageUrl(item.page)}
+          draggable={false}
+          className={`flex-1 flex flex-col items-center justify-center py-3 gap-1 transition-colors relative ${isActive ? 'text-red-400' : 'text-slate-500'}`}
+          style={{ WebKitTapHighlightColor: 'transparent', minHeight: 64 }}
+        >
+          <item.icon className="w-6 h-6 flex-shrink-0" />
+          <span className="text-[11px] font-bold leading-none text-center">{item.label}</span>
+          {locked && <Sparkles className="w-2.5 h-2.5 text-yellow-500 absolute top-1 right-2" />}
+          {isActive && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-red-500" />}
+        </Link>
+      );
+    }
+    
+    // Sidebar style
     return (
       <Link
         to={locked ? createPageUrl('PaymentGate') : createPageUrl(item.page)}
-        onClick={() => setMobileOpen(false)}
+        onClick={() => setSidebarOpen(false)}
         className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${
-            currentPageName === item.page
-              ? 'bg-red-600/20 text-red-400 border border-red-600/30'
-              : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
-          }`}
+          isActive
+            ? 'bg-red-600/20 text-red-400 border border-red-600/30'
+            : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
+        }`}
       >
         <item.icon className="w-5 h-5 flex-shrink-0" />
         <span className="font-medium">{item.label}</span>
@@ -174,7 +194,7 @@ export default function Layout({ children, currentPageName }) {
         {locked && (
           <Sparkles className="w-3.5 h-3.5 ml-auto text-yellow-500 flex-shrink-0" />
         )}
-        {currentPageName === item.page && !item.freeTag && !locked && (
+        {isActive && !item.freeTag && !locked && (
           <ChevronRight className="w-4 h-4 ml-auto text-red-400" />
         )}
       </Link>
