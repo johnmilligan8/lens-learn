@@ -11,6 +11,18 @@ import {
   Upload, FileCheck, Download, X, Lock, Sparkles, Users, ShieldCheck
 } from 'lucide-react';
 
+// DSLR-only items that should be grayed out in Smartphone mode
+const DSLR_ONLY_ITEMS = [
+  'dew heater & controller',
+  'star tracker mount',
+  'intervalometer',
+  'cable release',
+  'remote trigger',
+  'focus stacking',
+  'panorama stacking',
+  'focus breathing',
+];
+
 const GEAR_PRESETS = {
   photographer: [
     {
@@ -518,12 +530,21 @@ _________________________________________________________________
 
                 {expandedCategories[catIdx] && (
                   <div className="pl-2 space-y-1.5 mt-1.5 border-l border-slate-700">
-                    {category.items.map((item, itemIdx) => (
-                      <div key={item.id} className="space-y-1">
+                    {category.items.map((item, itemIdx) => {
+                      const isDsrlOnlyItem = shooterMode === 'smartphone' && 
+                        DSLR_ONLY_ITEMS.some(dsrlItem => item.name.toLowerCase().includes(dsrlItem.toLowerCase()));
+
+                      return (
+                      <div key={item.id} className={`space-y-1 ${isDsrlOnlyItem ? 'opacity-40' : ''}`}>
                         <div className="flex items-center gap-2">
                           <button
-                            onClick={() => toggleItem(catIdx, itemIdx)}
-                            className="flex-shrink-0 text-amber-400 hover:text-amber-300 transition-colors"
+                            onClick={() => !isDsrlOnlyItem && toggleItem(catIdx, itemIdx)}
+                            disabled={isDsrlOnlyItem}
+                            className={`flex-shrink-0 transition-colors ${
+                              isDsrlOnlyItem 
+                                ? 'text-slate-500 cursor-not-allowed' 
+                                : 'text-amber-400 hover:text-amber-300'
+                            }`}
                           >
                             {item.packed ? (
                               <CheckCircle2 className="w-4 h-4" />
@@ -533,11 +554,16 @@ _________________________________________________________________
                           </button>
                           <span
                             className={`text-sm flex-1 ${
-                              item.packed ? 'text-slate-500 line-through' : 'text-slate-300'
+                              isDsrlOnlyItem
+                                ? 'text-slate-500 line-through'
+                                : item.packed ? 'text-slate-500 line-through' : 'text-slate-300'
                             }`}
                           >
                             {item.name}
                           </span>
+                          {isDsrlOnlyItem && (
+                            <Badge className="bg-slate-700/60 text-slate-400 text-[9px]">DSLR only</Badge>
+                          )}
                           {item.custom && (
                             <button
                               onClick={() => deleteCustomItem(catIdx, itemIdx)}
@@ -550,8 +576,9 @@ _________________________________________________________________
                         {item.notes && (
                           <p className="text-xs text-slate-500 ml-6">{item.notes}</p>
                         )}
-                      </div>
-                    ))}
+                        </div>
+                        );
+                        })}
 
                     {/* Add custom item for this category */}
                     {newItemCategory === catIdx ? (
