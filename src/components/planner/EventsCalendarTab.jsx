@@ -7,7 +7,7 @@ import AuroraView from '@/components/aurora/AuroraView';
 import AuroraPredictionCard from '@/components/events/AuroraPredictionCard';
 import {
   Calendar, Star, Sparkles, Moon, Zap, Eye,
-  AlertCircle, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Filter, X
+  AlertCircle, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Filter, X, MapPin
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
