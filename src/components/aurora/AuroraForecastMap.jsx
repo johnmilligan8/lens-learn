@@ -6,11 +6,12 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 
 // ── Color scale helpers ────────────────────────────────────────────────────
+// Lower thresholds — NOAA OVATION values are often 1–30 even during active events
 function auroraColor(probability) {
-  if (probability >= 70) return { hex: '#ef4444', label: 'Very Strong', level: 4 };
-  if (probability >= 45) return { hex: '#f97316', label: 'Strong', level: 3 };
-  if (probability >= 20) return { hex: '#eab308', label: 'Moderate', level: 2 };
-  if (probability >= 5)  return { hex: '#22c55e', label: 'Low', level: 1 };
+  if (probability >= 50) return { hex: '#ef4444', label: 'Very Strong', level: 4 };
+  if (probability >= 25) return { hex: '#f97316', label: 'Strong', level: 3 };
+  if (probability >= 10) return { hex: '#eab308', label: 'Moderate', level: 2 };
+  if (probability >= 1)  return { hex: '#22c55e', label: 'Low', level: 1 };
   return null;
 }
 
