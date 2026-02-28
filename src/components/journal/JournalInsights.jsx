@@ -63,12 +63,20 @@ export default function JournalInsights({ sessions }) {
     insights.push({ icon: '🌌', text: `${topEvent[0]} is your focus (${topEvent[1]}× sessions). You're building expertise here.` });
   }
 
-  // Moon & cloud patterns
+  // Moon & cloud patterns + Bortle success
   if (limiterCount.moon >= 2) {
     insights.push({ icon: '🌕', text: 'Moon interference is recurring. Use Sky Planner\'s new moon phase filter to avoid clashes.' });
   }
   if (limiterCount.clouds >= 2) {
     insights.push({ icon: '☁️', text: 'Clouds keep blocking you. Improve location scouting or book during forecast clear windows.' });
+  }
+  
+  // Bortle-based success pattern (simple heuristic from limiting factors)
+  const cloudBlocks = limiterCount.clouds || 0;
+  const haseBlocks = limiterCount.haze || 0;
+  const successSessions = complete.filter(s => s.outcome === 'nailed').length;
+  if (successSessions >= 3 && (cloudBlocks + haseBlocks) <= complete.length * 0.25) {
+    insights.push({ icon: '🌌', text: 'You succeed most in dark, clear skies (Bortle 3–4 estimated). Plan expeditions during new moon phases.' });
   }
 
   // Growth milestones
