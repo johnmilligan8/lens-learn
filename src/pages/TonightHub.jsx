@@ -386,41 +386,37 @@ export default function TonightHub() {
         </div>
       )}
 
-      {/* Curriculum cross-link tip */}
+      {/* Mode-aware tip — one card, context-driven */}
       {coords && (
-        <Card className="bg-[#1a1a1a] border border-emerald-500/20 p-4 mt-4">
-          <div className="flex items-start gap-2">
-            <span className="text-emerald-400 text-base leading-none mt-0.5">📚</span>
-            <div>
-              <p className="text-emerald-300 text-xs font-bold mb-1">From the Free Course — Module 1</p>
+        <Card className="bg-[#1a1a1a] border border-white/8 p-4 mt-4">
+          {mode === 'photographer' && (
+            <>
+              <p className="text-slate-300 text-xs font-semibold mb-1">📷 Tonight's Focus — DSLR/Mirrorless</p>
               <p className="text-slate-400 text-xs leading-relaxed">
                 {(() => {
                   const { illum } = getMoonPhase();
-                  if (illum < 10) return `Moon is ${illum}% — perfect Milky Way conditions. This is a "go" night. Open Sky Planner to find the galactic core peak time.`;
-                  if (illum < 30) return `Moon is ${illum}% — still workable. Aim for the window before moonrise. Check galactic core timing in Sky Planner.`;
-                  return `Moon is ${illum}% — too bright for Milky Way. Use this time to scout your location in daylight and plan a future shoot.`;
+                  if (illum < 15) return `Moon at ${illum}% — prime Milky Way window. Target ISO 3200, f/2.8, 20s. Use Sky Planner to confirm galactic core peak time.`;
+                  if (illum < 40) return `Moon at ${illum}% — workable. Shoot before moonrise. Check Sky Planner for the dark window.`;
+                  return `Moon at ${illum}% — skip the Milky Way tonight. Great for moonlit landscapes or aurora if KP is elevated. Try a 5–15s exposure at ISO 800.`;
                 })()}
               </p>
-              <Link to={createPageUrl('FreeCourse')} className="text-emerald-400 text-xs font-semibold hover:text-emerald-300 mt-1 inline-block">
-                Continue Free Course →
-              </Link>
-            </div>
-          </div>
-        </Card>
-      )}
-
-      {/* Mode-specific tip */}
-      {coords && mode === 'smartphone' && (
-        <Card className="bg-[#1a1a1a] border border-white/8 p-4 mt-4">
-          <p className="text-slate-300 text-xs font-semibold mb-1">📱 Smartphone Tip for Tonight</p>
-          <p className="text-slate-400 text-xs leading-relaxed">Set your phone on a stable surface and use Night Mode. Avoid holding the phone — even breathing causes blur. Use a timer or volume button as shutter.</p>
-        </Card>
-      )}
-
-      {coords && mode === 'experience' && (
-        <Card className="bg-[#1a1a1a] border border-white/8 p-4 mt-4">
-          <p className="text-slate-300 text-xs font-semibold mb-1">👁 Sky Experience Tip</p>
-          <p className="text-slate-400 text-xs leading-relaxed">Allow 20–30 minutes for your eyes to dark-adapt. Avoid all white lights. Look slightly beside your target for faint objects — your peripheral vision sees dimmer light.</p>
+            </>
+          )}
+          {mode === 'smartphone' && (
+            <>
+              <p className="text-slate-300 text-xs font-semibold mb-1">📱 Tonight's Focus — Smartphone</p>
+              <p className="text-slate-400 text-xs leading-relaxed">Set phone on a solid surface — never handheld. Enable Night Mode and use the volume button or a timer to fire the shutter. Stay dark-adapted by avoiding the screen between shots.</p>
+            </>
+          )}
+          {mode === 'experience' && (
+            <>
+              <p className="text-slate-300 text-xs font-semibold mb-1">👁 Tonight's Focus — Sky Experience</p>
+              <p className="text-slate-400 text-xs leading-relaxed">Give your eyes 20–30 minutes to dark-adapt fully. Use averted vision (look slightly beside your target) for faint objects. Avoid all white light — red torch only.</p>
+            </>
+          )}
+          <Link to={createPageUrl('PlannerTool')} className="text-red-400 text-xs font-semibold hover:text-red-300 mt-2 inline-block">
+            Plan in Sky Planner →
+          </Link>
         </Card>
       )}
 
