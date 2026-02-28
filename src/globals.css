@@ -5,6 +5,18 @@
 @tailwind utilities;
 
 :root {
+  /* Override default light theme to dark */
+  --background: 0 0% 4%;
+  --foreground: 0 0% 95%;
+  --card: 0 0% 7%;
+  --card-foreground: 0 0% 95%;
+  --popover: 0 0% 7%;
+  --popover-foreground: 0 0% 95%;
+  --muted: 0 0% 10%;
+  --muted-foreground: 0 0% 60%;
+  --border: 0 0% 15%;
+  --input: 0 0% 15%;
+
   /* Uncharted.net brand colors */
   --uc-red: #cc0000;
   --uc-red-hover: #e60000;
