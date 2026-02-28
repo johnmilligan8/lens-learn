@@ -430,7 +430,7 @@ export default function EventsCalendarTab({ isSubscribed, userProfile }) {
                 <Sparkles className="w-3.5 h-3.5 text-red-400" /> Upcoming
               </p>
               <div className="space-y-2">
-                {upcoming.map(e => <EventCard key={e.id} event={e} expanded={expanded} onToggle={id => setExpanded(expanded === id ? null : id)} />)}
+                {upcoming.map(e => <EventCard key={e.id} event={e} expanded={expanded} onToggle={id => setExpanded(expanded === id ? null : id)} userProfile={userProfileRef.current} />)}
               </div>
             </div>
           )}
