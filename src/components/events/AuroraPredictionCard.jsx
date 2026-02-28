@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Zap, Cloud, Moon, Eye, RefreshCw, MapPin, Loader, WifiOff, TrendingUp, Clock, AlertTriangle } from 'lucide-react';
-import { fetchNoaaKpForecast, fetchCurrentKp, fetchNoaaHourlyKp, fetchHourlyCloudCover } from '@/functions/fetchAuroraForecast';
-import { fetchCloudCoverForecast } from '@/functions/fetchWeatherForecast';
 import { createPageUrl } from '@/utils';
 import { base44 } from '@/api/base44Client';
 
