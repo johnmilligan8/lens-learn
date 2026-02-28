@@ -298,6 +298,31 @@ export default function TonightHub() {
         </Card>
       )}
 
+      {/* ── GO / NO-GO PILL ── */}
+      {coords && (() => {
+        const { illum } = getMoonPhase();
+        const topEvent = events[0];
+        const goNight = topEvent && ['excellent','good'].includes(topEvent.viability) && illum < 60;
+        const label = goNight ? '✅ GO — Conditions Favour a Shoot Tonight' : '⚠️ MARGINAL — Check Conditions Before Committing';
+        const sub = goNight
+          ? `${topEvent.title} looks promising. ${illum}% moon.`
+          : `Moon at ${illum}%. Review ranked events below before deciding.`;
+        return (
+          <div className={`rounded-2xl px-5 py-4 mb-6 flex items-center justify-between gap-3 border ${goNight ? 'bg-emerald-900/25 border-emerald-500/30' : 'bg-yellow-900/20 border-yellow-600/25'}`}>
+            <div>
+              <p className={`font-black text-base ${goNight ? 'text-emerald-300' : 'text-yellow-300'}`}>{label}</p>
+              <p className="text-slate-400 text-xs mt-0.5">{sub}</p>
+            </div>
+            <Link
+              to={createPageUrl('PlannerTool') + `?date=${today}`}
+              className="flex-shrink-0 text-xs font-bold text-red-400 hover:text-red-300 border border-red-600/30 rounded-lg px-3 py-1.5 whitespace-nowrap transition-colors hover:border-red-500/50"
+            >
+              Plan This Night →
+            </Link>
+          </div>
+        );
+      })()}
+
       {/* Events */}
       {!coords ? (
         <div className="text-center py-20">
