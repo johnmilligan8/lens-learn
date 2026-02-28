@@ -180,8 +180,8 @@ export default function Layout({ children, currentPageName }) {
         {[
           { icon: Home, label: 'Home', page: 'Dashboard' },
           { icon: Rocket, label: 'Tonight', page: 'TonightHub' },
+          { icon: Smartphone, label: 'Pointer', page: 'StarPointer' },
           { icon: MapPin, label: 'Planner', page: 'PlannerTool', paidOnly: true },
-          { icon: Zap, label: 'Field', page: 'FieldMode', paidOnly: true },
           { icon: User, label: 'Profile', page: 'Profile' },
         ].map(item => {
           const locked = item.paidOnly && !isSubscribed;
