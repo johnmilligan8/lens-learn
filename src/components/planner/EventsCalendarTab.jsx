@@ -266,6 +266,15 @@ function EventCard({ event, expanded, onToggle, userProfile }) {
               </div>
             </div>
           )}
+          {locationNote && (
+            <div className="flex items-start gap-2">
+              <MapPin className="w-3.5 h-3.5 text-red-400 flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="text-white text-xs font-medium mb-0.5">Your Location</p>
+                <p className="text-slate-300 text-xs">{locationNote}</p>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </Card>
