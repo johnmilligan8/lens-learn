@@ -338,9 +338,9 @@ export default function TonightHub() {
 
            {/* Aurora Tonight — real NOAA + weather data */}
            <AuroraPredictionCard
-             userLat={coords?.lat ?? null}
-             userLon={coords?.lon ?? null}
-             locationName={location || 'Salt Lake City, UT'}
+             userLat={coords?.lat ?? profile?.home_lat ?? null}
+             userLon={coords?.lon ?? profile?.home_lon ?? null}
+             locationName={location || profile?.home_location || null}
            />
 
            {/* Aurora Intensity Map — color-coded forecast */}
