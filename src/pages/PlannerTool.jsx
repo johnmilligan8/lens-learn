@@ -909,8 +909,43 @@ export default function PlannerTool() {
                 </>
               )}
 
+              {/* No Camera Mode: Observation tips */}
+              {shooterMode === 'experience' && results && (
+                <Card className="bg-emerald-900/20 border border-emerald-500/30 p-6">
+                  <h3 className="text-white font-semibold mb-4 flex items-center gap-2 text-lg">
+                    <Eye className="w-5 h-5 text-emerald-400" /> Pure Sky Experience
+                  </h3>
+                  <p className="text-slate-300 text-sm mb-4">No gear needed — just enjoy the night sky. Here's what to look for:</p>
+                  <ul className="space-y-3">
+                    <li className="flex gap-3 text-sm text-slate-300">
+                      <span className="text-emerald-400 font-bold flex-shrink-0">•</span>
+                      <span><strong>Clear horizon:</strong> Find a dark, open area away from streetlights. Give eyes 20–30 min to adapt to darkness.</span>
+                    </li>
+                    <li className="flex gap-3 text-sm text-slate-300">
+                      <span className="text-emerald-400 font-bold flex-shrink-0">•</span>
+                      <span><strong>Milky Way band:</strong> Look south for the galactic core rising after {results.gcData.riseTime ? `~${formatHour(results.gcData.riseTime)}` : 'sunset'}. It appears as a faint, cloudy band.</span>
+                    </li>
+                    <li className="flex gap-3 text-sm text-slate-300">
+                      <span className="text-emerald-400 font-bold flex-shrink-0">•</span>
+                      <span><strong>Aurora activity:</strong> If you're at high latitude, look north for green curtains or glow — {results.gcData.peakAlt}° altitude is ideal.</span>
+                    </li>
+                    <li className="flex gap-3 text-sm text-slate-300">
+                      <span className="text-emerald-400 font-bold flex-shrink-0">•</span>
+                      <span><strong>Meteor streaks:</strong> Watch for bright flashes across the sky — especially during known meteor showers.</span>
+                    </li>
+                    <li className="flex gap-3 text-sm text-slate-300">
+                      <span className="text-emerald-400 font-bold flex-shrink-0">•</span>
+                      <span><strong>Bright planets & stars:</strong> Use this chart to know what's visible. Venus & Jupiter can be stunning.</span>
+                    </li>
+                  </ul>
+                  <div className="mt-4 pt-4 border-t border-emerald-500/20">
+                    <p className="text-slate-400 text-xs">💡 <strong>Want to capture photos?</strong> Most modern phones can take decent night sky shots — switch to Smartphone mode in Mission Control to get camera tips.</p>
+                  </div>
+                </Card>
+              )}
+
               {/* Exposure Calculator - DSLR only */}
-              {shooterMode !== 'smartphone' && (
+              {shooterMode === 'photographer' && (
                 <ExposureCalculator gear={gear} results={results} date={date} />
               )}
 
