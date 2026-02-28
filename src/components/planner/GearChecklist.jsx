@@ -143,36 +143,38 @@ const GEAR_PRESETS = {
     }
   ],
   experience: [
-    {
-      name: 'Visual Aids',
-      items: [
-        { name: 'Red/white headlamp', id: 'ex1' },
-        { name: 'Star chart or app', id: 'ex2' }
-      ]
-    },
-    {
-      name: 'Comfort',
-      items: [
-        { name: 'Warm layers & hat', id: 'exc1' },
-        { name: 'Blanket/sleeping bag', id: 'exc2' },
-        { name: 'Snacks & hot drink', id: 'exc3' },
-        { name: 'Backpack', id: 'exc4' }
-      ]
-    },
-    {
-      name: 'Optional Gear',
-      items: [
-        { name: 'Smartphone for photos/apps', id: 'exo1' },
-        { name: 'Binoculars', id: 'exo2' }
-      ]
-    }
+   {
+     name: 'Viewing Essentials',
+     items: [
+       { name: 'Red/white headlamp (preserve night vision)', id: 'ex1' },
+       { name: 'Star chart or sky map app', id: 'ex2' }
+     ]
+   },
+   {
+     name: 'Comfort & Warmth',
+     items: [
+       { name: 'Warm jacket or layers', id: 'exc1' },
+       { name: 'Hat or beanie', id: 'exc2' },
+       { name: 'Blanket or sleeping bag', id: 'exc3' },
+       { name: 'Snacks & hot drink/water', id: 'exc4' },
+       { name: 'Comfortable chair (optional)', id: 'exc5' }
+     ]
+   },
+   {
+     name: 'Optional Viewing Aids',
+     items: [
+       { name: 'Binoculars for deeper sky objects', id: 'exo1' },
+       { name: 'Small telescope (if you have one)', id: 'exo2' },
+       { name: 'Smartphone for star apps or basic photos', id: 'exo3' }
+     ]
+   }
   ]
 };
 
 const MODE_LABELS = {
   photographer: { emoji: '📷', label: 'DSLR / Mirrorless', color: 'text-red-400', badge: 'bg-red-900/30 border-red-600/30' },
   smartphone: { emoji: '📱', label: 'Smartphone', color: 'text-blue-400', badge: 'bg-blue-900/30 border-blue-600/30' },
-  experience: { emoji: '👁️', label: 'Sky Experience', color: 'text-emerald-400', badge: 'bg-emerald-900/30 border-emerald-600/30' },
+  experience: { emoji: '👁️', label: 'No Camera Sky Experience', color: 'text-emerald-400', badge: 'bg-emerald-900/30 border-emerald-600/30' },
 };
 
 export default function GearChecklist({ userEmail, shooterMode, onKitLoaded, isPaid }) {
@@ -644,7 +646,7 @@ _________________________________________________________________
             </div>
           )}
 
-          {/* General Notes Section */}
+          {/* General Notes Section — labeled differently for experience mode */}
           <div className="mt-4 pt-4 border-t border-slate-700">
             {!showGeneralNotes ? (
               <button
@@ -652,7 +654,7 @@ _________________________________________________________________
                 className="w-full text-left p-2.5 rounded-lg bg-slate-800/60 hover:bg-slate-800 transition-colors"
               >
                 <span className="text-slate-300 font-medium text-sm flex items-center gap-2">
-                   <FileText className="w-4 h-4 text-red-400" /> Overall Prep Notes
+                   <FileText className="w-4 h-4 text-red-400" /> {activeKit?.shooter_mode === 'experience' ? 'Observation Notes' : 'Overall Prep Notes'}
                 </span>
                 {activeKit?.general_notes && (
                   <p className="text-xs text-slate-500 mt-1 line-clamp-1">{activeKit.general_notes}</p>
@@ -660,9 +662,13 @@ _________________________________________________________________
               </button>
             ) : (
               <div className="space-y-2">
-                <label className="text-slate-300 text-xs uppercase mb-1 block font-semibold">Prep Notes</label>
+                <label className="text-slate-300 text-xs uppercase mb-1 block font-semibold">
+                  {activeKit?.shooter_mode === 'experience' ? 'Observation Notes' : 'Prep Notes'}
+                </label>
                 <Textarea
-                  placeholder="e.g., Test batteries night before, Bring warm layers for Antelope Island"
+                  placeholder={activeKit?.shooter_mode === 'experience' 
+                    ? "e.g., Looking for Milky Way band, plan to dark-adapt 20-30 min, bring red light for preserving night vision"
+                    : "e.g., Test batteries night before, Bring warm layers for Antelope Island"}
                   defaultValue={activeKit?.general_notes || ''}
                   className="bg-slate-800 border-slate-700 text-white text-sm min-h-20 p-2"
                 />
