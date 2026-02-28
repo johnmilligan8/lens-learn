@@ -213,7 +213,7 @@ export default function GearChecklist({ userEmail, shooterMode, onKitLoaded, isP
     const newKit = await base44.entities.GearKit.create({
       user_email: userEmail,
       kit_name: newKitName,
-      shooter_mode: shooterMode,
+      shooter_mode: effectiveMode,
       categories: presetCategories.map(cat => ({
         name: cat.name,
         items: cat.items.map(item => ({ ...item, packed: false, notes: '' }))
