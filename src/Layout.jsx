@@ -24,17 +24,21 @@ import {
 } from 'lucide-react';
 import NightModeToggle from '@/components/ui/NightModeToggle';
 
-const navItems = [
-  { icon: Home, label: 'Mission Control', page: 'Dashboard' },
+// Primary bottom navigation (5 main tabs)
+const primaryNavItems = [
+  { icon: Home, label: 'Home', page: 'Dashboard' },
   { icon: Rocket, label: 'Tonight?', page: 'TonightHub' },
+  { icon: MapPin, label: 'Planner', page: 'PlannerTool', paidOnly: true },
+  { icon: Zap, label: 'Field', page: 'FieldMode', paidOnly: true },
+  { icon: User, label: 'Profile', page: 'Profile' },
+];
+
+// Secondary navigation (accessible via sidebar/menu)
+const secondaryNavItems = [
   { icon: Smartphone, label: 'Star Pointer', page: 'StarPointer' },
   { icon: Star, label: 'Free Starter Course', page: 'FreeCourse', freeTag: true },
-  { icon: Zap, label: 'Field Mode', page: 'FieldMode', paidOnly: true },
-  { icon: MapPin, label: 'Sky Planner', page: 'PlannerTool', paidOnly: true },
   { icon: BookOpen, label: 'Journal', page: 'Journal' },
-  // Cosmic Events removed — merged into Sky Planner → Events & Calendar tab
   { icon: Users, label: 'Explorer Gallery', page: 'CommunityGallery' },
-  { icon: User, label: 'My Profile', page: 'Profile' },
 ];
 
 export default function Layout({ children, currentPageName }) {
