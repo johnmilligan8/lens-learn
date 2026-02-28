@@ -10,7 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Telescope, Settings, Eye, MapPin, Palette, Sparkles,
-  ChevronRight, Rocket, Lock, Zap, ChevronDown
+  ChevronRight, Rocket, Lock, Zap, ChevronDown, Smartphone, AlertCircle
 } from 'lucide-react';
 
 const MODULE_ICONS = { Telescope, Settings, Eye, MapPin, Palette, Sparkles };
@@ -42,6 +42,8 @@ export default function Dashboard() {
   const [profile, setProfile] = useState(null);
   const [modeModalOpen, setModeModalOpen] = useState(false);
   const [savingMode, setSavingMode] = useState(false);
+  const [phoneModelExpanded, setPhoneModelExpanded] = useState(false);
+  const [savingPhone, setSavingPhone] = useState(false);
   const navigate = useNavigate();
 
   const loadData = useCallback(async () => {
@@ -91,6 +93,20 @@ export default function Dashboard() {
     setSavingMode(false);
   };
 
+  const handleSavePhoneModel = async (phoneModelId) => {
+    setSavingPhone(true);
+    const data = { user_email: user.email, phone_model: phoneModelId };
+    if (profile) {
+      await base44.entities.UserProfile.update(profile.id, data);
+      setProfile({ ...profile, ...data });
+    } else {
+      const created = await base44.entities.UserProfile.create({ ...data, onboarding_complete: true });
+      setProfile(created);
+    }
+    setSavingPhone(false);
+    setPhoneModelExpanded(false);
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -120,11 +136,61 @@ export default function Dashboard() {
                 {modeInfo.emoji} Change
               </button>
             </div>
-          </div>
+            </div>
 
+            {/* Phone Model Selector — Smartphone mode only */}
+            {profile?.shooter_mode === 'smartphone' && (
+             <Card className="bg-blue-900/20 border border-blue-500/30 p-4">
+               <button
+                 onClick={() => setPhoneModelExpanded(!phoneModelExpanded)}
+                 className="w-full flex items-center justify-between text-left"
+               >
+                 <div className="flex items-center gap-2">
+                   <Smartphone className="w-4 h-4 text-blue-400" />
+                   <span className="text-white text-sm font-semibold">Select your phone model</span>
+                 </div>
+                 <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${phoneModelExpanded ? 'rotate-180' : ''}`} />
+               </button>
 
+               {profile?.phone_model && !phoneModelExpanded && (
+                 <p className="text-xs text-blue-300 mt-1">
+                   ✓ {['iphone14', 'iphone15', 'iphone16', 'pixel8', 'pixel9', 'galaxy23', 'galaxy24', 'ipad', 'unsure'].includes(profile.phone_model) ? 'Configured' : 'Not set'}
+                 </p>
+               )}
 
-          {/* ── 6 LARGE TILES (PhotoPills-like) ── */}
+               {phoneModelExpanded && (
+                 <div className="mt-3 space-y-2">
+                   <p className="text-xs text-blue-200 mb-2">Better guidance for your device.</p>
+                   {[
+                     { id: 'iphone14', label: 'iPhone 14 Pro/Max' },
+                     { id: 'iphone15', label: 'iPhone 15 Pro/Max' },
+                     { id: 'iphone16', label: 'iPhone 16 Pro/Max' },
+                     { id: 'pixel8', label: 'Pixel 8/8 Pro' },
+                     { id: 'pixel9', label: 'Pixel 9/9 Pro' },
+                     { id: 'galaxy23', label: 'Galaxy S23 Ultra' },
+                     { id: 'galaxy24', label: 'Galaxy S24 Ultra' },
+                     { id: 'ipad', label: 'iPad (Air/Pro)' },
+                     { id: 'unsure', label: 'Not sure / Other' },
+                   ].map(phone => (
+                     <button
+                       key={phone.id}
+                       onClick={() => handleSavePhoneModel(phone.id)}
+                       disabled={savingPhone}
+                       className={`w-full text-left p-2 rounded-lg text-sm transition-colors ${
+                         profile?.phone_model === phone.id
+                           ? 'bg-blue-600/40 text-blue-200 border border-blue-500/40'
+                           : 'bg-slate-800/30 text-slate-300 hover:bg-slate-800/50'
+                       }`}
+                     >
+                       {phone.label} {profile?.phone_model === phone.id && '✓'}
+                     </button>
+                   ))}
+                 </div>
+               )}
+             </Card>
+            )}
+
+            {/* ── 6 LARGE TILES (PhotoPills-like) ── */}
           <div className="grid grid-cols-1 gap-4">
             {/* Tonight? — top priority */}
             <Link to={createPageUrl('TonightHub')} className="group">
