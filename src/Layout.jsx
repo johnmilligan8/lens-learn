@@ -32,7 +32,6 @@ const navItems = [
   { icon: Zap, label: 'Field Mode', page: 'FieldMode', paidOnly: true },
   { icon: MapPin, label: 'Sky Planner', page: 'PlannerTool', paidOnly: true },
   { icon: BookOpen, label: 'Journal', page: 'Journal' },
-  // Cosmic Events removed — merged into Sky Planner → Events & Calendar tab
   { icon: Users, label: 'Explorer Gallery', page: 'CommunityGallery' },
   { icon: User, label: 'My Profile', page: 'Profile' },
 ];
@@ -101,7 +100,6 @@ export default function Layout({ children, currentPageName }) {
 
   useEffect(() => {
     if (!loading && user) {
-      // Free pages accessible to all authenticated users
       const freePages = ['PaymentGate', 'Profile', 'Dashboard', 'CommunityGallery', 'FreeCourse', 'Onboarding', 'TonightHub', 'StarPointer'];
       if (!isSubscribed && !freePages.includes(currentPageName)) {
         navigate(createPageUrl('Dashboard'));
@@ -109,25 +107,19 @@ export default function Layout({ children, currentPageName }) {
     }
   }, [loading, user, isSubscribed, currentPageName]);
 
-  // Pages that are "root" tabs — all others are child screens
   const rootPages = ['Dashboard', 'TonightHub', 'StarPointer', 'PlannerTool', 'CommunityGallery', 'Profile',
     'FreeCourse', 'InstructorDashboard', 'PaymentGate', 'Onboarding', 'FieldMode', 'Journal'];
   const isChildScreen = !rootPages.includes(currentPageName);
 
-  // Track last visited path per tab
   const tabHistory = React.useRef({});
-  const tabRoots = ['Dashboard', 'TonightHub', 'PlannerTool', 'CommunityGallery', 'Profile'];
+  const tabRoots = ['Dashboard', 'TonightHub', 'PlannerTool', 'FieldMode', 'Profile'];
 
-  // On every location change, update the tab history for the current root tab
   useEffect(() => {
     const matchedTab = tabRoots.find(tab => {
       const tabUrl = createPageUrl(tab);
       return location.pathname === tabUrl || location.pathname.startsWith(tabUrl + '?') || location.pathname.startsWith(tabUrl + '/');
     });
-    // If current page is a child, associate it with the closest tab root
-    if (!matchedTab) {
-      // find which tab "owns" this child via currentPageName heuristic — skip
-    } else {
+    if (matchedTab) {
       tabHistory.current[matchedTab] = location.pathname + location.search;
     }
   }, [location]);
@@ -151,66 +143,32 @@ export default function Layout({ children, currentPageName }) {
     );
   }
 
-  const NavLink = ({ item }) => {
-    const locked = item.paidOnly && !isSubscribed;
-    return (
-      <Link
-        to={locked ? createPageUrl('PaymentGate') : createPageUrl(item.page)}
-        onClick={() => setMobileOpen(false)}
-        className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${
-            currentPageName === item.page
-              ? 'bg-red-600/20 text-red-400 border border-red-600/30'
-              : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
-          }`}
-      >
-        <item.icon className="w-5 h-5 flex-shrink-0" />
-        <span className="font-medium">{item.label}</span>
-        {item.freeTag && (
-          <span className="ml-auto text-[10px] bg-emerald-600 text-white px-1.5 py-0.5 rounded font-bold">FREE</span>
-        )}
-        {locked && (
-          <Sparkles className="w-3.5 h-3.5 ml-auto text-yellow-500 flex-shrink-0" />
-        )}
-        {currentPageName === item.page && !item.freeTag && !locked && (
-          <ChevronRight className="w-4 h-4 ml-auto text-red-400" />
-        )}
-      </Link>
-    );
-  };
-
   return (
     <div className="min-h-screen cosmic-bg flex flex-col">
-      {/* Desktop + Mobile Top Bar */}
-      <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-[#111111]/98 backdrop-blur-md border-b border-white/5 flex items-center px-4 justify-between select-none"
+      {/* Top Bar (all devices) */}
+      <header className="fixed top-0 left-0 right-0 z-40 bg-[#111111]/98 backdrop-blur-md border-b border-white/5 flex items-center px-4 justify-between select-none"
         style={{ height: 'calc(3.5rem + env(safe-area-inset-top))', paddingTop: 'env(safe-area-inset-top)', paddingLeft: 'max(1rem, env(safe-area-inset-left))', paddingRight: 'max(1rem, env(safe-area-inset-right))' }}>
-        {isChildScreen ? (
-          <Button variant="ghost" size="sm" className="text-slate-300 -ml-2 gap-1" onClick={() => navigate(-1)}>
-            <ChevronLeft className="w-5 h-5" />
-            <span className="text-sm font-medium">Back</span>
-          </Button>
-        ) : (
-          <Link to={createPageUrl('Dashboard')} className="flex items-center gap-2">
-              <img
-                src="https://uncharted.net/wp-content/uploads/2022/09/Uncharted-Logo-Horizontal-White-e1664469570536.png"
-                alt="UNCHARTED"
-                className="h-7 w-auto object-contain"
-                style={{ maxWidth: 130 }}
-                onError={e => { e.target.style.display='none'; e.target.nextSibling.style.display='flex'; }}
-              />
-              <span style={{display:'none'}} className="font-black text-white text-lg tracking-tight">UNCHARTED</span>
-            </Link>
-        )}
+        <Link to={createPageUrl('Dashboard')} className="flex items-center gap-2">
+          <img
+            src="https://uncharted.net/wp-content/uploads/2022/09/Uncharted-Logo-Horizontal-White-e1664469570536.png"
+            alt="UNCHARTED"
+            className="h-7 w-auto object-contain"
+            style={{ maxWidth: 130 }}
+            onError={e => { e.target.style.display='none'; e.target.nextSibling.style.display='flex'; }}
+          />
+          <span style={{display:'none'}} className="font-black text-white text-lg tracking-tight">UNCHARTED</span>
+        </Link>
         <div className="flex items-center gap-2">
           <NightModeToggle nightMode={nightMode} onToggle={toggleNightMode} compact />
-          <Button variant="ghost" size="icon" className="text-slate-300" onClick={handleLogout}>
+          <Button variant="ghost" size="icon" className="text-slate-300 hover:text-red-400" onClick={handleLogout}>
             <LogOut className="w-5 h-5" />
           </Button>
         </div>
-      </div>
+      </header>
 
-      {/* Mobile Bottom Tab Bar */}
+      {/* Bottom Tab Bar (5 icons: Home, Tonight, Planner, Field, Profile) */}
       <nav
-        className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#111111]/98 backdrop-blur-md border-t border-white/5 flex items-start select-none"
+        className="fixed bottom-0 left-0 right-0 z-50 bg-[#111111]/98 backdrop-blur-md border-t border-white/5 flex items-start select-none"
         style={{
           paddingBottom: 'env(safe-area-inset-bottom)',
           paddingLeft: 'env(safe-area-inset-left)',
@@ -222,9 +180,9 @@ export default function Layout({ children, currentPageName }) {
         {[
           { icon: Home, label: 'Home', page: 'Dashboard' },
           { icon: Rocket, label: 'Tonight', page: 'TonightHub' },
-          { icon: Smartphone, label: 'Sky', page: 'StarPointer' },
           { icon: MapPin, label: 'Planner', page: 'PlannerTool', paidOnly: true },
-          { icon: Users, label: 'Gallery', page: 'CommunityGallery' },
+          { icon: Zap, label: 'Field', page: 'FieldMode', paidOnly: true },
+          { icon: User, label: 'Profile', page: 'Profile' },
         ].map(item => {
           const locked = item.paidOnly && !isSubscribed;
           const active = currentPageName === item.page;
@@ -234,12 +192,12 @@ export default function Layout({ children, currentPageName }) {
               to={locked ? createPageUrl('PaymentGate') : (tabHistory.current[item.page] || createPageUrl(item.page))}
               draggable={false}
               onClick={active ? (e) => { e.preventDefault(); navigate(tabHistory.current[item.page] || createPageUrl(item.page)); } : undefined}
-                  className={`flex-1 flex flex-col items-center justify-center pt-2 pb-1 gap-1 transition-colors relative ${active ? 'text-red-400' : 'text-slate-500'}`}
-                  style={{ WebkitTapHighlightColor: 'transparent', minHeight: 52 }}
-                >
-              <item.icon className="w-5 h-5 flex-shrink-0" />
-              <span className="text-[10px] font-medium leading-none">{item.label}</span>
-              {locked && <Sparkles className="w-2 h-2 text-yellow-500 absolute top-1 right-3" />}
+              className={`flex-1 flex flex-col items-center justify-center pt-3 pb-2 gap-1 transition-colors relative ${active ? 'text-red-400' : 'text-slate-500 hover:text-slate-400'}`}
+              style={{ WebKitTapHighlightColor: 'transparent', minHeight: 56 }}
+            >
+              <item.icon className="w-6 h-6 flex-shrink-0" />
+              <span className="text-[11px] font-semibold leading-none">{item.label}</span>
+              {locked && <Sparkles className="w-2.5 h-2.5 text-yellow-500 absolute top-2 right-2" />}
               {active && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 rounded-full bg-red-500" />}
             </Link>
           );
@@ -247,8 +205,8 @@ export default function Layout({ children, currentPageName }) {
       </nav>
 
       {/* Main Content */}
-      <main className="flex-1 md:overflow-auto overflow-y-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
-        <div className="md:hidden" style={{ height: 'calc(3.5rem + env(safe-area-inset-top))' }} />
+      <main className="flex-1 overflow-y-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
+        <div style={{ height: 'calc(3.5rem + env(safe-area-inset-top))' }} />
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={location.pathname}
@@ -260,7 +218,7 @@ export default function Layout({ children, currentPageName }) {
             {children}
           </motion.div>
         </AnimatePresence>
-        <div className="md:hidden" style={{ height: 'calc(4rem + env(safe-area-inset-bottom))' }} />
+        <div style={{ height: 'calc(4rem + env(safe-area-inset-bottom))' }} />
       </main>
     </div>
   );
