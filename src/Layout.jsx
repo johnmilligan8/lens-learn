@@ -211,7 +211,8 @@ export default function Layout({ children, currentPageName }) {
           <span style={{display:'none'}} className="font-black text-white text-xs tracking-tight leading-tight">UNCHARTED®<br/>Galaxy</span>
         </Link>
         <div className="flex items-center gap-1">
-          <Button variant="ghost" size="icon" className="text-slate-300 hover:text-red-400 md:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+          <NightModeToggle nightMode={nightMode} onToggle={toggleNightMode} compact />
+          <Button variant="ghost" size="icon" className="text-slate-300 hover:text-red-400" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
             <Menu className="w-5 h-5" />
           </Button>
         </div>
@@ -264,6 +265,7 @@ export default function Layout({ children, currentPageName }) {
             exit={{ opacity: 0 }}
             className="md:hidden fixed inset-0 bg-black/50 z-[35]"
             onClick={() => setMobileMenuOpen(false)}
+            style={{ paddingTop: 'calc(3.5rem + env(safe-area-inset-top))' }}
           />
         )}
       </AnimatePresence>
