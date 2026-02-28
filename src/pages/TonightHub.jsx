@@ -341,16 +341,6 @@ export default function TonightHub() {
              locationName={location || profile?.home_location || null}
            />
 
-           {/* Aurora Forecast Map — same as Sky Planner */}
-           {coords && (
-             <AuroraForecastMap
-               isSubscribed={isSubscribed}
-               userLat={coords.lat}
-               userLon={coords.lon}
-               locationName={location || 'Your Location'}
-             />
-           )}
-
           {events.map((event, i) => (
             <EventRankCard
               key={event.id}
