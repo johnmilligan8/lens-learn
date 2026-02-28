@@ -293,7 +293,6 @@ export default function AuroraPredictionCard({ userLat, userLon, locationName })
       }
       const hourlyCloud = hourlyCloudData;
 
-
       const todayForecast = forecastData.find(f => f.date === today) || forecastData[0] || null;
       const todayWeather = weatherData.find(f => f.date === today) || weatherData[0] || null;
 
