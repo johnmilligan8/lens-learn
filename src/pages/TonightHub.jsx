@@ -254,7 +254,7 @@ export default function TonightHub() {
 
       {/* Location input - prominent CTA */}
       <Card className="bg-[#1a1a1a] border border-white/8 p-5 mb-6 sticky top-20 z-40">
-        <p className="text-white text-xs font-bold uppercase tracking-widest mb-3">Step 1: Enter Your Location</p>
+        <p className="text-white text-xs font-bold uppercase tracking-widest mb-3">Your Location</p>
         <div className="flex gap-2">
           <div className="relative flex-1">
             <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
