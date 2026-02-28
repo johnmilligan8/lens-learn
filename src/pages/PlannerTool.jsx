@@ -1028,6 +1028,16 @@ export default function PlannerTool() {
       </>)}
         </div>
       </div>
+
+      {/* Save Trip Modal */}
+      {showSaveTripModal && (
+        <SaveTripModal
+          userEmail={user?.email}
+          currentState={currentState}
+          onLoadTrip={handleLoadExpedition}
+          onClose={() => setShowSaveTripModal(false)}
+        />
+      )}
     </PullToRefresh>
   );
 }
