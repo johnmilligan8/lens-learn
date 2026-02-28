@@ -137,9 +137,7 @@ export default function Layout({ children, currentPageName }) {
     }
   }, [location]);
 
-  const allNavItems = user?.role === 'admin'
-    ? [...navItems, { icon: Settings, label: 'Instructor Hub', page: 'InstructorDashboard' }]
-    : navItems;
+  const adminNavItem = user?.role === 'admin' ? [{ icon: Settings, label: 'Instructor Hub', page: 'InstructorDashboard' }] : [];
 
   const handleLogout = () => {
     base44.auth.logout(createPageUrl('Dashboard'));
