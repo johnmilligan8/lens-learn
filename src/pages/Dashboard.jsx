@@ -14,8 +14,6 @@ import {
 import { Button } from '@/components/ui/button';
 
 const MODULE_ICONS = { Telescope, Settings, Eye, MapPin, Palette, Sparkles };
-const COLOR_MAP = {};
-const ICON_COLOR = {};
 
 const FALLBACK_MODULES = [
   { id:'fallback-1', title:'Gear Essentials', description:'Everything you need to capture the Milky Way', color:'purple', is_free_preview:true, total_lessons:8, total_duration:'2.5 hrs' },
