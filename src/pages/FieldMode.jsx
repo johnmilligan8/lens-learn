@@ -14,7 +14,7 @@ import CameraSettingsPanel from '../components/fieldmode/CameraSettingsPanel';
 import CompositionPanel from '../components/fieldmode/CompositionPanel';
 import LightingPanel from '../components/fieldmode/LightingPanel';
 import ConditionsBar from '../components/fieldmode/ConditionsBar';
-import ModeSpecificWalkthrough from '../components/fieldmode/ModeSpecificWalkthrough';
+import InteractiveStepper from '../components/fieldmode/InteractiveStepper';
 
 function FreeWalkthroughTeaser() {
   const [seconds, setSeconds] = React.useState(0);
