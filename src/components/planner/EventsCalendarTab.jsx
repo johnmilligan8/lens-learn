@@ -414,7 +414,7 @@ export default function EventsCalendarTab({ isSubscribed, userProfile }) {
             <div className="space-y-2">
               <p className="text-slate-500 text-xs uppercase tracking-wide font-semibold">Next Up</p>
               {upcoming.slice(0, 3).map(e => (
-                <EventCard key={e.id} event={e} expanded={expanded} onToggle={id => setExpanded(expanded === id ? null : id)} />
+                <EventCard key={e.id} event={e} expanded={expanded} onToggle={id => setExpanded(expanded === id ? null : id)} userProfile={userProfileRef.current} />
               ))}
             </div>
           )}
