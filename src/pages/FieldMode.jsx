@@ -217,7 +217,7 @@ export default function FieldMode() {
       <div className="flex-1 max-w-2xl mx-auto w-full px-4 py-6 pb-32 overflow-y-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
         {/* Guided walkthrough or teaser */}
         {isSubscribed ? (
-          <ModeSpecificWalkthrough mode={mode} onTabChange={setActiveTab} />
+          <InteractiveStepper mode={mode} isSubscribed={isSubscribed} onTabChange={setActiveTab} />
         ) : (
           <FreeWalkthroughTeaser />
         )}
