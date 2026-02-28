@@ -92,9 +92,14 @@ export default function Journal() {
         </div>
       )}
 
-      {/* Insights (paid only, 2+ sessions) */}
+      {/* Insights + Export (paid only, 2+ sessions) */}
       {isSubscribed && sessions.length >= 2 && (
-        <JournalInsights sessions={sessions} />
+        <>
+          <JournalInsights sessions={sessions} />
+          <div className="mb-4">
+            <ExportJournal sessions={sessions} />
+          </div>
+        </>
       )}
 
       {/* Search + filter */}
