@@ -16,42 +16,69 @@ export default function JournalInsights({ sessions }) {
   if (!sessions || sessions.length < 2) return null;
 
   const complete = sessions.filter(s => s.outcome);
+  const recent = sessions.slice(0, 5);
 
   const outcomeCount = { nailed: 0, okay: 0, failed: 0, cancelled: 0 };
   const limiterCount = {};
+  const modeCount = {};
+  const eventCount = {};
+
   complete.forEach(s => {
     if (s.outcome) outcomeCount[s.outcome] = (outcomeCount[s.outcome] || 0) + 1;
     if (s.limiting_factor) limiterCount[s.limiting_factor] = (limiterCount[s.limiting_factor] || 0) + 1;
+    if (s.shooter_mode) modeCount[s.shooter_mode] = (modeCount[s.shooter_mode] || 0) + 1;
+    if (s.event_type) eventCount[s.event_type] = (eventCount[s.event_type] || 0) + 1;
   });
 
-  const successRate = complete.length
-    ? Math.round((outcomeCount.nailed / complete.length) * 100)
-    : 0;
-
+  const successRate = complete.length ? Math.round((outcomeCount.nailed / complete.length) * 100) : 0;
   const topLimiter = Object.entries(limiterCount).sort((a, b) => b[1] - a[1])[0];
+  const topMode = Object.entries(modeCount).sort((a, b) => b[1] - a[1])[0];
+  const topEvent = Object.entries(eventCount).sort((a, b) => b[1] - a[1])[0];
 
   const insights = [];
 
-  if (successRate >= 70) insights.push({ icon: '🎯', text: `You nail ${successRate}% of your sessions — strong consistency!` });
-  else if (successRate <= 30 && complete.length >= 3) insights.push({ icon: '📈', text: `${successRate}% success rate — but every failed session teaches you something. Keep logging.` });
+  // Success trajectory
+  const recentSuccess = recent.filter(s => s.outcome === 'nailed').length;
+  if (successRate >= 70) {
+    insights.push({ icon: '🎯', text: `${successRate}% success rate — excellent consistency! Keep this momentum.` });
+  } else if (successRate >= 50 && recentSuccess >= 2) {
+    insights.push({ icon: '📈', text: `${successRate}% overall, but trending up. Your recent sessions are stronger.` });
+  } else if (successRate <= 30 && complete.length >= 3) {
+    insights.push({ icon: '🔄', text: `${successRate}% success rate. Analyze your failed sessions — what's repeating?` });
+  }
 
+  // Limiting factor patterns
   if (topLimiter && topLimiter[1] >= 2) {
-    insights.push({ icon: '⚠️', text: `Your top limiter is "${LIMITING_LABELS[topLimiter[0]] || topLimiter[0]}" (${topLimiter[1]}× sessions). Plan around it next time.` });
+    insights.push({ icon: '⚠️', text: `"${LIMITING_LABELS[topLimiter[0]] || topLimiter[0]}" blocked ${topLimiter[1]} sessions. Plan around this next time.` });
   }
 
-  if (outcomeCount.moon >= 2) {
-    insights.push({ icon: '🌕', text: 'Moon interference shows up often. Try scheduling around new moon windows in the Sky Planner.' });
+  // Mode-specific trends
+  if (topMode) {
+    const modeName = { photographer: 'Camera', smartphone: 'Phone', experience: 'Sky Watching' }[topMode[0]] || topMode[0];
+    insights.push({ icon: '📊', text: `You mostly shoot ${modeName.toLowerCase()} (${topMode[1]} sessions). Double-check settings for this mode.` });
   }
 
-  if (outcomeCount.clouds >= 2) {
-    insights.push({ icon: '☁️', text: 'Clouds are a recurring obstacle. Check 3-day cloud cover forecasts before committing to a session.' });
+  // Event preferences
+  if (topEvent && topEvent[1] >= 2) {
+    insights.push({ icon: '🌌', text: `${topEvent[0]} is your focus (${topEvent[1]}× sessions). You're building expertise here.` });
   }
 
-  if (complete.length >= 5 && outcomeCount.nailed >= 3) {
-    insights.push({ icon: '🌟', text: 'You\'re building a strong track record. Patterns in your best sessions can guide your next expedition.' });
+  // Moon & cloud patterns
+  if (limiterCount.moon >= 2) {
+    insights.push({ icon: '🌕', text: 'Moon interference is recurring. Use Sky Planner\'s new moon phase filter to avoid clashes.' });
+  }
+  if (limiterCount.clouds >= 2) {
+    insights.push({ icon: '☁️', text: 'Clouds keep blocking you. Improve location scouting or book during forecast clear windows.' });
   }
 
-  if (!insights.length) insights.push({ icon: '📓', text: 'Keep logging sessions — patterns and insights will appear as your journal grows.' });
+  // Growth milestones
+  if (complete.length >= 10 && outcomeCount.nailed >= 7) {
+    insights.push({ icon: '🌟', text: 'Impressive! 10+ sessions logged, 70%+ success. Request instructor feedback on a tough session.' });
+  } else if (complete.length >= 5) {
+    insights.push({ icon: '📈', text: 'Strong progression. You\'ve found repeatable patterns — now optimize around them.' });
+  }
+
+  if (!insights.length) insights.push({ icon: '📓', text: 'Keep logging. As patterns emerge, detailed insights will help you plan better expeditions.' });
 
   return (
     <div className="rounded-2xl border border-red-900/30 bg-[#0f0500]/60 p-4 mb-5">
