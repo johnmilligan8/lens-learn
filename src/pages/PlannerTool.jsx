@@ -650,7 +650,7 @@ export default function PlannerTool() {
                   <MapPin className="w-8 h-8 text-red-400" />
                   Sky <span className="gradient-text">Planner</span>
                 </h1>
-                <p className="text-slate-400 text-sm mt-1">Galactic core timing · Sky map · Conditions · Best windows</p>
+                <p className="text-slate-400 text-sm mt-1">Plan ahead — calendar, gear, multi-trip saving, full conditions</p>
               </div>
               <div className="hidden sm:flex items-center gap-2">
                 <Link to={createPageUrl('TonightHub')}>
