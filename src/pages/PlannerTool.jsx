@@ -707,45 +707,48 @@ export default function PlannerTool() {
             <div className="grid lg:grid-cols-3 gap-6">
         {/* ── Left: Inputs (sticky, compact) ── */}
          <div className="lg:col-span-1 space-y-4 lg:sticky lg:top-40 lg:max-h-[calc(100vh-200px)] lg:overflow-y-auto">
-          {/* COMPACT INPUT SECTION */}
-          <Card className="bg-[#1a1a1a] border-white/8 p-5 rounded-2xl">
-            <h2 className="text-sm font-bold text-white uppercase tracking-widest mb-4 flex items-center gap-2">
-              <Navigation className="w-4 h-4 text-red-400" /> Shoot Details
-            </h2>
-            <div className="space-y-3">
-              <div>
-                <Label className="text-slate-400 text-xs mb-1.5 block uppercase font-bold">Location</Label>
-                <LocationPicker
-                  value={location}
-                  lat={coords?.lat}
-                  lon={coords?.lon}
-                  onChange={({ name, lat, lon }) => {
-                    setLocation(name || '');
-                    if (lat && lon) setCoords({ lat, lon, name });
-                    else setCoords(null);
-                  }}
-                />
-              </div>
-              <div>
-                <Label className="text-slate-400 text-xs mb-1.5 block uppercase font-bold">Date</Label>
-                <Input
-                  type="date"
-                  value={date}
-                  onChange={e => setDate(e.target.value)}
-                  className="bg-slate-800 border-slate-700 text-white text-sm"
-                />
-              </div>
-              <Button
-                onClick={calculate}
-                disabled={!location.trim() || calcLoading || geoLoading}
-                className="w-full bg-red-600 hover:bg-red-700 h-10 font-bold text-sm"
-              >
-                {calcLoading || geoLoading
-                  ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Calculating...</>
-                  : <><Star className="w-4 h-4 mr-2" /> Calculate</>}
-              </Button>
+         {/* SINGLE UNIFIED INPUT SECTION */}
+         <Card className="bg-[#1a1a1a] border-white/8 p-5 rounded-2xl">
+          <h2 className="text-sm font-bold text-white uppercase tracking-widest mb-4 flex items-center gap-2">
+            <Navigation className="w-4 h-4 text-red-400" /> Plan a Shoot
+          </h2>
+          <div className="space-y-3">
+            <div>
+              <Label className="text-slate-400 text-xs mb-1.5 block uppercase font-bold">Location</Label>
+              <LocationPicker
+                value={location}
+                lat={coords?.lat}
+                lon={coords?.lon}
+                onChange={({ name, lat, lon }) => {
+                  setLocation(name || '');
+                  if (lat && lon) setCoords({ lat, lon, name });
+                  else setCoords(null);
+                }}
+              />
             </div>
-          </Card>
+            <div>
+              <Label className="text-slate-400 text-xs mb-1.5 block uppercase font-bold">Date</Label>
+              <Input
+                type="date"
+                value={date}
+                onChange={e => setDate(e.target.value)}
+                className="bg-slate-800 border-slate-700 text-white text-sm"
+              />
+            </div>
+            {coords && (
+              <p className="text-xs text-slate-600 font-mono">📍 {coords.lat?.toFixed(4)}, {coords.lon?.toFixed(4)}</p>
+            )}
+            <Button
+              onClick={calculate}
+              disabled={!location.trim() || calcLoading || geoLoading}
+              className="w-full bg-red-600 hover:bg-red-700 h-10 font-bold text-sm"
+            >
+              {calcLoading || geoLoading
+                ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Calculating...</>
+                : <><Star className="w-4 h-4 mr-2" /> Calculate Sky Conditions</>}
+            </Button>
+          </div>
+         </Card>
 
           {/* AR Scout (top priority for paid) */}
           {results && (
