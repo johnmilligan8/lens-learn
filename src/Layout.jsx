@@ -202,12 +202,21 @@ export default function Layout({ children, currentPageName }) {
   };
 
   return (
-    <div className="min-h-screen cosmic-bg flex">
-      {/* Sidebar — desktop */}
-      <aside className="hidden md:flex flex-col w-64 bg-[#111111]/95 backdrop-blur-md border-r border-white/5 sticky top-0 h-screen">
+    <div className="min-h-screen cosmic-bg flex flex-col">
+      {/* Sidebar — mobile overlay */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/60 md:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+      
+      <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#111111]/98 backdrop-blur-md border-r border-white/5 flex flex-col transition-transform duration-300 ${
+        sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+      } md:relative md:translate-x-0 md:sticky md:top-0 md:h-screen md:w-64`}>
         {/* Logo */}
         <div className="p-6 border-b border-slate-800/40">
-          <Link to={createPageUrl('Dashboard')} className="flex flex-col gap-0.5">
+          <Link to={createPageUrl('Dashboard')} onClick={() => setSidebarOpen(false)} className="flex flex-col gap-0.5">
             <img
               src="https://uncharted.net/wp-content/uploads/2022/09/Uncharted-Logo-Horizontal-White-e1664469570536.png"
               alt="UNCHARTED"
@@ -230,7 +239,9 @@ export default function Layout({ children, currentPageName }) {
 
         {/* Nav Links */}
         <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-          {allNavItems.map(item => <NavLink key={item.page} item={item} />)}
+          {primaryNavItems.map(item => <NavLink key={item.page} item={item} variant="sidebar" />)}
+          {secondaryNavItems.map(item => <NavLink key={item.page} item={item} variant="sidebar" />)}
+          {adminNavItem.map(item => <NavLink key={item.page} item={item} variant="sidebar" />)}
         </nav>
 
         {/* User / Logout */}
