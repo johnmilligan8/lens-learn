@@ -23,6 +23,8 @@ import MilkyWayARPreview from '../components/planner/MilkyWayARPreview';
 import MapOverlayLayers from '../components/planner/MapOverlayLayers';
 import SaveTripModal from '../components/planner/SaveTripModal';
 import LocationPicker from '../components/onboarding/LocationPicker';
+import RealtimeConditionsMonitor from '../components/planner/RealtimeConditionsMonitor';
+import ConditionAlertManager from '../components/planner/ConditionAlertManager';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -951,14 +953,32 @@ export default function PlannerTool() {
               {/* Post-Processing Guide */}
               <PostProcessingGuide gear={gear} shooterMode={shooterMode} />
 
+              {/* Real-Time Conditions (moon, sun, aurora KP) */}
+               {results && (
+                 <RealtimeConditionsMonitor
+                   lat={results.coords?.lat}
+                   lon={results.coords?.lon}
+                   date={date}
+                 />
+               )}
+
+              {/* Condition Alerts */}
+               {results && (
+                 <ConditionAlertManager
+                   location={results.coords?.name || location}
+                   lat={results.coords?.lat}
+                   lon={results.coords?.lon}
+                 />
+               )}
+
               {/* Weather */}
-              <WeatherCard
-                weather={weather}
-                weatherLoading={weatherLoading}
-                weatherError={weatherError}
-                onFetch={() => fetchWeather(results.coords?.lat, results.coords?.lon, date)}
-                hasResults={!!results}
-              />
+               <WeatherCard
+                 weather={weather}
+                 weatherLoading={weatherLoading}
+                 weatherError={weatherError}
+                 onFetch={() => fetchWeather(results.coords?.lat, results.coords?.lon, date)}
+                 hasResults={!!results}
+               />
 
               {/* Historical Weather Analysis */}
               <HistoricalWeatherAnalysis location={location} results={results} />
