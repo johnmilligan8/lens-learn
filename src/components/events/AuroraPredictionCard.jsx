@@ -319,30 +319,32 @@ export default function AuroraPredictionCard({ userLat, userLon, locationName })
           {trend.length > 0 && (
             <div className="mb-4">
               <p className="text-xs text-slate-400 font-semibold flex items-center gap-1.5 mb-2">
-                <Clock className="w-3.5 h-3.5 text-slate-500" /> 24–48h KP Trend (3-hour blocks)
+                <Clock className="w-3.5 h-3.5 text-slate-500" /> 24–48h KP Forecast
+                <span className="text-slate-600 font-normal">(NOAA publishes 3-hr blocks)</span>
               </p>
-              <div className="flex items-end gap-1 h-12">
+              <div className="flex items-end gap-0.5 h-12">
                 {trend.map((h, i) => {
                   const heightPct = Math.max(8, Math.min(100, (h.kp / 9) * 100));
+                  const d = new Date(h.time.replace(' ', 'T') + 'Z');
+                  const label = d.toLocaleTimeString([], { hour: 'numeric', hour12: true }).replace(':00', '').toLowerCase();
                   return (
                     <div key={i} className="flex-1 flex flex-col items-center justify-end gap-0.5 group relative">
+                      <span className="text-[8px] text-white/60 font-bold opacity-0 group-hover:opacity-100 absolute -top-4 whitespace-nowrap">{h.kp.toFixed(1)}</span>
                       <div
                         className={`w-full rounded-t transition-all ${KP_COLOR(h.kp)} opacity-80 group-hover:opacity-100`}
                         style={{ height: `${heightPct}%` }}
-                        title={`${h.time} – KP ${h.kp}`}
+                        title={`${label} – KP ${h.kp}`}
                       />
-                      {i % 4 === 0 && (
-                        <span className="text-[8px] text-slate-600 absolute -bottom-4 w-6 text-center overflow-hidden">
-                          {h.hour === 0 ? h.date.slice(5) : `${h.hour}h`}
+                      {i % 2 === 0 && (
+                        <span className="text-[8px] text-slate-600 absolute -bottom-4 whitespace-nowrap">
+                          {label}
                         </span>
                       )}
                     </div>
                   );
                 })}
               </div>
-              <div className="mt-6 flex justify-between text-[9px] text-slate-600">
-                <span>Now</span><span>+24h</span><span>+48h</span>
-              </div>
+              <div className="mt-6" />
             </div>
           )}
 
