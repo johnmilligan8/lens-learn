@@ -207,7 +207,9 @@ export default function GearChecklist({ userEmail, shooterMode, onKitLoaded, isP
   const createNewKit = async () => {
     if (!newKitName.trim()) return;
     setLoading(true);
-    const presetCategories = GEAR_PRESETS[shooterMode] || GEAR_PRESETS.photographer;
+    // Always use the current active shooter mode for new kit presets
+    const effectiveMode = shooterMode || 'photographer';
+    const presetCategories = GEAR_PRESETS[effectiveMode] || GEAR_PRESETS.photographer;
     const newKit = await base44.entities.GearKit.create({
       user_email: userEmail,
       kit_name: newKitName,
