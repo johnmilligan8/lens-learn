@@ -320,27 +320,51 @@ export default function TonightHub() {
         </Card>
       )}
 
-      {/* ── GO / NO-GO PILL ── */}
+      {/* ── BIG GO / NO-GO HERO PILL ── */}
       {coords && (() => {
         const { illum } = getMoonPhase();
         const topEvent = events[0];
-        const goNight = topEvent && ['excellent','good'].includes(topEvent.viability) && illum < 60;
-        const label = goNight ? '✅ GO — Conditions Favour a Shoot Tonight' : '⚠️ MARGINAL — Check Conditions Before Committing';
-        const sub = goNight
-          ? `${topEvent.title} looks promising. ${illum}% moon.`
-          : `Moon at ${illum}%. Review ranked events below before deciding.`;
+        const go = topEvent && ['excellent','good'].includes(topEvent.viability) && illum < 60;
+        const noGo = !topEvent || (topEvent.viability === 'poor' && illum > 70);
+        const reason = go
+          ? `${topEvent.title} is well-placed tonight. Moon at ${illum}% — minimal interference.`
+          : noGo
+          ? `Moon at ${illum}% washes out faint sky targets. Consider a different night.`
+          : `Marginal conditions — moon at ${illum}%. Check ranked events & cloud cover before committing.`;
+        const StatusIcon = go ? CheckCircle : noGo ? XCircle : AlertTriangle;
+        const bg = go ? 'from-emerald-950/70 to-[#111111]/80 border-emerald-500/40' : noGo ? 'from-red-950/60 to-[#111111]/80 border-red-500/30' : 'from-yellow-950/50 to-[#111111]/80 border-yellow-600/30';
+        const titleColor = go ? 'text-emerald-300' : noGo ? 'text-red-300' : 'text-yellow-300';
+        const verdict = go ? 'GO TONIGHT' : noGo ? 'STAY HOME' : 'MARGINAL';
         return (
-          <div className={`rounded-2xl px-5 py-4 mb-6 flex items-center justify-between gap-3 border ${goNight ? 'bg-emerald-900/25 border-emerald-500/30' : 'bg-yellow-900/20 border-yellow-600/25'}`}>
-            <div>
-              <p className={`font-black text-base ${goNight ? 'text-emerald-300' : 'text-yellow-300'}`}>{label}</p>
-              <p className="text-slate-400 text-xs mt-0.5">{sub}</p>
+          <div className={`rounded-2xl p-5 mb-6 bg-gradient-to-br ${bg} border relative overflow-hidden`}>
+            <div className="absolute inset-0 pointer-events-none opacity-20"
+              style={{ background: go ? 'radial-gradient(ellipse at top left, rgba(16,185,129,0.3) 0%, transparent 60%)' : noGo ? 'radial-gradient(ellipse at top left, rgba(239,68,68,0.3) 0%, transparent 60%)' : 'radial-gradient(ellipse at top left, rgba(234,179,8,0.3) 0%, transparent 60%)' }} />
+            <div className="relative z-10 flex items-start gap-4">
+              <StatusIcon className={`w-10 h-10 flex-shrink-0 mt-0.5 ${titleColor}`} />
+              <div className="flex-1 min-w-0">
+                <p className="text-slate-400 text-xs uppercase tracking-widest font-bold mb-1">Tonight's Verdict</p>
+                <h2 className={`text-2xl md:text-3xl font-black ${titleColor} mb-1.5`}>{verdict}</h2>
+                <p className="text-slate-300 text-sm leading-relaxed">{reason}</p>
+                <div className="flex gap-3 flex-wrap mt-4">
+                  {isSubscribed && (
+                    <button
+                      onClick={handleSaveAsTrip}
+                      disabled={savingTrip || savedTrip}
+                      className="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-lg border border-white/15 bg-white/5 hover:bg-white/10 text-white transition-all disabled:opacity-60"
+                    >
+                      <BookmarkPlus className="w-3.5 h-3.5" />
+                      {savedTrip ? 'Saved to Journal ✓' : savingTrip ? 'Saving…' : 'Save as Trip'}
+                    </button>
+                  )}
+                  <Link
+                    to={createPageUrl('PlannerTool') + `?date=${today}`}
+                    className="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-lg border border-red-600/30 bg-red-600/10 hover:bg-red-600/20 text-red-400 transition-all"
+                  >
+                    Plan This Night →
+                  </Link>
+                </div>
+              </div>
             </div>
-            <Link
-              to={createPageUrl('PlannerTool') + `?date=${today}`}
-              className="flex-shrink-0 text-xs font-bold text-red-400 hover:text-red-300 border border-red-600/30 rounded-lg px-3 py-1.5 whitespace-nowrap transition-colors hover:border-red-500/50"
-            >
-              Plan This Night →
-            </Link>
           </div>
         );
       })()}
