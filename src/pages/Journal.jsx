@@ -134,9 +134,9 @@ export default function Journal() {
         </div>
       ) : (
         <div className="space-y-2">
-          {visibleSessions.map(s => (
-            <SessionCard key={s.id} session={s} isSubscribed={isSubscribed} />
-          ))}
+           {visibleSessions.map(s => (
+             <SessionCard key={s.id} session={s} isSubscribed={isSubscribed} userEmail={user?.email} />
+           ))}
 
           {/* Locked sessions upsell */}
           {lockedCount > 0 && (
