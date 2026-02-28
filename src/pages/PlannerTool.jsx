@@ -775,7 +775,24 @@ export default function PlannerTool() {
                 location={coords.name || location}
                 onSelectDate={handleSelectDateFromForecast}
               />
-              <ExpeditionManager userEmail={user?.email} currentState={currentState} onLoadExpedition={handleLoadExpedition} />
+              {/* Save Trip button */}
+              <div className="flex gap-2">
+                <Button
+                  onClick={() => setShowSaveTripModal(true)}
+                  size="sm"
+                  className="flex-1 bg-red-600 hover:bg-red-700 text-xs gap-1 h-9"
+                >
+                  <Save className="w-3.5 h-3.5" /> Save Trip
+                </Button>
+                <Button
+                  onClick={() => setShowSaveTripModal(true)}
+                  size="sm"
+                  variant="outline"
+                  className="border-white/10 text-slate-300 hover:bg-white/5 text-xs gap-1 h-9"
+                >
+                  <Folder className="w-3.5 h-3.5" /> My Trips
+                </Button>
+              </div>
             </div>
           )}
 
