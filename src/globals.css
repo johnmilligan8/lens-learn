@@ -249,6 +249,11 @@ label, input, select, textarea {
   background-color: #1a1a1a !important;
 }
 
+/* Sidebar should always be dark */
+aside {
+  background-color: #0f0f0f !important;
+}
+
 /* Ensure all nested text is light */
 body [class*="bg-green"] *,
 body [class*="bg-purple"] *,

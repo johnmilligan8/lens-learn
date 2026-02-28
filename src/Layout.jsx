@@ -147,18 +147,21 @@ export default function Layout({ children, currentPageName }) {
   return (
     <div className="min-h-screen cosmic-bg flex flex-col md:flex-row">
       {/* Desktop Sidebar */}
-      <aside className="hidden md:flex md:flex-col md:w-64 md:fixed md:inset-0 md:pt-0 bg-[#111111]/98 backdrop-blur-md border-r border-white/5 select-none z-30">
-        <div className="p-6 border-b border-white/5">
+      <aside className="hidden md:flex md:flex-col md:w-64 md:fixed md:inset-0 md:pt-0 bg-[#0f0f0f] backdrop-blur-md border-r border-white/5 select-none z-30">
+        <div className="p-6 border-b border-white/5 flex flex-col">
           <Link to={createPageUrl('Dashboard')} className="flex items-center gap-2">
             <img
               src="https://uncharted.net/wp-content/uploads/2022/09/Uncharted-Logo-Horizontal-White-e1664469570536.png"
               alt="UNCHARTED"
               className="h-6 w-auto object-contain"
               style={{ maxWidth: 120 }}
-              onError={e => { e.target.style.display='none'; e.target.nextSibling.style.display='flex'; }}
+              onError={e => { e.target.style.display='none'; e.target.nextSibling.style.display='block'; }}
             />
-            <span style={{display:'none'}} className="font-black text-white text-xs tracking-tight">UNCHARTED®<br/>Galaxy</span>
+            <span style={{display:'none'}} className="font-black text-white text-xs tracking-tight leading-tight">UNCHARTED®<br/>GALAXY</span>
           </Link>
+          <a href="https://www.uncharted.net" target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-slate-400 text-xs mt-2 transition-colors">
+            www.uncharted.net
+          </a>
         </div>
         
         <nav className="flex-1 overflow-y-auto p-4 space-y-2">
