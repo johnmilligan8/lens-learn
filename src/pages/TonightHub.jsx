@@ -247,8 +247,10 @@ export default function TonightHub() {
            Should You Go <span className="gradient-text">Tonight?</span>
          </h1>
          <p className="text-slate-400 text-sm">
-           Get real-time conditions & a ranked event list. Mode: <span className="text-white font-medium">{modeLabel}</span>
-           <Link to={createPageUrl('Profile')} className="text-red-400 hover:text-red-300 ml-2 text-xs underline">(change)</Link>
+           Real-time sky conditions & ranked events for <span className="text-white font-medium">{modeLabel}</span>.{' '}
+           <Link to={createPageUrl('Profile')} className="text-red-400 hover:text-red-300 text-xs underline">Change mode</Link>
+           {' · '}
+           <Link to={createPageUrl('PlannerTool')} className="text-slate-500 hover:text-slate-300 text-xs underline">Plan ahead →</Link>
          </p>
        </div>
 
