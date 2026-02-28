@@ -145,10 +145,28 @@ export default function FieldMode() {
     </div>
   );
 
+  const modeConfig = {
+    photographer: {
+      color: { accent: 'red', icon: '📷' },
+      tabs: ['camera', 'compose', 'light'],
+      title: 'DSLR / Mirrorless',
+    },
+    smartphone: {
+      color: { accent: 'blue', icon: '📱' },
+      tabs: ['camera', 'compose', 'light'],
+      title: 'Smartphone',
+    },
+    experience: {
+      color: { accent: 'emerald', icon: '👁️' },
+      tabs: ['observe'],
+      title: 'No Camera Sky Experience',
+    },
+  };
+
   const modeColors = {
     photographer: { bg: '#0a0005', accent: 'red', icon: '📷' },
     smartphone: { bg: '#050a0a', accent: 'blue', icon: '📱' },
-    experience: { bg: '#0a0a05', accent: 'amber', icon: '👁' },
+    experience: { bg: '#0a0a05', accent: 'emerald', icon: '👁️' },
   };
   const color = modeColors[mode];
 
@@ -190,7 +208,7 @@ export default function FieldMode() {
       <div className="sticky top-20 z-40 bg-black/85 backdrop-blur-lg border-b border-white/5">
         <div className="flex max-w-2xl mx-auto">
           {(mode === 'experience'
-            ? [{ id: 'compose', label: 'What to See', icon: Eye }, { id: 'light', label: 'Conditions', icon: Lightbulb }]
+            ? [{ id: 'observe', label: 'Observation Steps', icon: Eye }]
             : [{ id: 'camera', label: 'Camera', icon: Aperture }, { id: 'compose', label: 'Compose', icon: Crosshair }, { id: 'light', label: 'Lighting', icon: Lightbulb }]
           ).map(tab => {
             const Icon = tab.icon;
@@ -250,18 +268,71 @@ export default function FieldMode() {
         {activeTab === 'camera' && mode !== 'experience' && (
           <CameraSettingsPanel mode={mode} event={event} coords={coords} />
         )}
-        {activeTab === 'camera' && mode === 'experience' && (
-          <div className="rounded-2xl bg-black/40 border border-white/8 p-8 text-center">
-            <p className="text-6xl mb-4">👁</p>
-            <p className="text-white text-lg font-bold mb-1">No Camera Needed</p>
-            <p className="text-slate-400 text-sm">Switch to "What to See" for dark-sky visibility tips.</p>
-          </div>
-        )}
-        {activeTab === 'compose' && (
+        {activeTab === 'compose' && mode !== 'experience' && (
           <CompositionPanel mode={mode} event={event} coords={coords} />
         )}
-        {activeTab === 'light' && (
+        {activeTab === 'light' && mode !== 'experience' && (
           <LightingPanel mode={mode} event={event} />
+        )}
+
+        {mode === 'experience' && activeTab === 'observe' && (
+          <div className="space-y-4">
+            <div className="bg-emerald-900/20 border border-emerald-500/30 rounded-xl p-5">
+              <h3 className="text-emerald-300 font-bold text-sm mb-4 flex items-center gap-2">
+                <Eye className="w-5 h-5" /> Pure Sky Observation Steps
+              </h3>
+              <ol className="space-y-3 text-sm">
+                <li className="flex gap-3">
+                  <span className="font-bold text-emerald-400 flex-shrink-0 bg-emerald-900/40 px-2 py-0.5 rounded">1</span>
+                  <div>
+                    <p className="font-semibold text-white">Find a clear horizon</p>
+                    <p className="text-slate-300 text-xs mt-1">Get away from streetlights. Ideally, open ground where you can see south and north clearly.</p>
+                  </div>
+                </li>
+                <li className="flex gap-3">
+                  <span className="font-bold text-emerald-400 flex-shrink-0 bg-emerald-900/40 px-2 py-0.5 rounded">2</span>
+                  <div>
+                    <p className="font-semibold text-white">Dark-adapt your eyes (20–30 min)</p>
+                    <p className="text-slate-300 text-xs mt-1">Use red light only to preserve night vision. Avoid phone screens or bright light. Warm drink helps pass the time.</p>
+                  </div>
+                </li>
+                <li className="flex gap-3">
+                  <span className="font-bold text-emerald-400 flex-shrink-0 bg-emerald-900/40 px-2 py-0.5 rounded">3</span>
+                  <div>
+                    <p className="font-semibold text-white">Look for the Milky Way band (south)</p>
+                    <p className="text-slate-300 text-xs mt-1">Once adapted, look south. The galactic core appears as a cloudy, starry band. Brightest near horizon during peak times.</p>
+                  </div>
+                </li>
+                <li className="flex gap-3">
+                  <span className="font-bold text-emerald-400 flex-shrink-0 bg-emerald-900/40 px-2 py-0.5 rounded">4</span>
+                  <div>
+                    <p className="font-semibold text-white">Watch for aurora (north)</p>
+                    <p className="text-slate-300 text-xs mt-1">If you're at high latitude, scan the northern horizon for subtle green glow or curtains of light. More visible on clear, dark nights.</p>
+                  </div>
+                </li>
+                <li className="flex gap-3">
+                  <span className="font-bold text-emerald-400 flex-shrink-0 bg-emerald-900/40 px-2 py-0.5 rounded">5</span>
+                  <div>
+                    <p className="font-semibold text-white">Spot meteor streaks</p>
+                    <p className="text-slate-300 text-xs mt-1">Random bright flashes across the sky. Most common near midnight. Keep eyes relaxed and scan slowly.</p>
+                  </div>
+                </li>
+                <li className="flex gap-3">
+                  <span className="font-bold text-emerald-400 flex-shrink-0 bg-emerald-900/40 px-2 py-0.5 rounded">6</span>
+                  <div>
+                    <p className="font-semibold text-white">Note bright planets & stars</p>
+                    <p className="text-slate-300 text-xs mt-1">Jupiter, Venus, Saturn are easy naked-eye objects. Use a sky app to identify what you're seeing.</p>
+                  </div>
+                </li>
+              </ol>
+            </div>
+
+            <div className="bg-blue-900/15 border border-blue-500/20 rounded-lg p-4">
+              <p className="text-blue-200 text-xs leading-relaxed">
+                💡 <strong>Want photos?</strong> Most modern phones can capture impressive night sky shots. Switch to Smartphone mode in Mission Control to get device-specific camera settings, stability tips, and framing advice.
+              </p>
+            </div>
+          </div>
         )}
       </div>
     </div>
