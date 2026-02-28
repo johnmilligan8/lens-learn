@@ -168,6 +168,38 @@ function ViewingProbabilityTimeline({ hourlyCloud, kpBlocks, moonIllum, bortle }
   );
 }
 
+function WindyMapEmbed({ lat, lon }) {
+  const [expanded, setExpanded] = React.useState(false);
+  const mapLat = lat || 55;
+  const mapLon = lon || -100;
+  const src = `https://embed.windy.com/embed2.html?lat=${mapLat}&lon=${mapLon}&detailLat=${mapLat}&detailLon=${mapLon}&width=650&height=450&zoom=4&level=surface&overlay=clouds&product=ecmwf&menu=&message=true&marker=true&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=default&metricTemp=default&radarRange=-1`;
+
+  return (
+    <div className="mt-4 border border-white/10 rounded-xl overflow-hidden">
+      <button
+        onClick={() => setExpanded(e => !e)}
+        className="w-full flex items-center justify-between px-3 py-2.5 bg-black/30 hover:bg-black/50 transition-colors"
+      >
+        <span className="text-xs text-slate-300 font-semibold flex items-center gap-1.5">
+          🌬️ Cloud & Wind Map — Windy.com
+        </span>
+        <span className="text-[10px] text-slate-500">{expanded ? 'Hide ▲' : 'Show ▼'}</span>
+      </button>
+      {expanded && (
+        <iframe
+          src={src}
+          width="100%"
+          height="360"
+          frameBorder="0"
+          title="Windy Cloud & Wind Map"
+          className="block"
+          allowFullScreen
+        />
+      )}
+    </div>
+  );
+}
+
 const VISIBILITY_STYLES = {
   good:     { card: 'border-green-600/30',  badge: 'bg-green-700',   label: 'Good Chance', icon: '🟢' },
   possible: { card: 'border-yellow-600/20', badge: 'bg-yellow-700',  label: 'Possible',    icon: '🟡' },
