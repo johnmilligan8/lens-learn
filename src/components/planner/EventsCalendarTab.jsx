@@ -438,7 +438,7 @@ export default function EventsCalendarTab({ isSubscribed, userProfile }) {
             <div className="opacity-60">
               <p className="text-slate-500 text-xs uppercase tracking-widest font-semibold mb-3">Past Events</p>
               <div className="space-y-2">
-                {past.map(e => <EventCard key={e.id} event={e} expanded={expanded} onToggle={id => setExpanded(expanded === id ? null : id)} />)}
+                {past.map(e => <EventCard key={e.id} event={e} expanded={expanded} onToggle={id => setExpanded(expanded === id ? null : id)} userProfile={userProfileRef.current} />)}
               </div>
             </div>
           )}
