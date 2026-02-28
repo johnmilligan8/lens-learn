@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import SessionCard from '../components/journal/SessionCard';
 import JournalInsights from '../components/journal/JournalInsights';
+import ExportJournal from '../components/journal/ExportJournal';
 import NewSessionForm from '../components/journal/NewSessionForm';
 
 const FREE_SESSION_LIMIT = 3;
