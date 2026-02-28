@@ -250,6 +250,55 @@ export default function AuroraPredictionCard({ userLat, userLon, locationName })
             </div>
           </div>
 
+          {/* Live KP now */}
+          {currentKp && (
+            <div className="flex items-center gap-2 mb-4 p-3 rounded-lg bg-black/30 border border-white/5">
+              <TrendingUp className="w-3.5 h-3.5 text-green-400 flex-shrink-0" />
+              <span className="text-xs text-slate-300">
+                <span className="text-white font-bold">Live KP now: {Math.round(currentKp.kp * 10) / 10}</span>
+                <span className="text-slate-500 ml-1">— observed {new Date(currentKp.time_tag).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+              </span>
+              <span className={`ml-auto text-xs font-bold px-2 py-0.5 rounded-full ${currentKp.kp >= 5 ? 'bg-red-600 text-white' : currentKp.kp >= 3 ? 'bg-yellow-600/80 text-white' : 'bg-slate-700 text-slate-300'}`}>
+                {currentKp.kp >= 5 ? 'Active' : currentKp.kp >= 3 ? 'Moderate' : 'Quiet'}
+              </span>
+            </div>
+          )}
+
+          {/* Best Viewing Windows */}
+          {viewingWindows.length > 0 && (
+            <div className="mb-4">
+              <p className="text-xs text-slate-400 font-semibold flex items-center gap-1.5 mb-2">
+                <Clock className="w-3.5 h-3.5 text-green-400" /> Best Viewing Windows (next 72h)
+              </p>
+              <div className="space-y-1.5">
+                {viewingWindows.map((w, i) => (
+                  <div key={i} className="flex items-center gap-3 p-2.5 rounded-lg bg-green-900/15 border border-green-600/20">
+                    <span className="text-green-300 text-xs font-bold">{w.time}</span>
+                    <span className="text-slate-400 text-xs ml-auto">KP {w.kp} · ☁️ {w.cloud}%</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* 5-day KP forecast strip */}
+          {data.forecast?.length > 1 && (
+            <div className="mb-4">
+              <p className="text-xs text-slate-400 font-semibold mb-2">5-Day KP Forecast</p>
+              <div className="flex gap-1.5">
+                {data.forecast.map((f, i) => (
+                  <div key={i} className="flex-1 flex flex-col items-center gap-1 bg-black/20 rounded-lg py-2 px-1">
+                    <span className="text-[10px] text-slate-500">{new Date(f.date + 'T12:00:00Z').toLocaleDateString('en', { weekday: 'short' })}</span>
+                    <span className={`text-sm font-black ${f.kp_index >= 5 ? 'text-red-400' : f.kp_index >= 3 ? 'text-yellow-400' : 'text-slate-500'}`}>{f.kp_index}</span>
+                    <div className="w-full h-1 rounded-full bg-slate-700 overflow-hidden">
+                      <div className={`h-full rounded-full ${f.kp_index >= 5 ? 'bg-red-500' : f.kp_index >= 3 ? 'bg-yellow-500' : 'bg-slate-600'}`} style={{ width: `${Math.min(100, (f.kp_index / 9) * 100)}%` }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Extra weather row */}
           {(data.wind !== null || data.temp !== null || data.precipitation !== null) && (
             <div className="flex gap-4 flex-wrap text-xs text-slate-400 border-t border-white/5 pt-4">
@@ -269,7 +318,7 @@ export default function AuroraPredictionCard({ userLat, userLon, locationName })
           </div>
 
           <p className="text-[10px] text-slate-600 mt-3">
-            Source: NOAA SWPC · Open-Meteo · Data updates every 3–6 hours
+            Source: NOAA SWPC · Open-Meteo · Live KP + 5-day forecast · Updates every 3–6h
           </p>
         </>
       )}
