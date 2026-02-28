@@ -165,9 +165,55 @@ function AuroraLeafletMap({ userLat, userLon, locationName }) {
   );
 }
 
+// ── 24-48 hr KP trend bar chart ───────────────────────────────────────────
+function KpTrendChart({ kpForecast }) {
+  // Show next 16 blocks = 48 hours (each block is 3hr)
+  const blocks = kpForecast.slice(0, 16);
+  if (!blocks.length) return null;
+  const maxKp = Math.max(9, ...blocks.map(b => b.kp));
+
+  return (
+    <div className="space-y-2">
+      <div className="flex items-end gap-1" style={{ height: 72 }}>
+        {blocks.map((r, i) => {
+          const h = Math.max(6, (r.kp / maxKp) * 68);
+          const color = kpColor(r.kp);
+          const isDay = blocks.length > 8 && i === 8;
+          return (
+            <div key={i} className="flex-1 flex flex-col items-center justify-end gap-0.5 relative" style={{ height: 72 }}>
+              {isDay && <div className="absolute inset-y-0 left-0 w-px bg-slate-600 opacity-50" />}
+              <div
+                title={`KP ${r.kp} · ${r.label}`}
+                style={{ height: h, background: color }}
+                className="w-full rounded-sm opacity-85 transition-all cursor-default"
+              />
+            </div>
+          );
+        })}
+      </div>
+      <div className="flex justify-between text-[9px] text-slate-600">
+        <span>Now</span>
+        <span>+24hr</span>
+        <span>+48hr</span>
+      </div>
+      <div className="flex items-center gap-2 flex-wrap">
+        {[0,3,5,7].map((threshold, i) => {
+          const labels = ['Low (<3)', 'Moderate (3–5)', 'Strong (5–7)', 'Very Strong (7+)'];
+          const colors = ['#22c55e','#eab308','#f97316','#ef4444'];
+          return (
+            <div key={i} className="flex items-center gap-1">
+              <div className="w-2 h-2 rounded-full" style={{ background: colors[i] }} />
+              <span className="text-slate-500 text-[9px]">{labels[i]}</span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 // ── Main component ────────────────────────────────────────────────────────
 export default function AuroraForecastMap({ isSubscribed, userLat, userLon, locationName }) {
-  const [ovation, setOvation] = useState(null);
   const [kpForecast, setKpForecast] = useState([]);
   const [kpHourly, setKpHourly] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -178,23 +224,16 @@ export default function AuroraForecastMap({ isSubscribed, userLat, userLon, loca
     setLoading(true);
     setError(null);
     try {
-      const [ovData, kpData, hourlyData] = await Promise.all([
-        fetchOvationData().catch(() => null),
+      const [kpData, hourlyData] = await Promise.all([
         fetchKpForecast().catch(() => []),
         fetchKpHourly().catch(() => []),
       ]);
-      setOvation(ovData);
-      // Group kpForecast by day (take max per day)
-      const byDay = {};
-      kpData.forEach(r => {
-        const key = r.time.toISOString().split('T')[0];
-        if (!byDay[key] || r.kp > byDay[key].kp) byDay[key] = r;
-      });
-      setKpForecast(Object.values(byDay).slice(0, 7));
+      // Keep all 3-hr blocks for trend chart (don't collapse to daily)
+      setKpForecast(kpData);
       setKpHourly(hourlyData);
       setLastUpdated(new Date());
     } catch (e) {
-      setError('Could not load aurora data. Check NOAA for latest.');
+      setError('Live data unavailable – check NOAA (swpc.noaa.gov)');
     }
     setLoading(false);
   };
@@ -202,32 +241,40 @@ export default function AuroraForecastMap({ isSubscribed, userLat, userLon, loca
   useEffect(() => { load(); }, []);
 
   // Current/latest KP from hourly
-  const currentKp = kpHourly.length > 0 ? kpHourly[kpHourly.length - 1].kp : null;
+  const currentKp = kpHourly.length > 0 ? kpHourly[kpHourly.length - 1].kp : (kpForecast[0]?.kp ?? null);
 
-  // Local visibility note
+  // Daily max blocks for 7-day bar chart (grouped)
+  const kpByDay = (() => {
+    const byDay = {};
+    kpForecast.forEach(r => {
+      const key = r.time.toISOString().split('T')[0];
+      if (!byDay[key] || r.kp > byDay[key].kp) byDay[key] = r;
+    });
+    return Object.values(byDay).slice(0, 7);
+  })();
+
+  // Location-aware visibility note
   const getLocalNote = () => {
     const loc = locationName || 'your location';
-    if (currentKp === null) return `Set your home base for a local visibility note.`;
-    if (currentKp >= 7) return `KP ${currentKp} — visible overhead from ${loc}! Head out now.`;
-    if (currentKp >= 5) return `KP ${currentKp} — visible from low to mid horizon from ${loc}. Worth checking north!`;
-    if (currentKp >= 3) return `KP ${currentKp} — possible faint display from ${loc} if skies are clear and dark.`;
-    return `KP ${currentKp} — quiet conditions from ${loc}. Watch for alerts if KP rises to 5+.`;
-  };
+    const lat = userLat ?? 42; // fallback mid-latitude
+    if (currentKp === null) return `Set your home base to see a personalized visibility note.`;
+    
+    // Latitude-aware thresholds: higher lat = lower KP needed
+    const visibleKp = lat > 60 ? 3 : lat > 50 ? 5 : lat > 45 ? 6 : 7;
 
-  // OVATION observation time
-  const obsTime = ovation?.Observation_Time
-    ? new Date(ovation.Observation_Time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    : null;
+    if (currentKp >= 8) return `KP ${currentKp.toFixed(1)} — Major storm! Aurora visible as far south as ${loc}. Go outside now!`;
+    if (currentKp >= visibleKp) return `KP ${currentKp.toFixed(1)} — Aurora possible from ${loc}. Look north on the horizon for best chance.`;
+    if (currentKp >= visibleKp - 1) return `KP ${currentKp.toFixed(1)} — Marginal. Possible faint glow low on the northern horizon from ${loc} if KP rises slightly.`;
+    return `KP ${currentKp.toFixed(1)} — Aurora unlikely from ${loc} tonight. You need KP ${visibleKp}+ for visibility at your latitude. Monitor for alerts.`;
+  };
 
   return (
     <div className="space-y-4">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <div>
-          <p className="text-slate-400 text-xs mt-0.5">
-            Aurora forecast – color-coded intensity over US/Canada. Check for clear skies!
-          </p>
-        </div>
+        <p className="text-slate-400 text-xs">
+          NOAA 30-min aurora forecast overlay · North America focus
+        </p>
         <button onClick={load} disabled={loading} className="text-slate-400 hover:text-slate-200 transition-colors">
           <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
         </button>
@@ -235,7 +282,7 @@ export default function AuroraForecastMap({ isSubscribed, userLat, userLon, loca
 
       {/* Current KP badge */}
       {currentKp !== null && (
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-wrap">
           <div className="flex items-center gap-2 bg-black/30 border border-white/10 rounded-xl px-3 py-2">
             <Zap className="w-4 h-4" style={{ color: kpColor(currentKp) }} />
             <span className="text-white font-black text-lg">{currentKp.toFixed(1)}</span>
@@ -248,41 +295,41 @@ export default function AuroraForecastMap({ isSubscribed, userLat, userLon, loca
         </div>
       )}
 
-      {/* Local visibility note */}
+      {/* Fallback / error */}
+      {error && (
+        <div className="flex items-start gap-2 bg-red-900/20 border border-red-500/30 rounded-xl px-3 py-2.5">
+          <span className="text-red-400 text-xs">⚠</span>
+          <p className="text-red-300 text-xs">{error} · {currentKp !== null ? `Last known KP: ${currentKp.toFixed(1)}` : 'No cached data available.'}</p>
+        </div>
+      )}
+
+      {/* Location-aware visibility note */}
       <div className="flex items-start gap-2 bg-slate-800/40 border border-white/8 rounded-xl px-3 py-2.5">
         <MapPin className="w-3.5 h-3.5 text-red-400 flex-shrink-0 mt-0.5" />
         <p className="text-slate-300 text-xs leading-relaxed">{getLocalNote()}</p>
       </div>
 
-      {/* Map */}
+      {/* Map with NOAA image overlay */}
       {loading ? (
         <div className="flex items-center justify-center gap-2 py-16 bg-black/20 rounded-xl">
           <Loader className="w-5 h-5 animate-spin text-red-400" />
-          <span className="text-slate-400 text-sm">Loading NOAA aurora data…</span>
-        </div>
-      ) : error && !ovation ? (
-        <div className="py-10 text-center bg-black/20 rounded-xl border border-white/8">
-          <p className="text-slate-400 text-sm">{error}</p>
-          <button onClick={load} className="text-red-400 text-xs underline mt-2">Retry</button>
+          <span className="text-slate-400 text-sm">Loading NOAA aurora forecast…</span>
         </div>
       ) : (
         <div>
           <AuroraLeafletMap
-            ovationData={ovation}
             userLat={userLat}
             userLon={userLon}
             locationName={locationName}
           />
-          {obsTime && (
-            <p className="text-slate-600 text-[10px] mt-1.5 text-right">
-              NOAA OVATION · Observed {obsTime} UTC · Forecast ~30 min
-            </p>
-          )}
+          <p className="text-slate-600 text-[10px] mt-1.5 text-right">
+            Source: NOAA OVATION · 30-min forecast · Updates every 10 min
+          </p>
         </div>
       )}
 
       {/* Legend */}
-      <div className="flex items-center gap-3 flex-wrap">
+      <div className="flex items-center gap-3 flex-wrap bg-black/20 rounded-xl px-3 py-2 border border-white/5">
         <span className="text-slate-500 text-xs font-semibold uppercase tracking-wide">Intensity:</span>
         {[
           { color: '#22c55e', label: 'Low' },
@@ -290,15 +337,21 @@ export default function AuroraForecastMap({ isSubscribed, userLat, userLon, loca
           { color: '#f97316', label: 'Strong' },
           { color: '#ef4444', label: 'Very Strong' },
         ].map(l => (
-          <div key={l.label} className="flex items-center gap-1">
-            <div style={{ background: l.color }} className="w-3 h-3 rounded-full" />
+          <div key={l.label} className="flex items-center gap-1.5">
+            <div style={{ background: l.color }} className="w-3 h-3 rounded-full flex-shrink-0" />
             <span className="text-slate-400 text-xs">{l.label}</span>
           </div>
         ))}
       </div>
-      <p className="text-slate-600 text-xs">
-        Visible overhead from northern US/Canada if KP 5+ and clear skies. Low horizon chance at mid-latitudes with KP 6+.
-      </p>
+
+      {/* 24-48hr KP Trend — all users */}
+      {kpForecast.length > 0 && (
+        <Card className="bg-[#1a1a1a] border-white/8 p-4">
+          <p className="text-white text-xs font-semibold mb-3">24–48 Hour KP Trend</p>
+          <KpTrendChart kpForecast={kpForecast} />
+          <p className="text-slate-600 text-[10px] mt-2">Source: NOAA SWPC · Each bar = 3hr block · Updates every 3 hours</p>
+        </Card>
+      )}
 
       {/* Hourly recent KP — paid */}
       {isSubscribed ? (
@@ -336,11 +389,11 @@ export default function AuroraForecastMap({ isSubscribed, userLat, userLon, loca
       )}
 
       {/* 7-day outlook — paid */}
-      {isSubscribed && kpForecast.length > 0 && (
+      {isSubscribed && kpByDay.length > 0 && (
         <Card className="bg-[#1a1a1a] border-white/8 p-4">
           <p className="text-white text-xs font-semibold mb-3">7-Day KP Outlook</p>
           <div className="flex gap-1 items-end" style={{ height: 80 }}>
-            {kpForecast.map((r, i) => <KpBar key={i} entry={r} />)}
+            {kpByDay.map((r, i) => <KpBar key={i} entry={r} />)}
           </div>
           <p className="text-slate-600 text-[10px] mt-2">Source: NOAA SWPC · Updates every 3 hours</p>
         </Card>
