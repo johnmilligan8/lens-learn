@@ -111,7 +111,15 @@ export default function Dashboard() {
           <div>
             <p className="text-slate-500 text-xs uppercase tracking-widest font-semibold">Welcome back</p>
             <h1 className="text-3xl md:text-4xl font-black text-white mt-1">{firstName}</h1>
-            <p className="text-slate-400 text-sm mt-1">{modeInfo.emoji} {modeInfo.label}</p>
+            <div className="flex items-center justify-between mt-3">
+              <p className="text-slate-400 text-sm">{modeInfo.emoji} {modeInfo.label}</p>
+              <button
+                onClick={() => setModeModalOpen(true)}
+                className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 hover:border-white/20 transition-all text-xs text-slate-300 font-medium"
+              >
+                Change
+              </button>
+            </div>
           </div>
 
 
@@ -212,13 +220,7 @@ export default function Dashboard() {
 
         </div>
 
-        {/* Change Mode Modal (triggered from greeting) */}
-        <button
-          onClick={() => setModeModalOpen(true)}
-          className="fixed bottom-20 left-4 right-4 md:bottom-auto md:left-auto md:right-auto md:fixed-none md:relative p-4 rounded-xl bg-white/5 border border-white/10 hover:border-white/20 transition-all text-sm text-slate-300 md:mt-4"
-        >
-          ⚙️ Change Mode
-        </button>
+
 
         <ModeSelectorModal
           open={modeModalOpen}
