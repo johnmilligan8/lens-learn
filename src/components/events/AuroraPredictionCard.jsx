@@ -503,8 +503,11 @@ export default function AuroraPredictionCard({ userLat, userLon, locationName })
             </p>
           </div>
 
+          {/* Windy Cloud & Wind Map */}
+          <WindyMapEmbed lat={lat} lon={lon} />
+
           <p className="text-[10px] text-slate-600 mt-3">
-            Source: NOAA SWPC · Open-Meteo · Aurora forecast – personalized when location set
+            Source: NOAA SWPC · Open-Meteo · Windy.com · Aurora forecast – personalized when location set
           </p>
         </>
       )}
