@@ -262,7 +262,9 @@ export default function LocationPicker({ value, lat, lon, onChange }) {
         </p>
       )}
 
-      <p className="text-xs text-slate-600">Optional — skip if you prefer to enter location each time.</p>
+      {typeof onboarding !== 'undefined' && onboarding && (
+        <p className="text-xs text-slate-600">Optional — skip if you prefer to enter location each time.</p>
+      )}
     </div>
   );
 }
