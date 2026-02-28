@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ChevronDown, ChevronUp, MapPin, Calendar, Download } from 'lucide-react';
+import { ChevronDown, ChevronUp, MapPin, Calendar, Download, MessageSquare } from 'lucide-react';
 import { format } from 'date-fns';
+import FeedbackRequestModal from './FeedbackRequestModal';
 
 const OUTCOME_STYLES = {
   nailed: 'bg-emerald-700/40 text-emerald-300 border-emerald-700/40',
