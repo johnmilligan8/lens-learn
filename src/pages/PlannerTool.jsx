@@ -670,23 +670,7 @@ export default function PlannerTool() {
             </div>
           </div>
 
-          {/* Tab Navigation */}
-          <div className="flex gap-0 border-t border-white/5">
-            {[
-              { id: 'planner', label: '🔭 Plan a Shoot' },
-              { id: 'events', label: '📅 Events & Calendar' },
-            ].map(t => (
-              <button
-                key={t.id}
-                onClick={() => setMainTab(t.id)}
-                className={`flex-1 px-4 py-3 text-sm font-bold border-b-2 transition-colors ${
-                  mainTab === t.id ? 'border-red-500 text-white bg-white/5' : 'border-transparent text-slate-400 hover:text-slate-300'
-                }`}
-              >
-                {t.label}
-              </button>
-            ))}
-          </div>
+
         </div>
 
         {/* MAIN CONTENT */}
