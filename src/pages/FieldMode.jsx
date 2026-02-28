@@ -223,19 +223,28 @@ export default function FieldMode() {
         )}
 
         {/* Mode-specific quick tip (compact, one-liner) */}
-        <div className={`mb-6 rounded-2xl border border-${color.accent}-600/30 bg-${color.accent}-900/20 px-4 py-3 flex items-start gap-2`}>
-          <span className="text-lg leading-none flex-shrink-0">{color.icon}</span>
-          <p className={`text-${color.accent}-200 text-xs leading-relaxed font-medium`}>
-            {mode === 'experience' && activeTab === 'compose' && '👀 Dark adapt 20–30 min • Look beside faint objects'}
-            {mode === 'experience' && activeTab === 'light' && '🌙 Avoid bright moon • Best 1–2 hrs after sunset'}
-            {mode === 'smartphone' && activeTab === 'camera' && '📱 Use tripod + self-timer • Pro mode for manual control'}
-            {mode === 'smartphone' && activeTab === 'compose' && '🎬 Shoot horizontal • Self-timer to reduce shake'}
-            {mode === 'smartphone' && activeTab === 'light' && '🌅 Blue hour for color • Dark sky needs 1.5+ hrs post-sunset'}
-            {mode === 'photographer' && activeTab === 'camera' && '⚙️ Use NPF rule for shutter • Start ISO 3200, widest aperture'}
-            {mode === 'photographer' && activeTab === 'compose' && '🖼️ Lower-third foreground • Use Star Pointer for galactic core'}
-            {mode === 'photographer' && activeTab === 'light' && '⏰ Blue hour ends 30–45 min • Avoid phone screens'}
-          </p>
-        </div>
+         <div className={`mb-6 rounded-2xl border border-${color.accent}-600/30 bg-${color.accent}-900/20 px-4 py-3 flex items-start gap-2`}>
+           <span className="text-lg leading-none flex-shrink-0">{color.icon}</span>
+           <p className={`text-${color.accent}-200 text-xs leading-relaxed font-medium`}>
+             {mode === 'experience' && activeTab === 'compose' && '👀 Dark adapt 20–30 min • Look beside faint objects'}
+             {mode === 'experience' && activeTab === 'light' && '🌙 Avoid bright moon • Best 1–2 hrs after sunset'}
+             {mode === 'smartphone' && (() => {
+               const phoneModel = profile?.phone_model;
+               if (activeTab === 'camera') {
+                 if (['iphone14', 'iphone15', 'iphone16'].includes(phoneModel)) return '📱 Night Mode: 10–30s exposure • Lock focus on brightest star';
+                 if (['pixel8', 'pixel9'].includes(phoneModel)) return '📱 Night Sight: Auto or Expert RAW • Steady hands or tripod';
+                 if (['galaxy23', 'galaxy24'].includes(phoneModel)) return '📱 Nightography: 2–8s auto exposure • Lean on object for stability';
+                 return '📱 Use tripod + self-timer • Look for Night Mode in camera app';
+               }
+               if (activeTab === 'compose') return '🎬 Shoot horizontal • Self-timer to reduce shake';
+               if (activeTab === 'light') return '🌅 Blue hour for color • Dark sky needs 1.5+ hrs post-sunset';
+               return '';
+             })()}
+             {mode === 'photographer' && activeTab === 'camera' && '⚙️ Use NPF rule for shutter • Start ISO 3200, widest aperture'}
+             {mode === 'photographer' && activeTab === 'compose' && '🖼️ Lower-third foreground • Use Star Pointer for galactic core'}
+             {mode === 'photographer' && activeTab === 'light' && '⏰ Blue hour ends 30–45 min • Avoid phone screens'}
+           </p>
+         </div>
 
         {/* Tab content */}
         {activeTab === 'camera' && mode !== 'experience' && (
