@@ -675,13 +675,13 @@ export default function PlannerTool() {
 
         {/* MAIN CONTENT */}
         <div className="flex-1 max-w-7xl mx-auto w-full px-4 py-8">
-          {/* Events Tab */}
-          {mainTab === 'events' && (
+          {/* Events Calendar Hub */}
+          {mainTab === 'calendar' && (
             <EventsCalendarTab isSubscribed={isSubscribed} userProfile={userProfile} />
           )}
 
-          {/* Planner Tab */}
-          {mainTab !== 'events' && (<>
+          {/* Shoot Planning */}
+          {mainTab !== 'calendar' && (<>
             {/* Curriculum cross-link */}
             <div className="mb-6 flex items-center gap-3 bg-slate-800/40 border border-slate-700/50 rounded-xl px-4 py-3">
               <span className="text-slate-400 text-lg leading-none flex-shrink-0">📚</span>
