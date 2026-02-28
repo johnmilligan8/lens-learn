@@ -161,16 +161,26 @@ export default function SessionCard({ session, isSubscribed, userEmail }) {
             </div>
           )}
 
-          {/* Export */}
+          {/* Actions */}
           {isSubscribed && (
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => exportSession(session)}
-              className="border-slate-700 text-slate-400 hover:text-white text-xs gap-1.5 mt-1"
-            >
-              <Download className="w-3.5 h-3.5" /> Export Session
-            </Button>
+            <div className="flex gap-2 mt-2">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => exportSession(session)}
+                className="border-slate-700 text-slate-400 hover:text-white text-xs gap-1.5 flex-1"
+              >
+                <Download className="w-3.5 h-3.5" /> Export
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => setShowFeedbackModal(true)}
+                className="border-slate-700 text-slate-400 hover:text-white text-xs gap-1.5 flex-1"
+              >
+                <MessageSquare className="w-3.5 h-3.5" /> Feedback
+              </Button>
+            </div>
           )}
         </div>
       )}
