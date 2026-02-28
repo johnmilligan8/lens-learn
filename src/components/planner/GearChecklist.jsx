@@ -157,6 +157,12 @@ const GEAR_PRESETS = {
   ]
 };
 
+const MODE_LABELS = {
+  photographer: { emoji: '📷', label: 'DSLR / Mirrorless', color: 'text-red-400', badge: 'bg-red-900/30 border-red-600/30' },
+  smartphone: { emoji: '📱', label: 'Smartphone', color: 'text-blue-400', badge: 'bg-blue-900/30 border-blue-600/30' },
+  experience: { emoji: '👁️', label: 'Sky Experience', color: 'text-emerald-400', badge: 'bg-emerald-900/30 border-emerald-600/30' },
+};
+
 export default function GearChecklist({ userEmail, shooterMode, onKitLoaded, isPaid }) {
   const [kits, setKits] = useState([]);
   const [activeKit, setActiveKit] = useState(null);
@@ -169,6 +175,7 @@ export default function GearChecklist({ userEmail, shooterMode, onKitLoaded, isP
   const [newItemText, setNewItemText] = useState('');
   const [showGeneralNotes, setShowGeneralNotes] = useState(false);
   const [showModelRelease, setShowModelRelease] = useState(false);
+  const prevModeRef = useRef(shooterMode);
 
   useEffect(() => {
     loadKits();
