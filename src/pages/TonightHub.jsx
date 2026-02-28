@@ -385,13 +385,13 @@ export default function TonightHub() {
       ) : (
         <div className="space-y-4">
            <div className="flex items-center justify-between mb-4">
-             <h2 className="text-white font-bold">Top Events Tonight</h2>
+             <h2 className="text-white font-bold">Tonight's Ranked Events</h2>
              <div className="flex gap-2">
                <Link to={createPageUrl('SkyBrowser')} className="text-xs text-slate-500 hover:text-slate-300 flex items-center gap-1 border border-slate-700 rounded px-2.5 py-1 hover:border-white/20 transition-colors">
                  <Star className="w-3 h-3" /> Sky Browser
                </Link>
-               <Link to={createPageUrl('EventsCalendar')} className="text-xs text-slate-500 hover:text-slate-300 flex items-center gap-1">
-                 Full calendar <ChevronRight className="w-3 h-3" />
+               <Link to={createPageUrl('PlannerTool') + '?tab=events'} className="text-xs text-slate-500 hover:text-slate-300 flex items-center gap-1">
+                 All events <ChevronRight className="w-3 h-3" />
                </Link>
              </div>
            </div>
