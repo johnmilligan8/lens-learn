@@ -710,9 +710,9 @@ export default function PlannerTool() {
               </Link>
             </div>
 
-            <div className="grid lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* ── Left: Inputs (sticky, compact) ── */}
-         <div className="lg:col-span-1 space-y-4 lg:sticky lg:top-40 lg:max-h-[calc(100vh-200px)] lg:overflow-y-auto">
+         <div className="space-y-4 lg:col-span-1 lg:sticky lg:top-40 lg:max-h-[calc(100vh-200px)] lg:overflow-y-auto">
          {/* SINGLE UNIFIED INPUT SECTION */}
          <Card className="bg-[#1a1a1a] border-white/8 p-5 rounded-2xl">
           <h2 className="text-sm font-bold text-white uppercase tracking-widest mb-4 flex items-center gap-2">
