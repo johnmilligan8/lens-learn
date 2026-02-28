@@ -218,9 +218,9 @@ export default function Layout({ children, currentPageName }) {
         </div>
       </header>
 
-      {/* Bottom Tab Bar (5 icons: Home, Tonight, Planner, Field, Profile) */}
+      {/* Mobile Bottom Tab Bar (Home, Tonight, Pointer, Planner, Profile) */}
       <nav
-        className="fixed bottom-0 left-0 right-0 z-50 bg-[#111111]/98 backdrop-blur-md border-t border-white/5 flex items-start select-none"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#111111]/98 backdrop-blur-md border-t border-white/5 flex items-start select-none"
         style={{
           paddingBottom: 'env(safe-area-inset-bottom)',
           paddingLeft: 'env(safe-area-inset-left)',
@@ -256,9 +256,66 @@ export default function Layout({ children, currentPageName }) {
         })}
       </nav>
 
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="md:hidden fixed inset-0 bg-black/50 z-[35]"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Mobile Menu Drawer */}
+      <motion.div
+        initial={{ x: '-100%' }}
+        animate={mobileMenuOpen ? { x: 0 } : { x: '-100%' }}
+        transition={{ duration: 0.2 }}
+        className="md:hidden fixed left-0 top-0 bottom-0 w-64 bg-[#111111]/98 backdrop-blur-md border-r border-white/5 z-40 overflow-y-auto flex flex-col"
+        style={{ paddingTop: 'calc(3.5rem + env(safe-area-inset-top))' }}
+      >
+        <nav className="flex-1 p-4 space-y-2">
+          {allNavItems.map(item => {
+            const locked = item.paidOnly && !isSubscribed;
+            const active = currentPageName === item.page;
+            return (
+              <Link
+                key={item.page}
+                to={locked ? createPageUrl('PaymentGate') : (tabHistory.current[item.page] || createPageUrl(item.page))}
+                onClick={() => setMobileMenuOpen(false)}
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+                  active
+                    ? 'bg-red-500/20 text-red-400'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
+                }`}
+              >
+                <item.icon className="w-5 h-5 flex-shrink-0" />
+                <span>{item.label}</span>
+                {locked && <Sparkles className="w-3 h-3 ml-auto text-yellow-500" />}
+              </Link>
+            );
+          })}
+        </nav>
+
+        <div className="p-4 border-t border-white/5 space-y-3">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="w-full justify-start text-slate-400 hover:text-red-400"
+            onClick={handleLogout}
+          >
+            <LogOut className="w-4 h-4 mr-2" />
+            Logout
+          </Button>
+        </div>
+      </motion.div>
+
       {/* Main Content */}
-      <main className="flex-1 overflow-y-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
-        <div style={{ height: 'calc(3.5rem + env(safe-area-inset-top))' }} />
+      <main className="flex-1 overflow-y-auto md:ml-64" style={{ WebkitOverflowScrolling: 'touch' }}>
+        <div className="md:hidden" style={{ height: 'calc(3.5rem + env(safe-area-inset-top))' }} />
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={location.pathname}
@@ -270,7 +327,7 @@ export default function Layout({ children, currentPageName }) {
             {children}
           </motion.div>
         </AnimatePresence>
-        <div style={{ height: 'calc(4rem + env(safe-area-inset-bottom))' }} />
+        <div className="md:hidden" style={{ height: 'calc(4rem + env(safe-area-inset-bottom))' }} />
       </main>
     </div>
   );
