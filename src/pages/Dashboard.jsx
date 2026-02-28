@@ -228,6 +228,7 @@ export default function Dashboard() {
           saving={savingMode}
         />
         </div>
+        </div>
         </PullToRefresh>
         );
         }
