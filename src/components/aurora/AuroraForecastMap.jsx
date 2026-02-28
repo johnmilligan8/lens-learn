@@ -115,7 +115,7 @@ function AuroraLeafletMap({ ovationData, userLat, userLon, locationName }) {
     const L = window.L;
 
     const map = L.map(mapRef.current, {
-      center: [50, -100],
+      center: [60, -100],
       zoom: 3,
       zoomControl: true,
       scrollWheelZoom: false,
