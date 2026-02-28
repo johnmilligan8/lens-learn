@@ -166,73 +166,70 @@ export default function Dashboard() {
             </Card>
           </div>
 
-          {/* ── HERO TONIGHT? CARD ── */}
-          <Link to={createPageUrl('TonightHub')} className="group">
-            <Card className="bg-gradient-to-r from-red-950/40 via-[#111111]/80 to-[#111111]/80 border border-red-600/40 hover:border-red-500/60 p-8 md:p-10 transition-all relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-red-600/10 rounded-full blur-3xl -mr-32 -mt-32" />
-              <div className="relative z-10">
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <p className="text-xs text-red-400 uppercase tracking-widest font-bold mb-2">Real-Time Decision</p>
-                    <h2 className="text-3xl md:text-4xl font-black text-white">Should You Go Tonight?</h2>
-                  </div>
-                  <p className="text-5xl md:text-6xl">🌙</p>
+          {/* ── HERO CTAs — 3 primary actions ── */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Tonight? */}
+            <Link to={createPageUrl('TonightHub')} className="group md:col-span-1">
+              <div className="h-full p-6 rounded-2xl border border-red-600/40 bg-gradient-to-br from-red-950/40 to-[#111111]/80 hover:border-red-500/60 transition-all relative overflow-hidden flex flex-col">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-red-600/10 rounded-full blur-2xl -mr-16 -mt-16" />
+                <div className="relative z-10 flex-1 flex flex-col">
+                  <p className="text-xs text-red-400 uppercase tracking-widest font-bold mb-2">Decide Now</p>
+                  <p className="text-3xl mb-3">🌙</p>
+                  <h2 className="text-xl font-black text-white mb-2">What's Happening Tonight?</h2>
+                  <p className="text-slate-400 text-sm flex-1">Live conditions, Go/No-Go, top ranked sky events for tonight.</p>
+                  <p className="text-red-400 font-bold text-sm flex items-center gap-1 mt-4 group-hover:gap-2 transition-all">
+                    Tonight? <ChevronRight className="w-4 h-4" />
+                  </p>
                 </div>
-                <p className="text-slate-300 text-base md:text-lg max-w-2xl mb-6">
-                  Live conditions, ranked sky events, visibility scores. One answer, right now.
-                  {profile?.home_location && <span className="block text-slate-500 text-sm mt-1"><MapPin className="w-3 h-3 inline mr-1" />{profile.home_location}</span>}
-                </p>
-                <p className="text-red-400 font-bold text-base flex items-center gap-2 group-hover:gap-3 transition-all">
-                  Decide now <ChevronRight className="w-5 h-5" />
-                </p>
               </div>
-            </Card>
-          </Link>
+            </Link>
 
-          {/* ── QUICK ACTIONS (4 focused cards) ── */}
+            {/* Sky Planner */}
+            <Link to={isSubscribed ? createPageUrl('PlannerTool') : createPageUrl('PaymentGate')} className="group md:col-span-1">
+              <div className="h-full p-6 rounded-2xl border border-white/10 bg-[#111111]/80 hover:border-white/20 transition-all flex flex-col">
+                <div className="flex-1 flex flex-col">
+                  <p className="text-xs text-slate-500 uppercase tracking-widest font-bold mb-2">Plan Ahead</p>
+                  <p className="text-3xl mb-3">📍</p>
+                  <h2 className="text-xl font-black text-white mb-2">Plan My Next Shoot</h2>
+                  <p className="text-slate-400 text-sm flex-1">Calendar, event filters, gear checklist, multi-trip saving.</p>
+                  <p className={`font-bold text-sm flex items-center gap-1 mt-4 group-hover:gap-2 transition-all ${isSubscribed ? 'text-red-400' : 'text-slate-600'}`}>
+                    {isSubscribed ? 'Sky Planner' : '🔒 Unlock Plus'} <ChevronRight className="w-4 h-4" />
+                  </p>
+                </div>
+              </div>
+            </Link>
+
+            {/* Field Mode */}
+            <Link to={isSubscribed ? createPageUrl('FieldMode') : createPageUrl('PaymentGate')} className="group md:col-span-1">
+              <div className="h-full p-6 rounded-2xl border border-white/10 bg-[#111111]/80 hover:border-white/20 transition-all flex flex-col">
+                <div className="flex-1 flex flex-col">
+                  <p className="text-xs text-slate-500 uppercase tracking-widest font-bold mb-2">Live Execution</p>
+                  <p className="text-3xl mb-3">⚡</p>
+                  <h2 className="text-xl font-black text-white mb-2">Go Live in the Field</h2>
+                  <p className="text-slate-400 text-sm flex-1">Step-by-step guidance at the location, adapted to your mode.</p>
+                  <p className={`font-bold text-sm flex items-center gap-1 mt-4 group-hover:gap-2 transition-all ${isSubscribed ? 'text-red-400' : 'text-slate-600'}`}>
+                    {isSubscribed ? 'Field Mode' : '🔒 Unlock Plus'} <ChevronRight className="w-4 h-4" />
+                  </p>
+                </div>
+              </div>
+            </Link>
+          </div>
+
+          {/* ── SECONDARY QUICK LINKS ── */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {[
-              {
-                emoji: isSubscribed ? '⚡' : '🔒',
-                label: 'Field Mode',
-                sub: 'Live execution',
-                page: isSubscribed ? 'FieldMode' : 'PaymentGate',
-                locked: !isSubscribed,
-              },
-              {
-                emoji: isSubscribed ? '📍' : '🔒',
-                label: 'Sky Planner',
-                sub: 'Plan future shoots',
-                page: isSubscribed ? 'PlannerTool' : 'PaymentGate',
-                locked: !isSubscribed,
-              },
-              {
-                emoji: '📅',
-                label: 'Events',
-                sub: 'Showers & eclipses',
-                page: 'PlannerTool',
-                params: '?tab=events',
-                locked: false,
-              },
-              {
-                emoji: '📔',
-                label: 'Journal',
-                sub: 'Reflect & improve',
-                page: 'Journal',
-                locked: false,
-              },
+              { emoji: '📅', label: 'Events', sub: 'Showers & eclipses', page: 'PlannerTool', params: '?tab=events', locked: false },
+              { emoji: '📔', label: 'Journal', sub: 'Reflect & improve', page: 'Journal', locked: false },
+              { emoji: '🌌', label: 'Gallery', sub: 'Community shots', page: 'CommunityGallery', locked: false },
+              { emoji: '⭐', label: 'Free Course', sub: 'Start learning', page: 'FreeCourse', locked: false },
             ].map(item => (
               <Link key={item.label} to={createPageUrl(item.page) + (item.params || '')} className="group">
-                <div className={`p-4 rounded-xl border transition-all h-full flex flex-col ${
-                  item.locked
-                    ? 'border-white/5 bg-[#111111]/50'
-                    : 'border-white/10 bg-[#111111]/80 hover:border-red-600/30 hover:bg-[#111111]/95'
-                }`}>
+                <div className="p-4 rounded-xl border border-white/8 bg-[#111111]/60 hover:border-white/15 hover:bg-[#111111]/90 transition-all h-full flex flex-col">
                   <p className="text-2xl mb-2">{item.emoji}</p>
                   <h3 className="text-sm font-bold text-white mb-0.5">{item.label}</h3>
                   <p className="text-slate-500 text-xs flex-1">{item.sub}</p>
-                  <p className={`text-xs font-semibold flex items-center gap-0.5 mt-2 group-hover:gap-1 transition-all ${item.locked ? 'text-slate-600' : 'text-red-400'}`}>
-                    {item.locked ? 'Upgrade' : 'Open'} <ChevronRight className="w-3 h-3" />
+                  <p className="text-xs font-semibold text-red-400 flex items-center gap-0.5 mt-2 group-hover:gap-1 transition-all">
+                    Open <ChevronRight className="w-3 h-3" />
                   </p>
                 </div>
               </Link>
