@@ -701,16 +701,12 @@ export default function PlannerTool() {
           {/* Shoot Planning */}
           {mainTab === 'planner' && (<>
             {/* Curriculum cross-link */}
-            <div className="mb-6">
-              <p className="text-slate-400 text-sm font-semibold mb-3">📅 Plan your expedition – events and conditions in one place.</p>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => setMainTab('calendar')}
-                  className="px-4 py-2 rounded-lg bg-red-600/20 border border-red-500/40 text-red-300 text-xs font-bold hover:bg-red-600/30 transition-colors"
-                >
-                  📅 View Calendar
-                </button>
-              </div>
+            <div className="mb-6 flex items-center gap-3 bg-slate-800/40 border border-slate-700/50 rounded-xl px-4 py-3">
+              <span className="text-slate-400 text-lg leading-none flex-shrink-0">📚</span>
+              <p className="text-slate-400 text-xs flex-1">After calculating, use <strong className="text-white">AR Scout</strong> below to preview the Milky Way arc before you go.</p>
+              <Link to={createPageUrl('FreeCourse')} className="text-red-400 text-xs font-bold hover:text-red-300 whitespace-nowrap">
+                Free Course →
+              </Link>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
