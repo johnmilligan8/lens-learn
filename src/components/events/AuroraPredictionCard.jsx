@@ -233,14 +233,35 @@ export default function AuroraPredictionCard({ userLat, userLon, locationName })
     setUsingDefault(!hasUserLocation);
 
     try {
-      const [forecastData, liveKp, hourlyKp, weatherData, hourlyCloudData, bortleData] = await Promise.all([
-        fetchNoaaKpForecast(),
-        fetchCurrentKp().catch(() => null),
-        fetchNoaaHourlyKp().catch(() => []),
-        fetchCloudCoverForecast(lat, lon, 7).catch(() => []),
-        fetchHourlyCloudCover(lat, lon).catch(() => []),
+      const [forecastRes, liveKpRes, hourlyKpRes, hourlyCloudRes, bortleData] = await Promise.all([
+        base44.functions.invoke('fetchNoaaKpForecast', { type: 'forecast' }).catch(() => null),
+        base44.functions.invoke('fetchNoaaKpForecast', { type: 'current' }).catch(() => null),
+        base44.functions.invoke('fetchNoaaKpForecast', { type: 'hourly' }).catch(() => null),
+        base44.functions.invoke('fetchNoaaKpForecast', { type: 'hourlyCloud', lat, lon }).catch(() => null),
         base44.functions.invoke('fetchBortle', { lat, lon }).catch(() => null),
       ]);
+
+      const forecastData = forecastRes?.data || [];
+      const liveKp = liveKpRes?.data || null;
+      const hourlyKp = hourlyKpRes?.data || [];
+
+      // Fetch cloud cover directly from Open-Meteo (no backend needed — public API)
+      let hourlyCloudData = [];
+      let weatherData = [];
+      try {
+        const params = new URLSearchParams({ latitude: lat, longitude: lon, hourly: 'cloud_cover,visibility', timezone: 'auto', forecast_days: 3 });
+        const cloudRes = await fetch(`https://api.open-meteo.com/v1/forecast?${params}`);
+        if (cloudRes.ok) {
+          const d = await cloudRes.json();
+          hourlyCloudData = d.hourly.time.map((t, i) => ({ time: t, cloud_cover: d.hourly.cloud_cover?.[i] ?? 50 }));
+        }
+        const dailyParams = new URLSearchParams({ latitude: lat, longitude: lon, daily: 'precipitation_sum,wind_speed_10m_max,temperature_2m_min,cloud_cover_mean', timezone: 'auto', forecast_days: 7 });
+        const dailyRes = await fetch(`https://api.open-meteo.com/v1/forecast?${dailyParams}`);
+        if (dailyRes.ok) {
+          const d = await dailyRes.json();
+          weatherData = d.daily.time.map((date, i) => ({ date, clouds: d.daily.cloud_cover_mean?.[i] ?? null, precipitation: d.daily.precipitation_sum?.[i] ?? null, wind_speed: d.daily.wind_speed_10m_max?.[i] ?? null, temp_min: d.daily.temperature_2m_min?.[i] ?? null }));
+        }
+      } catch (_) { /* ignore */ }
       const hourlyCloud = hourlyCloudData;
 
       const todayForecast = forecastData.find(f => f.date === today) || forecastData[0] || null;
