@@ -177,6 +177,15 @@ export default function GearChecklist({ userEmail, shooterMode, onKitLoaded, isP
   const [showModelRelease, setShowModelRelease] = useState(false);
   const prevModeRef = useRef(shooterMode);
 
+  // When shooterMode changes, show a prompt to switch kits
+  const [modeSwitchNotice, setModeSwitchNotice] = useState(false);
+  useEffect(() => {
+    if (prevModeRef.current !== shooterMode && activeKit && activeKit.shooter_mode !== shooterMode) {
+      setModeSwitchNotice(true);
+    }
+    prevModeRef.current = shooterMode;
+  }, [shooterMode]);
+
   useEffect(() => {
     loadKits();
   }, [userEmail]);
