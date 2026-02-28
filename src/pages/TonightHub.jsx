@@ -9,6 +9,7 @@ import GuidedPlanModal from '../components/tonight/GuidedPlanModal';
 import AuroraPredictionCard from '../components/events/AuroraPredictionCard';
 import MilkyWayARCard from '../components/tonight/MilkyWayARCard';
 import BestSpotsRanker from '../components/tonight/BestSpotsRanker';
+import PhoneModelSelector from '../components/tonight/PhoneModelSelector';
 import { Loader2, Lock, MapPin, ChevronRight, Telescope, Zap, Star } from 'lucide-react';
 import MultiLocationPredictor from '../components/tonight/MultiLocationPredictor';
 
@@ -158,6 +159,7 @@ export default function TonightHub() {
   const [commitEvent, setCommitEvent] = useState(null);
   const [auroraForecast, setAuroraForecast] = useState(null);
   const [moonPhase, setMoonPhase] = useState(() => getMoonPhase());
+  const [selectedPhoneModel, setSelectedPhoneModel] = useState(null);
   const today = new Date().toISOString().split('T')[0];
 
   useEffect(() => {
@@ -253,6 +255,15 @@ export default function TonightHub() {
            <Link to={createPageUrl('PlannerTool')} className="text-slate-500 hover:text-slate-300 text-xs underline">Plan ahead →</Link>
          </p>
        </div>
+
+      {/* Phone Model Selector — Smartphone mode only */}
+      {mode === 'smartphone' && (
+        <PhoneModelSelector 
+          value={selectedPhoneModel} 
+          onChange={setSelectedPhoneModel}
+          shooterMode={mode}
+        />
+      )}
 
       {/* Location input - prominent CTA */}
       <Card className="bg-[#1a1a1a] border border-white/8 p-5 mb-6 sticky top-20 z-40">
@@ -432,7 +443,20 @@ export default function TonightHub() {
           {mode === 'smartphone' && (
             <>
               <p className="text-slate-300 text-xs font-semibold mb-1">📱 Tonight's Focus — Smartphone</p>
-              <p className="text-slate-400 text-xs leading-relaxed">Set phone on a solid surface — never handheld. Enable Night Mode and use the volume button or a timer to fire the shutter. Stay dark-adapted by avoiding the screen between shots.</p>
+              <p className="text-slate-400 text-xs leading-relaxed">
+                {(() => {
+                  const { illum } = getMoonPhase();
+                  const phoneAdvice = {
+                    iphone16pro: selectedPhoneModel === 'iphone16pro' ? 'ProRaw + Night Mode: Set shutter to 15–30s, ISO auto. Lock focus on brightest star.' : null,
+                    iphone15pro: selectedPhoneModel === 'iphone15pro' ? 'Night Mode + ProRaw available: 10–20s exposure, manual focus to ∞.' : null,
+                    pixel9: selectedPhoneModel === 'pixel9' ? 'Night Sight or Expert RAW: Auto or manual 5–10s exposure, stay steady.' : null,
+                    galaxy24: selectedPhoneModel === 'galaxy24' ? 'Nightography mode: 2–8s auto exposure. Lean phone on object for stability.' : null,
+                    unsure: selectedPhoneModel === 'unsure' ? 'Enable any "night mode" available, set on solid surface, tap volume to fire shutter.' : null,
+                  };
+                  const specificTip = phoneAdvice[selectedPhoneModel];
+                  return specificTip || 'Set phone on a solid surface — never handheld. Enable Night Mode and use the volume button or a timer to fire the shutter. Stay dark-adapted by avoiding the screen between shots.';
+                })()}
+              </p>
             </>
           )}
           {mode === 'experience' && (
