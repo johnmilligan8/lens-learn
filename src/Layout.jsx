@@ -49,6 +49,7 @@ export default function Layout({ children, currentPageName }) {
   const [nightMode, setNightMode] = useState(() => {
     return localStorage.getItem('ug_night_mode') === 'true';
   });
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Apply night vision: inject a fixed overlay div + body class
   useEffect(() => {
