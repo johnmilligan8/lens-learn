@@ -20,6 +20,8 @@ import GearChecklist from '../components/planner/GearChecklist';
 import ClientEmailGenerator from '../components/planner/ClientEmailGenerator';
 import ExpeditionManager from '../components/planner/ExpeditionManager';
 import MilkyWayARPreview from '../components/planner/MilkyWayARPreview';
+import MapOverlayLayers from '../components/planner/MapOverlayLayers';
+import SaveTripModal from '../components/planner/SaveTripModal';
 import LocationPicker from '../components/onboarding/LocationPicker';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
