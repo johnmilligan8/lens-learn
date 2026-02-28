@@ -675,13 +675,31 @@ export default function PlannerTool() {
 
         {/* MAIN CONTENT */}
         <div className="flex-1 max-w-7xl mx-auto w-full px-4 py-8">
+          {/* Tab Navigation */}
+          <div className="flex gap-0 border-b border-white/5 mb-6">
+            {[
+              { id: 'calendar', label: '📅 Sky Calendar' },
+              { id: 'planner', label: '🔭 Plan a Shoot' },
+            ].map(t => (
+              <button
+                key={t.id}
+                onClick={() => setMainTab(t.id)}
+                className={`px-4 py-3 text-sm font-bold border-b-2 transition-colors ${
+                  mainTab === t.id ? 'border-red-500 text-white bg-white/5' : 'border-transparent text-slate-400 hover:text-slate-300'
+                }`}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
+
           {/* Events Calendar Hub */}
           {mainTab === 'calendar' && (
             <EventsCalendarTab isSubscribed={isSubscribed} userProfile={userProfile} />
           )}
 
           {/* Shoot Planning */}
-          {mainTab !== 'calendar' && (<>
+          {mainTab === 'planner' && (<>
             {/* Curriculum cross-link */}
             <div className="mb-6">
               <p className="text-slate-400 text-sm font-semibold mb-3">📅 Plan your expedition – events and conditions in one place.</p>
