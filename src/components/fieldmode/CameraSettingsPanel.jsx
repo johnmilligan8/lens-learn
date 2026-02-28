@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Aperture, Timer, Zap, ChevronDown, ChevronUp, Info } from 'lucide-react';
+import { Aperture, Timer, Zap, ChevronDown, ChevronUp, Info, Smartphone } from 'lucide-react';
 
 // Smart setting suggestions based on event type & mode
 function getSettings(mode, event) {
@@ -88,6 +88,8 @@ function getSettings(mode, event) {
         'iPhone: Night Mode will auto-handle settings; just be very still',
         'Android: use Camera FV-5 or Gcam for more manual control',
         'Dark Mode / red filter on screen to preserve night vision',
+        'Frame with foreground: rule of thirds — horizon in lower third',
+        'Compose landscape wide (landscape mode better than portrait for sky)',
       ],
     },
     aurora: {
@@ -113,6 +115,7 @@ function getSettings(mode, event) {
         'Prop phone facing the radiant, leave shooting for 30–60 min',
         'Use an intervalometer app (Lapse It, etc.) to shoot continuously',
         'Accept that most frames will have no meteor — it\'s a numbers game',
+        'Include dark foreground if possible for scale and composition',
       ],
     },
   };
@@ -137,6 +140,57 @@ export default function CameraSettingsPanel({ mode, event, coords }) {
 
   return (
     <div className="space-y-4">
+      {/* Smartphone Framing & Gear Guide */}
+      {mode === 'smartphone' && (
+        <Card className="bg-blue-900/20 border border-blue-500/30 p-4">
+          <div className="space-y-3">
+            <div>
+              <p className="text-blue-300 text-xs font-bold uppercase tracking-widest mb-2 flex items-center gap-2">
+                <span>🎬</span> Framing Tips
+              </p>
+              <ul className="text-xs text-slate-300 space-y-1.5 ml-4">
+                <li className="flex gap-2">
+                  <span className="text-blue-400 flex-shrink-0">•</span>
+                  <span><strong>Rule of Thirds:</strong> Place horizon in lower third to emphasize sky</span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="text-blue-400 flex-shrink-0">•</span>
+                  <span><strong>Landscape Mode:</strong> Shoot horizontal, not portrait</span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="text-blue-400 flex-shrink-0">•</span>
+                  <span><strong>Foreground Interest:</strong> Include trees, rocks, tent, or silhouettes for depth</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="border-t border-blue-500/20 pt-3">
+              <p className="text-blue-300 text-xs font-bold uppercase tracking-widest mb-2 flex items-center gap-2">
+                <span>🏗️</span> Phone Stability
+              </p>
+              <ul className="text-xs text-slate-300 space-y-1.5 ml-4">
+                <li className="flex gap-2">
+                  <span className="text-blue-400 flex-shrink-0">•</span>
+                  <span><strong>Mini-Tripod:</strong> Lightweight phone tripod (Gorillapod, Manfrotto Pixi, etc.)</span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="text-blue-400 flex-shrink-0">•</span>
+                  <span><strong>Phone Holder/Clamp:</strong> Fits standard 1/4" tripod socket</span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="text-blue-400 flex-shrink-0">•</span>
+                  <span><strong>DIY Options:</strong> Prop phone against backpack, rocks, or lean it against a tripod leg</span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="text-blue-400 flex-shrink-0">•</span>
+                  <span><strong>Use Self-Timer:</strong> Don't tap shutter — phone will shake. Use 3s or 10s delay.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </Card>
+      )}
+
       {/* Quick reference — always visible */}
       <div className="grid grid-cols-2 gap-3">
         {fields.map((f, i) => (
