@@ -179,67 +179,8 @@ export default function Layout({ children, currentPageName }) {
   };
 
   return (
-    <div className="min-h-screen cosmic-bg flex">
-      {/* Sidebar — desktop */}
-      <aside className="hidden md:flex flex-col w-64 bg-[#111111]/95 backdrop-blur-md border-r border-white/5 sticky top-0 h-screen">
-        {/* Logo */}
-        <div className="p-6 border-b border-slate-800/40">
-          <Link to={createPageUrl('Dashboard')} className="flex flex-col gap-0.5">
-            <img
-              src="https://uncharted.net/wp-content/uploads/2022/09/Uncharted-Logo-Horizontal-White-e1664469570536.png"
-              alt="UNCHARTED"
-              className="h-7 w-auto object-contain"
-              style={{ maxWidth: 150 }}
-              onError={e => { e.target.style.display='none'; }}
-            />
-            <span className="text-white font-black text-base tracking-tight leading-none">UNCHARTED<sup>®</sup> GALAXY</span>
-            <a
-              href="https://www.uncharted.net"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={e => e.stopPropagation()}
-              className="text-slate-500 text-[10px] hover:text-slate-300 transition-colors"
-            >
-              www.uncharted.net
-            </a>
-          </Link>
-        </div>
-
-        {/* Nav Links */}
-        <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-          {allNavItems.map(item => <NavLink key={item.page} item={item} />)}
-        </nav>
-
-        {/* User / Logout */}
-        <div className="p-4 border-t border-slate-800/60">
-          {/* Night Vision Toggle */}
-          <div className="mb-3">
-            <NightModeToggle nightMode={nightMode} onToggle={toggleNightMode} />
-          </div>
-          {!isSubscribed && (
-            <Link to={createPageUrl('PaymentGate')}>
-                <div className="mb-3 p-3 rounded-xl bg-gradient-to-r from-red-900/40 to-red-800/20 border border-red-600/40 hover:border-red-500/60 transition-colors">
-                  <p className="text-xs text-red-200 font-semibold">🚀 Begin Your Expedition</p>
-                  <p className="text-xs text-red-400/70 mt-0.5">Unlock the full galaxy</p>
-                </div>
-              </Link>
-          )}
-          <div className="flex items-center gap-3 px-2 py-2">
-            <div className="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
-              {user?.full_name?.[0] || user?.email?.[0] || 'U'}
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-white text-sm font-medium truncate">{user?.full_name || 'User'}</p>
-              <p className="text-slate-500 text-xs truncate">{user?.email}</p>
-            </div>
-            <Button variant="ghost" size="icon" onClick={handleLogout} className="text-slate-400 hover:text-red-400 flex-shrink-0">
-              <LogOut className="w-4 h-4" />
-            </Button>
-          </div>
-        </div>
-      </aside>
-
-      {/* Mobile Top Bar */}
+    <div className="min-h-screen cosmic-bg flex flex-col">
+      {/* Desktop + Mobile Top Bar */}
       <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-[#111111]/98 backdrop-blur-md border-b border-white/5 flex items-center px-4 justify-between select-none"
         style={{ height: 'calc(3.5rem + env(safe-area-inset-top))', paddingTop: 'env(safe-area-inset-top)', paddingLeft: 'max(1rem, env(safe-area-inset-left))', paddingRight: 'max(1rem, env(safe-area-inset-right))' }}>
         {isChildScreen ? (
