@@ -701,7 +701,7 @@ export default function PlannerTool() {
          {/* SINGLE UNIFIED INPUT SECTION */}
          <Card className="bg-[#1a1a1a] border-white/8 p-5 rounded-2xl">
           <h2 className="text-sm font-bold text-white uppercase tracking-widest mb-4 flex items-center gap-2">
-            <Navigation className="w-4 h-4 text-red-400" /> Plan a Shoot
+            <Navigation className="w-4 h-4 text-red-400" /> Shoot Details
           </h2>
           <div className="space-y-3">
             <div>
