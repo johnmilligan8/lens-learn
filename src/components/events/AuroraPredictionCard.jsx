@@ -398,6 +398,25 @@ export default function AuroraPredictionCard({ userLat, userLon, locationName })
             </div>
           )}
 
+          {/* Viewing Probability Timeline */}
+          <ViewingProbabilityTimeline
+            hourlyCloud={hourlyCloud}
+            kpBlocks={trend}
+            moonIllum={moon.illum}
+            bortle={bortle}
+          />
+
+          {/* Bortle scale info */}
+          {bortle && (
+            <div className="flex items-center gap-2 mb-4 p-2.5 rounded-lg bg-black/20 border border-white/5">
+              <span className="text-xs text-slate-400">🔭 Bortle <span className="text-white font-bold">{bortle}</span></span>
+              <span className="text-xs text-slate-600">·</span>
+              <span className="text-xs text-slate-400">
+                {bortle <= 3 ? 'Dark rural sky — ideal' : bortle <= 5 ? 'Suburban sky — usable' : 'Light polluted — head further out'}
+              </span>
+            </div>
+          )}
+
           {/* 24-48h Trend */}
           {trend.length > 0 && (
             <div className="mb-4">
