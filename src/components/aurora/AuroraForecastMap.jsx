@@ -36,15 +36,16 @@ async function fetchOvationData() {
   return res.json();
 }
 
+// Fetches 3-hourly KP forecast blocks (for 24-48hr trend)
 async function fetchKpForecast() {
   const res = await fetch('https://services.swpc.noaa.gov/products/noaa-planetary-k-index-forecast.json');
   if (!res.ok) throw new Error('KP forecast fetch failed');
   const raw = await res.json();
-  const rows = raw.slice(1); // skip header
-  // Parse: [time_tag, kp, observed, noaa_scale]
+  const rows = raw.slice(1);
   return rows.map(([time_tag, kp]) => ({
-    time: new Date(time_tag + 'Z'),
-    kp: parseFloat(kp) || 0,
+    time: new Date(time_tag.replace(' ', 'T') + 'Z'),
+    kp: Math.round((parseFloat(kp) || 0) * 10) / 10,
+    label: new Date(time_tag.replace(' ', 'T') + 'Z').toLocaleString('en-US', { month: 'numeric', day: 'numeric', hour: 'numeric', hour12: true }),
   })).filter(r => !isNaN(r.time.getTime()));
 }
 
