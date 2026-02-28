@@ -49,20 +49,22 @@ export async function fetchCurrentKp() {
 }
 
 /**
- * Fetches 3-day hourly KP forecast from NOAA (3-hour blocks)
+ * Fetches 3-day 3-hourly KP forecast from NOAA
  * Returns array of { time, kp, date, hour } for next ~72 hours
  */
 export async function fetchNoaaHourlyKp() {
+  // Use the same forecast endpoint but keep each 3-hour block (don't group by day)
   const response = await fetch(
     'https://api.swpc.noaa.gov/products/noaa-planetary-k-index-forecast.json'
   );
-  if (!response.ok) throw new Error(`NOAA hourly API error: ${response.status}`);
+  if (!response.ok) throw new Error(`NOAA 3-hourly API error: ${response.status}`);
   const raw = await response.json();
-  const rows = raw.slice(1);
-  return rows.slice(0, 24).map(([timeTag, kp]) => {
-    const [date, time] = String(timeTag).split(' ');
-    const hour = time ? parseInt(time.split(':')[0]) : 0;
-    return { time: timeTag, date, hour, kp: parseFloat(kp) || 0 };
+  // Rows: [time_tag, kp, observed, noaa_scale]
+  return raw.slice(1).slice(0, 24).map(row => {
+    const timeTag = String(row[0]);
+    const [date, time] = timeTag.split(' ');
+    const hour = time ? parseInt(time.split(':')[0], 10) : 0;
+    return { time: timeTag, date, hour, kp: parseFloat(row[1]) || 0 };
   });
 }
 
